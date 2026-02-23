@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
 import { IdeaStarIcon, ChevronRightIcon, SparklesIcon, ShoppingBagIcon, TwitterXIcon, ChatBubbleLeftRightIcon, GlobeAltIcon, ChatBubbleBottomCenterTextIcon, XMarkIcon, UserCircleIcon, ChatBubbleLeftRightIcon, SparklesIcon, InstagramIcon, PaperAirplaneIcon } from '../constants';
@@ -75,7 +76,7 @@ const DiscoverProjectsShortcut: React.FC = () => {
              <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
             <div className="flex items-center gap-4 relative">
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-all duration-500 border border-purple-500/10">
-                    <SparklesIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
+                    <Globe className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover ideas</h3>
@@ -269,7 +270,7 @@ const DashboardPage: React.FC = () => {
                     Greetings, {currentUser?.name.split(' ')[0]}. What are we building today?
                   </p>
               </div>
-              <div className="flex flex-row gap-4 mt-2 w-full md:w-auto">
+              <div className="flex flex-row gap-4 mt-2 w-full md:w-auto md:min-w-[380px]">
                   <Link 
                     to="/profile" 
                     className="flex-1 px-5 py-2.5 bg-white dark:bg-neutral-800/80 backdrop-blur-md border border-[var(--border-primary)] text-[11px] font-bold tracking-tight text-[var(--text-primary)] hover:bg-neutral-100 transition-all flex items-center justify-center h-10 rounded-full font-poppins shadow-none uppercase"
