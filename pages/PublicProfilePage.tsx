@@ -20,6 +20,7 @@ import {
     InstagramIcon,
     HeartIcon,
     BoltIcon,
+    GlobeModernIcon,
     PaperAirplaneIcon
     // CheckCircleIcon yahan se hata diya hai kyunki niche defined hai
 } from '../constants';
@@ -50,7 +51,7 @@ const ProfilePillCard: React.FC<{
             {imageUrl ? (
                 <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
             ) : (
-                <GlobeAltIcon className="w-5 h-5" />
+                <GlobeModernIcon className="w-5 h-5" />
             )}
         </div>
         <div className="overflow-hidden flex-grow">
