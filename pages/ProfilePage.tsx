@@ -18,7 +18,8 @@ import {
     InstagramIcon,
     HeartIcon,
     BoltIcon,
-    TrashIcon
+    TrashIcon,
+GlobeModernIcon
 } from '../constants';
 
 // --- Local Icons ---
@@ -46,7 +47,7 @@ const ProfilePillCard: React.FC<{
                 {imageUrl ? (
                     <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
                 ) : (
-                    <GlobeAltIcon className="w-5 h-5" />
+                    <GlobeModernIcon className="w-5 h-5" />
                 )}
             </div>
             <div className="overflow-hidden flex-grow">
