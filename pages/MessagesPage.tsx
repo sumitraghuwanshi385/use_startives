@@ -526,78 +526,94 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
     </aside>
 
     {/* ================= CHAT AREA ================= */}
-    <main className={`flex-1 flex flex-col min-h-0 overflow-hidden ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+    <main className={`flex-1 flex flex-col h-full ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
 
-      {selectedChat ? (
-        <>
-          {/* ===== STICKY HEADER ===== */}
-<div className="shrink-0 border-b border-[var(--border-primary)] bg-white dark:bg-black">
+  {selectedChat ? (
+    <>
+      {/* ===== CHAT HEADER (CONNECTED) ===== */}
+      <div className="border-b border-[var(--border-primary)] bg-white dark:bg-black">
 
-  <div className="flex items-center justify-between px-4 py-3">
-
-    {/* LEFT SIDE */}
-    <div className="flex items-center gap-3">
-
-      {/* BACK BUTTON */}
-      <button
-        onClick={() => setSelectedChatId(null)}
-        className="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
-      >
-        <ArrowLeftIcon className="w-5 h-5" />
-      </button>
-
-      {/* AVATAR */}
-      <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-        {selectedChat.contact?.name?.[0] || 'U'}
-      </div>
-
-      {/* NAME + TYPE */}
-      <div>
-        <p className="font-bold text-sm uppercase">
-          {selectedChat.contact?.name}
-        </p>
-        <p className="text-[9px] text-[var(--text-muted)]">
-          {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
-        </p>
-      </div>
-    </div>
-
-    {/* RIGHT SIDE MENU */}
-    <div className="relative">
-
-      <button
-        onClick={() => setIsChatMenuOpen(!isChatMenuOpen)}
-        className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
-      >
-        <EllipsisVerticalIcon className="w-5 h-5" />
-      </button>
-
-      {isChatMenuOpen && (
-        <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg overflow-hidden z-50">
-
-          <button
-            onClick={() => setIsConfirmClearOpen(true)}
-            className="w-full px-4 py-3 text-left text-xs font-bold hover:bg-neutral-100 dark:hover:bg-neutral-800"
-          >
-            Clear Chat
-          </button>
-
-          <button
-            onClick={() => {
-              setChatToAction(selectedChat.id);
-              setIsConfirmDeleteOpen(true);
-            }}
-            className="w-full px-4 py-3 text-left text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
-          >
-            Delete Chat
-          </button>
-
+        {/* Upper strip */}
+        <div className="px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-[var(--text-muted)] border-b border-[var(--border-primary)]">
+          Conversation
         </div>
-      )}
-    </div>
 
-  </div>
-</div>
+        {/* Main header */}
+        <div className="flex items-center justify-between px-4 py-3">
+
+          <div className="flex items-center gap-3">
+
+            <button
+              onClick={() => setSelectedChatId(null)}
+              className="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
+            >
+              <ArrowLeftIcon />
+            </button>
+
+            <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+              {selectedChat.contact?.name?.[0] || 'U'}
+            </div>
+
+            <div>
+              <p className="font-bold text-sm uppercase">
+                {selectedChat.contact?.name}
+              </p>
+              <p className="text-[10px] text-[var(--text-muted)]">
+                {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
+              </p>
+            </div>
+          </div>
+
+          <div className="relative">
+            <button
+              onClick={() => setIsChatMenuOpen(!isChatMenuOpen)}
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
+            >
+              <EllipsisVerticalIcon />
+            </button>
+
+            {isChatMenuOpen && (
+              <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg z-50">
+                <button
+                  onClick={() => setIsConfirmClearOpen(true)}
+                  className="w-full px-4 py-3 text-left text-xs font-bold hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                >
+                  Clear Chat
+                </button>
+
+                <button
+                  onClick={() => {
+                    setChatToAction(selectedChat.id);
+                    setIsConfirmDeleteOpen(true);
+                  }}
+                  className="w-full px-4 py-3 text-left text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                >
+                  Delete Chat
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ===== ONLY THIS SCROLLS ===== */}
+      <div className="flex-1 overflow-y-auto bg-[var(--background-tertiary)] p-5 space-y-4">
+
+        {selectedChat.messages?.map((msg: any, i: number) => {
+          const isMe = msg.senderId === currentUser.id;
+
+          return (
+            <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm ${
+                isMe
+                  ? 'bg-purple-600 text-white rounded-br-none'
+                  : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
+              }`}>
+                {msg.text}
+              </div>
+            </div>
+          );
+        })}
 
           {/* Messages Scroll Area */}
           <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)] min-h-0">
@@ -733,27 +749,35 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
               <input type="file" ref={imageInputRef} onChange={e => handleFileUpload(e, 'image')} accept="image/*" className="hidden" />
               <input type="file" ref={docInputRef} onChange={e => handleFileUpload(e, 'document')} className="hidden" />
 
-              {/* Input */}
-              <input
-                value={messageText}
-                onChange={(e) => setMessageText(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 px-5 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-sm"
-              />
+                  {/* ===== INPUT (FIXED BOTTOM) ===== */}
+      <div className="border-t border-[var(--border-primary)] bg-white dark:bg-black p-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSendMessage(messageText);
+          }}
+          className="flex items-center gap-2"
+        >
+          <input
+            value={messageText}
+            onChange={(e) => setMessageText(e.target.value)}
+            className="flex-1 px-5 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)]"
+            placeholder="Type a message..."
+          />
 
-              <button
-                type="submit"
-                disabled={!messageText.trim()}
-                className="px-5 py-3 rounded-full bg-purple-600 text-white text-sm font-bold disabled:opacity-50"
-              >
-                Send
-              </button>
-            </form>
-          </div>
-        </>
-      ) : (
-        <div className="flex-1 flex items-center justify-center text-[var(--text-muted)]">
-          Select a conversation
+          <button
+            type="submit"
+            disabled={!messageText.trim()}
+            className="px-5 py-3 rounded-full bg-purple-600 text-white disabled:opacity-50"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+    </>
+  ) : (
+    <div className="flex-1 flex items-center justify-center text-[var(--text-muted)]">
+      Select a conversation
         </div>
       )}
     </main>
