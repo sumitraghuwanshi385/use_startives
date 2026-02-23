@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
-import { IdeaStarIcon, ChevronRightIcon, SparklesIcon, ShoppingBagIcon, TwitterXIcon, ChatBubbleLeftRightIcon, GlobeAltIcon, ChatBubbleBottomCenterTextIcon, XMarkIcon, UserCircleIcon, PaperAirplaneIcon, InstagramIcon } from '../constants';
+import { IdeaStarIcon, ChevronRightIcon, SparklesIcon, ShoppingBagIcon, TwitterXIcon, ChatBubbleLeftRightIcon, GlobeAltIcon, ChatBubbleBottomCenterTextIcon, XMarkIcon, UserCircleIcon, ChatBubbleLeftRightIcon, SparklesIcon, InstagramIcon, PaperAirplaneIcon } from '../constants';
 
 // --- DashboardStatCard Component ---
 interface DashboardSummaryStatCardProps {
@@ -75,7 +75,7 @@ const DiscoverProjectsShortcut: React.FC = () => {
              <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
             <div className="flex items-center gap-4 relative">
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-all duration-500 border border-purple-500/10">
-                    <GlobeAltIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
+                    <SparklesIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover ideas</h3>
@@ -129,7 +129,7 @@ const MessageCenter: React.FC = () => {
             <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
             <div className="flex items-center gap-4 relative">
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-transform duration-500 border border-blue-500/10">
-                    <PaperAirplaneIcon className="w-5 h-5 text-blue-500 dark:text-blue-400 -rotate-12" />
+                    <ChatBubbleLeftRightIcon className="w-5 h-5 text-blue-500 dark:text-blue-400" />
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-blue-600 transition-colors tracking-tight font-poppins">Messenger</h3>
@@ -272,13 +272,13 @@ const DashboardPage: React.FC = () => {
               <div className="flex flex-row gap-4 mt-2 w-full md:w-auto">
                   <Link 
                     to="/profile" 
-                    className="flex-1 md:flex-none md:min-w-[180px] px-5 py-2.5 bg-white dark:bg-neutral-800/80 backdrop-blur-md border border-[var(--border-primary)] text-[11px] font-bold tracking-tight text-[var(--text-primary)] hover:bg-neutral-100 transition-all flex items-center justify-center h-10 rounded-full font-poppins shadow-none uppercase"
+                    className="flex-1 px-5 py-2.5 bg-white dark:bg-neutral-800/80 backdrop-blur-md border border-[var(--border-primary)] text-[11px] font-bold tracking-tight text-[var(--text-primary)] hover:bg-neutral-100 transition-all flex items-center justify-center h-10 rounded-full font-poppins shadow-none uppercase"
                   >
                       VIEW PROFILE
                   </Link>
                   <Link 
                     to="/startalks" 
-                    className="flex-1 md:flex-none md:min-w-[180px] button-gradient text-[11px] font-bold tracking-tight text-white hover:scale-[1.02] transition-all flex items-center justify-center h-10 rounded-full font-poppins shadow-none uppercase"
+                    className="flex-1 px-5 py-2.5 button-gradient text-[11px] font-bold tracking-tight text-white hover:scale-[1.02] transition-all flex items-center justify-center h-10 rounded-full font-poppins shadow-none uppercase"
                   >
                       EXPLORE STARTALKS
                   </Link>
