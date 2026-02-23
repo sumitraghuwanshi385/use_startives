@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
@@ -53,7 +52,7 @@ export const PageTitle: React.FC<PageTitleProps> = ({ title, description, classN
   </div>
 );
 
-const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: string }> = ({ children, pageClassName = "container mx-auto px-4 sm:px-6 lg:px-8 py-8" }) => (
+const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: string }> = ({ children, pageClassName = "w-full px-6 lg:px-16 py-8" }) => (
   <div className={pageClassName}>
     {children}
   </div>
@@ -116,7 +115,7 @@ const App: React.FC = () => {
           <Route path="/contact-us" element={<WithPageContainer><ContactUsPage /></WithPageContainer>} />
           <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
 
-          <Route path="/dashboard" element={<ProtectedRoute><WithPageContainer pageClassName="container mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8"><DashboardPage /></WithPageContainer></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><WithPageContainer pageClassName="w-full px-6 lg:px-16 pt-4 pb-8"><DashboardPage /></WithPageContainer></ProtectedRoute>} />
           <Route path="/projects" element={<ProtectedRoute><ProjectsListPage /></ProtectedRoute>} />
           <Route path="/startalks" element={<ProtectedRoute><StartalksPage /></ProtectedRoute>} />
           <Route path="/blueprint" element={<ProtectedRoute><StartupStoriesPage /></ProtectedRoute>} />
