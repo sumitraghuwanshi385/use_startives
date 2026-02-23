@@ -307,7 +307,7 @@ export const MessagesPage: React.FC = () => {
 
   useEffect(() => {
     if (!selectedChatId) return;
-    setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
     markAllNotificationsAsRead('messages');
   }, [selectedChatId, selectedChat?.messages?.length, markAllNotificationsAsRead]);
 
@@ -445,7 +445,7 @@ export const MessagesPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-row h-[calc(100vh-68px)] bg-[var(--component-background)] overflow-hidden font-poppins relative z-0">
+    className="flex flex-row h-[100dvh] bg-[var(--component-background)] overflow-hidden font-poppins relative z-0"
       {/* Sidebar */}
       <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] flex-col bg-white dark:bg-black/20 ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-6 pb-2 flex justify-between items-center shrink-0">
@@ -453,8 +453,10 @@ export const MessagesPage: React.FC = () => {
             <h2 className="text-3xl font-black tracking-tighter text-[var(--text-primary)]">Messenger</h2>
             <p className="text-xs font-bold text-[var(--text-muted)] tracking-widest mt-1">Your command center.</p>
           </div>
-          <button onClick={() => setIsCreateTeamOpen(true)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center gap-2 text-[10px] font-bold transition-all active:scale-95">
-            <UserGroupIcon className="w-3.5 h-3.5" />
+          <button onClick={() => setIsCreateTeamOpen(true)}
+    className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center gap-2 text-[9px] md:text-[10px] font-bold transition-all active:scale-95"
+  >
+            <UsersIcon className="w-3.5 h-3.5" />
             New Team
           </button>
         </div>
@@ -513,7 +515,7 @@ export const MessagesPage: React.FC = () => {
       </aside>
 
       {/* Chat View */}
-      <main className={`flex-1 flex flex-col h-full relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+      <main className={`flex-1 flex flex-col h-full overflow-hidden relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
         {selectedChat ? (
           <>
             <header className="p-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-white/80 dark:bg-black/40 backdrop-blur-md shrink-0 z-10">
@@ -558,7 +560,7 @@ export const MessagesPage: React.FC = () => {
               </div>
             </header>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 chat-bg-pattern custom-scrollable">
+            <div className="flex-1 overflow-y-auto overscroll-contain p-6 space-y-4 chat-bg-pattern custom-scrollable">
               {selectedChat.messages && selectedChat.messages.length > 0 ? (
                 selectedChat.messages.map((msg: any, i: number) => {
                   const isMe = msg.senderId === currentUser.id;
@@ -624,7 +626,7 @@ export const MessagesPage: React.FC = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black backdrop-blur-md shrink-0">
+            <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black backdrop-blur-md shrink-0 sticky bottom-0">
               <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(messageText); }}>
                 <div className="flex items-center gap-3">
                   <div className="flex gap-1">
