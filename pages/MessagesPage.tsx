@@ -526,36 +526,81 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
     </aside>
 
     {/* ================= CHAT AREA ================= */}
-    <main className={`flex-1 flex flex-col ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+    <main className={`flex-1 flex flex-col min-h-0 overflow-hidden ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
 
       {selectedChat ? (
         <>
-          {/* Sticky Header */}
-          <div className="sticky top-0 z-10 p-4 border-b border-[var(--border-primary)] bg-white dark:bg-black flex items-center gap-3">
+          {/* ===== STICKY HEADER ===== */}
+<div className="shrink-0 border-b border-[var(--border-primary)] bg-white dark:bg-black">
 
-            <button
-              onClick={() => setSelectedChatId(null)}
-              className="md:hidden"
-            >
-              <ArrowLeftIcon />
-            </button>
+  <div className="flex items-center justify-between px-4 py-3">
 
-            <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-              {selectedChat.contact?.name?.[0] || 'U'}
-            </div>
+    {/* LEFT SIDE */}
+    <div className="flex items-center gap-3">
 
-            <div>
-              <p className="font-bold text-sm uppercase">
-                {selectedChat.contact?.name}
-              </p>
-              <p className="text-[9px] text-[var(--text-muted)]">
-                {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
-              </p>
-            </div>
-          </div>
+      {/* BACK BUTTON */}
+      <button
+        onClick={() => setSelectedChatId(null)}
+        className="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
+      >
+        <ArrowLeftIcon className="w-5 h-5" />
+      </button>
+
+      {/* AVATAR */}
+      <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+        {selectedChat.contact?.name?.[0] || 'U'}
+      </div>
+
+      {/* NAME + TYPE */}
+      <div>
+        <p className="font-bold text-sm uppercase">
+          {selectedChat.contact?.name}
+        </p>
+        <p className="text-[9px] text-[var(--text-muted)]">
+          {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
+        </p>
+      </div>
+    </div>
+
+    {/* RIGHT SIDE MENU */}
+    <div className="relative">
+
+      <button
+        onClick={() => setIsChatMenuOpen(!isChatMenuOpen)}
+        className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
+      >
+        <EllipsisVerticalIcon className="w-5 h-5" />
+      </button>
+
+      {isChatMenuOpen && (
+        <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg overflow-hidden z-50">
+
+          <button
+            onClick={() => setIsConfirmClearOpen(true)}
+            className="w-full px-4 py-3 text-left text-xs font-bold hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          >
+            Clear Chat
+          </button>
+
+          <button
+            onClick={() => {
+              setChatToAction(selectedChat.id);
+              setIsConfirmDeleteOpen(true);
+            }}
+            className="w-full px-4 py-3 text-left text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+          >
+            Delete Chat
+          </button>
+
+        </div>
+      )}
+    </div>
+
+  </div>
+</div>
 
           {/* Messages Scroll Area */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)]">
+          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)] min-h-0">
 
             {selectedChat.messages?.length ? (
               selectedChat.messages.map((msg: any, i: number) => {
