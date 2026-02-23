@@ -132,7 +132,7 @@ const ProfilePage: React.FC = () => {
 
                 <div className="flex flex-wrap justify-center md:justify-start gap-3">
                     <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
-                        <GlobeAltIcon className="w-3.5 h-3.5 text-purple-500" />
+                        <GlobeModernIcon className="w-3.5 h-3.5 text-purple-500" />
                         <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Projects</span>
                         <span className="text-xs font-black text-[var(--text-primary)] ml-1">{myProjects.length}</span>
                     </div>
@@ -201,7 +201,7 @@ const ProfilePage: React.FC = () => {
             <section className="space-y-4">
                 <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <GlobeAltIcon className="w-3 h-3" />
+                        <GlobeModernIcon className="w-3 h-3" />
                     </div>
                     Projects Listed
                 </h3>
