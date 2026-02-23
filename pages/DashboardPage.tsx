@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
-import { IdeaStarIcon, ChevronRightIcon, SparklesIcon, ShoppingBagIcon, TwitterXIcon, ChatBubbleLeftRightIcon, GlobeIcon, ChatBubbleBottomCenterTextIcon, XMarkIcon, UserCircleIcon, PaperAirplaneIcon, InstagramIcon } from '../constants';
+import { IdeaStarIcon, ChevronRightIcon, SparklesIcon, ShoppingBagIcon, TwitterXIcon, ChatBubbleLeftRightIcon, GlobeAltIcon, ChatBubbleBottomCenterTextIcon, XMarkIcon, UserCircleIcon, PaperAirplaneIcon, InstagramIcon } from '../constants';
 
 // --- DashboardStatCard Component ---
 interface DashboardSummaryStatCardProps {
@@ -75,7 +75,7 @@ const DiscoverProjectsShortcut: React.FC = () => {
              <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
             <div className="flex items-center gap-4 relative">
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-all duration-500 border border-purple-500/10">
-                    <GlobeIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
+                    <GlobeAltIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover ideas</h3>
