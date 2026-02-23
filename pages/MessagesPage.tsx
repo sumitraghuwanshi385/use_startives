@@ -447,244 +447,216 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   return (
   <div className="flex flex-row h-screen max-h-screen bg-[var(--component-background)] overflow-hidden font-poppins relative z-0">
 
-      {/* Sidebar */}
-      <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] flex-col bg-white dark:bg-black/20 ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
-        <div className="p-6 pb-2 flex justify-between items-center shrink-0">
-          <div>
-            <h2 className="text-3xl font-black tracking-tighter text-[var(--text-primary)]">Messenger</h2>
-            <p className="text-xs font-bold text-[var(--text-muted)] tracking-widest mt-1">Your command center.</p>
-          </div>
-          <button onClick={() => setIsCreateTeamOpen(true)}
-    className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center gap-2 text-[9px] md:text-[10px] font-bold transition-all active:scale-95"
-  >
-            <UsersIcon className="w-3.5 h-3.5" />
-            New Team
-          </button>
+    {/* Sidebar */}
+    <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] flex-col bg-white dark:bg-black/20 ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
+      <div className="p-6 pb-2 flex justify-between items-center shrink-0">
+        <div>
+          <h2 className="text-3xl font-black tracking-tighter text-[var(--text-primary)]">Messenger</h2>
+          <p className="text-xs font-bold text-[var(--text-muted)] tracking-widest mt-1">Your command center.</p>
         </div>
+        <button
+          onClick={() => setIsCreateTeamOpen(true)}
+          className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center gap-2 text-[9px] md:text-[10px] font-bold transition-all active:scale-95"
+        >
+          <UsersIcon className="w-3.5 h-3.5" />
+          New Team
+        </button>
+      </div>
 
-        <div className="px-6 py-4 shrink-0">
-          <div className="bg-[var(--background-tertiary)] p-1 rounded-full flex relative border border-[var(--border-primary)]">
-            <button onClick={() => setActiveType('direct')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-full transition-all z-10 flex items-center justify-center gap-2 ${activeType === 'direct' ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-lg' : 'text-[var(--text-muted)]'}`}>
-              <UserCircleIcon className="w-4 h-4" /> Direct
-            </button>
-            <button onClick={() => setActiveType('teams')} className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-full transition-all z-10 flex items-center justify-center gap-2 ${activeType === 'teams' ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-lg' : 'text-[var(--text-muted)]'}`}>
-              <UsersIcon className="w-4 h-4" /> Teams
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto custom-scrollable px-3 space-y-1">
-          {filteredChats.length > 0 ? (
-            filteredChats.map(chat => (
-              <div
-                key={chat.id}
-                onClick={() => setSelectedChatId(chat.id)}
-                className={`flex items-center p-4 rounded-[1.5rem] cursor-pointer transition-all border ${
-                  selectedChatId === chat.id ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800/30' : 'hover:bg-neutral-50 dark:hover:bg-neutral-900/40 border-transparent'
-                }`}
-              >
-                <div className="relative">
-                  {chat.contact?.avatarUrl ? (
-                    <img src={chat.contact.avatarUrl} className="w-11 h-11 rounded-full object-cover border border-[var(--border-primary)]" alt="" />
-                  ) : (
-                    <div className="w-11 h-11 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-                      {chat.contact?.name?.[0] || 'U'}
-                    </div>
-                  )}
-                </div>
-
-                <div className="ml-4 flex-grow overflow-hidden">
-                  <div className="flex justify-between items-center mb-0.5">
-                    <h3 className="font-bold text-sm text-[var(--text-primary)] truncate uppercase">{chat.contact?.name}</h3>
-                    {chat.lastMessageTimestamp && (
-                      <span className="text-[9px] text-[var(--text-muted)] font-black">
-                        {new Date(chat.lastMessageTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[11px] text-[var(--text-muted)] truncate font-medium">{chat.lastMessagePreview || 'No messages yet'}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center py-12 text-center px-4 opacity-40">
-              <ChatBubbleIcon className="w-10 h-10 text-[var(--text-muted)] mb-3" />
-              <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">No conversations</p>
+      <div className="flex-1 overflow-y-auto custom-scrollable px-3 space-y-1">
+        {filteredChats.map(chat => (
+          <div
+            key={chat.id}
+            onClick={() => setSelectedChatId(chat.id)}
+            className={`flex items-center p-4 rounded-[1.5rem] cursor-pointer transition-all border ${
+              selectedChatId === chat.id
+                ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-200'
+                : 'hover:bg-neutral-50 dark:hover:bg-neutral-900/40 border-transparent'
+            }`}
+          >
+            <div className="w-11 h-11 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+              {chat.contact?.name?.[0] || 'U'}
             </div>
-          )}
-        </div>
-      </aside>
 
-      {/* Chat View */}
-      <main className={`flex-1 flex flex-col min-h-0 overflow-hidden relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
-        {selectedChat ? (
-          <>
-            <header className="p-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-white/80 dark:bg-black/40 backdrop-blur-md shrink-0 z-10">
-              <div className="flex items-center">
-                <button onClick={() => setSelectedChatId(null)} className="md:hidden w-10 h-10 flex items-center justify-center rounded-full mr-2 bg-[var(--background-tertiary)] hover:bg-neutral-200 transition-colors">
-                  <ArrowLeftIcon className="w-5 h-5" />
-                </button>
+            <div className="ml-4 flex-grow overflow-hidden">
+              <div className="flex justify-between items-center mb-0.5">
+                <h3 className="font-bold text-sm truncate uppercase">{chat.contact?.name}</h3>
+              </div>
+              <p className="text-[11px] text-[var(--text-muted)] truncate">
+                {chat.lastMessagePreview || 'No messages yet'}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </aside>
 
-                <button className="flex items-center cursor-pointer group text-left focus:outline-none appearance-none bg-transparent border-none p-0" onClick={handleHeaderClick}>
-                  {selectedChat.contact?.avatarUrl ? (
-                    <img src={selectedChat.contact.avatarUrl} className="w-10 h-10 rounded-full object-cover border border-[var(--border-primary)] transition-transform group-hover:scale-105" alt="" />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-                      {selectedChat.contact?.name?.[0] || 'U'}
-                    </div>
-                  )}
+    {/* Chat View */}
+    <main className={`flex-1 flex flex-col min-h-0 overflow-hidden ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
 
-                  <div className="ml-3">
-                    <h3 className="font-bold text-sm text-[var(--text-primary)] leading-none uppercase group-hover:text-purple-600 transition-colors">{selectedChat.contact?.name}</h3>
-                    <p className="text-[9px] font-black uppercase text-[var(--text-muted)] mt-1 tracking-widest">
-                      {selectedChat.isTeam ? `${selectedChat.memberIds?.length || 0} members` : 'Direct message'}
-                    </p>
-                  </div>
-                </button>
+      {selectedChat ? (
+        <>
+          {/* Header */}
+          <header className="p-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-white dark:bg-black shrink-0">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setSelectedChatId(null)} className="md:hidden">
+                <ArrowLeftIcon />
+              </button>
+
+              <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+                {selectedChat.contact?.name?.[0] || 'U'}
               </div>
 
-              <div className="relative" ref={chatMenuRef}>
-                <button onClick={() => setIsChatMenuOpen(!isChatMenuOpen)} className="p-2.5 rounded-full hover:bg-[var(--background-tertiary)] transition-colors border border-[var(--border-primary)] shadow-none">
-                  <EllipsisVerticalIcon className="w-5 h-5" />
-                </button>
-
-                {isChatMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-xl z-50 overflow-hidden">
-                    <button onClick={() => setIsConfirmClearOpen(true)} className="w-full text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--text-primary)] hover:bg-[var(--background-tertiary)] transition-colors flex items-center gap-2 border-b border-[var(--border-primary)]">
-                      <NoSymbolIcon /> Clear chat
-                    </button>
-                    <button onClick={() => { setChatToAction(selectedChat.id); setIsConfirmDeleteOpen(true); }} className="w-full text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors flex items-center gap-2">
-                      <TrashIcon /> Delete chat
-                    </button>
-                  </div>
-                )}
+              <div>
+                <h3 className="font-bold text-sm uppercase">{selectedChat.contact?.name}</h3>
+                <p className="text-[9px] text-[var(--text-muted)]">
+                  {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
+                </p>
               </div>
-            </header>
+            </div>
+          </header>
 
-         <div className="flex-1 overflow-y-auto overscroll-contain p-4 md:p-6 space-y-4 chat-bg-pattern custom-scrollable"   >
-              {selectedChat.messages && selectedChat.messages.length > 0 ? (
-                selectedChat.messages.map((msg: any, i: number) => {
-                  const isMe = msg.senderId === currentUser.id;
-                  const other = !isMe ? getUserById(msg.senderId) : undefined;
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-bg-pattern">
 
-                  const senderName = isMe ? currentUser.name : (selectedChat.isTeam ? (other?.name || 'User') : selectedChat.contact?.name);
-                  const senderAvatar = isMe ? currentUser.profilePictureUrl : (selectedChat.isTeam ? other?.profilePictureUrl : selectedChat.contact?.avatarUrl);
+            {selectedChat.messages?.length ? (
+              selectedChat.messages.map((msg: any, i: number) => {
+                const isMe = msg.senderId === currentUser.id;
 
-                  return (
-                    <div key={msg.id || i} className={`flex ${isMe ? 'justify-end' : 'justify-start'} group`}>
-                      <div className={`flex max-w-[80%] ${isMe ? 'flex-row-reverse' : 'flex-row'} items-end gap-2`}>
-                        <div className="shrink-0 mb-1 cursor-pointer" onClick={() => !isMe && navigate(`/user/${msg.senderId}`)}>
-                          {senderAvatar ? (
-                            <img src={senderAvatar} className="w-6 h-6 rounded-full object-cover border border-[var(--border-primary)]" alt="" />
-                          ) : (
-                            <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white text-[8px] font-bold">
-                              {(senderName || 'U')[0]}
-                            </div>
-                          )}
+                return (
+                  <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+
+                    <div className={`max-w-[80%] rounded-2xl overflow-hidden text-sm ${
+                      isMe
+                        ? 'bg-purple-600 text-white rounded-br-none'
+                        : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
+                    }`}>
+
+                      {/* TEXT */}
+                      {msg.type === 'text' && (
+                        <div className="px-4 py-2">
+                          {msg.text}
                         </div>
+                      )}
 
-                        <div className="flex flex-col">
-                          {!isMe && (
-                            <span className="text-[8px] font-black uppercase text-[var(--text-muted)] ml-2 mb-0.5 cursor-pointer hover:text-purple-600 transition-colors" onClick={() => navigate(`/user/${msg.senderId}`)}>
-                              {senderName}
+                      {/* IMAGE */}
+                      {msg.type === 'image' && msg.file?.url && (
+                        <div>
+                          <img
+                            src={msg.file.url}
+                            className="max-h-72 w-full object-cover"
+                            alt="sent"
+                          />
+                          <div className="flex justify-between items-center px-3 py-2 bg-black/10">
+                            <span className="text-xs truncate">
+                              {msg.file.name || 'Image'}
                             </span>
-                          )}
+                            <a
+                              href={msg.file.url}
+                              download
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs font-bold underline"
+                            >
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      )}
 
-                          <div className={`p-4 rounded-[1.5rem] shadow-none ${isMe ? 'bg-purple-600 text-white rounded-br-none' : 'bg-white dark:bg-neutral-800 text-[var(--text-primary)] rounded-bl-none border border-[var(--border-primary)]'}`}>
-                            {msg.type === 'text' && <p className="text-sm font-medium leading-relaxed">{msg.text}</p>}
-
-                            {msg.type === 'image' && msg.file && (
-                              <img src={msg.file.url} className="rounded-xl max-h-60 w-full object-cover border border-white/20" alt="Sent media" />
-                            )}
-
-                            {msg.type === 'document' && msg.file && (
-                              <div className="flex items-center gap-3 p-2 bg-black/5 dark:bg-white/5 rounded-xl border border-white/10">
-                                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
-                                  <DocumentIcon className="w-6 h-6" />
-                                </div>
-                                <div className="overflow-hidden">
-                                  <p className="text-xs font-bold truncate">{msg.file.name}</p>
-                                  <p className="text-[8px] opacity-70 uppercase font-black tracking-widest">{Math.round((msg.file.size || 0) / 1024)} KB</p>
-                                </div>
-                              </div>
-                            )}
+                      {/* DOCUMENT */}
+                      {msg.type === 'document' && msg.file?.url && (
+                        <div className="p-3 flex items-center gap-3">
+                          <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-lg text-blue-600 font-bold">
+                            DOC
                           </div>
 
-                          <span className={`text-[8px] font-bold text-[var(--text-muted)] mt-1 px-1 ${isMe ? 'text-right' : 'text-left'}`}>
-                            {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold truncate">
+                              {msg.file.name}
+                            </p>
+                            <p className="text-[10px] opacity-60">
+                              {Math.round((msg.file.size || 0) / 1024)} KB
+                            </p>
+                          </div>
+
+                          <a
+                            href={msg.file.url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-bold text-purple-600 underline"
+                          >
+                            Download
+                          </a>
                         </div>
-                      </div>
+                      )}
+
                     </div>
-                  );
-                })
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full text-center opacity-40">
-                  <ChatBubbleIcon className="w-16 h-16 text-[var(--text-muted)] mb-3" />
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Start the discussion</p>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black backdrop-blur-md shrink-0 sticky bottom-0">
-              <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(messageText); }}>
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-1">
-                    <button type="button" onClick={() => imageInputRef.current?.click()} className="p-3 bg-[var(--background-tertiary)] text-[var(--text-muted)] rounded-full border border-[var(--border-primary)]">
-                      <PhotoIcon className="w-5 h-5" />
-                    </button>
-                    <button type="button" onClick={() => docInputRef.current?.click()} className="p-3 bg-[var(--background-tertiary)] text-[var(--text-muted)] rounded-full border border-[var(--border-primary)]">
-                      <DocumentIcon className="w-5 h-5" />
-                    </button>
-                    <input type="file" ref={imageInputRef} onChange={e => handleFileUpload(e, 'image')} accept="image/*" className="hidden" />
-                    <input type="file" ref={docInputRef} onChange={e => handleFileUpload(e, 'document')} className="hidden" />
                   </div>
+                );
+              })
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center opacity-40">
+                <ChatBubbleIcon className="w-16 h-16 mb-3" />
+                <p className="text-xs font-black uppercase tracking-widest">
+                  Start the discussion
+                </p>
+              </div>
+            )}
 
-                  <input
-                    value={messageText}
-                    onChange={e => setMessageText(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-grow bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full px-6 py-3.5 text-sm font-medium"
-                  />
-
-                  <button type="submit" disabled={!messageText.trim()} className="p-3.5 button-gradient text-white rounded-full disabled:opacity-50">
-                    <PaperAirplaneIcon className="w-6 h-6" />
-                  </button>
-                </div>
-              </form>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-center chat-bg-pattern p-8">
-            <div className="w-24 h-24 rounded-full bg-neutral-100 dark:bg-neutral-900 border-2 border-[var(--border-primary)] flex items-center justify-center mb-6">
-              <ChatBubbleIcon className="w-12 h-12 text-[var(--text-muted)] opacity-50" />
-            </div>
-            <h2 className="text-2xl font-black text-[var(--text-primary)] uppercase tracking-tight">Select a conversation</h2>
-            <p className="text-sm text-[var(--text-muted)] mt-2 max-w-xs mx-auto font-medium">Choose from your existing conversations or start a new one to begin chatting.</p>
+            <div ref={messagesEndRef} />
           </div>
-        )}
-      </main>
 
-      <ConfirmDialog
-        isOpen={isConfirmDeleteOpen}
-        onClose={() => { setIsConfirmDeleteOpen(false); setChatToAction(null); }}
-        onConfirm={confirmDeleteChat}
-        title="Delete conversation?"
-        message="This will permanently remove the chat history and the contact from your inbox list. This action cannot be reversed."
-      />
+          {/* Input */}
+          <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black shrink-0">
+            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(messageText); }}>
+              <div className="flex items-center gap-3">
 
-      <ConfirmDialog
-        isOpen={isConfirmClearOpen}
-        onClose={() => setIsConfirmClearOpen(false)}
-        onConfirm={confirmClearChat}
-        title="Clear chat history?"
-        message="This will remove all messages in this chat for you. The conversation will remain in your list."
-      />
+                <button type="button" onClick={() => imageInputRef.current?.click()} className="p-3 rounded-full bg-[var(--background-tertiary)]">
+                  <PhotoIcon className="w-5 h-5" />
+                </button>
 
-      <CreateTeamModal isOpen={isCreateTeamOpen} onClose={() => setIsCreateTeamOpen(false)} onCreated={handleTeamCreated} />
-    </div>
-  );
+                <button type="button" onClick={() => docInputRef.current?.click()} className="p-3 rounded-full bg-[var(--background-tertiary)]">
+                  <DocumentIcon className="w-5 h-5" />
+                </button>
+
+                <input type="file" ref={imageInputRef} onChange={e => handleFileUpload(e, 'image')} accept="image/*" className="hidden" />
+                <input type="file" ref={docInputRef} onChange={e => handleFileUpload(e, 'document')} className="hidden" />
+
+                <input
+                  value={messageText}
+                  onChange={(e) => setMessageText(e.target.value)}
+                  placeholder="Type your message..."
+                  className="flex-1 px-6 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-sm"
+                />
+
+                <button
+                  type="submit"
+                  disabled={!messageText.trim()}
+                  className="p-3 rounded-full bg-purple-600 text-white disabled:opacity-50"
+                >
+                  <PaperAirplaneIcon className="w-5 h-5" />
+                </button>
+
+              </div>
+            </form>
+          </div>
+        </>
+      ) : (
+        <div className="flex-1 flex items-center justify-center text-[var(--text-muted)]">
+          Select a conversation
+        </div>
+      )}
+    </main>
+
+    <CreateTeamModal
+      isOpen={isCreateTeamOpen}
+      onClose={() => setIsCreateTeamOpen(false)}
+      onCreated={handleTeamCreated}
+    />
+  </div>
+);
 };
 
 export default MessagesPage;
