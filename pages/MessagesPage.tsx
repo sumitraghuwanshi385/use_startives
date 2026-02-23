@@ -445,7 +445,8 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   }
 
   return (
-  <div className="flex flex-row h-[100dvh] bg-[var(--component-background)] overflow-hidden font-poppins relative z-0">
+  <div className="flex flex-row h-screen max-h-screen bg-[var(--component-background)] overflow-hidden font-poppins relative z-0">
+
       {/* Sidebar */}
       <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] flex-col bg-white dark:bg-black/20 ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-6 pb-2 flex justify-between items-center shrink-0">
@@ -515,7 +516,7 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
       </aside>
 
       {/* Chat View */}
-      <main className={`flex-1 flex flex-col h-full overflow-hidden relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+      <main className={`flex-1 flex flex-col min-h-0 overflow-hidden relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
         {selectedChat ? (
           <>
             <header className="p-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-white/80 dark:bg-black/40 backdrop-blur-md shrink-0 z-10">
@@ -560,7 +561,7 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
               </div>
             </header>
 
-            <div className="flex-1 overflow-y-auto overscroll-contain p-6 space-y-4 chat-bg-pattern custom-scrollable">
+         <div className="flex-1 overflow-y-auto overscroll-contain p-4 md:p-6 space-y-4 chat-bg-pattern custom-scrollable"   >
               {selectedChat.messages && selectedChat.messages.length > 0 ? (
                 selectedChat.messages.map((msg: any, i: number) => {
                   const isMe = msg.senderId === currentUser.id;
