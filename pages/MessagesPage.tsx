@@ -445,7 +445,7 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   }
 
   return (
-    className="flex flex-row h-[100dvh] bg-[var(--component-background)] overflow-hidden font-poppins relative z-0"
+  <div className="flex flex-row h-[100dvh] bg-[var(--component-background)] overflow-hidden font-poppins relative z-0">
       {/* Sidebar */}
       <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] flex-col bg-white dark:bg-black/20 ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-6 pb-2 flex justify-between items-center shrink-0">
