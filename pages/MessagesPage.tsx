@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { User, ChatConversation, MessageType, FileAttachment } from '../types';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const API_BASE = ' ';
+const API_BASE = '';
 
 // --- Icons ---
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
@@ -614,167 +614,182 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
             </div>
           );
         })}
+{/* ================= MESSAGES SCROLL AREA ================= */}
+<div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)]">
 
-          {/* Messages Scroll Area */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)] min-h-0">
+  {selectedChat.messages && selectedChat.messages.length > 0 ? (
+    selectedChat.messages.map((msg: any, i: number) => {
+      const isMe = msg.senderId === currentUser.id;
 
-            {selectedChat.messages?.length ? (
-              selectedChat.messages.map((msg: any, i: number) => {
-                const isMe = msg.senderId === currentUser.id;
+      return (
+        <div key={msg.id || i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
 
-                return (
-                  <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+          <div
+            className={`max-w-[75%] rounded-2xl overflow-hidden ${
+              isMe
+                ? 'bg-purple-600 text-white rounded-br-none'
+                : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
+            }`}
+          >
 
-                    <div className={`max-w-[75%] rounded-2xl overflow-hidden ${
-                      isMe
-                        ? 'bg-purple-600 text-white rounded-br-none'
-                        : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
-                    }`}>
-
-                      {/* TEXT */}
-                      {msg.type === 'text' && (
-                        <div className="px-4 py-2 text-sm">
-                          {msg.text}
-                        </div>
-                      )}
-
-                      {/* IMAGE */}
-                      {msg.type === 'image' && msg.file?.url && (
-                        <div>
-                          <img
-                            src={msg.file.url}
-                            className="max-h-72 w-full object-cover"
-                            alt="sent"
-                          />
-                          <div className="flex justify-between items-center px-3 py-2 bg-black/10">
-                            <span className="text-xs truncate">
-                              {msg.file.name || 'Image'}
-                            </span>
-                            <a
-                              href={msg.file.url}
-                              download
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs font-bold underline"
-                            >
-                              Download
-                            </a>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* DOCUMENT */}
-                      {msg.type === 'document' && msg.file?.url && (
-                        <div className="p-3 flex items-center gap-3">
-                          <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-lg text-blue-600 font-bold">
-                            DOC
-                          </div>
-
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold truncate">
-                              {msg.file.name}
-                            </p>
-                            <p className="text-[10px] opacity-60">
-                              {Math.round((msg.file.size || 0) / 1024)} KB
-                            </p>
-                          </div>
-
-                          <a
-                            href={msg.file.url}
-                            download
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs font-bold text-purple-600 underline"
-                          >
-                            Download
-                          </a>
-                        </div>
-                      )}
-
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center opacity-40">
-                <ChatBubbleIcon className="w-16 h-16 mb-3" />
-                <p className="text-xs font-black uppercase tracking-widest">
-                  Start the discussion
-                </p>
+            {/* ===== TEXT MESSAGE ===== */}
+            {msg.type === 'text' && (
+              <div className="px-4 py-2 text-sm">
+                {msg.text}
               </div>
             )}
 
-            <div ref={messagesEndRef} />
-          </div>
+            {/* ===== IMAGE MESSAGE ===== */}
+            {msg.type === 'image' && msg.file?.url && (
+              <div>
+                <img
+                  src={msg.file.url}
+                  alt="sent"
+                  className="max-h-72 w-full object-cover"
+                />
 
-          {/* Input Section */}
-          <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSendMessage(messageText);
-              }}
-              className="flex items-center gap-2"
-            >
-              {/* Clip Button */}
-              <div className="relative group">
-                <button
-                  type="button"
-                  className="p-3 rounded-full bg-[var(--background-tertiary)]"
-                >
-                  📎
-                </button>
+                <div className="flex justify-between items-center px-3 py-2 bg-black/10">
+                  <span className="text-xs truncate">
+                    {msg.file.name || 'Image'}
+                  </span>
 
-                <div className="absolute bottom-12 left-0 hidden group-hover:block bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
-                  <button
-                    type="button"
-                    onClick={() => imageInputRef.current?.click()}
-                    className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+                  <a
+                    href={msg.file.url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold underline"
                   >
-                    <PhotoIcon className="w-4 h-4" />
-                    Image
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => docInputRef.current?.click()}
-                    className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-                  >
-                    <DocumentIcon className="w-4 h-4" />
-                    Document
-                  </button>
+                    Download
+                  </a>
                 </div>
               </div>
+            )}
 
-              <input type="file" ref={imageInputRef} onChange={e => handleFileUpload(e, 'image')} accept="image/*" className="hidden" />
-              <input type="file" ref={docInputRef} onChange={e => handleFileUpload(e, 'document')} className="hidden" />
+            {/* ===== DOCUMENT MESSAGE ===== */}
+            {msg.type === 'document' && msg.file?.url && (
+              <div className="p-3 flex items-center gap-3">
 
-                  {/* ===== INPUT (FIXED BOTTOM) ===== */}
-      <div className="border-t border-[var(--border-primary)] bg-white dark:bg-black p-4">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSendMessage(messageText);
-          }}
-          className="flex items-center gap-2"
+                <div className="w-10 h-10 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 font-bold">
+                  DOC
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold truncate">
+                    {msg.file.name}
+                  </p>
+                  <p className="text-[10px] opacity-60">
+                    {Math.round((msg.file.size || 0) / 1024)} KB
+                  </p>
+                </div>
+
+                <a
+                  href={msg.file.url}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-purple-600 underline"
+                >
+                  Download
+                </a>
+              </div>
+            )}
+
+          </div>
+        </div>
+      );
+    })
+  ) : (
+    <div className="flex flex-col items-center justify-center h-full text-center opacity-40">
+      <ChatBubbleIcon className="w-12 h-12 mb-3" />
+      <p className="text-xs font-black uppercase tracking-widest">
+        Start the discussion
+      </p>
+    </div>
+  )}
+
+  <div ref={messagesEndRef} />
+</div>
+
+
+{/* ================= INPUT SECTION ================= */}
+<div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black">
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleSendMessage(messageText);
+    }}
+    className="flex items-center gap-2"
+  >
+
+    {/* ===== CLIP DROPDOWN ===== */}
+    <div className="relative group">
+      <button
+        type="button"
+        className="p-3 rounded-full bg-[var(--background-tertiary)]"
+      >
+        📎
+      </button>
+
+      <div className="absolute bottom-12 left-0 hidden group-hover:block bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
+
+        <button
+          type="button"
+          onClick={() => imageInputRef.current?.click()}
+          className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
         >
-          <input
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            className="flex-1 px-5 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)]"
-            placeholder="Type a message..."
-          />
+          <PhotoIcon className="w-4 h-4" />
+          Image
+        </button>
 
-          <button
-            type="submit"
-            disabled={!messageText.trim()}
-            className="px-5 py-3 rounded-full bg-purple-600 text-white disabled:opacity-50"
-          >
-            Send
-          </button>
-        </form>
+        <button
+          type="button"
+          onClick={() => docInputRef.current?.click()}
+          className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+        >
+          <DocumentIcon className="w-4 h-4" />
+          Document
+        </button>
+
       </div>
-    </>
+    </div>
+
+    {/* Hidden Inputs */}
+    <input
+      type="file"
+      ref={imageInputRef}
+      onChange={(e) => handleFileUpload(e, 'image')}
+      accept="image/*"
+      className="hidden"
+    />
+
+    <input
+      type="file"
+      ref={docInputRef}
+      onChange={(e) => handleFileUpload(e, 'document')}
+      className="hidden"
+    />
+
+    {/* ===== TEXT INPUT ===== */}
+    <input
+      value={messageText}
+      onChange={(e) => setMessageText(e.target.value)}
+      placeholder="Type a message..."
+      className="flex-1 px-5 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-sm"
+    />
+
+    {/* ===== SEND BUTTON ===== */}
+    <button
+      type="submit"
+      disabled={!messageText.trim()}
+      className="px-5 py-3 rounded-full bg-purple-600 text-white text-sm font-bold disabled:opacity-50"
+    >
+      Send
+    </button>
+
+  </form>
+</div>
+     </>
   ) : (
     <div className="flex-1 flex items-center justify-center text-[var(--text-muted)]">
       Select a conversation
