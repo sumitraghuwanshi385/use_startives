@@ -81,15 +81,13 @@ const Header: React.FC = () => {
   // Desktop Nav Links
   const navLinks = [
     { name: 'Dashboard', path: '/dashboard' },
-     { name: 'Search', path: '/search' }, 
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
   ];
 
   // Mobile Menu Links (Dropdown)
   const mobileMenuLinks = [
-    { name: 'Dashboard', path: '/dashboard' },
-      { name: 'Search', path: '/search' },  
+    { name: 'Dashboard', path: '/dashboard' }, 
     { name: 'Discover Projects', path: '/projects' },
     { name: 'Asset Shop', path: '/blueprint' },
     { name: 'Startalks', path: '/startalks' },
@@ -106,7 +104,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--background-primary)] border-b border-[var(--border-primary)]">
-      <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-2">
+      <div className="w-full flex items-center justify-between px-6 lg:px-16 py-2">
         <div className="flex items-center space-x-8">
           <Link to={currentUser ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0">
             <img 
