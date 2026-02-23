@@ -445,79 +445,117 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   }
 
   return (
-  <div className="flex flex-row h-screen max-h-screen bg-[var(--component-background)] overflow-hidden font-poppins relative z-0">
+  <div className="flex h-screen w-full bg-[var(--component-background)] overflow-hidden">
 
-    {/* Sidebar */}
-    <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] flex-col bg-white dark:bg-black/20 ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
-      <div className="p-6 pb-2 flex justify-between items-center shrink-0">
-        <div>
-          <h2 className="text-3xl font-black tracking-tighter text-[var(--text-primary)]">Messenger</h2>
-          <p className="text-xs font-bold text-[var(--text-muted)] tracking-widest mt-1">Your command center.</p>
+    {/* ================= SIDEBAR ================= */}
+    <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] bg-white dark:bg-black/20 flex flex-col ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
+
+      {/* Sidebar Header */}
+      <div className="p-6 shrink-0">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-black text-[var(--text-primary)]">Messenger</h2>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
+              Your command center
+            </p>
+          </div>
+
+          <button
+            onClick={() => setIsCreateTeamOpen(true)}
+            className="px-4 py-2 text-[10px] font-bold rounded-full bg-purple-600 text-white"
+          >
+            + Team
+          </button>
         </div>
-        <button
-          onClick={() => setIsCreateTeamOpen(true)}
-          className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center gap-2 text-[9px] md:text-[10px] font-bold transition-all active:scale-95"
-        >
-          <UsersIcon className="w-3.5 h-3.5" />
-          New Team
-        </button>
+
+        {/* Pill Toggle */}
+        <div className="mt-5 bg-[var(--background-tertiary)] p-1 rounded-full flex">
+          <button
+            onClick={() => setActiveType('direct')}
+            className={`flex-1 py-2 text-[11px] font-bold rounded-full transition ${
+              activeType === 'direct'
+                ? 'bg-purple-600 text-white'
+                : 'text-[var(--text-muted)]'
+            }`}
+          >
+            Chats
+          </button>
+
+          <button
+            onClick={() => setActiveType('teams')}
+            className={`flex-1 py-2 text-[11px] font-bold rounded-full transition ${
+              activeType === 'teams'
+                ? 'bg-purple-600 text-white'
+                : 'text-[var(--text-muted)]'
+            }`}
+          >
+            Teams
+          </button>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollable px-3 space-y-1">
+      {/* Chat List */}
+      <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-2">
         {filteredChats.map(chat => (
           <div
             key={chat.id}
             onClick={() => setSelectedChatId(chat.id)}
-            className={`flex items-center p-4 rounded-[1.5rem] cursor-pointer transition-all border ${
+            className={`p-3 rounded-xl cursor-pointer transition border ${
               selectedChatId === chat.id
-                ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-200'
-                : 'hover:bg-neutral-50 dark:hover:bg-neutral-900/40 border-transparent'
+                ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-400'
+                : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900'
             }`}
           >
-            <div className="w-11 h-11 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-              {chat.contact?.name?.[0] || 'U'}
-            </div>
-
-            <div className="ml-4 flex-grow overflow-hidden">
-              <div className="flex justify-between items-center mb-0.5">
-                <h3 className="font-bold text-sm truncate uppercase">{chat.contact?.name}</h3>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+                {chat.contact?.name?.[0] || 'U'}
               </div>
-              <p className="text-[11px] text-[var(--text-muted)] truncate">
-                {chat.lastMessagePreview || 'No messages yet'}
-              </p>
+
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-sm truncate">
+                  {chat.contact?.name}
+                </p>
+                <p className="text-xs text-[var(--text-muted)] truncate">
+                  {chat.lastMessagePreview || 'No messages yet'}
+                </p>
+              </div>
             </div>
           </div>
         ))}
       </div>
     </aside>
 
-    {/* Chat View */}
-    <main className={`flex-1 flex flex-col min-h-0 overflow-hidden ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+    {/* ================= CHAT AREA ================= */}
+    <main className={`flex-1 flex flex-col ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
 
       {selectedChat ? (
         <>
-          {/* Header */}
-          <header className="p-4 border-b border-[var(--border-primary)] flex items-center justify-between bg-white dark:bg-black shrink-0">
-            <div className="flex items-center gap-3">
-              <button onClick={() => setSelectedChatId(null)} className="md:hidden">
-                <ArrowLeftIcon />
-              </button>
+          {/* Sticky Header */}
+          <div className="sticky top-0 z-10 p-4 border-b border-[var(--border-primary)] bg-white dark:bg-black flex items-center gap-3">
 
-              <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-                {selectedChat.contact?.name?.[0] || 'U'}
-              </div>
+            <button
+              onClick={() => setSelectedChatId(null)}
+              className="md:hidden"
+            >
+              <ArrowLeftIcon />
+            </button>
 
-              <div>
-                <h3 className="font-bold text-sm uppercase">{selectedChat.contact?.name}</h3>
-                <p className="text-[9px] text-[var(--text-muted)]">
-                  {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
-                </p>
-              </div>
+            <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+              {selectedChat.contact?.name?.[0] || 'U'}
             </div>
-          </header>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 chat-bg-pattern">
+            <div>
+              <p className="font-bold text-sm uppercase">
+                {selectedChat.contact?.name}
+              </p>
+              <p className="text-[9px] text-[var(--text-muted)]">
+                {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
+              </p>
+            </div>
+          </div>
+
+          {/* Messages Scroll Area */}
+          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)]">
 
             {selectedChat.messages?.length ? (
               selectedChat.messages.map((msg: any, i: number) => {
@@ -526,7 +564,7 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
                 return (
                   <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
 
-                    <div className={`max-w-[80%] rounded-2xl overflow-hidden text-sm ${
+                    <div className={`max-w-[75%] rounded-2xl overflow-hidden ${
                       isMe
                         ? 'bg-purple-600 text-white rounded-br-none'
                         : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
@@ -534,7 +572,7 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
 
                       {/* TEXT */}
                       {msg.type === 'text' && (
-                        <div className="px-4 py-2">
+                        <div className="px-4 py-2 text-sm">
                           {msg.text}
                         </div>
                       )}
@@ -608,38 +646,63 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
-          <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black shrink-0">
-            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(messageText); }}>
-              <div className="flex items-center gap-3">
-
-                <button type="button" onClick={() => imageInputRef.current?.click()} className="p-3 rounded-full bg-[var(--background-tertiary)]">
-                  <PhotoIcon className="w-5 h-5" />
-                </button>
-
-                <button type="button" onClick={() => docInputRef.current?.click()} className="p-3 rounded-full bg-[var(--background-tertiary)]">
-                  <DocumentIcon className="w-5 h-5" />
-                </button>
-
-                <input type="file" ref={imageInputRef} onChange={e => handleFileUpload(e, 'image')} accept="image/*" className="hidden" />
-                <input type="file" ref={docInputRef} onChange={e => handleFileUpload(e, 'document')} className="hidden" />
-
-                <input
-                  value={messageText}
-                  onChange={(e) => setMessageText(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 px-6 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-sm"
-                />
-
+          {/* Input Section */}
+          <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage(messageText);
+              }}
+              className="flex items-center gap-2"
+            >
+              {/* Clip Button */}
+              <div className="relative group">
                 <button
-                  type="submit"
-                  disabled={!messageText.trim()}
-                  className="p-3 rounded-full bg-purple-600 text-white disabled:opacity-50"
+                  type="button"
+                  className="p-3 rounded-full bg-[var(--background-tertiary)]"
                 >
-                  <PaperAirplaneIcon className="w-5 h-5" />
+                  📎
                 </button>
 
+                <div className="absolute bottom-12 left-0 hidden group-hover:block bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
+                  <button
+                    type="button"
+                    onClick={() => imageInputRef.current?.click()}
+                    className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+                  >
+                    <PhotoIcon className="w-4 h-4" />
+                    Image
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => docInputRef.current?.click()}
+                    className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+                  >
+                    <DocumentIcon className="w-4 h-4" />
+                    Document
+                  </button>
+                </div>
               </div>
+
+              <input type="file" ref={imageInputRef} onChange={e => handleFileUpload(e, 'image')} accept="image/*" className="hidden" />
+              <input type="file" ref={docInputRef} onChange={e => handleFileUpload(e, 'document')} className="hidden" />
+
+              {/* Input */}
+              <input
+                value={messageText}
+                onChange={(e) => setMessageText(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 px-5 py-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-sm"
+              />
+
+              <button
+                type="submit"
+                disabled={!messageText.trim()}
+                className="px-5 py-3 rounded-full bg-purple-600 text-white text-sm font-bold disabled:opacity-50"
+              >
+                Send
+              </button>
             </form>
           </div>
         </>
