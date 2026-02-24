@@ -279,8 +279,6 @@ export const MessagesPage: React.FC = () => {
     };
 
     loadMessages();
-    const interval = setInterval(loadMessages, 3000);
-    return () => clearInterval(interval);
   }, [selectedChatId, token, authHeaders]);
 
   // /messages?chatWith=<userId>
@@ -305,11 +303,23 @@ export const MessagesPage: React.FC = () => {
     initChat();
   }, [location.search, token, authHeaders]);
 
-  useEffect(() => {
-    if (!selectedChatId) return;
-messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
-    markAllNotificationsAsRead('messages');
-  }, [selectedChatId, selectedChat?.messages?.length, markAllNotificationsAsRead]);
+  
+    useEffect(() => {
+  if (!selectedChatId) return;
+
+  const container = messagesEndRef.current?.parentElement;
+  if (!container) return;
+
+// Always mark notifications when chat opens
+  markAllNotificationsAsRead('messages');
+
+  const isNearBottom =
+    container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+  if (isNearBottom) {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  }
+}, [selectedChat?.messages?.length]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -445,7 +455,7 @@ messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   }
 
   return (
-  <div className="flex h-screen w-full bg-[var(--component-background)] overflow-hidden">
+  <div className="flex h-[calc(100vh-72px)] w-full bg-[var(--component-background)] overflow-hidden">
 
     {/* ================= SIDEBAR ================= */}
     <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] bg-white dark:bg-black/20 flex flex-col ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
