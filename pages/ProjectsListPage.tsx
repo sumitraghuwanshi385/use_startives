@@ -327,7 +327,7 @@ const displayIdeas =
       )}
     </div>
 
-    className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative"
+   <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative">
 
       <div className="flex w-full relative z-10 text-center">
 
