@@ -390,9 +390,22 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       } catch (error) { console.error("Failed to fetch ideas", error); }
 
       try {
-          const res = await axios.get('/api/startalks');
-          if (res.data.success) setStartalks(res.data.startalks);
-      } catch (error) { console.error("Failed to fetch startalks", error); }
+    const storedToken = localStorage.getItem('authToken');
+
+    if (storedToken) {
+        const res = await axios.get('/api/startalks', {
+            headers: {
+                Authorization: `Bearer ${storedToken}`
+            }
+        });
+
+        if (res.data.success) {
+            setStartalks(res.data.startalks);
+        }
+    }
+} catch (error) {
+    console.error("Failed to fetch startalks", error);
+}
 
       const storedToken = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('user');
