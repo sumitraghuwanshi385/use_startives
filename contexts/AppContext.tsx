@@ -279,21 +279,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const reactToStartalk = async (talkId: string, emoji: string) => {
   if (!currentUser) return;
-  const t = getAuthToken();
+  const authToken = getAuthToken(); // ✅ 't' se 'authToken' rename
 
   try {
     const response = await axios.post(
       `/api/startalks/${talkId}/react`,
       { emoji },
-      { headers: { Authorization: `Bearer ${t}` } }
+      { headers: { Authorization: `Bearer ${authToken}` } }
     );
 
     if (response.data.success) {
       const updatedTalk = response.data.startalk;
 
       setStartalks(prev =>
-        prev.map(t =>
-          t.id === talkId ? updatedTalk : t
+        prev.map(talk =>  // ✅ 't' se 'talk' rename
+          talk.id === talkId ? updatedTalk : talk
         )
       );
     }
@@ -301,7 +301,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     console.error("Reaction failed:", error);
   }
 };
-
+}, [currentUser, token]); 
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
   const getPositionById = (ideaId: string, positionId: string) => getIdeaById(ideaId)?.positions.find(pos => pos.id === positionId);
@@ -431,7 +431,7 @@ useEffect(() => {
     setShowOnboardingModal,
   }), [
     startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
+    addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds, reactToStartalk
   ]);
 
   return (
