@@ -338,8 +338,6 @@ const displayIdeas =
   </div>
 
 </div>
-          </div>
-        </div>
 
         {/* Search */}
         <div className="mb-6 flex justify-center">
