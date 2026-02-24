@@ -315,24 +315,38 @@ const StartalksPage: React.FC = () => {
     }
   };
 
-  const filteredTalks = useMemo(() => {
-    const list = [...startalks];
+  const shuffleArray = (array: Startalk[]) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
-    if (activeFilter === 'Latest') {
-      return list.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-    }
+const filteredTalks = useMemo(() => {
+  const list = [...startalks];
 
-    if (activeFilter === 'Most reacted') {
-      return list.sort((a, b) => {
-        const aTotal = Object.values(a.reactions || {}).reduce<number>((sum, count) => sum + (count as number), 0);
-        const bTotal = Object.values(b.reactions || {}).reduce<number>((sum, count) => sum + (count as number), 0);
-        return bTotal - aTotal;
-      });
-    }
+  if (activeFilter === 'Latest') {
+    return list.sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() -
+        new Date(a.timestamp).getTime()
+    );
+  }
 
-    // Default Feed sort (usually latest first)
-    return list.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  }, [startalks, activeFilter]);
+  if (activeFilter === 'Most reacted') {
+    return list.sort((a, b) => {
+      const aTotal = Object.values(a.reactions || {}).reduce<number>(
+        (sum, count) => sum + (count as number),
+        0
+      );
+      const bTotal = Object.values(b.reactions || {}).reduce<number>(
+        (sum, count) => sum + (count as number),
+        0
+      );
+      return bTotal - aTotal;
+    });
+  }
+
+  // 🔥 Feed tab = Random Shuffle
+  return shuffleArray(list);
+}, [startalks, activeFilter]);
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
