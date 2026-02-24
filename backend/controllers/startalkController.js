@@ -2,19 +2,25 @@ const Startalk = require('../models/Startalk');
 const User = require('../models/User');
 
 // Formatter (Ab Map conversion ki zaroorat nahi hai)
-const formatTalk = (t) => {
+const formatTalk = (t, currentUserId = null) => {
     const obj = t.toObject ? t.toObject() : t;
+
     obj.id = obj._id ? obj._id.toString() : t.id;
-    
-    // ✅ FIX FOR "NaNd ago":
-    // Frontend expects "timestamp", Backend has "createdAt"
-    obj.timestamp = obj.createdAt; 
+    obj.timestamp = obj.createdAt;
 
     delete obj._id;
     delete obj.__v;
-    
+
     obj.reactions = obj.reactions || {};
     obj.userReactions = obj.userReactions || {};
+
+    // ✅ ADD THIS
+    if (currentUserId) {
+        obj.currentUserReaction = obj.userReactions[currentUserId] || null;
+    } else {
+        obj.currentUserReaction = null;
+    }
+
     return obj;
 };
 
@@ -23,7 +29,10 @@ const getStartalks = async (req, res) => {
     try {
         // .lean() brings plain JS objects (Fast & No Bugs)
         const talks = await Startalk.find().sort({ createdAt: -1 }).lean();
-        return res.json({ success: true, startalks: talks.map(formatTalk) });
+        return res.json({
+    success: true,
+    startalks: talks.map(t => formatTalk(t, req.user._id.toString()))
+});
     } catch (err) {
         console.error(err);
         return res.status(500).json({ success: false, message: err.message });
@@ -50,7 +59,10 @@ const createStartalk = async (req, res) => {
             userReactions: {}
         });
 
-        return res.status(201).json({ success: true, startalk: formatTalk(talk) });
+return res.json({
+    success: true,
+    startalk: formatTalk(updatedTalk, userId)
+});
     } catch (err) {
         console.error(err);
         return res.status(500).json({ success: false, message: err.message });
