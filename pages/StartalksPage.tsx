@@ -117,7 +117,7 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
   // ✅ Object.values works perfectly with the new backend fix
   const totalReactions = Object.values(talk.reactions || {}).reduce<number>((sum, count) => sum + (count as number), 0);
-  const userHasReacted = !!talk.currentUserReaction; // or check userReactions from backend logic if available
+  const userHasReacted = Boolean(talk.currentUserReaction && talk.currentUserReaction.trim() !== ""); // or check userReactions from backend logic if available
   const isOwner = currentUser?.id === talk.authorId;
 
   const profileClickable = isMongoId(talk.authorId);
@@ -219,8 +219,17 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
                   : 'bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[var(--text-muted)] hover:text-purple-600 hover:border-purple-500/50'
               }`}
             >
-              {userHasReacted ? <span className="text-base leading-none">{talk.currentUserReaction}</span> : <SmileIcon className="w-4 h-4 transition-colors group-hover/pill:text-purple-600" />}
-              <span>{userHasReacted ? 'Reacted' : 'React'}</span>
+              {talk.currentUserReaction ? (
+  <span className="text-base leading-none">
+    {talk.currentUserReaction}
+  </span>
+) : (
+  <SmileIcon className="w-4 h-4 transition-colors group-hover/pill:text-purple-600" />
+)}
+
+<span>
+  {talk.currentUserReaction ? 'Reacted' : 'React'}
+</span>
             </button>
 
             {isReactionMenuOpen && (
