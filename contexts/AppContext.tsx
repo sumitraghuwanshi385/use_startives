@@ -278,10 +278,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const reactToStartalk = async (talkId: string, emoji: string) => {
-      if (!currentUser) return;
-      const t = getAuthToken();
-
-      const reactToStartalk = async (talkId: string, emoji: string) => {
   if (!currentUser) return;
   const t = getAuthToken();
 
@@ -306,7 +302,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     console.error("Reaction failed:", error);
   }
 };
-
       try {
         const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
         if (response.data.success) {
