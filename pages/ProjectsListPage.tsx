@@ -327,32 +327,22 @@ const displayIdeas =
       )}
     </div>
 
-    <div className="flex w-full md:w-auto button-gradient text-white py-3 rounded-full border border-white/10 shadow-none overflow-hidden relative">
+    className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative"
 
       <div className="flex w-full relative z-10 text-center">
 
-        <div className=
-
-"flex items-center gap-2 relative z-10">
-
-<p className="text-[
-
-8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
-<p className=
-
--"text-sm font-black">{totalProjects}</p>
-
-</div>
-
-<div className="w-px h-4 bg-white/20 relative z-10">
-</div>
-
-<div className="flex items-center gap-2 relative z-10">
-
-<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">New This Week</p>
-<p className= "text-sm font-black">{newThisWeek}</p>
+        <div className="w-1/2 flex flex-col items-center justify-center px-4">
+          <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+            Total Projects
           </p>
-          <p className="text-lg font-black">{newThisWeek}</p>
+          <p className="text-lg font-black">{totalProjects}</p>
+        </div>
+
+        <div className="w-px bg-white/20"></div>
+
+        <div className="w-1/2 flex flex-col items-center justify-center px-4">
+          <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+            New This Week
         </div>
 
       </div>
