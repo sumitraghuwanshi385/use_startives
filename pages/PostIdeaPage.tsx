@@ -264,9 +264,13 @@ const PostIdeaPage: React.FC = () => {
       workMode,
       location,
       websiteUrl: websiteUrl || undefined,
-      positionsData: positions
-        .filter((p) => p.title && p.description)
-        .map(({ tempId, newQuestion, ...rest }) => rest),
+      positions: positions
+  .filter((p) => p.title && p.description)
+  .map(({ tempId, newQuestion, ...rest }) => ({
+    id: crypto.randomUUID(),
+    isOpen: true,
+    ...rest,
+  })),
 
       // ✅ now this is URL (not base64)
       imageDataUrl: imagePreviewUrl,
