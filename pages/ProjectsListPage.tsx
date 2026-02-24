@@ -309,7 +309,7 @@ const displayIdeas =
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
+      <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
         <div className="text-left mb-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
