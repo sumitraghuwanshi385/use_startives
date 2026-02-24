@@ -309,8 +309,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
         if (response.data.success) {
             const updatedTalk = response.data.startalk;
-            const myReaction = updatedTalk.userReactions ? updatedTalk.userReactions[currentUser.id] : undefined;
-            setStartalks(prev => prev.map(t => t.id === talkId ? { ...updatedTalk, currentUserReaction: myReaction } : t));
+            setStartalks(prev =>
+  prev.map(t =>
+    t.id === talkId ? updatedTalk : t
+  )
+);
         }
       } catch (error) { console.error("Reaction failed:", error); }
   };
