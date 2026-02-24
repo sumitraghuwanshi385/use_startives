@@ -73,6 +73,12 @@ const ChatBubbleIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5
   </svg>
 );
 
+// ================= API BASE =================
+const API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  "http://localhost:5000";
+
+
 // --- Confirmation Dialog ---
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -81,20 +87,35 @@ interface ConfirmDialogProps {
   title: string;
   message: string;
 }
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ isOpen, onClose, onConfirm, title, message }) => {
+
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+}) => {
   if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-[2200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] w-full max-w-sm overflow-hidden">
         <div className="p-8 text-center">
-          <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3">{title}</h3>
-          <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">{message}</p>
+          <h3 className="text-xl font-bold mb-3">{title}</h3>
+          <p className="text-sm opacity-70">{message}</p>
         </div>
+
         <div className="flex border-t border-[var(--border-primary)]">
-          <button onClick={onClose} className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] border-r border-[var(--border-primary)]">
+          <button
+            onClick={onClose}
+            className="flex-1 px-4 py-4 text-[10px] font-black uppercase border-r border-[var(--border-primary)]"
+          >
             Cancel
           </button>
-          <button onClick={onConfirm} className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-red-500">
+          <button
+            onClick={onConfirm}
+            className="flex-1 px-4 py-4 text-[10px] font-black uppercase text-red-500"
+          >
             Confirm
           </button>
         </div>
@@ -105,414 +126,362 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ isOpen, onClose, onConfir
 
 // --- Create Team Modal ---
 interface CreateTeamModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onCreated: (name: string, description: string, image: string | undefined, members: User[]) => void;
+isOpen: boolean;
+onClose: () => void;
+onCreated: (name: string, description: string, image: string | undefined, members: User[]) => void;
 }
 const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ isOpen, onClose, onCreated }) => {
-  const { users, currentUser } = useAppContext();
-  const [teamName, setTeamName] = useState('');
-  const [teamDescription, setTeamDescription] = useState('');
-  const [teamImage, setTeamImage] = useState<string | undefined>(undefined);
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isUploading, setIsUploading] = useState(false);
+const { users, currentUser } = useAppContext();
+const [teamName, setTeamName] = useState('');
+const [teamDescription, setTeamDescription] = useState('');
+const [teamImage, setTeamImage] = useState<string | undefined>(undefined);
+const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+const fileInputRef = useRef<HTMLInputElement>(null);
+const [isUploading, setIsUploading] = useState(false);
 
-  if (!isOpen) return null;
+if (!isOpen) return null;
 
-  const handleCreate = () => {
-    if (!teamName.trim()) return;
-    const members = users.filter(u => selectedMembers.includes(u.id));
-    onCreated(teamName, teamDescription, teamImage, members);
-    setTeamName('');
-    setTeamDescription('');
-    setTeamImage(undefined);
-    setSelectedMembers([]);
-  };
+const handleCreate = () => {
+if (!teamName.trim()) return;
+const members = users.filter(u => selectedMembers.includes(u.id));
+onCreated(teamName, teamDescription, teamImage, members);
+setTeamName('');
+setTeamDescription('');
+setTeamImage(undefined);
+setSelectedMembers([]);
+};
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+const file = e.target.files?.[0];
+if (!file) return;
 
-    setIsUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('image', file);
+setIsUploading(true);  
+try {  
+  const formData = new FormData();  
+  formData.append('image', file);  
 
-      const res = await axios.post(`${API_BASE}/api/upload`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+  const res = await axios.post(`${API_BASE}/api/upload`, formData, {  
+    headers: { 'Content-Type': 'multipart/form-data' },  
+  });  
 
-      if (res.data?.success && res.data?.filePath) {
-  setTeamImage(
-    res.data.filePath.startsWith('http')
-      ? res.data.filePath
-      : `${API_BASE}${res.data.filePath}`
-  );
+  if (res.data?.success && res.data?.filePath) {
+
+setTeamImage(
+res.data.filePath.startsWith('http')
+? res.data.filePath
+: ${API_BASE}${res.data.filePath}
+);
 }
-    } finally {
-      setIsUploading(false);
-    }
-  };
+} finally {
+setIsUploading(false);
+}
+};
 
-  return (
-    <div className="fixed inset-0 z-[2200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2.5rem] w-full max-w-md overflow-hidden">
-        <div className="p-8 border-b border-[var(--border-primary)]">
-          <h3 className="text-2xl font-black uppercase tracking-tight text-[var(--text-primary)]">Create New Team</h3>
-        </div>
+return (
+<div className="fixed inset-0 z-[2200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+<div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2.5rem] w-full max-w-md overflow-hidden">
+<div className="p-8 border-b border-[var(--border-primary)]">
+<h3 className="text-2xl font-black uppercase tracking-tight text-[var(--text-primary)]">Create New Team</h3>
+</div>
 
-        <div className="p-8 space-y-6 max-h-[60vh] overflow-y-auto">
-          <div className="flex flex-col items-center">
-            <div
-              onClick={() => !isUploading && fileInputRef.current?.click()}
-              className="w-24 h-24 rounded-full bg-[var(--background-tertiary)] border-2 border-dashed border-[var(--border-secondary)] flex items-center justify-center cursor-pointer overflow-hidden"
-            >
-              {teamImage ? (
-                <img src={teamImage} alt="Team" className="w-full h-full object-cover" />
-              ) : (
-                <div className="text-center">
-                  <PhotoIcon className="w-6 h-6 mx-auto text-[var(--text-muted)]" />
-                  <span className="text-[8px] font-bold uppercase text-[var(--text-muted)] mt-1 block">{isUploading ? 'Uploading...' : 'Add Logo'}</span>
-                </div>
-              )}
-            </div>
-            <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
-          </div>
+<div className="p-8 space-y-6 max-h-[60vh] overflow-y-auto">  
+      <div className="flex flex-col items-center">  
+        <div  
+          onClick={() => !isUploading && fileInputRef.current?.click()}  
+          className="w-24 h-24 rounded-full bg-[var(--background-tertiary)] border-2 border-dashed border-[var(--border-secondary)] flex items-center justify-center cursor-pointer overflow-hidden"  
+        >  
+          {teamImage ? (  
+            <img src={teamImage} alt="Team" className="w-full h-full object-cover" />  
+          ) : (  
+            <div className="text-center">  
+              <PhotoIcon className="w-6 h-6 mx-auto text-[var(--text-muted)]" />  
+              <span className="text-[8px] font-bold uppercase text-[var(--text-muted)] mt-1 block">{isUploading ? 'Uploading...' : 'Add Logo'}</span>  
+            </div>  
+          )}  
+        </div>  
+        <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />  
+      </div>  
 
-          <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Team Name *</label>
-            <input value={teamName} onChange={e => setTeamName(e.target.value)} className="w-full px-5 py-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-2xl" />
-          </div>
+      <div>  
+        <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Team Name *</label>  
+        <input value={teamName} onChange={e => setTeamName(e.target.value)} className="w-full px-5 py-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-2xl" />  
+      </div>  
 
-          <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Description</label>
-            <textarea value={teamDescription} onChange={e => setTeamDescription(e.target.value)} rows={3} className="w-full px-5 py-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-2xl resize-none" />
-          </div>
+      <div>  
+        <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Description</label>  
+        <textarea value={teamDescription} onChange={e => setTeamDescription(e.target.value)} rows={3} className="w-full px-5 py-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-2xl resize-none" />  
+      </div>  
 
-          <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-3">Add Members</label>
-            <div className="space-y-2">
-              {users.filter(u => u.id !== currentUser?.id).map(user => (
-                <button
-                  type="button"
-                  key={user.id}
-                  onClick={() => setSelectedMembers(prev => (prev.includes(user.id) ? prev.filter(id => id !== user.id) : [...prev, user.id]))}
-                  className={`flex items-center gap-3 w-full p-3 rounded-2xl border ${
-                    selectedMembers.includes(user.id) ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-500' : 'bg-[var(--background-tertiary)] border-transparent'
-                  }`}
-                >
-                  {user.profilePictureUrl ? (
-  <img
-    src={user.profilePictureUrl.startsWith('http')
-      ? user.profilePictureUrl
-      : `${API_BASE}${user.profilePictureUrl}`}
-    className="w-8 h-8 rounded-full object-cover"
-    onError={(e) => (e.currentTarget.style.display = 'none')}
-  />
+      <div>  
+        <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-3">Add Members</label>  
+        <div className="space-y-2">  
+          {users.filter(u => u.id !== currentUser?.id).map(user => (  
+            <button  
+              type="button"  
+              key={user.id}  
+              onClick={() => setSelectedMembers(prev => (prev.includes(user.id) ? prev.filter(id => id !== user.id) : [...prev, user.id]))}  
+              className={`flex items-center gap-3 w-full p-3 rounded-2xl border ${  
+                selectedMembers.includes(user.id) ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-500' : 'bg-[var(--background-tertiary)] border-transparent'  
+              }`}  
+            >  
+              {user.profilePictureUrl ? (
+
+<img
+src={user.profilePictureUrl.startsWith('http')
+? user.profilePictureUrl
+: ${API_BASE}${user.profilePictureUrl}}
+className="w-8 h-8 rounded-full object-cover"
+onError={(e) => (e.currentTarget.style.display = 'none')}
+/>
 ) : (
-  <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold">
-    {user.name?.[0] || 'U'}
-  </div>
-)}
-                  <span className="flex-grow text-left text-sm font-bold text-[var(--text-primary)]">{user.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        <div className="p-6 border-t border-[var(--border-primary)] flex gap-4">
-          <button onClick={onClose} className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest border border-[var(--border-primary)] rounded-full">
-            Cancel
-          </button>
-          <button onClick={handleCreate} disabled={!teamName.trim() || isUploading} className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-white button-gradient rounded-full disabled:opacity-50">
-            Launch Team
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold">  
+    {user.name?.[0] || 'U'}  
+  </div>  
+)}  
+                  <span className="flex-grow text-left text-sm font-bold text-[var(--text-primary)]">{user.name}</span>  
+                </button>  
+              ))}  
+            </div>  
+          </div>  
+        </div>  <div className="p-6 border-t border-[var(--border-primary)] flex gap-4">  
+      <button onClick={onClose} className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest border border-[var(--border-primary)] rounded-full">  
+        Cancel  
+      </button>  
+      <button onClick={handleCreate} disabled={!teamName.trim() || isUploading} className="flex-1 py-4 text-[10px] font-black uppercase tracking-widest text-white button-gradient rounded-full disabled:opacity-50">  
+        Launch Team  
+      </button>  
+    </div>  
+  </div>  
+</div>
+
+);
 };
 
 // --- Main Page ---
 export const MessagesPage: React.FC = () => {
-  const { currentUser, getUserById, markAllNotificationsAsRead, addNotification, token } = useAppContext();
+  const {
+    currentUser,
+    getUserById,
+    markAllNotificationsAsRead,
+    addNotification,
+    token,
+  } = useAppContext();
+
   const [chats, setChats] = useState<ChatConversation[]>([]);
-  const [activeType, setActiveType] = useState<'direct' | 'teams'>('direct');
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState("");
+  const [chatToAction, setChatToAction] = useState<string | null>(null);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [isConfirmClearOpen, setIsConfirmClearOpen] = useState(false);
-  const [isCreateTeamOpen, setIsCreateTeamOpen] = useState(false);
-  const [chatToAction, setChatToAction] = useState<string | null>(null);
-  const [isChatMenuOpen, setIsChatMenuOpen] = useState(false);
-const [isAttachOpen, setIsAttachOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatMenuRef = useRef<HTMLDivElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const authHeaders = {
+    Authorization: `Bearer ${token}`,
+  };
 
-  const selectedChat = useMemo(() => chats.find(c => c.id === selectedChatId), [chats, selectedChatId]);
-  const filteredChats = useMemo(() => chats.filter(c => (activeType === 'teams' ? c.isTeam : !c.isTeam)), [chats, activeType]);
-
-  const authHeaders = useMemo(() => {
-    const t = token || localStorage.getItem('authToken');
-    return { Authorization: `Bearer ${t}` };
-  }, [token]);
-
+  // ================= FETCH CHATS =================
   const fetchChats = async () => {
+    if (!token) return;
+
     try {
-      const { data } = await axios.get(`${API_BASE}/api/chat`, { headers: authHeaders });
+      const { data } = await axios.get(`${API_BASE}/api/chat`, {
+        headers: authHeaders,
+      });
+
       if (data?.success) {
-        const processed = (data.chats || []).map((c: any) => ({ ...c, messages: c.messages || [] }));
-        setChats(processed);
+        setChats(
+          data.chats.map((c: any) => ({
+            ...c,
+            messages: c.messages || [],
+          }))
+        );
       }
-    } catch (e: any) {
-      console.error('fetchChats error:', e?.response?.data || e?.message || e);
+    } catch (err) {
+      console.error(err);
     }
   };
 
-useEffect(() => {
-  if (!token) return;
-  fetchChats();
-}, []);
+  useEffect(() => {
+    fetchChats();
+  }, [token]);
 
+  // ================= LOAD MESSAGES =================
   useEffect(() => {
     if (!selectedChatId || !token) return;
 
-    const loadMessages = async () => {
+    const load = async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/api/chat/${selectedChatId}/messages`, { headers: authHeaders });
+        const { data } = await axios.get(
+          `${API_BASE}/api/chat/${selectedChatId}/messages`,
+          { headers: authHeaders }
+        );
+
         if (data?.success) {
-          setChats(prev => prev.map(c => (c.id === selectedChatId ? { ...c, messages: data.messages || [] } : c)));
+          setChats((prev) =>
+            prev.map((c) =>
+              c.id === selectedChatId
+                ? { ...c, messages: data.messages || [] }
+                : c
+            )
+          );
         }
-      } catch (e: any) {
-        console.error('loadMessages error:', e?.response?.data || e?.message || e);
+      } catch (err) {
+        console.error(err);
       }
     };
 
-    loadMessages();
-  }, [selectedChatId, token, authHeaders]);
+    load();
+  }, [selectedChatId]);
 
-  // /messages?chatWith=<userId>
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const chatWith = queryParams.get('chatWith');
-    if (!chatWith || !token) return;
-
-    const initChat = async () => {
-      try {
-        const { data } = await axios.post(`${API_BASE}/api/chat`, { userId: chatWith }, { headers: authHeaders });
-        if (data?.success) {
-          const newChat = { ...data.chat, messages: [] };
-          setChats(prev => (prev.find(c => c.id === newChat.id) ? prev : [newChat, ...prev]));
-          setSelectedChatId(newChat.id);
-        }
-      } catch (e: any) {
-        console.error('initChat error:', e?.response?.data || e?.message || e);
-      }
-    };
-
-    initChat();
-  }, [location.search, token, authHeaders]);
-
-  
-    useEffect(() => {
-  if (!selectedChatId) return;
-
-  const container = messagesEndRef.current?.parentElement;
-  if (!container) return;
-
-// Always mark notifications when chat opens
-  markAllNotificationsAsRead('messages');
-
-  const isNearBottom =
-    container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-
-  if (isNearBottom) {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
-  }
-}, [selectedChat?.messages?.length]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (chatMenuRef.current && !chatMenuRef.current.contains(e.target as Node)) setIsChatMenuOpen(false);
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleSendMessage = async (text?: string, file?: FileAttachment, type: MessageType = 'text') => {
-    if (!selectedChatId || !currentUser || !token) return;
+  // ================= SEND MESSAGE =================
+  const handleSendMessage = async (
+    text?: string,
+    file?: FileAttachment,
+    type: MessageType = "text"
+  ) => {
+    if (!selectedChatId || !token) return;
     if (!text?.trim() && !file) return;
 
     try {
-      const payload = { text: text?.trim(), file, type };
-      const { data } = await axios.post(`${API_BASE}/api/chat/${selectedChatId}/messages`, payload, { headers: authHeaders });
+      const { data } = await axios.post(
+        `${API_BASE}/api/chat/${selectedChatId}/messages`,
+        { text, file, type },
+        { headers: authHeaders }
+      );
 
       if (data?.success) {
-        const newMessage = data.message;
-        setChats(prev =>
-          prev.map(chat =>
-            chat.id === selectedChatId
+        setChats((prev) =>
+          prev.map((c) =>
+            c.id === selectedChatId
               ? {
-                  ...chat,
-                  messages: [...(chat.messages || []), newMessage],
-                  lastMessagePreview: text?.trim() || (type === 'image' ? 'Sent an image' : 'Sent a file'),
-                  lastMessageTimestamp: newMessage.timestamp,
+                  ...c,
+                  messages: [...(c.messages || []), data.message],
                 }
-              : chat
+              : c
           )
         );
-        setMessageText('');
+
+        setMessageText("");
       }
-    } catch (e: any) {
-      console.error('sendMessage error:', e?.response?.data || e?.message || e);
-      addNotification('Failed to send message', 'error');
-    }
-  };
-
-  const uploadFile = async (file: File): Promise<FileAttachment | null> => {
-  const formData = new FormData();
-  formData.append('image', file); // CHANGE HERE
-
-  const { data } = await axios.post(`${API_BASE}/api/upload`, formData, {
-    headers: {
-      ...authHeaders,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-
-  if (!data?.success) return null;
-
-  return {
-  name: file.name,
-  url: data.filePath.startsWith('http')
-    ? data.filePath
-    : `${API_BASE}${data.filePath}`,
-  mimeType: file.type,
-  size: file.size,
-};
-};
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'document') => {
-    const file = e.target.files?.[0];
-    if (!file || !token) return;
-
-    try {
-      const attachment = await uploadFile(file);
-      if (!attachment) throw new Error('Upload failed');
-      await handleSendMessage(undefined, attachment, type);
     } catch (err) {
       console.error(err);
-      addNotification('Upload failed', 'error');
-    } finally {
-      // allow reselect same file
-      e.target.value = '';
+      addNotification("Send failed", "error");
     }
   };
 
-  const handleTeamCreated = async (name: string, description: string, image: string | undefined, members: User[]) => {
-    if (!token) return;
+  // ================= FILE UPLOAD =================
+  const uploadFile = async (
+    file: File
+  ): Promise<FileAttachment | null> => {
+    const formData = new FormData();
+    formData.append("image", file);
+
     try {
-      const payload = { name, description, users: members.map(m => m.id), image };
-      const { data } = await axios.post(`${API_BASE}/api/chat/team`, payload, { headers: authHeaders });
+      const { data } = await axios.post(
+        `${API_BASE}/api/upload`,
+        formData,
+        {
+          headers: {
+            ...authHeaders,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      if (data?.success) {
-        const newTeam = { ...data.chat, messages: [] };
-        setChats(prev => [newTeam, ...prev]);
-        setSelectedChatId(newTeam.id);
-        setIsCreateTeamOpen(false);
-        addNotification('Team created successfully!', 'success');
-      }
-    } catch (e: any) {
-      console.error('createTeam error:', e?.response?.data || e?.message || e);
-      addNotification('Failed to create team', 'error');
+      if (!data?.success) return null;
+
+      return {
+        name: file.name,
+        url: data.filePath.startsWith("http")
+          ? data.filePath
+          : `${API_BASE}${data.filePath}`,
+        mimeType: file.type,
+        size: file.size,
+      };
+    } catch {
+      return null;
     }
   };
 
+  const handleFileUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "image" | "document"
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const uploaded = await uploadFile(file);
+    if (!uploaded) {
+      addNotification("Upload failed", "error");
+      return;
+    }
+
+    await handleSendMessage(undefined, uploaded, type);
+    e.target.value = "";
+  };
+
+  // ================= CLEAR CHAT =================
   const confirmClearChat = async () => {
-  if (!selectedChatId || !token) return;
+    if (!selectedChatId) return;
 
-  try {
-    await axios.delete(`${API_BASE}/api/chat/${selectedChatId}/messages`, {
-      headers: authHeaders,
-    });
+    try {
+      await axios.delete(
+        `${API_BASE}/api/chat/${selectedChatId}/messages`,
+        { headers: authHeaders }
+      );
 
-    // Only clear messages of current chat
-    setChats(prev =>
-      prev.map(c =>
-        c.id === selectedChatId
-          ? {
-              ...c,
-              messages: [],
-              lastMessagePreview: '',
-              lastMessageTimestamp: undefined,
-            }
-          : c
-      )
-    );
+      setChats((prev) =>
+        prev.map((c) =>
+          c.id === selectedChatId
+            ? { ...c, messages: [] }
+            : c
+        )
+      );
 
-    addNotification('Chat cleared', 'success');
-  } catch (err) {
-    console.error(err);
-    addNotification('Clear failed', 'error');
-  }
-
-  setIsConfirmClearOpen(false);
-};
-
-const confirmDeleteChat = async () => {
-  if (!chatToAction || !token) return;
-
-  try {
-    await axios.delete(`${API_BASE}/api/chat/${chatToAction}`, {
-      headers: authHeaders,
-    });
-
-    // Remove chat from list
-    setChats(prev => prev.filter(c => c.id !== chatToAction));
-
-    // If current chat deleted → go back safely
-    if (selectedChatId === chatToAction) {
-      setSelectedChatId(null);
+      addNotification("Chat cleared", "success");
+    } catch {
+      addNotification("Clear failed", "error");
     }
 
-    addNotification('Chat deleted permanently', 'success');
-  } catch (err) {
-    console.error(err);
-    addNotification('Delete failed', 'error');
-  }
-
-  setIsConfirmDeleteOpen(false);
-  setIsChatMenuOpen(false);
-};
-
-  const handleHeaderClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!selectedChat) return;
-
-    if (selectedChat.isTeam) navigate(`/team/${selectedChat.id}`);
-    else if (selectedChat.contact?.id) navigate(`/user/${selectedChat.contact.id}`);
+    setIsConfirmClearOpen(false);
   };
 
-  // --- prevent white screen if not logged in ---
+  // ================= DELETE CHAT =================
+  const confirmDeleteChat = async () => {
+    if (!chatToAction) return;
+
+    try {
+      await axios.delete(
+        `${API_BASE}/api/chat/${chatToAction}`,
+        { headers: authHeaders }
+      );
+
+      setChats((prev) =>
+        prev.filter((c) => c.id !== chatToAction)
+      );
+
+      if (selectedChatId === chatToAction) {
+        setSelectedChatId(null);
+      }
+
+      addNotification("Chat deleted", "success");
+    } catch {
+      addNotification("Delete failed", "error");
+    }
+
+    setIsConfirmDeleteOpen(false);
+  };
+
   if (!token || !currentUser) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-black uppercase">Please login</h2>
-          <p className="text-sm opacity-70 mt-2">Messenger requires authentication.</p>
-        </div>
-      </div>
-    );
+    return <div>Please login</div>;
   }
+
+  return <div className="h-full w-full" />;
+};
 
   return (
   <div className="flex h-[calc(100vh-72px)] w-full bg-[var(--component-background)] overflow-hidden">
