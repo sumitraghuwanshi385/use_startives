@@ -379,7 +379,7 @@ useEffect(() => {
 
   const uploadFile = async (file: File): Promise<FileAttachment | null> => {
   const formData = new FormData();
-  formData.append('file', file); // CHANGE HERE
+  formData.append('image', file); // CHANGE HERE
 
   const { data } = await axios.post(`${API_BASE}/api/upload`, formData, {
     headers: {
@@ -391,11 +391,13 @@ useEffect(() => {
   if (!data?.success) return null;
 
   return {
-    name: file.name,
-    url: `${API_BASE}${data.filePath}`,
-    mimeType: file.type,
-    size: file.size,
-  };
+  name: file.name,
+  url: data.filePath.startsWith('http')
+    ? data.filePath
+    : `${API_BASE}${data.filePath}`,
+  mimeType: file.type,
+  size: file.size,
+};
 };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'document') => {
@@ -442,24 +444,30 @@ useEffect(() => {
       headers: authHeaders,
     });
 
+    // Only clear messages of current chat
     setChats(prev =>
       prev.map(c =>
         c.id === selectedChatId
-          ? { ...c, messages: [], lastMessagePreview: '' }
+          ? {
+              ...c,
+              messages: [],
+              lastMessagePreview: '',
+              lastMessageTimestamp: undefined,
+            }
           : c
       )
     );
 
-    setSelectedChatId(null); // FORCE UI RESET
     addNotification('Chat cleared', 'success');
-  } catch {
+  } catch (err) {
+    console.error(err);
     addNotification('Clear failed', 'error');
   }
 
   setIsConfirmClearOpen(false);
 };
 
-  const confirmDeleteChat = async () => {
+const confirmDeleteChat = async () => {
   if (!chatToAction || !token) return;
 
   try {
@@ -467,11 +475,17 @@ useEffect(() => {
       headers: authHeaders,
     });
 
+    // Remove chat from list
     setChats(prev => prev.filter(c => c.id !== chatToAction));
-    setSelectedChatId(null); // important
+
+    // If current chat deleted → go back safely
+    if (selectedChatId === chatToAction) {
+      setSelectedChatId(null);
+    }
 
     addNotification('Chat deleted permanently', 'success');
-  } catch {
+  } catch (err) {
+    console.error(err);
     addNotification('Delete failed', 'error');
   }
 
@@ -707,13 +721,21 @@ useEffect(() => {
   <div className="relative">
 
     <img
-      src={msg.file.url}
+  src={
+    msg.file.url?.startsWith('http')
+      ? msg.file.url
+      : `${API_BASE}${msg.file.url}`
+  }
       className="rounded-xl max-h-72 object-cover"
       alt="sent"
     />
 
     <a
-      href={msg.file.url}
+      href={
+  msg.file.url?.startsWith('http')
+    ? msg.file.url
+    : `${API_BASE}${msg.file.url}`
+}
       download
       className="absolute bottom-2 right-2 px-3 py-1 text-[10px] font-bold rounded-full bg-black/70 text-white"
     >
@@ -725,7 +747,7 @@ useEffect(() => {
 
                 {/* DOCUMENT */}
                 {msg.type === 'document' && msg.file?.url && (
-  <div className="p-3 bg-neutral-100 dark:bg-neutral-900 rounded-xl flex items-center gap-3">
+  <div className="p-3 bg-neutral-100 dark:bg-neutral-900 text-black dark:text-white rounded-xl flex items-center gap-3">
 
     <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
       DOC
