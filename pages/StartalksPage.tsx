@@ -252,6 +252,7 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
 const StartalksPage: React.FC = () => {
   const { startalks, addStartalk, deleteStartalk, addNotification } = useAppContext();
+const [shuffledFeed, setShuffledFeed] = useState<Startalk[]>([]);
 
   const [newTalkContent, setNewTalkContent] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null); // Stores URL now
@@ -268,6 +269,12 @@ const StartalksPage: React.FC = () => {
     const params = new URLSearchParams(location.search);
     if (params.get('focus') === 'true' && textareaRef.current) textareaRef.current.focus();
   }, [location.search]);
+
+useEffect(() => {
+  if (startalks.length > 0 && shuffledFeed.length === 0) {
+    setShuffledFeed(shuffleArray(startalks));
+  }
+}, [startalks]);
 
   const handlePost = async () => {
     if (!newTalkContent.trim() || isPosting || isImageUploading) return;
@@ -315,15 +322,9 @@ const StartalksPage: React.FC = () => {
     }
   };
 
-  const shuffleArray = (array: Startalk[]) => {
-  return [...array].sort(() => Math.random() - 0.5);
-};
-
-const filteredTalks = useMemo(() => {
-  const list = [...startalks];
-
+  const filteredTalks = useMemo(() => {
   if (activeFilter === 'Latest') {
-    return list.sort(
+    return [...startalks].sort(
       (a, b) =>
         new Date(b.timestamp).getTime() -
         new Date(a.timestamp).getTime()
@@ -331,7 +332,7 @@ const filteredTalks = useMemo(() => {
   }
 
   if (activeFilter === 'Most reacted') {
-    return list.sort((a, b) => {
+    return [...startalks].sort((a, b) => {
       const aTotal = Object.values(a.reactions || {}).reduce<number>(
         (sum, count) => sum + (count as number),
         0
@@ -344,9 +345,9 @@ const filteredTalks = useMemo(() => {
     });
   }
 
-  // 🔥 Feed tab = Random Shuffle
-  return shuffleArray(list);
-}, [startalks, activeFilter]);
+  // ✅ Feed uses stable shuffled copy
+  return shuffledFeed;
+}, [startalks, activeFilter, shuffledFeed]);
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
