@@ -252,6 +252,9 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
 const StartalksPage: React.FC = () => {
   const { startalks, addStartalk, deleteStartalk, addNotification } = useAppContext();
+const shuffleArray = (array: Startalk[]) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 const [shuffledFeed, setShuffledFeed] = useState<Startalk[]>([]);
 
   const [newTalkContent, setNewTalkContent] = useState('');
