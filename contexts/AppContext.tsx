@@ -297,23 +297,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         )
       );
     }
-
   } catch (error) {
     console.error("Reaction failed:", error);
   }
 };
-      try {
-        const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
-        if (response.data.success) {
-            const updatedTalk = response.data.startalk;
-            setStartalks(prev =>
-  prev.map(t =>
-    t.id === talkId ? updatedTalk : t
-  )
-);
-        }
-      } catch (error) { console.error("Reaction failed:", error); }
-  };
 
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
