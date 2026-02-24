@@ -1,6 +1,7 @@
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const User = require('../models/User');
+const mongoose = require('mongoose');
 
 // --- Helper: Format Chat for Frontend ---
 const formatChat = (chat, currentUserId) => {
@@ -210,38 +211,47 @@ const sendMessage = async (req, res) => {
 };
 
 // ================= CLEAR MESSAGES =================
+
 const clearMessages = async (req, res) => {
   try {
+    const chatId = new mongoose.Types.ObjectId(req.params.chatId);
+
     await Message.deleteMany({
-      conversationId: req.params.chatId,
+      conversationId: chatId,
     });
 
-    await Conversation.findByIdAndUpdate(req.params.chatId, {
+    await Conversation.findByIdAndUpdate(chatId, {
       lastMessage: null,
     });
 
+    console.log("Messages cleared from DB");
+
     res.json({ success: true });
   } catch (error) {
+    console.log("CLEAR ERROR:", error);
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
 
 // ================= DELETE CONVERSATION =================
 const deleteConversation = async (req, res) => {
   try {
+    const chatId = new mongoose.Types.ObjectId(req.params.chatId);
+
     await Message.deleteMany({
-      conversationId: req.params.chatId,
+      conversationId: chatId,
     });
 
-    await Conversation.findByIdAndDelete(req.params.chatId);
+    await Conversation.findByIdAndDelete(chatId);
+
+    console.log("Conversation deleted from DB");
 
     res.json({ success: true });
   } catch (error) {
+    console.log("DELETE ERROR:", error);
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
 
 module.exports = {
   fetchConversations,
