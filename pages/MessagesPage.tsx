@@ -601,9 +601,11 @@ export const MessagesPage: React.FC = () => {
         <TrashIcon className="w-4 h-4" />
         Delete Chat
       </button>
-
+</div>
+      )}
     </div>
-  )}
+
+  </div>
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
