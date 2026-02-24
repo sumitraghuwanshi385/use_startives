@@ -5,7 +5,9 @@ const {
     fetchMessages, 
     sendMessage, 
     createTeamChat,
-    createDirectChat 
+    createDirectChat,
+clearMessages,
+  deleteConversation
 } = require('../controllers/chatController');
 
 const router = express.Router();
