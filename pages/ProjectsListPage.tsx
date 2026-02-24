@@ -331,18 +331,26 @@ const displayIdeas =
 
       <div className="flex w-full relative z-10 text-center">
 
-        <div className="w-1/2 flex flex-col items-center justify-center px-4">
-          <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-            Total Projects
-          </p>
-          <p className="text-lg font-black">{totalProjects}</p>
-        </div>
+        <div className=
 
-        <div className="w-px bg-white/20"></div>
+"flex items-center gap-2 relative z-10">
 
-        <div className="w-1/2 flex flex-col items-center justify-center px-4">
-          <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-            New This Week
+<p className="text-[
+
+8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
+<p className=
+
+-"text-sm font-black">{totalProjects}</p>
+
+</div>
+
+<div className="w-px h-4 bg-white/20 relative z-10">
+</div>
+
+<div className="flex items-center gap-2 relative z-10">
+
+<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">New This Week</p>
+<p className= "text-sm font-black">{newThisWeek}</p>
           </p>
           <p className="text-lg font-black">{newThisWeek}</p>
         </div>
