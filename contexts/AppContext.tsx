@@ -389,24 +389,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           if (res.data.success) setStartupIdeas(res.data.ideas);
       } catch (error) { console.error("Failed to fetch ideas", error); }
 
-      try {
-    const storedToken = localStorage.getItem('authToken');
-
-    if (storedToken) {
-        const res = await axios.get('/api/startalks', {
-            headers: {
-                Authorization: `Bearer ${storedToken}`
-            }
-        });
-
-        if (res.data.success) {
-            setStartalks(res.data.startalks);
-        }
-    }
-} catch (error) {
-    console.error("Failed to fetch startalks", error);
-}
-
       const storedToken = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('user');
       if (storedToken && storedUser) {
@@ -426,6 +408,27 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
     loadInitialData();
   }, [fetchConnections]);
+
+// 🔥 Fetch startalks after user + token ready
+useEffect(() => {
+  const fetchStartalks = async () => {
+    if (!token || !currentUser) return;
+
+    try {
+      const res = await axios.get('/api/startalks', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data.success) {
+        setStartalks(res.data.startalks);
+      }
+    } catch (err) {
+      console.error("Startalk fetch error:", err);
+    }
+  };
+
+  fetchStartalks();
+}, [token, currentUser]);
 
   const contextValue = useMemo(() => ({
     startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
