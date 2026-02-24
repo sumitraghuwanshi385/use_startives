@@ -145,7 +145,7 @@ const StartupStoriesPage: React.FC = () => {
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 flex flex-col gap-6">
+        <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div className="text-left">
                     <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">Asset Shop</h1>
