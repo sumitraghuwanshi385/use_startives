@@ -144,8 +144,12 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ isOpen, onClose, onCr
       });
 
       if (res.data?.success && res.data?.filePath) {
-        setTeamImage(`${API_BASE}${res.data.filePath}`);
-      }
+  setTeamImage(
+    res.data.filePath.startsWith('http')
+      ? res.data.filePath
+      : `${API_BASE}${res.data.filePath}`
+  );
+}
     } finally {
       setIsUploading(false);
     }
@@ -198,7 +202,19 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ isOpen, onClose, onCr
                     selectedMembers.includes(user.id) ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-500' : 'bg-[var(--background-tertiary)] border-transparent'
                   }`}
                 >
-                  <img src={user.profilePictureUrl || ''} className="w-8 h-8 rounded-full object-cover" />
+                  {user.profilePictureUrl ? (
+  <img
+    src={user.profilePictureUrl.startsWith('http')
+      ? user.profilePictureUrl
+      : `${API_BASE}${user.profilePictureUrl}`}
+    className="w-8 h-8 rounded-full object-cover"
+    onError={(e) => (e.currentTarget.style.display = 'none')}
+  />
+) : (
+  <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold">
+    {user.name?.[0] || 'U'}
+  </div>
+)}
                   <span className="flex-grow text-left text-sm font-bold text-[var(--text-primary)]">{user.name}</span>
                 </button>
               ))}
@@ -362,22 +378,25 @@ useEffect(() => {
   };
 
   const uploadFile = async (file: File): Promise<FileAttachment | null> => {
-    const formData = new FormData();
-    formData.append('image', file);
+  const formData = new FormData();
+  formData.append('file', file); // CHANGE HERE
 
-    const { data } = await axios.post(`${API_BASE}/api/upload`, formData, {
-      headers: { ...authHeaders, 'Content-Type': 'multipart/form-data' },
-    });
+  const { data } = await axios.post(`${API_BASE}/api/upload`, formData, {
+    headers: {
+      ...authHeaders,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 
-    if (!data?.success) return null;
+  if (!data?.success) return null;
 
-    return {
-      name: file.name,
-      url: `${API_BASE}${data.filePath}`,
-      mimeType: file.type,
-      size: file.size,
-    };
+  return {
+    name: file.name,
+    url: `${API_BASE}${data.filePath}`,
+    mimeType: file.type,
+    size: file.size,
   };
+};
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'document') => {
     const file = e.target.files?.[0];
@@ -426,11 +445,12 @@ useEffect(() => {
     setChats(prev =>
       prev.map(c =>
         c.id === selectedChatId
-          ? { ...c, messages: [], lastMessagePreview: undefined }
+          ? { ...c, messages: [], lastMessagePreview: '' }
           : c
       )
     );
 
+    setSelectedChatId(null); // FORCE UI RESET
     addNotification('Chat cleared', 'success');
   } catch {
     addNotification('Clear failed', 'error');
@@ -448,13 +468,10 @@ useEffect(() => {
     });
 
     setChats(prev => prev.filter(c => c.id !== chatToAction));
-
-    if (selectedChatId === chatToAction) {
-      setSelectedChatId(null);
-    }
+    setSelectedChatId(null); // important
 
     addNotification('Chat deleted permanently', 'success');
-  } catch (err) {
+  } catch {
     addNotification('Delete failed', 'error');
   }
 
@@ -493,17 +510,20 @@ useEffect(() => {
       <div className="p-6 shrink-0">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-black text-[var(--text-primary)]">Messenger</h2>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
-              Your command center
-            </p>
-          </div>
+            <h2 className="text-3xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Poppins, sans-serif' }}>
+  Messenger
+</h2>
+
+<p className="text-sm font-medium text-[var(--text-muted)] mt-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
+  your command center
+</p>
+</div>
 
           <button
             onClick={() => setIsCreateTeamOpen(true)}
             className="px-4 py-2 text-[10px] font-bold rounded-full bg-purple-600 text-white"
           >
-            + Team
+            Launch Team
           </button>
         </div>
 
@@ -656,11 +676,31 @@ useEffect(() => {
               >
 
                 {/* TEXT */}
-                {msg.type === 'text' && (
-                  <div className="px-4 py-2 text-sm">
-                    {msg.text}
-                  </div>
-                )}
+{msg.type === 'text' && (
+  <div className="px-4 py-2 text-sm flex flex-col">
+
+    {/* TEAM NAME ONLY FOR TEAM */}
+    {selectedChat.isTeam && !isMe && (
+      <div className="text-[10px] font-bold text-purple-600 mb-1">
+        {getUserById(msg.senderId)?.name || 'User'}
+      </div>
+    )}
+
+    {/* MESSAGE */}
+    <div>{msg.text}</div>
+
+    {/* TIME + TICK FOR BOTH PERSONAL & TEAM */}
+    <div className="flex items-center justify-end gap-1 mt-1 text-[10px] opacity-60">
+      {msg.timestamp &&
+        new Date(msg.timestamp).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })}
+      ✓
+    </div>
+
+  </div>
+)}
 
                 {/* IMAGE */}
               {msg.type === 'image' && msg.file?.url && (
