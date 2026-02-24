@@ -115,7 +115,11 @@ const App: React.FC = () => {
           <Route path="/contact-us" element={<WithPageContainer><ContactUsPage /></WithPageContainer>} />
           <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
 
-          <Route path="/dashboard" element={<ProtectedRoute><WithPageContainer pageClassName="w-full px-6 lg:px-16 pt-4 pb-8"><DashboardPage /></WithPageContainer></ProtectedRoute>} />
+          <Route path="/dashboard" element={
+  <ProtectedRoute>
+    <DashboardPage />
+  </ProtectedRoute>
+} />
           <Route path="/projects" element={<ProtectedRoute><ProjectsListPage /></ProtectedRoute>} />
           <Route path="/startalks" element={<ProtectedRoute><StartalksPage /></ProtectedRoute>} />
           <Route path="/blueprint" element={<ProtectedRoute><StartupStoriesPage /></ProtectedRoute>} />
