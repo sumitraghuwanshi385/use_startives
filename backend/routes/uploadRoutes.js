@@ -1,55 +1,54 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const router = express.Router();
 
-// Storage Engine
+if (!fs.existsSync('./uploads')) {
+  fs.mkdirSync('./uploads');
+}
+
 const storage = multer.diskStorage({
   destination: './uploads/',
   filename: function (req, file, cb) {
-    // Unique filename: fieldname-timestamp.ext
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
-// Init Upload
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5000000 }, // 5MB limit
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
+    const allowedMimeTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/gif',
+      'image/webp'
+    ];
+
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'));
+    }
   }
-}).single('image'); // 'image' key frontend se match honi chahiye
+}).single('image');
 
-// Check File Type Function
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif|webp/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb('Error: Images Only!');
-  }
-}
-
-// POST endpoint
 router.post('/', (req, res) => {
   upload(req, res, (err) => {
     if (err) {
-      return res.status(400).json({ success: false, message: err });
-    } else {
-      if (req.file == undefined) {
-        return res.status(400).json({ success: false, message: 'No File Selected!' });
-      } else {
-        // ✅ Correct URL return kar raha hai
-        return res.json({
-          success: true,
-          filePath: `/uploads/${req.file.filename}`
-        });
-      }
+      return res.status(400).json({ success: false, message: err.message });
     }
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file selected!' });
+    }
+
+    return res.json({
+      success: true,
+      url: `/uploads/${req.file.filename}`
+    });
   });
 });
 
