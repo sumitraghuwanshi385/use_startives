@@ -682,8 +682,6 @@ useEffect(() => {
 
   </div>
 )}
-                  </div>
-                )}
 
                 {/* DOCUMENT */}
                 {msg.type === 'document' && msg.file?.url && (
@@ -770,8 +768,8 @@ useEffect(() => {
             </button>
 
           </div>
+        }}
         </div>
-}}
 
         {/* Hidden Inputs */}
         <input
