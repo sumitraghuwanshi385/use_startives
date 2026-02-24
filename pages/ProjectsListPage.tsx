@@ -318,28 +318,27 @@ const displayIdeas =
               {isFetching && <p className="text-xs text-[var(--text-muted)] mt-2">Loading filtered results…</p>}
             </div>
 
-            className="flex w-full button-gradient text-white py-3 rounded-full border border-white/10 shadow-none overflow-hidden relative"
+    <div className="flex w-full button-gradient text-white py-3 rounded-full border border-white/10 shadow-none overflow-hidden relative">
 
-              <div className="flex w-full relative z-10 text-center">
+  <div className="flex w-full relative z-10 text-center">
 
-  <div className="w-1/2 flex flex-col items-center justify-center">
-    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-      Total Projects
-    </p>
-    <p className="text-lg font-black">{totalProjects}</p>
+    <div className="w-1/2 flex flex-col items-center justify-center">
+      <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+        Total Projects
+      </p>
+      <p className="text-lg font-black">{totalProjects}</p>
+    </div>
+
+    <div className="w-px bg-white/20"></div>
+
+    <div className="w-1/2 flex flex-col items-center justify-center">
+      <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+        New This Week
+      </p>
+      <p className="text-lg font-black">{newThisWeek}</p>
+    </div>
   </div>
-
-  <div className="w-px bg-white/20"></div>
-
-  <div className="w-1/2 flex flex-col items-center justify-center">
-    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-      New This Week
-    </p>
-    <p className="text-lg font-black">{newThisWeek}</p>
-  </div>
-</div>
-</div>
-
+</div>        
         {/* Search */}
         <div className="mb-6 flex justify-center">
           <div className="relative group max-w-2xl w-full">
