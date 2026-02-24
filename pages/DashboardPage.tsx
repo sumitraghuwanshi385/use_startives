@@ -257,8 +257,8 @@ const DashboardPage: React.FC = () => {
   ];
 
   return (
- <div className="bg-[var(--background-secondary)] min-h-screen w-full">
-  <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-20 space-y-6">
+ <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
+      <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
         <div className="w-full">
