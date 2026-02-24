@@ -281,29 +281,31 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (!currentUser) return;
       const t = getAuthToken();
 
-      setStartalks(prev => prev.map(talk => {
-        if (talk.id === talkId) {
-          const reactions = { ...(talk.reactions || {}) };
-          const userReactions = { ...(talk.userReactions || {}) };
-          const oldEmoji = userReactions[currentUser.id];
-          
-          if (oldEmoji === emoji) {
-             reactions[emoji] = Math.max(0, (reactions[emoji] || 0) - 1);
-             if (reactions[emoji] === 0) delete reactions[emoji];
-             delete userReactions[currentUser.id];
-             return { ...talk, reactions, userReactions, currentUserReaction: undefined };
-          } else {
-             if (oldEmoji) {
-                reactions[oldEmoji] = Math.max(0, (reactions[oldEmoji] || 0) - 1);
-                if (reactions[oldEmoji] === 0) delete reactions[oldEmoji];
-             }
-             reactions[emoji] = (reactions[emoji] || 0) + 1;
-             userReactions[currentUser.id] = emoji;
-             return { ...talk, reactions, userReactions, currentUserReaction: emoji };
-          }
-        }
-        return talk;
-      }));
+      const reactToStartalk = async (talkId: string, emoji: string) => {
+  if (!currentUser) return;
+  const t = getAuthToken();
+
+  try {
+    const response = await axios.post(
+      `/api/startalks/${talkId}/react`,
+      { emoji },
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (response.data.success) {
+      const updatedTalk = response.data.startalk;
+
+      setStartalks(prev =>
+        prev.map(t =>
+          t.id === talkId ? updatedTalk : t
+        )
+      );
+    }
+
+  } catch (error) {
+    console.error("Reaction failed:", error);
+  }
+};
 
       try {
         const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
