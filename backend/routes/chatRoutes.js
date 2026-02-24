@@ -25,4 +25,8 @@ router.get('/:chatId/messages', protect, fetchMessages);
 // Send a message
 router.post('/:chatId/messages', protect, sendMessage);
 
+router.delete('/:chatId/messages', protect, clearMessages);
+
+router.delete('/:chatId', protect, deleteConversation);
+
 module.exports = router;
