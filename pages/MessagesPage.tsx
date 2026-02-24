@@ -737,39 +737,45 @@ useEffect(() => {
       >
 
         {/* CLIP DROPDOWN */}
-        <div className="relative">
-          <button
-  type="button"
-  onClick={() => setIsAttachOpen(prev => !prev)}
-  className="p-3 rounded-full bg-[var(--background-tertiary)]"
->
-            📎
-          </button>
+<div className="relative">
+  <button
+    type="button"
+    onClick={() => setIsAttachOpen(prev => !prev)}
+    className="p-3 rounded-full bg-[var(--background-tertiary)]"
+  >
+    📎
+  </button>
 
-          {isAttachOpen && (
-  <div className="absolute bottom-14 left-0 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
+  {isAttachOpen && (
+    <div className="absolute bottom-14 left-0 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
 
-            <button
-              type="button"
-              onClick={() => imageInputRef.current?.click()}
-              className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-            >
-              <PhotoIcon className="w-4 h-4" />
-              Image
-            </button>
-
-            <button
-              type="button"
-              onClick={() => docInputRef.current?.click()}
-              className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-            >
-              <DocumentIcon className="w-4 h-4" />
-              Document
-            </button>
-
-          </div>
+      <button
+        type="button"
+        onClick={() => {
+          imageInputRef.current?.click();
+          setIsAttachOpen(false);
         }}
-        </div>
+        className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+      >
+        <PhotoIcon className="w-4 h-4" />
+        Image
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          docInputRef.current?.click();
+          setIsAttachOpen(false);
+        }}
+        className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+      >
+        <DocumentIcon className="w-4 h-4" />
+        Document
+      </button>
+
+    </div>
+  )}
+</div>
 
         {/* Hidden Inputs */}
         <input
