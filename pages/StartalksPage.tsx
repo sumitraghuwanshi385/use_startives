@@ -255,7 +255,6 @@ const StartalksPage: React.FC = () => {
 const shuffleArray = (array: Startalk[]) => {
   return [...array].sort(() => Math.random() - 0.5);
 };
-const [shuffledFeed, setShuffledFeed] = useState<Startalk[]>([]);
 
   const [newTalkContent, setNewTalkContent] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null); // Stores URL now
@@ -273,11 +272,7 @@ const [shuffledFeed, setShuffledFeed] = useState<Startalk[]>([]);
     if (params.get('focus') === 'true' && textareaRef.current) textareaRef.current.focus();
   }, [location.search]);
 
-useEffect(() => {
-  if (startalks.length > 0 && shuffledFeed.length === 0) {
-    setShuffledFeed(shuffleArray(startalks));
-  }
-}, [startalks]);
+const hasShuffled = useRef(false);
 
   const handlePost = async () => {
     if (!newTalkContent.trim() || isPosting || isImageUploading) return;
@@ -348,9 +343,14 @@ useEffect(() => {
     });
   }
 
-  // ✅ Feed uses stable shuffled copy
-  return shuffledFeed;
-}, [startalks, activeFilter, shuffledFeed]);
+  // ✅ Shuffle only once per mount
+  if (!hasShuffled.current) {
+    hasShuffled.current = true;
+    return [...startalks].sort(() => Math.random() - 0.5);
+  }
+
+  return startalks;
+}, [startalks, activeFilter]);
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
