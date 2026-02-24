@@ -318,7 +318,8 @@ const displayIdeas =
               {isFetching && <p className="text-xs text-[var(--text-muted)] mt-2">Loading filtered results…</p>}
             </div>
 
-            <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative">
+            className="flex w-full button-gradient text-white py-3 rounded-full border border-white/10 shadow-none overflow-hidden relative"
+
               <div className="flex w-full relative z-10 text-center">
 
   <div className="w-1/2 flex flex-col items-center justify-center">
@@ -336,7 +337,7 @@ const displayIdeas =
     </p>
     <p className="text-lg font-black">{newThisWeek}</p>
   </div>
-
+</div>
 </div>
 
         {/* Search */}
