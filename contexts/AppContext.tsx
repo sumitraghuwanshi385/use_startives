@@ -301,7 +301,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     console.error("Reaction failed:", error);
   }
 };
-}, [currentUser, token]); 
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
   const getPositionById = (ideaId: string, positionId: string) => getIdeaById(ideaId)?.positions.find(pos => pos.id === positionId);
