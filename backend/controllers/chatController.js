@@ -209,4 +209,46 @@ const sendMessage = async (req, res) => {
     }
 };
 
-module.exports = { fetchConversations, createDirectChat, createTeamChat, fetchMessages, sendMessage };
+// ================= CLEAR MESSAGES =================
+const clearMessages = async (req, res) => {
+  try {
+    await Message.deleteMany({
+      conversationId: req.params.chatId,
+    });
+
+    await Conversation.findByIdAndUpdate(req.params.chatId, {
+      lastMessage: null,
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+// ================= DELETE CONVERSATION =================
+const deleteConversation = async (req, res) => {
+  try {
+    await Message.deleteMany({
+      conversationId: req.params.chatId,
+    });
+
+    await Conversation.findByIdAndDelete(req.params.chatId);
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+module.exports = {
+  fetchConversations,
+  createDirectChat,
+  createTeamChat,
+  fetchMessages,
+  sendMessage,
+  clearMessages,
+  deleteConversation,
+};
