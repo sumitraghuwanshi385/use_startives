@@ -327,7 +327,7 @@ const displayIdeas =
       )}
     </div>
 
-   <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative">
+    <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative">
 
       <div className="flex w-full relative z-10 text-center">
 
@@ -343,6 +343,8 @@ const displayIdeas =
         <div className="w-1/2 flex flex-col items-center justify-center px-4">
           <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
             New This Week
+          </p>
+          <p className="text-lg font-black">{newThisWeek}</p>
         </div>
 
       </div>
