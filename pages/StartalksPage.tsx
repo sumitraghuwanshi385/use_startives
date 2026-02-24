@@ -23,8 +23,8 @@ const ActivityIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" 
 );
 
 const HeartFilledIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className={className}>
-    <path d="M12 21s-6.716-4.35-9.428-7.062C.86 12.226 1.06 9.6 3.05 7.61c1.99-1.99 4.616-2.19 6.328-.478L12 9.755l2.622-2.622c1.712-1.712 4.338-1.512 6.328.478 1.99 1.99 2.19 4.616.478 6.328C18.716 16.65 12 21 12 21z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M11.645 20.91l-.095-.07C5.4 16.36 2 13.28 2 9.5 2 6.42 4.42 4 7.5 4c1.74 0 3.41.81 4.5 2.09A6.004 6.004 0 0116.5 4C19.58 4 22 6.42 22 9.5c0 3.78-3.4 6.86-9.55 11.34l-.095.07a.75.75 0 01-.71 0z" />
   </svg>
 );
 
@@ -336,13 +336,13 @@ const StartalksPage: React.FC = () => {
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
+      <div className="w-full px-4 md:px-8 lg:px-16 xl:px-24 pt-2 pb-8">
         <div className="text-left mb-6">
           <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">Startalks</h1>
           <p className="text-lg text-[var(--text-secondary)] font-medium mt-1 opacity-80 font-poppins">Founders sharing raw thoughts & updates.</p>
         </div>
 
-        <div className="w-full max-w-5xl mx-auto lg:px-12">
+        <div className="w-full max-w-6xl mx-auto">
           <div className="bg-[var(--component-background)] rounded-3xl border border-[var(--border-primary)] p-6 md:p-8 mb-6 shadow-none relative overflow-hidden text-left font-poppins">
             <div className="absolute inset-0 dot-pattern-bg opacity-[0.03] pointer-events-none"></div>
             <div className="relative z-10">
