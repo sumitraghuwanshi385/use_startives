@@ -543,11 +543,6 @@ export const MessagesPage: React.FC = () => {
     {/* ===== HEADER SECTION ===== */}
     <div className="bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0">
 
-      {/* TOP STRIP */}
-      <div className="px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-[var(--text-muted)] border-b border-[var(--border-primary)]">
-        Conversation
-      </div>
-
       {/* USER BAR */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
@@ -573,15 +568,43 @@ export const MessagesPage: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={() => setIsChatMenuOpen(!isChatMenuOpen)}
-          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
-        >
-          <EllipsisVerticalIcon />
-        </button>
-      </div>
-    </div>
+        <div className="relative" ref={chatMenuRef}>
+  <button
+    onClick={() => setIsChatMenuOpen(prev => !prev)}
+    className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
+  >
+    <EllipsisVerticalIcon />
+  </button>
 
+  {isChatMenuOpen && (
+    <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg z-50 overflow-hidden">
+
+      <button
+        onClick={() => {
+          setIsConfirmClearOpen(true);
+          setIsChatMenuOpen(false);
+        }}
+        className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
+      >
+        <NoSymbolIcon className="w-4 h-4" />
+        Clear Chat
+      </button>
+
+      <button
+        onClick={() => {
+          setChatToAction(selectedChatId);
+          setIsConfirmDeleteOpen(true);
+          setIsChatMenuOpen(false);
+        }}
+        className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+      >
+        <TrashIcon className="w-4 h-4" />
+        Delete Chat
+      </button>
+
+    </div>
+  )}
+</div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
     <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)] min-h-0">
