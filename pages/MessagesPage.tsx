@@ -4,7 +4,9 @@ import { useAppContext } from '../contexts/AppContext';
 import { User, ChatConversation, MessageType, FileAttachment } from '../types';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const API_BASE = '';
+const API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  'http://localhost:5000';
 
 // --- Icons ---
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
@@ -265,186 +267,165 @@ const [isAttachOpen, setIsAttachOpen] = useState(false);
     return { Authorization: `Bearer ${t}` };
   }, [token]);
 
-  const fetchChats = async () => {
-    try {
-      const { data } = await axios.get(`${API_BASE}/api/chat`, { headers: authHeaders });
-      if (data?.success) {
-        const processed = (data.chats || []).map((c: any) => ({ ...c, messages: c.messages || [] }));
-        setChats(processed);
-      }
-    } catch (e: any) {
-      console.error('fetchChats error:', e?.response?.data || e?.message || e);
-    }
-  };
-
-useEffect(() => {
+  // ================= FETCH CHATS =================
+const fetchChats = async () => {
   if (!token) return;
-  fetchChats();
-}, []);
-
-  useEffect(() => {
-    if (!selectedChatId || !token) return;
-
-    const loadMessages = async () => {
-      try {
-        const { data } = await axios.get(`${API_BASE}/api/chat/${selectedChatId}/messages`, { headers: authHeaders });
-        if (data?.success) {
-          setChats(prev => prev.map(c => (c.id === selectedChatId ? { ...c, messages: data.messages || [] } : c)));
-        }
-      } catch (e: any) {
-        console.error('loadMessages error:', e?.response?.data || e?.message || e);
-      }
-    };
-
-    loadMessages();
-  }, [selectedChatId, token, authHeaders]);
-
-  // /messages?chatWith=<userId>
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const chatWith = queryParams.get('chatWith');
-    if (!chatWith || !token) return;
-
-    const initChat = async () => {
-      try {
-        const { data } = await axios.post(`${API_BASE}/api/chat`, { userId: chatWith }, { headers: authHeaders });
-        if (data?.success) {
-          const newChat = { ...data.chat, messages: [] };
-          setChats(prev => (prev.find(c => c.id === newChat.id) ? prev : [newChat, ...prev]));
-          setSelectedChatId(newChat.id);
-        }
-      } catch (e: any) {
-        console.error('initChat error:', e?.response?.data || e?.message || e);
-      }
-    };
-
-    initChat();
-  }, [location.search, token, authHeaders]);
-
-  
-    useEffect(() => {
-  if (!selectedChatId) return;
-
-  const container = messagesEndRef.current?.parentElement;
-  if (!container) return;
-
-// Always mark notifications when chat opens
-  markAllNotificationsAsRead('messages');
-
-  const isNearBottom =
-    container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-
-  if (isNearBottom) {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
-  }
-}, [selectedChat?.messages?.length]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (chatMenuRef.current && !chatMenuRef.current.contains(e.target as Node)) setIsChatMenuOpen(false);
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleSendMessage = async (text?: string, file?: FileAttachment, type: MessageType = 'text') => {
-    if (!selectedChatId || !currentUser || !token) return;
-    if (!text?.trim() && !file) return;
-
-    try {
-      const payload = { text: text?.trim(), file, type };
-      const { data } = await axios.post(`${API_BASE}/api/chat/${selectedChatId}/messages`, payload, { headers: authHeaders });
-
-      if (data?.success) {
-        const newMessage = data.message;
-        setChats(prev =>
-          prev.map(chat =>
-            chat.id === selectedChatId
-              ? {
-                  ...chat,
-                  messages: [...(chat.messages || []), newMessage],
-                  lastMessagePreview: text?.trim() || (type === 'image' ? 'Sent an image' : 'Sent a file'),
-                  lastMessageTimestamp: newMessage.timestamp,
-                }
-              : chat
-          )
-        );
-        setMessageText('');
-      }
-    } catch (e: any) {
-      console.error('sendMessage error:', e?.response?.data || e?.message || e);
-      addNotification('Failed to send message', 'error');
-    }
-  };
-
-  const uploadFile = async (file: File): Promise<FileAttachment | null> => {
-  const formData = new FormData();
-  formData.append('image', file); // CHANGE HERE
-
-  const { data } = await axios.post(`${API_BASE}/api/upload`, formData, {
-    headers: {
-      ...authHeaders,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-
-  if (!data?.success) return null;
-
-  return {
-  name: file.name,
-  url: data.filePath.startsWith('http')
-    ? data.filePath
-    : `${API_BASE}${data.filePath}`,
-  mimeType: file.type,
-  size: file.size,
-};
-};
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'document') => {
-    const file = e.target.files?.[0];
-    if (!file || !token) return;
-
-    try {
-      const attachment = await uploadFile(file);
-      if (!attachment) throw new Error('Upload failed');
-      await handleSendMessage(undefined, attachment, type);
-    } catch (err) {
-      console.error(err);
-      addNotification('Upload failed', 'error');
-    } finally {
-      // allow reselect same file
-      e.target.value = '';
-    }
-  };
-
-  const handleTeamCreated = async (name: string, description: string, image: string | undefined, members: User[]) => {
-    if (!token) return;
-    try {
-      const payload = { name, description, users: members.map(m => m.id), image };
-      const { data } = await axios.post(`${API_BASE}/api/chat/team`, payload, { headers: authHeaders });
-
-      if (data?.success) {
-        const newTeam = { ...data.chat, messages: [] };
-        setChats(prev => [newTeam, ...prev]);
-        setSelectedChatId(newTeam.id);
-        setIsCreateTeamOpen(false);
-        addNotification('Team created successfully!', 'success');
-      }
-    } catch (e: any) {
-      console.error('createTeam error:', e?.response?.data || e?.message || e);
-      addNotification('Failed to create team', 'error');
-    }
-  };
-
-  const confirmClearChat = async () => {
-  if (!selectedChatId || !token) return;
 
   try {
-    await axios.delete(`${API_BASE}/api/chat/${selectedChatId}/messages`, {
+    const { data } = await axios.get(`${API_BASE}/api/chat`, {
       headers: authHeaders,
     });
 
-    // Only clear messages of current chat
+    if (data?.success) {
+      const processed = (data.chats || []).map((c: any) => ({
+        ...c,
+        messages: c.messages || [],
+      }));
+      setChats(processed);
+    }
+  } catch (err) {
+    console.error('fetchChats error:', err);
+  }
+};
+
+useEffect(() => {
+  fetchChats();
+}, [token]);
+
+// ================= LOAD MESSAGES =================
+useEffect(() => {
+  if (!selectedChatId || !token) return;
+
+  const loadMessages = async () => {
+    try {
+      const { data } = await axios.get(
+        `${API_BASE}/api/chat/${selectedChatId}/messages`,
+        { headers: authHeaders }
+      );
+
+      if (data?.success) {
+        setChats(prev =>
+          prev.map(c =>
+            c.id === selectedChatId
+              ? { ...c, messages: data.messages || [] }
+              : c
+          )
+        );
+      }
+    } catch (err) {
+      console.error('loadMessages error:', err);
+    }
+  };
+
+  loadMessages();
+}, [selectedChatId, token]);
+
+// ================= SEND MESSAGE =================
+const handleSendMessage = async (
+  text?: string,
+  file?: FileAttachment,
+  type: MessageType = 'text'
+) => {
+  if (!selectedChatId || !currentUser || !token) return;
+  if (!text?.trim() && !file) return;
+
+  try {
+    const { data } = await axios.post(
+      `${API_BASE}/api/chat/${selectedChatId}/messages`,
+      { text: text?.trim(), file, type },
+      { headers: authHeaders }
+    );
+
+    if (data?.success) {
+      const newMessage = data.message;
+
+      setChats(prev =>
+        prev.map(chat =>
+          chat.id === selectedChatId
+            ? {
+                ...chat,
+                messages: [...(chat.messages || []), newMessage],
+                lastMessagePreview:
+                  text?.trim() ||
+                  (type === 'image'
+                    ? 'Sent an image'
+                    : 'Sent a document'),
+                lastMessageTimestamp: newMessage.timestamp,
+              }
+            : chat
+        )
+      );
+
+      setMessageText('');
+    }
+  } catch (err) {
+    console.error('sendMessage error:', err);
+    addNotification('Failed to send message', 'error');
+  }
+};
+
+// ================= FILE UPLOAD =================
+const uploadFile = async (
+  file: File
+): Promise<FileAttachment | null> => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const { data } = await axios.post(
+      `${API_BASE}/api/upload`,
+      formData,
+      {
+        headers: {
+          ...authHeaders,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    if (!data?.success) return null;
+
+    return {
+      name: file.name,
+      url: data.filePath.startsWith('http')
+        ? data.filePath
+        : `${API_BASE}${data.filePath}`,
+      mimeType: file.type,
+      size: file.size,
+    };
+  } catch (err) {
+    console.error('upload error:', err);
+    return null;
+  }
+};
+
+const handleFileUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>,
+  type: 'image' | 'document'
+) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const attachment = await uploadFile(file);
+  if (!attachment) {
+    addNotification('Upload failed', 'error');
+    return;
+  }
+
+  await handleSendMessage(undefined, attachment, type);
+  e.target.value = '';
+};
+
+// ================= CLEAR CHAT =================
+const confirmClearChat = async () => {
+  if (!selectedChatId || !token) return;
+
+  try {
+    await axios.delete(
+      `${API_BASE}/api/chat/${selectedChatId}/messages`,
+      { headers: authHeaders }
+    );
+
     setChats(prev =>
       prev.map(c =>
         c.id === selectedChatId
@@ -467,18 +448,20 @@ useEffect(() => {
   setIsConfirmClearOpen(false);
 };
 
+// ================= DELETE CHAT =================
 const confirmDeleteChat = async () => {
   if (!chatToAction || !token) return;
 
   try {
-    await axios.delete(`${API_BASE}/api/chat/${chatToAction}`, {
-      headers: authHeaders,
-    });
+    await axios.delete(
+      `${API_BASE}/api/chat/${chatToAction}`,
+      { headers: authHeaders }
+    );
 
-    // Remove chat from list
-    setChats(prev => prev.filter(c => c.id !== chatToAction));
+    setChats(prev =>
+      prev.filter(c => c.id !== chatToAction)
+    );
 
-    // If current chat deleted → go back safely
     if (selectedChatId === chatToAction) {
       setSelectedChatId(null);
     }
