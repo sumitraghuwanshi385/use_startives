@@ -278,29 +278,46 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const reactToStartalk = async (talkId: string, emoji: string) => {
-  if (!currentUser) return;
-  const authToken = getAuthToken(); // ✅ 't' se 'authToken' rename
+      if (!currentUser) return;
+      const t = getAuthToken();
 
-  try {
-    const response = await axios.post(
-      `/api/startalks/${talkId}/react`,
-      { emoji },
-      { headers: { Authorization: `Bearer ${authToken}` } }
-    );
+      setStartalks(prev => prev.map(talk => {
+        if (talk.id === talkId) {
+          const reactions = { ...(talk.reactions || {}) };
+          const userReactions = { ...(talk.userReactions || {}) };
+          const oldEmoji = userReactions[currentUser.id];
+          
+          if (oldEmoji === emoji) {
+             reactions[emoji] = Math.max(0, (reactions[emoji] || 0) - 1);
+             if (reactions[emoji] === 0) delete reactions[emoji];
+             delete userReactions[currentUser.id];
+             return { ...talk, reactions, userReactions, currentUserReaction: undefined };
+          } else {
+             if (oldEmoji) {
+                reactions[oldEmoji] = Math.max(0, (reactions[oldEmoji] || 0) - 1);
+                if (reactions[oldEmoji] === 0) delete reactions[oldEmoji];
+             }
+             reactions[emoji] = (reactions[emoji] || 0) + 1;
+             userReactions[currentUser.id] = emoji;
+             return { ...talk, reactions, userReactions, currentUserReaction: emoji };
+          }
+        }
+        return talk;
+      }));
 
-    if (response.data.success) {
-      const updatedTalk = response.data.startalk;
+      try {
+        const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
+        if (response.data.success) {
+            const updatedTalk = response.data.startalk;
+            setStartalks(prev =>
+  prev.map(t =>
+    t.id === talkId ? updatedTalk : t
+  )
+);
+        }
+      } catch (error) { console.error("Reaction failed:", error); }
+  };
 
-      setStartalks(prev =>
-        prev.map(talk =>  // ✅ 't' se 'talk' rename
-          talk.id === talkId ? updatedTalk : talk
-        )
-      );
-    }
-  } catch (error) {
-    console.error("Reaction failed:", error);
-  }
-};
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
   const getPositionById = (ideaId: string, positionId: string) => getIdeaById(ideaId)?.positions.find(pos => pos.id === positionId);
@@ -430,7 +447,7 @@ useEffect(() => {
     setShowOnboardingModal,
   }), [
     startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds, reactToStartalk
+    addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
   ]);
 
   return (
