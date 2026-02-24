@@ -309,11 +309,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
         if (response.data.success) {
             const updatedTalk = response.data.startalk;
-            setStartalks(prev =>
-  prev.map(t =>
-    t.id === talkId ? updatedTalk : t
-  )
-);
+            const myReaction = updatedTalk.userReactions ? updatedTalk.userReactions[currentUser.id] : undefined;
+            setStartalks(prev => prev.map(t => t.id === talkId ? { ...updatedTalk, currentUserReaction: myReaction } : t));
         }
       } catch (error) { console.error("Reaction failed:", error); }
   };
@@ -431,7 +428,7 @@ useEffect(() => {
   };
 
   fetchStartalks();
-}, [token]);
+}, [token, currentUser]);
 
   const contextValue = useMemo(() => ({
     startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
