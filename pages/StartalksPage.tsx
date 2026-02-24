@@ -106,7 +106,7 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
   // ✅ Object.values works perfectly with the new backend fix
   const totalReactions = Object.values(talk.reactions || {}).reduce<number>((sum, count) => sum + (count as number), 0);
-  const userHasReacted = Boolean(talk.currentUserReaction && talk.currentUserReaction.trim() !== ""); // or check userReactions from backend logic if available
+  const userHasReacted = Boolean(talk.currentUserReaction); // or check userReactions from backend logic if available
   const isOwner = currentUser?.id === talk.authorId;
 
   const profileClickable = isMongoId(talk.authorId);
