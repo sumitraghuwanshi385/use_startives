@@ -431,7 +431,7 @@ useEffect(() => {
   };
 
   fetchStartalks();
-}, [token, currentUser]);
+}, [token]);
 
   const contextValue = useMemo(() => ({
     startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
