@@ -16,17 +16,6 @@ const SmileIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) 
   </svg>
 );
 
-const ActivityIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-  </svg>
-);
-
-const HeartFilledIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M11.645 20.91l-.095-.07C5.4 16.36 2 13.28 2 9.5 2 6.42 4.42 4 7.5 4c1.74 0 3.41.81 4.5 2.09A6.004 6.004 0 0116.5 4C19.58 4 22 6.42 22 9.5c0 3.78-3.4 6.86-9.55 11.34l-.095.07a.75.75 0 01-.71 0z" />
-  </svg>
-);
 
 const TrashIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
@@ -160,7 +149,7 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
         <div className="flex items-center gap-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[10px] font-black uppercase text-[var(--text-muted)] shadow-none h-fit">
-            <HeartFilledIcon className="w-3.5 h-3.5 text-purple-500" />
+            <SmileIcon className="w-3.5 h-3.5 text-purple-500" />
             <span className="text-[var(--text-primary)]">{totalReactions}</span>
           </div>
           {isOwner && onDeleteRequest && (
