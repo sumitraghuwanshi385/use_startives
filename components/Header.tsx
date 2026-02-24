@@ -104,7 +104,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--background-primary)] border-b border-[var(--border-primary)]">
-     <div className="w-full flex items-center justify-between px-4 lg:px-10 xl:px-20 py-2">
+     <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2">
         <div className="flex items-center space-x-8">
           <Link to={currentUser ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0">
             <img 
