@@ -231,6 +231,7 @@ export const MessagesPage: React.FC = () => {
   const [isCreateTeamOpen, setIsCreateTeamOpen] = useState(false);
   const [chatToAction, setChatToAction] = useState<string | null>(null);
   const [isChatMenuOpen, setIsChatMenuOpen] = useState(false);
+const [isAttachOpen, setIsAttachOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatMenuRef = useRef<HTMLDivElement>(null);
@@ -260,9 +261,10 @@ export const MessagesPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (token) fetchChats();
-  }, [token]);
+useEffect(() => {
+  if (!token) return;
+  fetchChats();
+}, []);
 
   useEffect(() => {
     if (!selectedChatId || !token) return;
@@ -413,25 +415,52 @@ export const MessagesPage: React.FC = () => {
     }
   };
 
-  const confirmClearChat = () => {
-    if (selectedChatId) {
-      setChats(prev => prev.map(c => (c.id === selectedChatId ? { ...c, messages: [], lastMessagePreview: undefined } : c)));
-      setIsChatMenuOpen(false);
-      addNotification('Chat cleared locally', 'info');
-    }
-    setIsConfirmClearOpen(false);
-  };
+  const confirmClearChat = async () => {
+  if (!selectedChatId || !token) return;
 
-  const confirmDeleteChat = () => {
-    if (chatToAction) {
-      setChats(prev => prev.filter(c => c.id !== chatToAction));
-      if (selectedChatId === chatToAction) setSelectedChatId(null);
-      setChatToAction(null);
-      addNotification('Conversation removed locally', 'info');
+  try {
+    await axios.delete(`${API_BASE}/api/chat/${selectedChatId}/messages`, {
+      headers: authHeaders,
+    });
+
+    setChats(prev =>
+      prev.map(c =>
+        c.id === selectedChatId
+          ? { ...c, messages: [], lastMessagePreview: undefined }
+          : c
+      )
+    );
+
+    addNotification('Chat cleared', 'success');
+  } catch {
+    addNotification('Clear failed', 'error');
+  }
+
+  setIsConfirmClearOpen(false);
+};
+
+  const confirmDeleteChat = async () => {
+  if (!chatToAction || !token) return;
+
+  try {
+    await axios.delete(`${API_BASE}/api/chat/${chatToAction}`, {
+      headers: authHeaders,
+    });
+
+    setChats(prev => prev.filter(c => c.id !== chatToAction));
+
+    if (selectedChatId === chatToAction) {
+      setSelectedChatId(null);
     }
-    setIsConfirmDeleteOpen(false);
-    setIsChatMenuOpen(false);
-  };
+
+    addNotification('Chat deleted permanently', 'success');
+  } catch (err) {
+    addNotification('Delete failed', 'error');
+  }
+
+  setIsConfirmDeleteOpen(false);
+  setIsChatMenuOpen(false);
+};
 
   const handleHeaderClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -536,7 +565,7 @@ export const MessagesPage: React.FC = () => {
     </aside>
 
     {/* ================= CHAT AREA ================= */}
-    <main className={`flex-1 flex flex-col min-h-0 ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+    <main className={`flex-1 flex flex-col min-h-0 relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
 
 {selectedChat ? (
   <>
@@ -634,57 +663,55 @@ export const MessagesPage: React.FC = () => {
                 )}
 
                 {/* IMAGE */}
-                {msg.type === 'image' && msg.file?.url && (
-                  <div>
-                    <img
-                      src={msg.file.url}
-                      className="max-h-72 w-full object-cover"
-                      alt="sent"
-                    />
-                    <div className="flex justify-between items-center px-3 py-2 bg-black/10">
-                      <span className="text-xs truncate">
-                        {msg.file.name || 'Image'}
-                      </span>
-                      <a
-                        href={msg.file.url}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-bold underline"
-                      >
-                        Download
-                      </a>
-                    </div>
+              {msg.type === 'image' && msg.file?.url && (
+  <div className="relative">
+
+    <img
+      src={msg.file.url}
+      className="rounded-xl max-h-72 object-cover"
+      alt="sent"
+    />
+
+    <a
+      href={msg.file.url}
+      download
+      className="absolute bottom-2 right-2 px-3 py-1 text-[10px] font-bold rounded-full bg-black/70 text-white"
+    >
+      Download
+    </a>
+
+  </div>
+)}
                   </div>
                 )}
 
                 {/* DOCUMENT */}
                 {msg.type === 'document' && msg.file?.url && (
-                  <div className="p-3 flex items-center gap-3">
-                    <div className="w-10 h-10 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 font-bold">
-                      DOC
-                    </div>
+  <div className="p-3 bg-neutral-100 dark:bg-neutral-900 rounded-xl flex items-center gap-3">
 
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold truncate">
-                        {msg.file.name}
-                      </p>
-                      <p className="text-[10px] opacity-60">
-                        {Math.round((msg.file.size || 0) / 1024)} KB
-                      </p>
-                    </div>
+    <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
+      DOC
+    </div>
 
-                    <a
-                      href={msg.file.url}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-bold text-purple-600 underline"
-                    >
-                      Download
-                    </a>
-                  </div>
-                )}
+    <div className="flex-1 min-w-0">
+      <p className="text-xs font-bold truncate">
+        {msg.file.name}
+      </p>
+      <p className="text-[10px] opacity-60">
+        {Math.round((msg.file.size || 0) / 1024)} KB
+      </p>
+    </div>
+
+    <a
+      href={msg.file.url}
+      download
+      className="px-3 py-1 text-[10px] font-bold rounded-full bg-purple-600 text-white"
+    >
+      Download
+    </a>
+
+  </div>
+)}
 
               </div>
             </div>
@@ -702,7 +729,7 @@ export const MessagesPage: React.FC = () => {
 
 
     {/* ===== INPUT SECTION ===== */}
-    <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black shrink-0">
+    <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black shrink-0 sticky bottom-0">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -712,15 +739,17 @@ export const MessagesPage: React.FC = () => {
       >
 
         {/* CLIP DROPDOWN */}
-        <div className="relative group">
+        <div className="relative">
           <button
-            type="button"
-            className="p-3 rounded-full bg-[var(--background-tertiary)]"
-          >
+  type="button"
+  onClick={() => setIsAttachOpen(prev => !prev)}
+  className="p-3 rounded-full bg-[var(--background-tertiary)]"
+>
             📎
           </button>
 
-          <div className="absolute bottom-12 left-0 hidden group-hover:block bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
+          {isAttachOpen && (
+  <div className="absolute bottom-14 left-0 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
 
             <button
               type="button"
@@ -742,6 +771,7 @@ export const MessagesPage: React.FC = () => {
 
           </div>
         </div>
+}}
 
         {/* Hidden Inputs */}
         <input
