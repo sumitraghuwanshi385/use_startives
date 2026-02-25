@@ -219,13 +219,12 @@ const PostIdeaPage: React.FC = () => {
   headers: { 'Content-Type': 'multipart/form-data' },
 });
 
-      if (res.data?.success && res.data?.url) {
-  const fullUrl = res.data.filePath || res.data.url;
-  setImagePreviewUrl(fullUrl);
+if (res.data?.success && res.data?.filePath) {
+  setImagePreviewUrl(res.data.filePath);
   addNotification('Image uploaded!', 'success');
-      } else {
-        addNotification('Image upload failed.', 'error');
-      }
+} else {
+  addNotification('Image upload failed.', 'error');
+}
     } catch (err: any) {
       console.error(err);
       addNotification(err?.response?.data?.message || 'Image upload failed.', 'error');
