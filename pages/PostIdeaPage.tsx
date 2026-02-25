@@ -228,6 +228,15 @@ if (res.data?.success && res.data?.url) {
   addNotification('Image upload failed.', 'error');
 }
 
+} catch (err: any) {
+  console.error(err);
+  addNotification(err?.response?.data?.message || 'Image upload failed.', 'error');
+} finally {
+  setIsImageUploading(false);
+}
+};   // ← YE LINE MISSING THI
+
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
