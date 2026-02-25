@@ -107,4 +107,30 @@ const getIdeas = async (req, res) => {
   }
 };
 
-module.exports = { createIdea, getIdeas };
+// @desc    Get single Idea
+// @route   GET /api/ideas/:id
+const getIdeaById = async (req, res) => {
+  try {
+    const idea = await Idea.findById(req.params.id);
+
+    if (!idea) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idea not found'
+      });
+    }
+
+    return res.json({
+      success: true,
+      idea: formatIdea(idea)  // IMPORTANT
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+module.exports = { createIdea, getIdeas, getIdeaById };
