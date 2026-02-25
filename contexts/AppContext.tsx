@@ -31,7 +31,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [startupIdeas, setStartupIdeas] = useState<StartupIdea[]>([]);
   const [startalks, setStartalks] = useState<Startalk[]>([]);
-  const [applications, setApplications] = useState<Application[]>(INITIAL_APPLICATIONS);
+  const [sentApplications, setSentApplications] = useState<Application[]>([]);
+const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
   const [notifications, setNotifications] = useState<AppSystemNotification[]>([]);
   const [appNotifications, setAppNotifications] = useState<AppNotification[]>(INITIAL_APP_NOTIFICATIONS);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -403,8 +404,13 @@ const fetchSentApplications = async () => {
     });
 
     if (res.data.success) {
-      setApplications(res.data.applications);
-    }
+  const normalized = res.data.applications.map((app: any) => ({
+    ...app,
+    id: app._id || app.id
+  }));
+
+  setSentApplications(normalized);
+}
   } catch (err) {
     console.error("Fetch sent failed", err);
   }
@@ -419,10 +425,15 @@ const fetchReceivedApplications = async () => {
     const res = await axios.get('/api/applications/received', {
       headers: { Authorization: `Bearer ${t}` }
     });
+if (res.data.success) {
+  const normalized = res.data.applications.map((app: any) => ({
+    ...app,
+    id: app._id || app.id
+  }));
 
-    if (res.data.success) {
-      setApplications(res.data.applications);
-    }
+  setReceivedApplications(normalized);
+}
+    
   } catch (err) {
     console.error("Fetch received failed", err);
   }
@@ -446,11 +457,17 @@ const updateApplicationStatus = async (id: string, status: string) => {
     );
 
     if (res.data.success) {
-      setApplications(prev =>
-        prev.map(app =>
-          app._id === id ? { ...app, status } : app
-        )
-      );
+      setSentApplications(prev =>
+  prev.map(app =>
+    app.id === id ? { ...app, status } : app
+  )
+);
+
+setReceivedApplications(prev =>
+  prev.map(app =>
+    app.id === id ? { ...app, status } : app
+  )
+);
     }
   } catch (err) {
     console.error("Status update failed", err);
@@ -514,7 +531,7 @@ useEffect(() => {
 
   const contextValue = useMemo(() => ({
     startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+    addIdea, addStartalk, sentApplications, receivedApplications, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
     saveProject, unsaveProject, isProjectSaved, getUserById, 
@@ -525,7 +542,8 @@ useEffect(() => {
     isRequestPending, isUserConnected,
     setShowOnboardingModal,
   }), [
-    startupIdeas, startalks, applications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
+    startupIdeas, startalks, sentApplications,
+receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
     addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
   ]);
 
