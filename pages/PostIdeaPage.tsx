@@ -206,39 +206,36 @@ const PostIdeaPage: React.FC = () => {
 
   // ✅ Image upload -> URL
   const handleProjectImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    try {
-      setIsImageUploading(true);
+  try {
+    setIsImageUploading(true);
 
-      const formData = new FormData();
-      formData.append('image', file);
+    const formData = new FormData();
+    formData.append('image', file);
 
-      axios.post(
-  'https://startives.onrender.com/api/upload',
-  formData,
-  {
-    headers: { 'Content-Type': 'multipart/form-data' }
+    const res = await axios.post(
+      'https://startives.onrender.com/api/upload',
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } }
+    );
+
+    if (res.data?.success) {
+      const imageUrl = res.data.url || res.data.filePath;
+      setImagePreviewUrl(imageUrl);
+      addNotification('Image uploaded!', 'success');
+    } else {
+      addNotification('Image upload failed.', 'error');
+    }
+
+  } catch (error: any) {
+    console.error(error);
+    addNotification(error?.response?.data?.message || 'Image upload failed.', 'error');
+  } finally {
+    setIsImageUploading(false);
   }
-);
-
-if (res.data?.success && res.data?.url) {
-  // backend relative path deta hai: /uploads/xyz.jpg
-  const fullUrl = `${window.location.origin}${res.data.url}`;
-  setImagePreviewUrl(fullUrl);
-  addNotification('Image uploaded!', 'success');
-} else {
-  addNotification('Image upload failed.', 'error');
-}
-
-} catch (err: any) {
-  console.error(err);
-  addNotification(err?.response?.data?.message || 'Image upload failed.', 'error');
-} finally {
-  setIsImageUploading(false);
-}
-};   // ← YE LINE MISSING THI
+};
 
 
   const handleSubmit = async (e: FormEvent) => {
