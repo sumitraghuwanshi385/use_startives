@@ -215,13 +215,12 @@ const PostIdeaPage: React.FC = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const res = await axios.post(
-  `${import.meta.env.VITE_BACKEND_URL}/api/upload`,
-  formData
-);
+      const res = await axios.post('/api/upload', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
 
       if (res.data?.success && res.data?.url) {
-  const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
+  const fullUrl = res.data.filePath || res.data.url;
   setImagePreviewUrl(fullUrl);
   addNotification('Image uploaded!', 'success');
       } else {
