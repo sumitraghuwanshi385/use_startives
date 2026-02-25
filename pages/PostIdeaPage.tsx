@@ -219,19 +219,14 @@ const PostIdeaPage: React.FC = () => {
   headers: { 'Content-Type': 'multipart/form-data' },
 });
 
-if (res.data?.success && res.data?.filePath) {
-  setImagePreviewUrl(res.data.filePath);
+if (res.data?.success && res.data?.url) {
+  // backend relative path deta hai: /uploads/xyz.jpg
+  const fullUrl = `${window.location.origin}${res.data.url}`;
+  setImagePreviewUrl(fullUrl);
   addNotification('Image uploaded!', 'success');
 } else {
   addNotification('Image upload failed.', 'error');
 }
-    } catch (err: any) {
-      console.error(err);
-      addNotification(err?.response?.data?.message || 'Image upload failed.', 'error');
-    } finally {
-      setIsImageUploading(false);
-    }
-  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
