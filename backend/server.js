@@ -57,6 +57,10 @@ app.get('/', (req, res) => {
   res.send('Startives API is running...');
 });
 
+app.get('/test123', (req,res)=>{
+  res.send("TEST OK")
+})
+
 app.use('/api/auth', authRoutes);
 app.use('/api/ideas', ideaRoutes);
 app.use('/api/startalks', startalkRoutes);
@@ -70,7 +74,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
-
-app.get('/test123', (req,res)=>{
-  res.send("TEST OK")
-})
