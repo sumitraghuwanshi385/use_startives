@@ -224,7 +224,6 @@ const PostIdeaPage: React.FC = () => {
   const fullUrl = `${import.meta.env.VITE_BACKEND_URL}${res.data.url}`;
   setImagePreviewUrl(fullUrl);
   addNotification('Image uploaded!', 'success');
-}
       } else {
         addNotification('Image upload failed.', 'error');
       }
