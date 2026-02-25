@@ -20,8 +20,8 @@ useEffect(() => {
       setIdea(res.data.idea);
 
       const foundPosition = res.data.idea.positions.find(
-        (p: any) => p._id === positionId
-      );
+  (p: any) => p.id === positionId
+);
 
       setPosition(foundPosition);
     } catch (err) {
