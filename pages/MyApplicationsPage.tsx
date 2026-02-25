@@ -185,13 +185,8 @@ export const MyApplicationsPage: React.FC = () => {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState<'sent' | 'received'>('sent');
     const [modalApp, setModalApp] = useState<Application | null>(null);
-const sentApplications = applications.filter(
-  app => app.applicantId === currentUser?.id
-);
-
-const receivedApplications = applications.filter(
-  app => app.ideaId?.founderId === currentUser?.id
-);
+const [sentApplications, setSentApplications] = useState<Application[]>([]);
+const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -200,6 +195,40 @@ const receivedApplications = applications.filter(
     }, [location.search]);
 
     if (!currentUser) return null;
+
+useEffect(() => {
+  const fetchApplications = async () => {
+    try {
+      const token = localStorage.getItem("token"); // ⚠️ check name
+
+      const sentRes = await axios.get(
+        "https://startives.onrender.com/api/applications/sent",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const receivedRes = await axios.get(
+        "https://startives.onrender.com/api/applications/received",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setSentApplications(sentRes.data.applications);
+      setReceivedApplications(receivedRes.data.applications);
+
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+    }
+  };
+
+  fetchApplications();
+}, []);
 
     return (
         <div className="space-y-6 max-w-6xl mx-auto font-poppins">
