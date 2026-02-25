@@ -191,7 +191,8 @@ export type UserProfileUpdate = {
 export type AppContextType = {
   startupIdeas: StartupIdea[];
   startalks: Startalk[];
-  applications: Application[];
+  sentApplications: Application[];
+receivedApplications: Application[];
   notifications: AppSystemNotification[]; 
   currentUser: User | null;
   users: User[]; 
