@@ -98,6 +98,7 @@ try {
 }
 
 setIsLoading(false);
+};
   
   const getInitials = (name?: string): string => {
     if (!name) return '?';
