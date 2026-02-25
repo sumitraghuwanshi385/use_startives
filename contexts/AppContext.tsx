@@ -384,12 +384,72 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const isUserConnected = (id: string) => connectedUserIds.includes(id);
 
   // ---------------- PLACEHOLDERS ----------------
-  const addApplication = () => {};
-  const updateApplicationStatus = () => {};
   const removeApplication = () => {};
   const saveProject = () => {};
   const unsaveProject = () => {};
   const isProjectSaved = () => false;
+
+// ---------------- APPLICATIONS ----------------
+
+// Fetch SENT applications
+const fetchSentApplications = async () => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.get('/api/applications/sent', {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data.success) {
+      setApplications(res.data.applications);
+    }
+  } catch (err) {
+    console.error("Fetch sent failed", err);
+  }
+};
+
+// Fetch RECEIVED applications
+const fetchReceivedApplications = async () => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.get('/api/applications/received', {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data.success) {
+      setApplications(res.data.applications);
+    }
+  } catch (err) {
+    console.error("Fetch received failed", err);
+  }
+};
+
+// Update status
+const updateApplicationStatus = async (id: string, status: string) => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.put(
+      `/api/applications/${id}/status`,
+      { status },
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (res.data.success) {
+      setApplications(prev =>
+        prev.map(app =>
+          app._id === id ? { ...app, status } : app
+        )
+      );
+    }
+  } catch (err) {
+    console.error("Status update failed", err);
+  }
+};
 
   // ---------------- INITIAL LOAD ----------------
   useEffect(() => {
@@ -439,6 +499,11 @@ useEffect(() => {
   };
 
   fetchStartalks();
+}, [token, currentUser]);
+
+useEffect(() => {
+  if (!token || !currentUser) return;
+  fetchApplications();
 }, [token, currentUser]);
 
   const contextValue = useMemo(() => ({
