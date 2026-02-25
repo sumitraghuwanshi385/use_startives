@@ -18,6 +18,7 @@ const startalkRoutes = require('./routes/startalkRoutes');
 const connectionRoutes = require('./routes/connectionRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use('/api/startalks', startalkRoutes);
 app.use('/api/connections', connectionRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // ===== SERVER =====
 const PORT = process.env.PORT || 5000;
