@@ -4,6 +4,7 @@ import { StartupIdea, Application, AppSystemNotification, AppContextType, User, 
 import { MOCK_USERS_RAW, EnvelopeOpenIcon } from '../constants';
 
 // Set credentials for cross-origin (production)
+axios.defaults.baseURL = 'https://startives.onrender.com';
 axios.defaults.withCredentials = true;
 
 // --- Initial Mock Notifications ---
