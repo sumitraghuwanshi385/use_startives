@@ -215,9 +215,13 @@ const PostIdeaPage: React.FC = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const res = await axios.post('/api/upload', formData, {
-  headers: { 'Content-Type': 'multipart/form-data' },
-});
+      axios.post(
+  'https://startives.onrender.com/api/upload',
+  formData,
+  {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }
+);
 
 if (res.data?.success && res.data?.url) {
   // backend relative path deta hai: /uploads/xyz.jpg
