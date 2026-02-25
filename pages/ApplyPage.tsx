@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
@@ -6,12 +6,31 @@ import { ClipboardDocumentListIcon, ChevronLeftIcon, UserCircleIcon, PaperAirpla
 
 const ApplyPage: React.FC = () => {
   const { ideaId, positionId } = useParams<{ ideaId: string; positionId: string }>();
-  const { getIdeaById, getPositionById, currentUser, addNotification, isLoading: appLoading } = useAppContext();
+  const { currentUser, addNotification, isLoading: appLoading } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const idea = ideaId ? getIdeaById(ideaId) : undefined;
-  const position = ideaId && positionId ? getPositionById(ideaId, positionId) : undefined;
+  const [idea, setIdea] = useState<any>(null);
+const [position, setPosition] = useState<any>(null);
+
+useEffect(() => {
+  const fetchIdea = async () => {
+    try {
+      const res = await axios.get(`/api/ideas/${ideaId}`);
+      setIdea(res.data.idea);
+
+      const foundPosition = res.data.idea.positions.find(
+        (p: any) => p._id === positionId
+      );
+
+      setPosition(foundPosition);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (ideaId) fetchIdea();
+}, [ideaId, positionId]);
 
   const [coverLetter, setCoverLetter] = useState('');
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -25,7 +44,8 @@ if (appLoading) {
   );
 }
 
-if (!ideaId || !positionId || !idea || !position) {
+if (!idea || !position)
+{
     return (
       <div className="text-center py-20">
         <h1 className="text-3xl font-bold text-[var(--accent-danger-text)] mb-4">Position Not Found</h1>
@@ -193,10 +213,10 @@ const handleSubmit = async (e: FormEvent) => {
                             </Link>
                             <button 
                                 type="submit" 
-                                disabled={isLoading}
+                                disabled={submitLoading}
                                 className="button-gradient inline-flex items-center text-white font-bold py-2.5 px-8 rounded-full text-sm shadow-md hover:shadow-lg transition-all transform hover:scale-105 active:scale-100 disabled:opacity-50"
                             >
-                                {isLoading ? (
+                                {submitLoading ? (
                                     <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
                                 ) : (
                                     <PaperAirplaneIcon className="mr-2 w-4 h-4" />
