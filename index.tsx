@@ -1,7 +1,12 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+  document.body.innerHTML =
+    "<h1 style='color:red'>JS ERROR: " + msg + "</h1>";
+};
+
 import { AppProvider } from './contexts/AppContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { HashRouter } from 'react-router-dom';
