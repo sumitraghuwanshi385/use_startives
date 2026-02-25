@@ -199,7 +199,7 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 useEffect(() => {
   const fetchApplications = async () => {
     try {
-      const token = localStorage.getItem("token"); // ⚠️ check name
+      const token = localStorage.getItem("authToken"); // ⚠️ check name
 
       const sentRes = await axios.get(
         "https://startives.onrender.com/api/applications/sent",
