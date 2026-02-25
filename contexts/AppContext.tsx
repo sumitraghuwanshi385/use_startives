@@ -418,11 +418,6 @@ const fetchApplications = async () => {
   }
 };
 
-const fetchApplications = async () => {
-  await fetchSentApplications();
-  await fetchReceivedApplications();
-};
-
 // Update status
 const updateApplicationStatus = async (id: string, status: string) => {
   const t = getAuthToken();
