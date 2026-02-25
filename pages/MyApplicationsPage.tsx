@@ -170,7 +170,7 @@ const SentApplicationCard: React.FC<{ application: Application; idea?: StartupId
                     </div>
                     <div>
                         <p className={`text-sm font-black uppercase tracking-tight ${statusStyles.text}`}>{application.status}</p>
-                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{new Date(application.createdAt).toLocaleDateString()}</p>
+                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{new Date(application.submittedDate).toLocaleDateString()}</p>
                     </div>
                 </div>
                 <Link to={`/idea/${idea?.id}`} className="button-gradient text-white font-black uppercase text-[10px] tracking-widest py-2.5 px-6 rounded-full text-center hover:scale-105 active:scale-95 transition-all shadow-none">Review project</Link>
@@ -193,6 +193,7 @@ export const MyApplicationsPage: React.FC = () => {
     }, [location.search]);
 
     if (!currentUser) return null;
+if (!sentApplications || !receivedApplications) return null;
 
 
     return (
