@@ -402,15 +402,17 @@ const fetchSentApplications = async () => {
     const res = await axios.get('/api/applications/sent', {
       headers: { Authorization: `Bearer ${t}` }
     });
-
-    if (res.data.success) {
+if (res.data?.success && Array.isArray(res.data.applications)) {
   const normalized = res.data.applications.map((app: any) => ({
     ...app,
     id: app._id || app.id
   }));
 
   setSentApplications(normalized);
+} else {
+  setSentApplications([]);
 }
+    
   } catch (err) {
     console.error("Fetch sent failed", err);
   }
@@ -425,15 +427,17 @@ const fetchReceivedApplications = async () => {
     const res = await axios.get('/api/applications/received', {
       headers: { Authorization: `Bearer ${t}` }
     });
-if (res.data.success) {
+if (res.data?.success && Array.isArray(res.data.applications)) {
   const normalized = res.data.applications.map((app: any) => ({
     ...app,
     id: app._id || app.id
   }));
 
   setReceivedApplications(normalized);
+} else {
+  setReceivedApplications([]);
 }
-    
+
   } catch (err) {
     console.error("Fetch received failed", err);
   }
