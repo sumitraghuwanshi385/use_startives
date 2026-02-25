@@ -253,8 +253,8 @@ const IdeaDetailPage: React.FC = () => {
             <DetailSection title={`Active Openings (${idea.positions.filter(p => p.isOpen).length})`} icon={<IdentificationIcon />}>
                 {idea.positions.filter(p => p.isOpen).length > 0 ? (
                 <div className="space-y-6">
-                    {idea.positions.filter(p => p.isOpen).map(position => (
-                    <div key={position.id} className="bg-[var(--component-secondary-background)] p-6 rounded-2xl border border-[var(--border-primary)] group hover:border-purple-500/30 transition-all">
+                    {idea.positions.filter(p => p.isOpen !== false).map(position => (
+  <div key={position._id} className="bg-[var(--component-secondary-background)] p-6 rounded-2xl border border-[var(--border-primary)] group hover:border-purple-500/30 transition-all">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                             <div>
                                 <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">{position.title}</h3>
@@ -267,7 +267,7 @@ const IdeaDetailPage: React.FC = () => {
                                 </div>
                             </div>
                             {currentUser && !isOwner && (
-                                <Link to={`/idea/${idea.id}/position/${position.id}/apply`} className="button-gradient inline-flex items-center text-white font-bold py-2 px-6 rounded-full text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105">
+                                <Link to={`/idea/${idea.id}/position/${position._id}/apply`} className="button-gradient inline-flex items-center text-white font-bold py-2 px-6 rounded-full text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105">
                                     Apply Now
                                 </Link>
                             )}
