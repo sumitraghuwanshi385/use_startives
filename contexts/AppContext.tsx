@@ -318,8 +318,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
-  const getPositionById = (ideaId: string, positionId: string) => getIdeaById(ideaId)?.positions.find(pos => pos.id === positionId);
-  
+  const getPositionById = (ideaId: string, positionId: string) => {
+  const idea = getIdeaById(ideaId);
+  if (!idea || !idea.positions) return undefined;
+
+  return idea.positions.find(
+    (pos: any) =>
+      pos.id === positionId ||
+      pos._id === positionId ||
+      pos.id?.toString() === positionId ||
+      pos._id?.toString() === positionId
+  );
+};
   const getUserById = useCallback((identifier: string, by: 'id' | 'email' = 'id') => {
     const allUsers = [...users];
     if (currentUser && !allUsers.find(u => u.id === currentUser.id)) allUsers.push(currentUser);
