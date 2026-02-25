@@ -388,6 +388,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const saveProject = () => {};
   const unsaveProject = () => {};
   const isProjectSaved = () => false;
+const addApplication = () => {};
 
 // ---------------- APPLICATIONS ----------------
 
