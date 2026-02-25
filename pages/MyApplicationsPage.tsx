@@ -180,13 +180,11 @@ const SentApplicationCard: React.FC<{ application: Application; idea?: StartupId
 };
 
 export const MyApplicationsPage: React.FC = () => {
-    const { applications, startupIdeas, currentUser, getUserById } = useAppContext();
+    const { sentApplications, receivedApplications, startupIdeas, currentUser, getUserById } = useAppContext();
     const navigate = useNavigate();
     const location = useLocation();
     const [activeTab, setActiveTab] = useState<'sent' | 'received'>('sent');
     const [modalApp, setModalApp] = useState<Application | null>(null);
-const [sentApplications, setSentApplications] = useState<Application[]>([]);
-const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
