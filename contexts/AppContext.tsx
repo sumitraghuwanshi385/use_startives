@@ -536,7 +536,7 @@ useEffect(() => {
   const contextValue = useMemo(() => ({
     startupIdeas, startalks, sentApplications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, sentApplications, receivedApplications, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
     saveProject, unsaveProject, isProjectSaved, getUserById, 
