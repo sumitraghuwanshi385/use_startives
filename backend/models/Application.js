@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const answerSchema = new mongoose.Schema({
+  question: String,
+  answer: String,
+});
+
 const applicationSchema = mongoose.Schema(
   {
     ideaId: {
@@ -16,10 +21,15 @@ const applicationSchema = mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    answers: [String], // custom answers
+    coverLetter: {
+      type: String,
+      required: true,
+    },
+    answers: [answerSchema],
     status: {
       type: String,
-      default: 'pending',
+      enum: ['Pending', 'Accepted', 'Rejected', 'Reviewed'],
+      default: 'Pending',
     },
   },
   { timestamps: true }
