@@ -40,7 +40,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [users, setUsers] = useState<User[]>([]);
   
   const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
-  const [isLoading, setIsLoading] = useState(true);
+
+useEffect(() => {
+  alert("TOKEN VALUE: " + localStorage.getItem('authToken'));
+}, []);
+
+const [isLoading, setIsLoading] = useState(true);
   const [authLoadingState, setAuthLoadingState] = useState({ isLoading: false, messages: [] as string[] });
   
   const [showOnboardingModal, setShowOnboardingModal] = useState(false);
