@@ -108,7 +108,7 @@ const CoverLetterModal: React.FC<{ application: Application; onClose: () => void
 const ReceivedApplicationCard: React.FC<{ application: Application; idea?: StartupIdea; onOpenModal: (app: Application) => void; }> = ({ application, idea, onOpenModal }) => {
     const { updateApplicationStatus, getUserById } = useAppContext();
     const position = idea?.positions.find(p => p.id === application.positionId);
-    const applicant = application.applicantId;
+    const applicant = getUserById(application.applicantEmail, 'email');
 
     return (
         <div className="bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] p-5 space-y-4 shadow-none hover:border-purple-500/30 transition-all font-poppins text-left">
