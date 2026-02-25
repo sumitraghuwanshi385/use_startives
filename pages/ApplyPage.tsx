@@ -6,7 +6,7 @@ import { ClipboardDocumentListIcon, ChevronLeftIcon, UserCircleIcon, PaperAirpla
 
 const ApplyPage: React.FC = () => {
   const { ideaId, positionId } = useParams<{ ideaId: string; positionId: string }>();
-  const { getIdeaById, getPositionById, addApplication, currentUser, addNotification } = useAppContext();
+  const { getIdeaById, getPositionById, currentUser, addNotification, isLoading } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,7 +17,15 @@ const ApplyPage: React.FC = () => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  if (!idea || !position) {
+if (isLoading) {
+  return (
+    <div className="text-center py-20">
+      <h2 className="text-xl font-semibold">Loading...</h2>
+    </div>
+  );
+}
+
+if (!ideaId || !positionId || !idea || !position) {
     return (
       <div className="text-center py-20">
         <h1 className="text-3xl font-bold text-[var(--accent-danger-text)] mb-4">Position Not Found</h1>
