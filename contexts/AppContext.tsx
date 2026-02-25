@@ -392,38 +392,29 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 // ---------------- APPLICATIONS ----------------
 
 // Fetch SENT applications
-const fetchSentApplications = async () => {
+const fetchApplications = async () => {
   const t = getAuthToken();
   if (!t) return;
 
   try {
-    const res = await axios.get('/api/applications/sent', {
+    const sentRes = await axios.get('/api/applications/sent', {
       headers: { Authorization: `Bearer ${t}` }
     });
 
-    if (res.data.success) {
-      setApplications(res.data.applications);
-    }
-  } catch (err) {
-    console.error("Fetch sent failed", err);
-  }
-};
-
-// Fetch RECEIVED applications
-const fetchReceivedApplications = async () => {
-  const t = getAuthToken();
-  if (!t) return;
-
-  try {
-    const res = await axios.get('/api/applications/received', {
+    const receivedRes = await axios.get('/api/applications/received', {
       headers: { Authorization: `Bearer ${t}` }
     });
 
-    if (res.data.success) {
-      setApplications(res.data.applications);
+    if (sentRes.data.success && receivedRes.data.success) {
+      const allApps = [
+        ...sentRes.data.applications,
+        ...receivedRes.data.applications
+      ];
+
+      setApplications(allApps);
     }
   } catch (err) {
-    console.error("Fetch received failed", err);
+    console.error("Fetch applications failed", err);
   }
 };
 
