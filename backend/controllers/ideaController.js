@@ -4,8 +4,20 @@ const Idea = require('../models/Idea');
 // Helper function to rename _id to id
 const formatIdea = (idea) => {
   const ideaObj = idea.toObject();
-  ideaObj.id = ideaObj._id.toString(); // string id (frontend ke liye best)
+
+  // main idea id
+  ideaObj.id = ideaObj._id.toString();
+
+  // 🔥 FIX: convert positions _id -> id
+  if (ideaObj.positions && ideaObj.positions.length > 0) {
+    ideaObj.positions = ideaObj.positions.map((pos) => ({
+      ...pos,
+      id: pos._id.toString(),
+    }));
+  }
+
   delete ideaObj._id;
+
   return ideaObj;
 };
 
