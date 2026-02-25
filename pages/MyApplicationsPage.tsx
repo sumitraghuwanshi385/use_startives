@@ -196,39 +196,6 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 
     if (!currentUser) return null;
 
-useEffect(() => {
-  const fetchApplications = async () => {
-    try {
-      const token = localStorage.getItem("authToken"); // ⚠️ check name
-
-      const sentRes = await axios.get(
-        "https://startives.onrender.com/api/applications/sent",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const receivedRes = await axios.get(
-        "https://startives.onrender.com/api/applications/received",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setSentApplications(sentRes.data.applications);
-      setReceivedApplications(receivedRes.data.applications);
-
-    } catch (error) {
-      console.error("Error fetching applications:", error);
-    }
-  };
-
-  fetchApplications();
-}, []);
 
     return (
         <div className="space-y-6 max-w-6xl mx-auto font-poppins">
