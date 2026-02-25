@@ -181,20 +181,12 @@ const SentApplicationCard: React.FC<{ application: Application; idea?: StartupId
 
 export const MyApplicationsPage: React.FC = () => {
     const { applications, startupIdeas, currentUser, getUserById } = useAppContext();
-const sentApplications = applications.filter(
-  (app: any) =>
-    app.applicantId?._id === currentUser?._id ||
-    app.applicantId === currentUser?._id
-);
-
-const receivedApplications = applications.filter(
-  (app: any) =>
-    app.ideaId?.founderId === currentUser?._id
-);
     const navigate = useNavigate();
     const location = useLocation();
     const [activeTab, setActiveTab] = useState<'sent' | 'received'>('sent');
     const [modalApp, setModalApp] = useState<Application | null>(null);
+const [sentApplications, setSentApplications] = useState<Application[]>([]);
+const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -216,9 +208,6 @@ const receivedApplications = applications.filter(
             
             <header className="text-left mb-6 px-1">
                 <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter">Applications</h1>
-<div style={{color:"red"}}>
-  Total Applications: {applications.length}
-</div>
                 <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">Track your opportunities and manage active applicants.</p>
             </header>
             
@@ -231,10 +220,10 @@ const receivedApplications = applications.filter(
 
             <div className="space-y-4 max-w-4xl mx-auto">
                 {activeTab === 'sent' ? (
-                    sentApplications.length > 0 ? sentApplications.map((app) => <SentApplicationCard key={app._id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} />) 
+                    sentApplications.length > 0 ? sentApplications.map((app) => <SentApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} />) 
                     : <div className="text-center py-16 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No applications sent yet.</p></div>
                 ) : (
-                    receivedApplications.length > 0 ? receivedApplications.map(app => <ReceivedApplicationCard key={app._id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} onOpenModal={setModalApp}/>)
+                    receivedApplications.length > 0 ? receivedApplications.map(app => <ReceivedApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} onOpenModal={setModalApp}/>)
                     : <div className="text-center py-16 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border border-[var(--border-primary)] shadow-none"><p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No applications received yet.</p></div>
                 )}
             </div>
