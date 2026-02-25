@@ -1,5 +1,5 @@
-
 import React, { useState, FormEvent } from 'react';
+import axios from 'axios';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ClipboardDocumentListIcon, ChevronLeftIcon, UserCircleIcon, PaperAirplaneIcon, IdentificationIcon } from '../constants';
@@ -72,23 +72,32 @@ const ApplyPage: React.FC = () => {
         return;
     }
 
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const formattedAnswers = Object.entries(answers).map(([q, a]) => ({ question: q, answer: String(a) }));
+    const formattedAnswers = Object.entries(answers).map(([q, a]) => ({
+  question: q,
+  answer: String(a)
+}));
 
-    addApplication({ 
-        ideaId, 
-        positionId, 
-        applicantName: currentUser.name, 
-        applicantEmail: currentUser.email, 
-        coverLetter,
-        answers: formattedAnswers
-    });
-    
-    setIsLoading(false);
-    addNotification("Application submitted successfully!", "success");
-    navigate(`/idea/${ideaId}`);
-  };
+try {
+  const token = localStorage.getItem('authToken');
+
+  await axios.post('/api/applications', {
+    ideaId,
+    positionId,
+    coverLetter,
+    answers: formattedAnswers
+  }, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  addNotification("Application submitted successfully!", "success");
+  navigate(`/idea/${ideaId}`);
+
+} catch (error) {
+  console.error(error);
+  addNotification("Failed to submit application.", "error");
+}
+
+setIsLoading(false);
   
   const getInitials = (name?: string): string => {
     if (!name) return '?';
