@@ -6,7 +6,7 @@ import { ClipboardDocumentListIcon, ChevronLeftIcon, UserCircleIcon, PaperAirpla
 
 const ApplyPage: React.FC = () => {
   const { ideaId, positionId } = useParams<{ ideaId: string; positionId: string }>();
-  const { getIdeaById, getPositionById, currentUser, addNotification, isLoading } = useAppContext();
+  const { getIdeaById, getPositionById, currentUser, addNotification, isLoading: appLoading } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,9 +15,9 @@ const ApplyPage: React.FC = () => {
 
   const [coverLetter, setCoverLetter] = useState('');
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-if (isLoading) {
+if (appLoading) {
   return (
     <div className="text-center py-20">
       <h2 className="text-xl font-semibold">Loading...</h2>
@@ -50,62 +50,60 @@ if (!ideaId || !positionId || !idea || !position) {
   const textAreaClasses = "block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg shadow-sm placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--border-accent)] focus:border-[var(--border-accent)] sm:text-sm text-[var(--text-primary)] transition-colors duration-200 resize-y";
 
   const handleAnswerChange = (question: string, value: string) => {
-      setAnswers(prev => ({...prev, [question]: value}));
-  };
+  setAnswers(prev => ({ ...prev, [question]: value }));
+};
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  setSubmitLoading(true);
 
-    if (!coverLetter) {
-        addNotification('Please write a cover letter.', 'error');
-        setIsLoading(false);
-        return;
+  if (!coverLetter) {
+    addNotification('Please write a cover letter.', 'error');
+    setSubmitLoading(false);
+    return;
+  }
+
+  if (position.questions && position.questions.length > 0) {
+    const missingAnswers = position.questions.some(q => !answers[q]?.trim());
+    if (missingAnswers) {
+      addNotification('Please answer all screening questions.', 'error');
+      setSubmitLoading(false);
+      return;
     }
-    
-    // Check if required questions are answered? Assuming optional for now or all required.
-    // Let's make them required if they exist.
-    if (position.questions && position.questions.length > 0) {
-        const missingAnswers = position.questions.some(q => !answers[q]?.trim());
-        if (missingAnswers) {
-            addNotification('Please answer all screening questions.', 'error');
-            setIsLoading(false);
-            return;
-        }
-    }
+  }
 
-    if (!ideaId || !positionId) {
-        addNotification('Error: Idea ID or Position ID is missing.', 'error');
-        setIsLoading(false);
-        return;
-    }
+  if (!ideaId || !positionId) {
+    addNotification('Error: Idea ID or Position ID is missing.', 'error');
+    setSubmitLoading(false);
+    return;
+  }
 
-    const formattedAnswers = Object.entries(answers).map(([q, a]) => ({
-  question: q,
-  answer: String(a)
-}));
+  const formattedAnswers = Object.entries(answers).map(([q, a]) => ({
+    question: q,
+    answer: String(a)
+  }));
 
-try {
-  const token = localStorage.getItem('authToken');
+  try {
+    const token = localStorage.getItem('authToken');
 
-  await axios.post('/api/applications', {
-    ideaId,
-    positionId,
-    coverLetter,
-    answers: formattedAnswers
-  }, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+    await axios.post('/api/applications', {
+      ideaId,
+      positionId,
+      coverLetter,
+      answers: formattedAnswers
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-  addNotification("Application submitted successfully!", "success");
-  navigate(`/idea/${ideaId}`);
+    addNotification("Application submitted successfully!", "success");
+    navigate(`/idea/${ideaId}`);
 
-} catch (error) {
-  console.error(error);
-  addNotification("Failed to submit application.", "error");
-}
+  } catch (error) {
+    console.error(error);
+    addNotification("Failed to submit application.", "error");
+  }
 
-setIsLoading(false);
+  setSubmitLoading(false);
 };
   
   const getInitials = (name?: string): string => {
