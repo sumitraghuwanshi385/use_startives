@@ -1,5 +1,5 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
+import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { Application, StartupIdea, User } from '../types';
@@ -185,6 +185,7 @@ export const MyApplicationsPage: React.FC = () => {
     const location = useLocation();
     const [activeTab, setActiveTab] = useState<'sent' | 'received'>('sent');
     const [modalApp, setModalApp] = useState<Application | null>(null);
+const [backendApplications, setBackendApplications] = useState<Application[]>([]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -219,7 +220,7 @@ export const MyApplicationsPage: React.FC = () => {
             <div className="flex justify-center mb-10">
                 <div className="inline-flex p-1 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full overflow-hidden shadow-none">
                     <button onClick={() => setActiveTab('sent')} className={`px-12 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'sent' ? 'button-gradient text-white shadow-none' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}>Sent ({sentApplications.length})</button>
-                    <button onClick={() => setActiveTab('received')} className={`px-12 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'received' ? 'button-gradient text-white shadow-none' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}>Received ({receivedApplications.length})</button>
+                    <button onClick={() => setActiveTab('received')} className={`px-12 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'received' ? 'button-gradient text-white shadow-none' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}>Received ({backendApplications.length})</button>
                 </div>
             </div>
 
@@ -228,7 +229,7 @@ export const MyApplicationsPage: React.FC = () => {
                     sentApplications.length > 0 ? sentApplications.map((app) => <SentApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} />) 
                     : <div className="text-center py-16 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No applications sent yet.</p></div>
                 ) : (
-                    receivedApplications.length > 0 ? receivedApplications.map(app => <ReceivedApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} onOpenModal={setModalApp}/>)
+                    backendApplications.length > 0 ? backendApplications.map(app => <ReceivedApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} onOpenModal={setModalApp}/>)
                     : <div className="text-center py-16 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border border-[var(--border-primary)] shadow-none"><p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No applications received yet.</p></div>
                 )}
             </div>
