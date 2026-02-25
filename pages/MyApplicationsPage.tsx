@@ -108,7 +108,7 @@ const CoverLetterModal: React.FC<{ application: Application; onClose: () => void
 const ReceivedApplicationCard: React.FC<{ application: Application; idea?: StartupIdea; onOpenModal: (app: Application) => void; }> = ({ application, idea, onOpenModal }) => {
     const { updateApplicationStatus, getUserById } = useAppContext();
     const position = idea?.positions.find(p => p.id === application.positionId);
-    const applicant = getUserById(application.applicantEmail, 'email');
+    const applicant = application.applicantId;
 
     return (
         <div className="bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] p-5 space-y-4 shadow-none hover:border-purple-500/30 transition-all font-poppins text-left">
@@ -117,7 +117,7 @@ const ReceivedApplicationCard: React.FC<{ application: Application; idea?: Start
                     <img src={applicant?.profilePictureUrl} alt={applicant?.name} className="w-11 h-11 rounded-full object-cover border border-[var(--border-secondary)]" />
                 </Link>
                 <div className="flex-grow overflow-hidden">
-                    <Link to={`/user/${applicant?.id}`} className="font-bold text-sm text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight uppercase">{application.applicantName}</Link>
+                    <Link to={`/user/${applicant?.id}`} className="font-bold text-sm text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight uppercase">{applicant?.name}</Link>
                     <p className="text-[10px] text-[var(--text-muted)] truncate font-medium uppercase tracking-widest">{applicant?.headline}</p>
                     <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400 mt-1 uppercase tracking-widest">Role: {position?.title}</p>
                 </div>
@@ -170,7 +170,7 @@ const SentApplicationCard: React.FC<{ application: Application; idea?: StartupId
                     </div>
                     <div>
                         <p className={`text-sm font-black uppercase tracking-tight ${statusStyles.text}`}>{application.status}</p>
-                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{new Date(application.submittedDate).toLocaleDateString()}</p>
+                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{new Date(application.createdAt).toLocaleDateString()}</p>
                     </div>
                 </div>
                 <Link to={`/idea/${idea?.id}`} className="button-gradient text-white font-black uppercase text-[10px] tracking-widest py-2.5 px-6 rounded-full text-center hover:scale-105 active:scale-95 transition-all shadow-none">Review project</Link>
@@ -199,14 +199,6 @@ const receivedApplications = applications.filter(
         if (tab === 'received' || tab === 'sent') setActiveTab(tab);
     }, [location.search]);
 
-    const [sentApplications, receivedApplications] = useMemo(() => {
-        if (!currentUser) return [[], []];
-        const sent = applications.filter(app => app.applicantEmail === currentUser.email).sort((a,b) => new Date(b.submittedDate).getTime() - new Date(a.submittedDate).getTime());
-        const myProjectIds = startupIdeas.filter(idea => idea.founderEmail === currentUser.email).map(idea => idea.id);
-        const received = applications.filter(app => myProjectIds.includes(app.ideaId)).sort((a,b) => new Date(b.submittedDate).getTime() - new Date(a.submittedDate).getTime());
-        return [sent, received];
-    }, [applications, startupIdeas, currentUser]);
-    
     if (!currentUser) return null;
 
     return (
