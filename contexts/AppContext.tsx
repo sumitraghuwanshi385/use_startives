@@ -499,7 +499,18 @@ useEffect(() => {
 }, [token, currentUser]);
 
 useEffect(() => {
-  if (!token || !currentUser) return;
+  if (!token) {
+    alert("NO TOKEN IN EFFECT");
+    return;
+  }
+
+  if (!currentUser) {
+    alert("NO USER IN EFFECT");
+    return;
+  }
+
+  alert("EFFECT RUNNING");
+
   fetchApplications();
 }, [token, currentUser]);
 
