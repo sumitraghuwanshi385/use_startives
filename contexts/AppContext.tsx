@@ -463,10 +463,15 @@ const updateApplicationStatus = async (id: string, status: string) => {
           try {
               const parsedUser = JSON.parse(storedUser);
               setToken(storedToken);
-              setCurrentUser(parsedUser);
-              if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
-              if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
-              setTimeout(() => { fetchConnections(); }, 0);
+setCurrentUser(parsedUser);
+
+// 🔥 ADD THIS LINE
+await fetchApplications();
+
+if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
+if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
+
+setTimeout(() => { fetchConnections(); }, 0);
           } catch (e) {
               localStorage.removeItem('authToken');
               localStorage.removeItem('user');
