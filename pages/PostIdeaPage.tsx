@@ -36,13 +36,12 @@ const ChevronDownIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-
   </svg>
 );
 
-const StageIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 17l6-6 4 4 8-8" />
+const GrowthIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
   </svg>
 );
 
-   
 const CheckIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -75,8 +74,18 @@ const HomeIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M3 11l8.586 8.586a2 2 0 002.828 0L21 13a2 2 0 000-2.828L12.414 1.586a2 2 0 00-2.828 0L3 7v4z" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.8}
+    stroke="currentColor"
+    className={className}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7h6v6H3z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 3h6v6h-6z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 15h6v6h-6z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15h6v6H3z" />
   </svg>
 );
 
@@ -355,58 +364,20 @@ const [isStageOpen, setIsStageOpen] = useState(false);
 
 
 {/* STAGE */}
-<div className="mb-6 relative">
-
-  {/* Label */}
-  <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2 px-1">
-    <StageIcon className="w-4 h-4 text-purple-600" />
-    Stage *
-  </label>
-
-  {/* Custom Dropdown Button */}
-  <button
-    type="button"
-    onClick={() => setIsStageOpen(!isStageOpen)}
-    className={`w-full flex items-center justify-between px-5 py-3.5 bg-[var(--background-tertiary)] border rounded-2xl shadow-inner text-sm font-medium transition-all
-      ${isStageOpen
-        ? 'border-purple-500 ring-2 ring-purple-500/20'
-        : 'border-[var(--border-secondary)]'
-      }
-      text-[var(--text-primary)]`}
-  >
-    <span>
-      {stage || 'Select Stage'}
-    </span>
-
-    <ChevronDownIcon
-  className={`w-4 h-4 transition-transform duration-200 ${isStageOpen ? 'rotate-180' : ''}`}
-/>
-  </button>
-
-  {/* Dropdown List */}
-  {isStageOpen && (
-    <div className="absolute z-50 w-full mt-2 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto custom-scrollable">
-      {STAGE_OPTIONS.map((option) => (
-        <button
-          key={option}
-          type="button"
-          onClick={() => {
-            setStage(option);
-            setIsStageOpen(false);
-          }}
-          className={`w-full text-left px-5 py-3 text-sm transition-colors flex items-center justify-between
-            ${stage === option
-              ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold'
-              : 'text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)]'
-            }`}
-        >
-          <span>{option}</span>
-          {stage === option && <CheckIcon className="w-4 h-4" />}
-        </button>
-      ))}
-    </div>
-  )}
-</div>
+<FormRow
+  label="Stage"
+  htmlFor="stage"
+  icon={<GrowthIcon />}
+  isRequired
+  subtext="Current progress level of your startup."
+>
+  <CustomSelect
+    value={stage}
+    onChange={(val) => setStage(val)}
+    options={STAGE_OPTIONS}
+    placeholder="Select Stage"
+  />
+</FormRow>
 
           <FormRow label="Tags" htmlFor="tags" icon={<TagIcon />} isRequired subtext="Keywords for discoverability (e.g., AI, SaaS)">
             <input type="text" id="tags" value={tags} onChange={(e) => setTags(e.target.value)} required className={inputClasses} placeholder="AI, Sustainability, B2B" />
