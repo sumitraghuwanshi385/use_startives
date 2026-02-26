@@ -164,7 +164,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
             <Link to={`/user/${founder.id}`}>
               <img
                 src={founder.profilePictureUrl}
-                className="w-10 h-10 rounded-2xl object-cover border border-[var(--border-secondary)]"
+                className="w-8 h-8 rounded-full object-cover border border-[var(--border-secondary)]"
               />
             </Link>
 
@@ -224,7 +224,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
               <Link to={`/user/${applicant.id}`}>
                 <img
                   src={applicant.profilePictureUrl}
-                  className="w-12 h-12 rounded-2xl object-cover border border-[var(--border-secondary)]"
+                  className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
                 />
               </Link>
             )}
