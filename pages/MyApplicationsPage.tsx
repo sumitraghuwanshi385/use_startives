@@ -119,23 +119,35 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       </p>
 
       {/* USER APPLY DESCRIPTION */}
-      <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
-        <p className="text-sm text-[var(--text-secondary)]">
-          {application.coverLetter}
-        </p>
-      </div>
+      <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)] space-y-2">
+
+  <p className="text-xs font-semibold text-purple-500 tracking-wide">
+    Applicant Letter
+  </p>
+
+  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+    {application.coverLetter}
+  </p>
+
+</div>
 
       <AnswersBox application={application} />
 
       {/* ACCEPTED ACTIONS */}
       {application.status === "Accepted" && founder && (
         <div className="flex gap-3">
-          <button
-            onClick={() => sendConnectionRequest(founder.id)}
-            className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
-          >
-            Send Request
-          </button>
+          {founder?.isConnected ? (
+  <div className="flex-1 py-2 rounded-full button-gradient text-white text-xs font-semibold text-center">
+    Connected
+  </div>
+) : (
+  <button
+    onClick={() => sendConnectionRequest(founder.id)}
+    className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
+  >
+    Add Connection
+  </button>
+)}
           <Link
             to={`/messages?chatWith=${founder.id}`}
             className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-semibold text-center"
@@ -236,11 +248,17 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         </p>
 
         {/* USER APPLY DESCRIPTION */}
-        <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
-          <p className="text-sm text-[var(--text-secondary)]">
-            {application.coverLetter}
-          </p>
-        </div>
+        <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)] space-y-2">
+
+  <p className="text-xs font-semibold text-purple-500 tracking-wide">
+    Applicant Letter
+  </p>
+
+  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+    {application.coverLetter}
+  </p>
+
+</div>
 
         <AnswersBox application={application} />
 
@@ -267,12 +285,18 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
         {application.status === "Accepted" && applicant && (
           <div className="flex gap-3">
-            <button
-              onClick={() => sendConnectionRequest(applicant.id)}
-              className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
-            >
-              Send Request
-            </button>
+            {founder?.isConnected ? (
+  <div className="flex-1 py-2 rounded-full button-gradient text-white text-xs font-semibold text-center">
+    Connected
+  </div>
+) : (
+  <button
+    onClick={() => sendConnectionRequest(founder.id)}
+    className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
+  >
+    Add Connection
+  </button>
+)}
             <Link
               to={`/messages?chatWith=${applicant.id}`}
               className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-semibold text-center"
