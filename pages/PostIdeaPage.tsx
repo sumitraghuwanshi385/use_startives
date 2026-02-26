@@ -82,10 +82,10 @@ const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" 
     stroke="currentColor"
     className={className}
   >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7h6v6H3z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 3h6v6h-6z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 15h6v6h-6z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15h6v6H3z" />
+    <rect x="3" y="3" width="7" height="7" rx="2" />
+    <rect x="14" y="3" width="7" height="7" rx="2" />
+    <rect x="3" y="14" width="7" height="7" rx="2" />
+    <rect x="14" y="14" width="7" height="7" rx="2" />
   </svg>
 );
 
