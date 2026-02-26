@@ -146,7 +146,7 @@ const PublicProfilePage: React.FC = () => {
   const getButtonContent = () => {
     if (isOwnProfile) return <span>Edit Profile</span>;
     // ✅ Updated to use local CheckCircleIcon
-    if (usersAreConnected) return <><CheckCircleIcon className="w-4 h-4" /><span>Message Connection</span></>;
+    if (usersAreConnected) return <><CheckCircleIcon className="w-4 h-4" /><span>Connected</span></>;
     if (requestIsPending) return <><ClockIcon className="w-4 h-4" /><span>Invite Sent</span></>;
     return <><PaperAirplaneIcon className="w-4 h-4 -rotate-45" /><span>Send Invite</span></>;
   };
