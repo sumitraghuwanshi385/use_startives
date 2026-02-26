@@ -164,7 +164,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
             <Link to={`/user/${founder.id}`}>
               <img
                 src={founder.profilePictureUrl}
-                className="w-8 h-8 rounded-full object-cover border border-[var(--border-secondary)]"
+                className="w-9 h-9 rounded-full object-cover border border-[var(--border-secondary)]"
               />
             </Link>
 
