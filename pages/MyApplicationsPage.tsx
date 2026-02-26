@@ -107,8 +107,14 @@ const CoverLetterModal: React.FC<{ application: Application; onClose: () => void
 
 const ReceivedApplicationCard: React.FC<{ application: Application; idea?: StartupIdea; onOpenModal: (app: Application) => void; }> = ({ application, idea, onOpenModal }) => {
     const { updateApplicationStatus, getUserById } = useAppContext();
-    const position = idea?.positions?.find(p => p.id === application.positionId);
-    const applicant = getUserById(application.applicantEmail, 'email');
+    const position = idea?.positions?.find(
+  p =>
+    p.id === application.positionId ||
+    p._id === application.positionId
+)
+    const applicant = application.applicantEmail
+  ? getUserById(application.applicantEmail, 'email')
+  : undefined;
 
     return (
         <div className="bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] p-5 space-y-4 shadow-none hover:border-purple-500/30 transition-all font-poppins text-left">
@@ -147,10 +153,16 @@ const ReceivedApplicationCard: React.FC<{ application: Application; idea?: Start
 };
 
 const SentApplicationCard: React.FC<{ application: Application; idea?: StartupIdea; }> = ({ application, idea }) => {
-    const position = idea?.positions?.find(p => p.id === application.positionId);
+    const position = idea?.positions?.find(
+  p =>
+    p.id === application.positionId ||
+    p._id === application.positionId
+)
     const statusStyles = getStatusStyles(application.status);
-    const founder = idea?.founderId
-  ? useAppContext().getUserById(idea.founderId)
+    const { getUserById } = useAppContext();
+
+const founder = idea?.founderEmail
+  ? getUserById(idea.founderEmail, 'email')
   : undefined;
 
     return (
@@ -172,7 +184,9 @@ const SentApplicationCard: React.FC<{ application: Application; idea?: StartupId
                     </div>
                     <div>
                         <p className={`text-sm font-black uppercase tracking-tight ${statusStyles.text}`}>{application.status}</p>
-                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{new Date(application.submittedDate).toLocaleDateString()}</p>
+                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{application.createdAt 
+  ? new Date(application.createdAt).toLocaleDateString()
+  : "N/A"}</p>
                     </div>
                 </div>
                 <Link to={`/idea/${idea?.id}`} className="button-gradient text-white font-black uppercase text-[10px] tracking-widest py-2.5 px-6 rounded-full text-center hover:scale-105 active:scale-95 transition-all shadow-none">Review project</Link>
@@ -221,10 +235,14 @@ if (!sentApplications || !receivedApplications) return null;
 
             <div className="space-y-4 max-w-4xl mx-auto">
                 {activeTab === 'sent' ? (
-                    sentApplications.length > 0 ? sentApplications.map((app) => <SentApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} />) 
+                    sentApplications.length > 0 ? sentApplications.map((app) => <SentApplicationCard key={app.id} application={app} idea={startupIdeas.find(
+  i => i.id === app.ideaId || i._id === app.ideaId
+)} />) 
                     : <div className="text-center py-16 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No applications sent yet.</p></div>
                 ) : (
-                    receivedApplications.length > 0 ? receivedApplications.map(app => <ReceivedApplicationCard key={app.id} application={app} idea={startupIdeas.find(i => i.id === app.ideaId)} onOpenModal={setModalApp}/>)
+                    receivedApplications.length > 0 ? receivedApplications.map(app => <ReceivedApplicationCard key={app.id} application={app} idea={startupIdeas.find(
+  i => i.id === app.ideaId || i._id === app.ideaId
+)} onOpenModal={setModalApp}/>)
                     : <div className="text-center py-16 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border border-[var(--border-primary)] shadow-none"><p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No applications received yet.</p></div>
                 )}
             </div>
