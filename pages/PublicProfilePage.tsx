@@ -180,15 +180,22 @@ const PublicProfilePage: React.FC = () => {
         
         <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
             <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2.5rem] bg-neutral-100 dark:bg-neutral-800 border-4 border-white dark:border-neutral-900 shadow-2xl flex-shrink-0 flex items-center justify-center overflow-hidden relative z-10">
-                    {user.profilePictureUrl ? (
-                        <img src={user.profilePictureUrl} alt={user.name} className="w-full h-full object-cover" />
-                    ) : (
-                        <span className="text-5xl font-black text-neutral-300 dark:text-neutral-700">{initials}</span>
-                    )}
-                </div>
-            </div>
+    <div className="absolute -inset-4 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+
+    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-neutral-100 dark:bg-neutral-800 border-4 border-white dark:border-neutral-900 shadow-2xl flex-shrink-0 flex items-center justify-center overflow-hidden relative z-10">
+        {currentUser.profilePictureUrl ? (
+            <img
+                src={currentUser.profilePictureUrl}
+                alt={currentUser.name}
+                className="w-full h-full object-cover"
+            />
+        ) : (
+            <span className="text-5xl font-black text-neutral-300 dark:text-neutral-700">
+                {initials}
+            </span>
+        )}
+    </div>
+</div>
 
             <div className="flex-grow text-center md:text-left space-y-5 pt-2">
                 <div>
@@ -199,7 +206,9 @@ const PublicProfilePage: React.FC = () => {
                             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{user.country}</span>
                         </div>
                     </div>
-                    <p className="text-xl text-purple-600 dark:text-purple-400 font-medium mt-3 italic">{user.headline || "Innovator & Builder"}</p>
+                    <p className="text-lg text-purple-600 dark:text-purple-400 font-medium mt-2 font-poppins">
+  {currentUser.headline || "Innovator & Builder"}
+</p>
                 </div>
 
                 <div className="flex flex-wrap justify-center md:justify-start gap-3">
