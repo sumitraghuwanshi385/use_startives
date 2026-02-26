@@ -107,7 +107,7 @@ const CoverLetterModal: React.FC<{ application: Application; onClose: () => void
 
 const ReceivedApplicationCard: React.FC<{ application: Application; idea?: StartupIdea; onOpenModal: (app: Application) => void; }> = ({ application, idea, onOpenModal }) => {
     const { updateApplicationStatus, getUserById } = useAppContext();
-    const position = idea?.positions.find(p => p.id === application.positionId);
+    const position = idea?.positions?.find(p => p.id === application.positionId);
     const applicant = getUserById(application.applicantEmail, 'email');
 
     return (
@@ -147,9 +147,11 @@ const ReceivedApplicationCard: React.FC<{ application: Application; idea?: Start
 };
 
 const SentApplicationCard: React.FC<{ application: Application; idea?: StartupIdea; }> = ({ application, idea }) => {
-    const position = idea?.positions.find(p => p.id === application.positionId);
+    const position = idea?.positions?.find(p => p.id === application.positionId);
     const statusStyles = getStatusStyles(application.status);
-    const founder = useAppContext().getUserById(idea?.founderId || '');
+    const founder = idea?.founderId
+  ? useAppContext().getUserById(idea.founderId)
+  : undefined;
 
     return (
         <div className={`bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] border-l-4 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 transition-all hover:border-purple-500/30 font-poppins shadow-none ${statusStyles.iconColor.replace('text-', 'border-l-')}`}>
