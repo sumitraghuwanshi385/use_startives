@@ -49,6 +49,7 @@ const createIdea = async (req, res) => {
       problem,
       buildingNow,
       founderQuote,
+      stage,
       tags,
       category,
       businessModel,
