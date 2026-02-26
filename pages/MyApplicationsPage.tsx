@@ -118,9 +118,15 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       </div>
 
       {/* ROLE */}
-      <p className="text-sm text-purple-500 font-semibold">
-        role applied: {position?.title || "-"}
-      </p>
+      <div className="text-sm font-semibold flex items-center gap-1">
+  <span className="text-[var(--text-primary)]">
+    Role:
+  </span>
+
+  <span className="text-purple-500">
+    {position?.title || "-"}
+  </span>
+</div>
 
       {/* USER APPLY MESSAGE */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)] space-y-2">
@@ -254,9 +260,15 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         </div>
 
         {/* ROLE */}
-        <p className="text-sm text-purple-500 font-semibold">
-          role: {position?.title || "-"}
-        </p>
+        <div className="text-sm font-semibold flex items-center gap-1">
+  <span className="text-[var(--text-primary)]">
+    Role:
+  </span>
+
+  <span className="text-purple-500">
+    {position?.title || "-"}
+  </span>
+</div>
 
         {/* USER APPLY MESSAGE */}
         <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)] space-y-2">
@@ -316,12 +328,30 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
           </div>
         )}
 
-        <div className="text-xs text-right text-[var(--text-muted)]">
-          {application.createdAt
-            ? new Date(application.createdAt).toLocaleDateString()
-            : "N/A"}
-        </div>
-      </div>
+        <div className="flex justify-between items-center pt-2 text-xs">
+
+  <div className="flex items-center gap-1">
+    <span className="font-semibold text-[var(--text-primary)]">
+      Projects:
+    </span>
+
+    {idea && (
+      <Link
+        to={`/idea/${getId(idea)}`}
+        className="text-purple-500 hover:text-purple-600 transition font-medium"
+      >
+        {idea.title}
+      </Link>
+    )}
+  </div>
+
+  <div className="text-[var(--text-muted)]">
+    {application.createdAt
+      ? new Date(application.createdAt).toLocaleDateString()
+      : "N/A"}
+  </div>
+
+</div>
     );
   };
 
