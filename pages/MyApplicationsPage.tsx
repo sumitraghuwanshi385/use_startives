@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
-import { Application, StartupIdea } from "../types";
+import { Application, StartupIdea, User } from "../types";
 import { ChevronLeftIcon, IdentificationIcon } from "../constants";
 
 /* ================= STATUS STYLE ================= */
@@ -19,12 +19,17 @@ const getStatusStyle = (status: string) => {
   }
 };
 
-/* ================= EXPANDABLE ANSWERS ================= */
+/* ================= ANSWERS ================= */
 
 const AnswersBox: React.FC<{ application: Application }> = ({ application }) => {
   const [open, setOpen] = useState(false);
 
-  if (!application.answers || application.answers.length === 0) return null;
+  const answers =
+    application.answers ||
+    (application as any).questionsAnswers ||
+    [];
+
+  if (!answers || answers.length === 0) return null;
 
   return (
     <div className="mt-4">
@@ -33,12 +38,12 @@ const AnswersBox: React.FC<{ application: Application }> = ({ application }) => 
         className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-300 flex items-center gap-2"
       >
         <IdentificationIcon className="w-4 h-4" />
-        {application.answers.length} Answers
+        {answers.length} Answers
       </button>
 
       {open && (
         <div className="mt-4 space-y-3 bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
-          {application.answers.map((qa, i) => (
+          {answers.map((qa: any, i: number) => (
             <div key={i}>
               <p className="text-xs font-bold text-[var(--text-primary)]">
                 {qa.question}
@@ -66,20 +71,24 @@ const ReceivedCard: React.FC<{
     sendConnectionRequest,
   } = useAppContext();
 
-  const applicant =
-    application.applicantEmail &&
-    getUserById(application.applicantEmail, "email");
+  const applicant: User | undefined =
+    application.applicantEmail
+      ? getUserById(application.applicantEmail, "email")
+      : (application as any).applicantId
+      ? getUserById((application as any).applicantId)
+      : undefined;
 
   const position = idea?.positions?.find(
-    (p) => p.id === application.positionId || p._id === application.positionId
+    (p: any) =>
+      String(p.id) === String(application.positionId) ||
+      String(p._id) === String(application.positionId)
   );
 
   return (
     <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
-      {/* HEADER */}
       <div className="flex items-center gap-4">
-        <Link to={`/user/${applicant?.id}`}>
+        <Link to={`/user/${applicant?.id || ""}`}>
           <img
             src={applicant?.profilePictureUrl || ""}
             className="w-14 h-14 rounded-2xl object-cover border border-[var(--border-secondary)]"
@@ -88,62 +97,48 @@ const ReceivedCard: React.FC<{
 
         <div className="flex-1">
           <Link
-            to={`/user/${applicant?.id}`}
+            to={`/user/${applicant?.id || ""}`}
             className="text-lg font-bold text-[var(--text-primary)] hover:text-purple-500"
           >
             {applicant?.name || "User"}
           </Link>
           <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">
-            {applicant?.headline}
+            {applicant?.headline || ""}
           </p>
         </div>
 
-        <span
-          className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${getStatusStyle(
-            application.status
-          )}`}
-        >
+        <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${getStatusStyle(application.status)}`}>
           {application.status}
         </span>
       </div>
 
-      {/* PROJECT */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
         <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] font-bold">
           Applied For
         </p>
         <h4 className="text-base font-bold text-[var(--text-primary)]">
-          {position?.title}
+          {idea?.title || "Project"}
         </h4>
-        <Link
-          to={`/idea/${idea?.id}`}
-          className="text-purple-500 text-sm font-bold hover:underline"
-        >
-          {idea?.title}
-        </Link>
         <p className="text-sm text-[var(--text-secondary)] mt-2">
-          {idea?.description}
+          {idea?.description || idea?.tagline || "No description available"}
+        </p>
+        <p className="text-xs text-purple-500 font-bold mt-2">
+          Role: {position?.title || ""}
         </p>
       </div>
 
       <AnswersBox application={application} />
 
-      {/* ACTIONS */}
       {application.status === "Pending" && (
         <div className="flex gap-3 pt-2">
           <button
-            onClick={() =>
-              updateApplicationStatus(application.id, "Rejected")
-            }
+            onClick={() => updateApplicationStatus(application.id, "Rejected")}
             className="flex-1 py-2 rounded-full bg-red-600 text-white text-xs font-bold uppercase"
           >
             Reject
           </button>
-
           <button
-            onClick={() =>
-              updateApplicationStatus(application.id, "Accepted")
-            }
+            onClick={() => updateApplicationStatus(application.id, "Accepted")}
             className="flex-1 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase"
           >
             Accept
@@ -171,6 +166,8 @@ const ReceivedCard: React.FC<{
       <div className="text-xs text-right text-[var(--text-muted)] uppercase tracking-wider">
         {application.createdAt
           ? new Date(application.createdAt).toLocaleDateString()
+          : application.submittedDate
+          ? new Date(application.submittedDate).toLocaleDateString()
           : "N/A"}
       </div>
     </div>
@@ -185,18 +182,24 @@ const SentCard: React.FC<{
 }> = ({ application, idea }) => {
   const { getUserById } = useAppContext();
 
-  const founder =
-    idea?.founderEmail && getUserById(idea.founderEmail, "email");
+  const founder: User | undefined =
+    idea?.founderEmail
+      ? getUserById(idea.founderEmail, "email")
+      : (idea as any)?.founderId
+      ? getUserById((idea as any).founderId)
+      : undefined;
 
   const position = idea?.positions?.find(
-    (p) => p.id === application.positionId || p._id === application.positionId
+    (p: any) =>
+      String(p.id) === String(application.positionId) ||
+      String(p._id) === String(application.positionId)
   );
 
   return (
     <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
       <div className="flex items-center gap-4">
-        <Link to={`/idea/${idea?.id}`}>
+        <Link to={`/idea/${idea?.id || ""}`}>
           <img
             src={idea?.imageUrl || ""}
             className="w-14 h-14 rounded-2xl object-cover border border-[var(--border-secondary)]"
@@ -205,44 +208,38 @@ const SentCard: React.FC<{
 
         <div className="flex-1">
           <Link
-            to={`/idea/${idea?.id}`}
+            to={`/idea/${idea?.id || ""}`}
             className="text-lg font-bold text-[var(--text-primary)] hover:text-purple-500"
           >
-            {idea?.title}
+            {idea?.title || "Project"}
           </Link>
-          <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">
-            Role: {position?.title}
-          </p>
         </div>
 
-        <span
-          className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${getStatusStyle(
-            application.status
-          )}`}
-        >
+        <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${getStatusStyle(application.status)}`}>
           {application.status}
         </span>
       </div>
 
-      <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
+      <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)] space-y-2">
         <p className="text-sm text-[var(--text-secondary)]">
-          {idea?.description}
+          {idea?.description || idea?.tagline || "No description available"}
+        </p>
+        <p className="text-xs text-purple-500 font-bold">
+          Role Applied: {position?.title || ""}
         </p>
       </div>
 
       <AnswersBox application={application} />
 
       <div className="flex justify-between items-center text-xs text-[var(--text-muted)] uppercase tracking-wider">
-        <Link
-          to={`/user/${founder?.id}`}
-          className="hover:text-purple-500"
-        >
-          {founder?.name}
+        <Link to={`/user/${founder?.id || ""}`} className="hover:text-purple-500">
+          {founder?.name || ""}
         </Link>
-
         <span>
           {application.createdAt
             ? new Date(application.createdAt).toLocaleDateString()
+            : application.submittedDate
+            ? new Date(application.submittedDate).toLocaleDateString()
             : "N/A"}
         </span>
       </div>
@@ -254,9 +251,9 @@ const SentCard: React.FC<{
 
 export const MyApplicationsPage: React.FC = () => {
   const {
-    sentApplications,
-    receivedApplications,
-    startupIdeas,
+    sentApplications = [],
+    receivedApplications = [],
+    startupIdeas = [],
     currentUser,
   } = useAppContext();
 
@@ -318,9 +315,9 @@ export const MyApplicationsPage: React.FC = () => {
                 key={app.id}
                 application={app}
                 idea={startupIdeas.find(
-                  (i) =>
-                    i.id === app.ideaId ||
-                    i._id === app.ideaId
+                  (i: any) =>
+                    String(i.id) === String(app.ideaId) ||
+                    String(i._id) === String(app.ideaId)
                 )}
               />
             ))
@@ -329,9 +326,9 @@ export const MyApplicationsPage: React.FC = () => {
                 key={app.id}
                 application={app}
                 idea={startupIdeas.find(
-                  (i) =>
-                    i.id === app.ideaId ||
-                    i._id === app.ideaId
+                  (i: any) =>
+                    String(i.id) === String(app.ideaId) ||
+                    String(i._id) === String(app.ideaId)
                 )}
               />
             ))}
