@@ -184,12 +184,11 @@ const ReceivedCard: React.FC<{
 
       {/* HEADER */}
       <div className="flex items-center gap-4">
-
         {applicant && (
           <Link to={`/user/${applicant.id}`}>
             <img
               src={applicant.profilePictureUrl}
-              className="w-14 h-14 rounded-2xl object-cover border border-[var(--border-secondary)]"
+              className="w-14 h-14 rounded-2xl object-cover border border-[var(--border-secondary)] hover:scale-105 transition"
             />
           </Link>
         )}
@@ -235,6 +234,48 @@ const ReceivedCard: React.FC<{
 
       <AnswersBox application={application} />
 
+      {/* ACTION BUTTONS */}
+      {application.status === "Pending" && (
+        <div className="flex gap-3 pt-2">
+          <button
+            onClick={() =>
+              updateApplicationStatus(application.id, "Rejected")
+            }
+            className="flex-1 py-2 rounded-full bg-red-600 text-white text-xs font-bold uppercase hover:opacity-90 transition"
+          >
+            Reject
+          </button>
+
+          <button
+            onClick={() =>
+              updateApplicationStatus(application.id, "Accepted")
+            }
+            className="flex-1 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase hover:opacity-90 transition"
+          >
+            Accept
+          </button>
+        </div>
+      )}
+
+      {application.status === "Accepted" && applicant && (
+        <div className="flex gap-3 pt-2">
+          <button
+            onClick={() => sendConnectionRequest(applicant.id)}
+            className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-bold uppercase hover:opacity-90 transition"
+          >
+            Send Request
+          </button>
+
+          <Link
+            to={`/messages?chatWith=${applicant.id}`}
+            className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-bold uppercase text-center hover:opacity-90 transition"
+          >
+            Message
+          </Link>
+        </div>
+      )}
+
+      {/* DATE */}
       <div className="text-xs text-right text-[var(--text-muted)] uppercase tracking-wider">
         {application.createdAt
           ? new Date(application.createdAt).toLocaleDateString()
@@ -243,7 +284,6 @@ const ReceivedCard: React.FC<{
     </div>
   );
 };
-
 /* ================= MAIN PAGE ================= */
 
 export const MyApplicationsPage: React.FC = () => {
