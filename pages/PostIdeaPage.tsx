@@ -214,6 +214,7 @@ const [stage, setStage] = useState('');
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
+const [isStageOpen, setIsStageOpen] = useState(false);
 
   const [nextPositionTempId, setNextPositionTempId] = useState(1);
 
