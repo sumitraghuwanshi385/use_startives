@@ -27,7 +27,7 @@ const createIdea = async (req, res) => {
   try {
     const {
       title, tagline, description, problem, buildingNow, founderQuote,
-      tags, category, businessModel, workMode, location, websiteUrl,
+      tags, stage, category, businessModel, workMode, location, websiteUrl,
       positionsData,
 
       // old + new
