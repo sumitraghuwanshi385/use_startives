@@ -378,9 +378,9 @@ const [isStageOpen, setIsStageOpen] = useState(false);
       {stage || 'Select Stage'}
     </span>
 
-    <ChevronDownIconUI
-      className={`w-4 h-4 transition-transform duration-200 ${isStageOpen ? 'rotate-180' : ''}`}
-    />
+    <ChevronDownIcon
+  className={`w-4 h-4 transition-transform duration-200 ${isStageOpen ? 'rotate-180' : ''}`}
+/>
   </button>
 
   {/* Dropdown List */}
