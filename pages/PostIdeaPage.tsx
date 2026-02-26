@@ -42,10 +42,7 @@ const StageIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) 
   </svg>
 );
 
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l-3 3m0 0l-1.5 4.5L9 18m-3-3h4.5" />
-  </svg>
-);
-
+   
 const CheckIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
