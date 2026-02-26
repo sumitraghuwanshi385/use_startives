@@ -4,7 +4,7 @@ import { useAppContext } from "../contexts/AppContext";
 import { Application, StartupIdea } from "../types";
 import { ChevronLeftIcon, IdentificationIcon } from "../constants";
 
-/* ================= SAFE ID MATCHER ================= */
+/* ================= SAFE ID ================= */
 
 const getId = (val: any) => {
   if (!val) return null;
@@ -15,7 +15,7 @@ const getId = (val: any) => {
   return val.toString();
 };
 
-/* ================= STATUS STYLE ================= */
+/* ================= STATUS ================= */
 
 const getStatusStyle = (status: string) => {
   switch (status) {
@@ -65,121 +65,6 @@ const AnswersBox: React.FC<{ application: Application }> = ({ application }) => 
   );
 };
 
-/* ================= RECEIVED CARD ================= */
-
-const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
-  application,
-  idea,
-}) => {
-  const { getUserById, updateApplicationStatus, sendConnectionRequest } =
-    useAppContext();
-
-  const applicantId = getId(application.applicantId);
-  const applicant = applicantId ? getUserById(applicantId) : null;
-
-  const position = idea?.positions?.find(
-    (p) => getId(p) === getId(application.positionId)
-  );
-
-  return (
-    <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
-
-      {/* HEADER */}
-      <div className="flex items-center gap-4">
-        {applicant && (
-          <Link to={`/user/${applicant.id}`}>
-            <img
-              src={applicant.profilePictureUrl}
-              className="w-14 h-14 rounded-full object-cover border border-[var(--border-secondary)]"
-            />
-          </Link>
-        )}
-
-        <div className="flex-1">
-          <Link
-            to={`/user/${applicant?.id}`}
-            className="text-lg font-semibold text-[var(--text-primary)]"
-          >
-            {applicant?.name}
-          </Link>
-          <p className="text-sm text-purple-500 font-poppins">
-            {applicant?.headline}
-          </p>
-        </div>
-
-        <span
-          className={`px-4 py-1.5 rounded-full text-xs font-semibold ${getStatusStyle(
-            application.status
-          )}`}
-        >
-          {application.status}
-        </span>
-      </div>
-
-      {/* PROJECT BOX */}
-      <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
-        <Link
-          to={`/idea/${getId(idea)}`}
-          className="text-base font-semibold text-[var(--text-primary)]"
-        >
-          {idea?.title}
-        </Link>
-
-        <p className="text-sm text-purple-500 mt-1">
-          role: {position?.title}
-        </p>
-
-        <p className="text-sm text-[var(--text-secondary)] mt-2">
-          {idea?.description}
-        </p>
-      </div>
-
-      <AnswersBox application={application} />
-
-      {/* ACTIONS */}
-      {application.status === "Pending" && (
-        <div className="flex gap-3 pt-2">
-          <button
-            onClick={() => updateApplicationStatus(application.id, "Rejected")}
-            className="flex-1 py-2 rounded-full bg-red-600 text-white text-xs font-semibold"
-          >
-            Reject
-          </button>
-          <button
-            onClick={() => updateApplicationStatus(application.id, "Accepted")}
-            className="flex-1 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold"
-          >
-            Accept
-          </button>
-        </div>
-      )}
-
-      {application.status === "Accepted" && applicant && (
-        <div className="flex gap-3 pt-2">
-          <button
-            onClick={() => sendConnectionRequest(applicant.id)}
-            className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
-          >
-            Send Request
-          </button>
-          <Link
-            to={`/messages?chatWith=${applicant.id}`}
-            className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-semibold text-center"
-          >
-            Message
-          </Link>
-        </div>
-      )}
-
-      <div className="text-xs text-right text-[var(--text-muted)]">
-        {application.createdAt
-          ? new Date(application.createdAt).toLocaleDateString()
-          : "N/A"}
-      </div>
-    </div>
-  );
-};
-
 /* ================= SENT CARD ================= */
 
 const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
@@ -187,6 +72,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   idea,
 }) => {
   const { getUserById } = useAppContext();
+
   const founderId = getId(idea?.founderId);
   const founder = founderId ? getUserById(founderId) : null;
 
@@ -197,76 +83,185 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   return (
     <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
-      <div className="flex items-center gap-4">
-        {idea?.imageUrl && (
-          <Link to={`/idea/${getId(idea)}`}>
-            <img
-              src={idea.imageUrl}
-              className="w-14 h-14 rounded-2xl object-cover border border-[var(--border-secondary)]"
-            />
-          </Link>
-        )}
-
-        <div className="flex-1">
-          <Link
-            to={`/idea/${getId(idea)}`}
-            className="text-lg font-semibold text-[var(--text-primary)]"
-          >
-            {idea?.title}
-          </Link>
-        </div>
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
+        <Link
+          to={`/idea/${getId(idea)}`}
+          className="text-lg font-semibold text-[var(--text-primary)]"
+        >
+          {idea?.title}
+        </Link>
 
         <span
           className={`px-4 py-1.5 rounded-full text-xs font-semibold ${getStatusStyle(
             application.status
           )}`}
         >
-          {application.status}
+          {application.status === "Accepted" ? "Connected" : application.status}
         </span>
       </div>
 
+      {/* ROLE */}
+      <p className="text-sm text-purple-500 font-semibold">
+        role applied: {position?.title}
+      </p>
+
+      {/* DESCRIPTION */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
+        <p className="text-xs text-[var(--text-muted)] mb-1 font-semibold">
+          About this project
+        </p>
         <p className="text-sm text-[var(--text-secondary)]">
           {idea?.description}
-        </p>
-
-        <p className="text-sm text-purple-500 mt-3">
-          role applied: {position?.title}
         </p>
       </div>
 
       <AnswersBox application={application} />
 
-      {founder && (
-        <div className="flex items-center gap-3 mt-2">
-          <Link to={`/user/${founder.id}`}>
-            <img
-              src={founder.profilePictureUrl}
-              className="w-8 h-8 rounded-full object-cover"
-            />
-          </Link>
-          <div>
-            <Link
-              to={`/user/${founder.id}`}
-              className="text-sm font-semibold text-[var(--text-primary)]"
-            >
-              {founder.name}
-            </Link>
-            <p className="text-sm text-purple-500 font-poppins">
-              {founder.headline}
-            </p>
-          </div>
-        </div>
-      )}
+      {/* FOOTER */}
+      <div className="flex justify-between items-end pt-2">
 
-      <div className="text-xs text-right text-[var(--text-muted)]">
-        {application.createdAt
-          ? new Date(application.createdAt).toLocaleDateString()
-          : "N/A"}
+        {/* FOUNDER LEFT */}
+        {founder && (
+          <div className="flex items-center gap-3">
+            <Link to={`/user/${founder.id}`}>
+              <img
+                src={founder.profilePictureUrl}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            </Link>
+            <div>
+              <Link
+                to={`/user/${founder.id}`}
+                className="text-sm font-semibold text-[var(--text-primary)]"
+              >
+                {founder.name}
+              </Link>
+              <p className="text-sm text-purple-500 font-poppins">
+                {founder.headline}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* DATE RIGHT */}
+        <div className="text-xs text-[var(--text-muted)]">
+          {application.createdAt
+            ? new Date(application.createdAt).toLocaleDateString()
+            : "N/A"}
+        </div>
       </div>
     </div>
   );
 };
+
+/* ================= RECEIVED CARD ================= */
+
+const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
+  ({ application, idea }) => {
+    const { getUserById, updateApplicationStatus, sendConnectionRequest } =
+      useAppContext();
+
+    const applicantId = getId(application.applicantId);
+    const applicant = applicantId ? getUserById(applicantId) : null;
+
+    const position = idea?.positions?.find(
+      (p) => getId(p) === getId(application.positionId)
+    );
+
+    return (
+      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {applicant && (
+              <Link to={`/user/${applicant.id}`}>
+                <img
+                  src={applicant.profilePictureUrl}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              </Link>
+            )}
+            <div>
+              <Link
+                to={`/user/${applicant?.id}`}
+                className="text-sm font-semibold text-[var(--text-primary)]"
+              >
+                {applicant?.name}
+              </Link>
+              <p className="text-sm text-purple-500 font-poppins">
+                {applicant?.headline}
+              </p>
+            </div>
+          </div>
+
+          <span
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold ${getStatusStyle(
+              application.status
+            )}`}
+          >
+            {application.status}
+          </span>
+        </div>
+
+        <p className="text-sm text-purple-500 font-semibold">
+          role: {position?.title}
+        </p>
+
+        <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
+          <p className="text-xs text-[var(--text-muted)] mb-1 font-semibold">
+            About this project
+          </p>
+          <p className="text-sm text-[var(--text-secondary)]">
+            {idea?.description}
+          </p>
+        </div>
+
+        <AnswersBox application={application} />
+
+        {application.status === "Pending" && (
+          <div className="flex gap-3">
+            <button
+              onClick={() =>
+                updateApplicationStatus(application.id, "Rejected")
+              }
+              className="flex-1 py-2 rounded-full bg-red-600 text-white text-xs font-semibold"
+            >
+              Reject
+            </button>
+            <button
+              onClick={() =>
+                updateApplicationStatus(application.id, "Accepted")
+              }
+              className="flex-1 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold"
+            >
+              Accept
+            </button>
+          </div>
+        )}
+
+        {application.status === "Accepted" && (
+          <div className="flex gap-3">
+            <span className="flex-1 py-2 rounded-full bg-emerald-100 text-emerald-600 text-xs font-semibold text-center">
+              Connected
+            </span>
+            <Link
+              to={`/messages?chatWith=${applicant?.id}`}
+              className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-semibold text-center"
+            >
+              Message
+            </Link>
+          </div>
+        )}
+
+        <div className="text-xs text-right text-[var(--text-muted)]">
+          {application.createdAt
+            ? new Date(application.createdAt).toLocaleDateString()
+            : "N/A"}
+        </div>
+      </div>
+    );
+  };
 
 /* ================= MAIN ================= */
 
