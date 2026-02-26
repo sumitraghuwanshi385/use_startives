@@ -30,7 +30,10 @@ export interface Startalk {
   imageUrl?: string; // Optional image attached to the talk
   timestamp: string;
   reactions: Record<string, number>;
-  currentUserReaction?: string; // Tracks which emoji the current user used
+  currentUserReaction?: string;
+userReactions?: Record<string, string>;
+
+ // Tracks which emoji the current user used
 }
 
 export interface StartupIdea {
