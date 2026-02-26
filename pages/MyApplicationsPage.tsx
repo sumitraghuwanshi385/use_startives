@@ -94,14 +94,14 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
             <Link to={`/idea/${getId(idea)}`}>
               <img
                 src={idea.imageUrl}
-                className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
+                className="w-12 h-12 rounded-2xl object-cover border border-[var(--border-secondary)]"
               />
             </Link>
           )}
 
           <Link
             to={`/idea/${getId(idea)}`}
-            className="text-lg font-bold text-[var(--text-primary)]"
+            className="text-lg font-semibold text-[var(--text-primary)]"
           >
             {idea.title}
           </Link>
@@ -123,7 +123,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       {/* COVER LETTER */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
         <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
-          COVER LETTER
+          Cover Letter
         </p>
         <p className="text-sm text-[var(--text-secondary)] mt-2">
           {application.coverLetter}
@@ -132,7 +132,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 
       <AnswersBox application={application} />
 
-      {/* ACTIONS */}
+      {/* ACCEPTED ACTIONS */}
       {application.status === "Accepted" && founder && (
         <div className="flex gap-3">
           {isConnected ? (
@@ -150,7 +150,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 
           <Link
             to={`/messages?chatWith=${founder.id}`}
-            className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100/50 border border-sky-200 text-sky-600 text-center"
+            className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100 border border-sky-200 text-sky-600 text-center"
           >
             MESSAGE
           </Link>
@@ -164,18 +164,18 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
             <Link to={`/user/${founder.id}`}>
               <img
                 src={founder.profilePictureUrl}
-                className="w-10 h-10 rounded-full object-cover border border-[var(--border-secondary)]"
+                className="w-10 h-10 rounded-2xl object-cover border border-[var(--border-secondary)]"
               />
             </Link>
 
             <div>
               <Link
                 to={`/user/${founder.id}`}
-                className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-tight"
+                className="text-sm font-medium text-[var(--text-primary)] font-poppins"
               >
                 {founder.name}
               </Link>
-              <p className="text-[10px] uppercase tracking-widest text-purple-500">
+              <p className="text-xs text-purple-500 font-poppins">
                 {founder.headline}
               </p>
             </div>
@@ -218,14 +218,13 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     return (
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
-        {/* HEADER */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {applicant && (
               <Link to={`/user/${applicant.id}`}>
                 <img
                   src={applicant.profilePictureUrl}
-                  className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
+                  className="w-12 h-12 rounded-2xl object-cover border border-[var(--border-secondary)]"
                 />
               </Link>
             )}
@@ -233,11 +232,11 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
             <div>
               <Link
                 to={`/user/${applicant?.id}`}
-                className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-tight"
+                className="text-sm font-medium text-[var(--text-primary)] font-poppins"
               >
                 {applicant?.name}
               </Link>
-              <p className="text-[10px] uppercase tracking-widest text-purple-500">
+              <p className="text-xs text-purple-500 font-poppins">
                 {applicant?.headline}
               </p>
             </div>
@@ -259,7 +258,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         {/* COVER LETTER */}
         <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
           <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
-            COVER LETTER
+            Cover Letter
           </p>
           <p className="text-sm text-[var(--text-secondary)] mt-2">
             {application.coverLetter}
@@ -283,7 +282,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
               onClick={() =>
                 updateApplicationStatus(application.id, "Accepted")
               }
-              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
+              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
             >
               ACCEPT
             </button>
@@ -307,7 +306,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
             <Link
               to={`/messages?chatWith=${applicant.id}`}
-              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100/50 border border-sky-200 text-sky-600 text-center"
+              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100 border border-sky-200 text-sky-600 text-center"
             >
               MESSAGE
             </Link>
@@ -376,7 +375,7 @@ export const MyApplicationsPage: React.FC = () => {
           Applications
         </h1>
         <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">
-          TRACK YOUR SENT APPLICATIONS AND MANAGE INCOMING REQUESTS.
+          Track your sent applications and manage incoming requests.
         </p>
       </div>
 
