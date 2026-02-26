@@ -169,25 +169,27 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       <div className="flex justify-between items-end pt-2">
 
         {founder && (
-          <div className="flex items-center gap-3">
-            <Link to={`/user/${founder.id}`}>
-              <img
-                src={founder.profilePictureUrl}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            </Link>
-            <div>
-              <Link
-                to={`/user/${founder.id}`}
-                className="text-sm font-semibold text-[var(--text-primary)]"
-              >
-                {founder.name}
-              </Link>
-              <p className="text-sm text-purple-500">
-                {founder.headline}
-              </p>
-            </div>
-          </div>
+          <div className="flex items-center gap-2">
+  <Link to={`/user/${founder.id}`}>
+    <img
+      src={founder.profilePictureUrl}
+      className="w-6 h-6 rounded-full object-cover"
+    />
+  </Link>
+
+  <div className="leading-tight">
+    <Link
+      to={`/user/${founder.id}`}
+      className="text-xs font-medium text-[var(--text-primary)]"
+    >
+      {founder.name}
+    </Link>
+
+    <p className="text-xs text-purple-500 font-poppins">
+      {founder.headline}
+    </p>
+  </div>
+</div>
         )}
 
         <div className="text-xs text-[var(--text-muted)]">
