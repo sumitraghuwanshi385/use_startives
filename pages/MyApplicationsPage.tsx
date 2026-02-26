@@ -328,7 +328,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
           </div>
         )}
 
-        <div className="flex justify-between items-center pt-2 text-xs">
+        <div className="flex justify-between items-center pt-2 text-sm">
 
   <div className="flex items-center gap-1">
     <span className="font-semibold text-[var(--text-primary)]">
