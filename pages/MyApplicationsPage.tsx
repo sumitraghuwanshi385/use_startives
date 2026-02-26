@@ -109,9 +109,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
         </div>
 
         <span
-          className={`px-4 py-1.5 rounded-full text-xs font-semibold ${getStatusStyle(
-            application.status
-          )}`}
+          className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
         >
           {application.status}
         </span>
@@ -150,7 +148,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
           ) : (
             <button
               onClick={() => sendConnectionRequest(founder.id)}
-              className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
+              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white hover:scale-105 transition-all"
             >
               Add Connection
             </button>
@@ -158,7 +156,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 
           <Link
             to={`/messages?chatWith=${founder.id}`}
-            className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-semibold text-center"
+            className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100/50 dark:bg-sky-500/10 border border-sky-200/50 dark:border-sky-500/30 text-sky-600 dark:text-sky-400 text-center"
           >
            Message
           </Link>
@@ -173,8 +171,9 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   <Link to={`/user/${founder.id}`}>
     <img
       src={founder.profilePictureUrl}
-      className="w-6 h-6 rounded-full object-cover"
+      
     />
+className="w-8 h-8 rounded-full object-cover border border-[var(--border-secondary)] shadow-none"
   </Link>
 
   <div className="leading-tight">
@@ -234,7 +233,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
               <Link to={`/user/${applicant.id}`}>
                 <img
                   src={applicant.profilePictureUrl}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)] shadow-none"
                 />
               </Link>
             )}
@@ -253,9 +252,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
           </div>
 
           <span
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold ${getStatusStyle(
-              application.status
-            )}`}
+            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
           >
             {application.status}
           </span>
@@ -315,7 +312,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
             ) : (
               <button
                 onClick={() => sendConnectionRequest(applicant.id)}
-                className="flex-1 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold"
+                className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white hover:scale-105 transition-all"
               >
                 Add Connection
               </button>
@@ -323,7 +320,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
             <Link
               to={`/messages?chatWith=${applicant.id}`}
-              className="flex-1 py-2 rounded-full bg-sky-600 text-white text-xs font-semibold text-center"
+              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100/50 dark:bg-sky-500/10 border border-sky-200/50 dark:border-sky-500/30 text-sky-600 dark:text-sky-400 text-center"
             >
               Message
             </Link>
@@ -393,16 +390,16 @@ export const MyApplicationsPage: React.FC = () => {
         <h1 className="text-4xl font-extrabold text-[var(--text-primary)]">
           Applications
         </h1>
-        <p className="text-sm text-[var(--text-muted)] mt-1">
-          Track your sent applications and manage incoming requests.
-        </p>
-      </div>
+          <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">
+  Track your sent applications and manage incoming requests.
+</p>
+    </div>
 
       <div className="flex justify-center">
-        <div className="inline-flex bg-[var(--background-tertiary)] p-1 rounded-full border border-[var(--border-primary)]">
+        <div className="bg-[var(--background-tertiary)] p-1 rounded-full flex space-x-1 max-w-xs w-full border border-[var(--border-primary)]">
           <button
             onClick={() => setActiveTab("sent")}
-            className={`px-10 py-2 rounded-full text-xs font-semibold ${
+            className={`flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-full transition-all ${
               activeTab === "sent"
                 ? "button-gradient text-white"
                 : "text-[var(--text-muted)]"
@@ -412,7 +409,7 @@ export const MyApplicationsPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab("received")}
-            className={`px-10 py-2 rounded-full text-xs font-semibold ${
+            className={`flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-full transition-all ${
               activeTab === "received"
                 ? "button-gradient text-white"
                 : "text-[var(--text-muted)]"
