@@ -254,11 +254,36 @@ const EditProfilePage: React.FC = () => {
                         <label htmlFor="country" className={labelStyles}>Where you are*</label>
                         <CustomCountrySelect value={country} onChange={setCountry} />
                     </div>
-                    <div className="md:col-span-2">
-                        <label htmlFor="headline" className={labelStyles}>Headline*</label>
-                        <input type="text" id="headline" value={headline} onChange={e => setHeadline(e.target.value)} required placeholder="e.g. Developer or Designer" className={inputStyles} />
-                    </div>
-                    <div className="md:col-span-2">
+                  <div className="md:col-span-2">
+  <label htmlFor="headline" className={labelStyles}>
+    Headline*
+  </label>
+
+  <input 
+    type="text"
+    id="headline"
+    value={headline}
+    onChange={(e) => {
+      if (e.target.value.length <= 30) {
+        setHeadline(e.target.value);
+      }
+    }}
+    maxLength={30}
+    required
+    placeholder="e.g. Developer or Designer"
+    className={inputStyles}
+  />
+
+  <div className="flex justify-between items-center mt-2">
+    <p className="text-[10px] text-[var(--text-muted)]">
+      Maximum 30 letters (including spaces)
+    </p>
+    <p className="text-[10px] font-semibold text-purple-500">
+      {headline.length}/30
+    </p>
+  </div>
+</div>
+           <div className="md:col-span-2">
                         <label htmlFor="bio" className={labelStyles}>Bio</label>
                         <textarea id="bio" value={bio} onChange={e => setBio(e.target.value)} rows={5} placeholder="Tell us about yourself..." className={`${inputStyles} resize-none`} />
                     </div>
