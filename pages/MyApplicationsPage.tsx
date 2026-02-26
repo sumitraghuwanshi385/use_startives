@@ -83,11 +83,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   );
 
   const isConnected =
-  founder &&
-  Array.isArray(currentUser?.connections) &&
-  currentUser.connections.some(
-    (c: any) => getId(c) === getId(founder?.id)
-  );
+    founder && currentUser?.connections?.includes(founder.id);
 
   return (
     <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
@@ -224,11 +220,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     );
 
     const isConnected =
-  applicant &&
-  Array.isArray(currentUser?.connections) &&
-  currentUser.connections.some(
-    (c: any) => getId(c) === getId(applicant?.id)
-  );
+      applicant && currentUser?.connections?.includes(applicant.id);
 
     return (
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
@@ -340,7 +332,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
   <div className="flex items-center gap-1">
     <span className="font-semibold text-[var(--text-primary)]">
-      Projects:
+      Project:
     </span>
 
     {idea && (
@@ -360,6 +352,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   </div>
 
 </div>
+      </div>
     );
   };
 
