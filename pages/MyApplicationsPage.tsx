@@ -83,7 +83,11 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   );
 
   const isConnected =
-    founder && currentUser?.connections?.includes(founder.id);
+  founder &&
+  Array.isArray(currentUser?.connections) &&
+  currentUser.connections.some(
+    (c: any) => getId(c) === getId(founder?.id)
+  );
 
   return (
     <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
@@ -220,7 +224,11 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     );
 
     const isConnected =
-      applicant && currentUser?.connections?.includes(applicant.id);
+  applicant &&
+  Array.isArray(currentUser?.connections) &&
+  currentUser.connections.some(
+    (c: any) => getId(c) === getId(applicant?.id)
+  );
 
     return (
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
