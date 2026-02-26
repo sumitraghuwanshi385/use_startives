@@ -18,10 +18,28 @@ import {
   XMarkIcon,
 } from '../constants';
 
+const STAGE_OPTIONS = [
+  'Idea Stage',
+  'Validation Stage',
+  'MVP Stage',
+  'Pre-Seed Stage',
+  'Fundraising Stage',
+  'Scaling Stage',
+  'Launched',
+  'Acquired'
+];
+
 // --- Icons ---
 const ChevronDownIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+  </svg>
+);
+
+const RocketIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a5.25 5.25 0 00-7.42-7.42L6 9l3 3 3-3 2.59 2.37z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l-3 3m0 0l-1.5 4.5L9 18m-3-3h4.5" />
   </svg>
 );
 
@@ -186,10 +204,11 @@ const PostIdeaPage: React.FC = () => {
   const [problem, setProblem] = useState('');
   const [solution, setSolution] = useState('');
   const [founderQuote, setFounderQuote] = useState('');
+const [stage, setStage] = useState('');
   const [tags, setTags] = useState('');
-  const [category, setCategory] = useState<StartupCategory>('SaaS');
-  const [businessModel, setBusinessModel] = useState<BusinessModel>('B2B');
-  const [workMode, setWorkMode] = useState<WorkMode>('Remote');
+  const [category, setCategory] = useState<StartupCategory>('');
+  const [businessModel, setBusinessModel] = useState<BusinessModel>('');
+  const [workMode, setWorkMode] = useState<WorkMode>('');
   const [location, setLocation] = useState('');
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -332,6 +351,32 @@ const PostIdeaPage: React.FC = () => {
           <FormRow label="Founder's Spark" htmlFor="founderQuote" isRequired subtext="The personal context behind this venture.">
             <textarea id="founderQuote" value={founderQuote} onChange={(e) => setFounderQuote(e.target.value)} rows={2} required className={textAreaClasses} placeholder="I started this because..." />
           </FormRow>
+
+
+{/* Stage Selection */}
+<div className="mb-6">
+  <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2 px-1">
+    Stage
+  </label>
+
+  <div className="relative">
+    <select
+      value={stage}
+      onChange={(e) => setStage(e.target.value)}
+      className="w-full appearance-none px-5 py-3.5 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-2xl shadow-inner text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all font-medium pr-10"
+    >
+      {STAGE_OPTIONS.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+
+    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-purple-600">
+      <RocketIcon />
+    </div>
+  </div>
+</div>
 
           <FormRow label="Tags" htmlFor="tags" icon={<TagIcon />} isRequired subtext="Keywords for discoverability (e.g., AI, SaaS)">
             <input type="text" id="tags" value={tags} onChange={(e) => setTags(e.target.value)} required className={inputClasses} placeholder="AI, Sustainability, B2B" />
