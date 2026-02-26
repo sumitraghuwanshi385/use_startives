@@ -36,9 +36,12 @@ const ChevronDownIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-
   </svg>
 );
 
-const RocketIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a5.25 5.25 0 00-7.42-7.42L6 9l3 3 3-3 2.59 2.37z" />
+const StageIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 17l6-6 4 4 8-8" />
+  </svg>
+);
+
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l-3 3m0 0l-1.5 4.5L9 18m-3-3h4.5" />
   </svg>
 );
@@ -74,9 +77,9 @@ const HomeIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-const BookmarkSquareIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className || 'w-6 h-6'}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 3.75V16.5L12 14.25L7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
+const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M3 11l8.586 8.586a2 2 0 002.828 0L21 13a2 2 0 000-2.828L12.414 1.586a2 2 0 00-2.828 0L3 7v4z" />
   </svg>
 );
 
@@ -353,29 +356,58 @@ const [stage, setStage] = useState('');
           </FormRow>
 
 
-{/* Stage Selection */}
-<div className="mb-6">
-  <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2 px-1">
-    Stage
+{/* STAGE */}
+<div className="mb-6 relative">
+
+  {/* Label */}
+  <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2 px-1">
+    <StageIcon className="w-4 h-4 text-purple-600" />
+    Stage *
   </label>
 
-  <div className="relative">
-    <select
-      value={stage}
-      onChange={(e) => setStage(e.target.value)}
-      className="w-full appearance-none px-5 py-3.5 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-2xl shadow-inner text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all font-medium pr-10"
-    >
-      {STAGE_OPTIONS.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
+  {/* Custom Dropdown Button */}
+  <button
+    type="button"
+    onClick={() => setIsStageOpen(!isStageOpen)}
+    className={`w-full flex items-center justify-between px-5 py-3.5 bg-[var(--background-tertiary)] border rounded-2xl shadow-inner text-sm font-medium transition-all
+      ${isStageOpen
+        ? 'border-purple-500 ring-2 ring-purple-500/20'
+        : 'border-[var(--border-secondary)]'
+      }
+      text-[var(--text-primary)]`}
+  >
+    <span>
+      {stage || 'Select Stage'}
+    </span>
 
-    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-purple-600">
-      <RocketIcon />
+    <ChevronDownIconUI
+      className={`w-4 h-4 transition-transform duration-200 ${isStageOpen ? 'rotate-180' : ''}`}
+    />
+  </button>
+
+  {/* Dropdown List */}
+  {isStageOpen && (
+    <div className="absolute z-50 w-full mt-2 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto custom-scrollable">
+      {STAGE_OPTIONS.map((option) => (
+        <button
+          key={option}
+          type="button"
+          onClick={() => {
+            setStage(option);
+            setIsStageOpen(false);
+          }}
+          className={`w-full text-left px-5 py-3 text-sm transition-colors flex items-center justify-between
+            ${stage === option
+              ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold'
+              : 'text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)]'
+            }`}
+        >
+          <span>{option}</span>
+          {stage === option && <CheckIcon className="w-4 h-4" />}
+        </button>
+      ))}
     </div>
-  </div>
+  )}
 </div>
 
           <FormRow label="Tags" htmlFor="tags" icon={<TagIcon />} isRequired subtext="Keywords for discoverability (e.g., AI, SaaS)">
@@ -383,7 +415,7 @@ const [stage, setStage] = useState('');
           </FormRow>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormRow label="Industry" htmlFor="category" icon={<BookmarkSquareIcon />} isRequired subtext="Select your market sector.">
+            <FormRow label="Category" htmlFor="category" icon={<CategoryIcon />} isRequired subtext="Select your market sector.">
               <CustomSelect value={category} onChange={(val) => setCategory(val as StartupCategory)} options={STARTUP_CATEGORIES} />
             </FormRow>
 
