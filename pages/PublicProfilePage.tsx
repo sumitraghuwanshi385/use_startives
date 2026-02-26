@@ -183,10 +183,10 @@ const PublicProfilePage: React.FC = () => {
     <div className="absolute -inset-4 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
 
     <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-neutral-100 dark:bg-neutral-800 border-4 border-white dark:border-neutral-900 shadow-2xl flex-shrink-0 flex items-center justify-center overflow-hidden relative z-10">
-        {currentUser.profilePictureUrl ? (
+        {user.profilePictureUrl ? (
             <img
-                src={currentUser.profilePictureUrl}
-                alt={currentUser.name}
+               src={user.profilePictureUrl}
+                alt={user.name}
                 className="w-full h-full object-cover"
             />
         ) : (
@@ -207,7 +207,7 @@ const PublicProfilePage: React.FC = () => {
                         </div>
                     </div>
                     <p className="text-lg text-purple-600 dark:text-purple-400 font-medium mt-2 font-poppins">
-  {currentUser.headline || "Innovator & Builder"}
+  {user.headline || "Innovator & Builder"}
 </p>
                 </div>
 
