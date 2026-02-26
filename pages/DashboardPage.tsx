@@ -236,18 +236,33 @@ const AboutStartivesBox: React.FC = () => {
 
 const DashboardPage: React.FC = () => {
   const { 
-    currentUser, startupIdeas, connectedUserIds, applications 
-  } = useAppContext();
+  currentUser, 
+  startupIdeas, 
+  connectedUserIds, 
+  sentApplications, 
+  receivedApplications 
+} = useAppContext();
 
   const myProjects = startupIdeas.filter(idea => idea.founderEmail === currentUser?.email);
 
   const [sentApplicationsCount, receivedApplicationsCount] = useMemo(() => {
-    if (!currentUser) return [0, 0];
-    const sent = applications.filter(app => app.applicantEmail === currentUser.email).length;
-    const myProjectIds = startupIdeas.filter(idea => idea.founderEmail === currentUser.email).map(idea => idea.id);
-    const received = applications.filter(app => myProjectIds.includes(app.ideaId)).length;
-    return [sent, received];
-  }, [applications, startupIdeas, currentUser]);
+  if (!currentUser) return [0, 0];
+
+  const sent = sentApplications.filter(
+    app => app.applicantEmail === currentUser.email
+  ).length;
+
+  const myProjectIds = startupIdeas
+    .filter(idea => idea.founderEmail === currentUser.email)
+    .map(idea => idea.id);
+
+  const received = receivedApplications.filter(
+    app => myProjectIds.includes(app.ideaId)
+  ).length;
+
+  return [sent, received];
+}, [sentApplications, receivedApplications, startupIdeas, currentUser]);
+
 
   const stats = [
     { title: 'Ventures', value: myProjects.length, icon: '🚀', subtext: 'Active ventures', isPrimary: true, linkTo: '/my-projects', animationDelay: '0.1s' },
