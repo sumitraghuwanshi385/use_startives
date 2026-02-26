@@ -277,7 +277,7 @@ const [isStageOpen, setIsStageOpen] = useState(false);
 
     setIsLoading(true);
 
-    if (!title || !tagline || !description || !problem || !solution || !founderQuote || !tags || !location || !imagePreviewUrl) {
+  if (!title || !tagline || !description || !problem || !solution || !founderQuote || !tags || !location || !imagePreviewUrl || !stage)   {
       addNotification('Please fill in all mandatory fields.', 'error');
       setIsLoading(false);
       return;
@@ -292,7 +292,7 @@ const [isStageOpen, setIsStageOpen] = useState(false);
       founderQuote,
       founderName: currentUser?.name || 'User',
       tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-      stage: 'Idea Stage' as const,
+      stage,
       category,
       businessModel,
       workMode,
