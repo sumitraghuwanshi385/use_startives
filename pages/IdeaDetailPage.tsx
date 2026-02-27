@@ -78,19 +78,6 @@ const IdeaDetailPage: React.FC = () => {
   const handleSaveToggle = (e: React.MouseEvent) => {
   e.stopPropagation();
 
-  console.log("CLICKED SAVE");
-  console.log("Current User:", currentUser);
-  console.log("Is Saved:", isSaved);
-  console.log("Idea ID:", idea.id);
-
-  if (!currentUser) {
-    navigate('/login');
-    return;
-  }
-
-  const handleSaveToggle = (e: React.MouseEvent) => {
-  e.stopPropagation();
-
   if (!currentUser) {
     navigate('/login');
     return;
@@ -98,7 +85,7 @@ const IdeaDetailPage: React.FC = () => {
 
   toggleSaveProject(idea.id);
 };
-  
+
   return (
     <div className="space-y-6">
         <button onClick={() => navigate(-1)} className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-5 py-2.5 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]">
