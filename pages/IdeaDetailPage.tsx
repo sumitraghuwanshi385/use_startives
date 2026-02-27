@@ -101,7 +101,9 @@ const IdeaDetailPage: React.FC = () => {
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     <div>
                         <h1 className="text-3xl sm:text-4xl font-startives-brand text-[var(--text-primary)] tracking-tighter leading-none">{idea.title}</h1>
-                        <p className="mt-2 text-lg text-[var(--text-secondary)] font-medium italic opacity-80">{idea.tagline}</p>
+                        <p className="mt-2 text-lg text-purple-600 dark:text-purple-400 font-medium font-poppins">
+  {idea.tagline}
+</p
                     </div>
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
                         {idea.websiteUrl && (
@@ -151,7 +153,7 @@ const IdeaDetailPage: React.FC = () => {
                           <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
                               <span className="w-4 h-px bg-emerald-600/30"></span> The Solution
                           </h3>
-                          <p className="text-sm font-semibold text-[var(--text-primary)] leading-relaxed italic">
+                          <p className="text-sm font-semibold text-[var(--text-primary)] leading-relaxed">
                               {idea.buildingNow || "A decentralized collaborative ecosystem that bridges the gap between raw talent and high-impact ideas."}
                           </p>
                       </div>
@@ -167,7 +169,9 @@ const IdeaDetailPage: React.FC = () => {
                             <img src={founder.profilePictureUrl || `https://i.pravatar.cc/150?u=${founder.id}`} alt={founder.name} className="w-12 h-12 rounded-full object-cover border-2 border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors" />
                             <div>
                                 <p className="font-bold text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">{founder.name}</p>
-                                <p className="text-xs text-[var(--text-muted)] font-medium line-clamp-1">{founder.headline}</p>
+                                <p className="text-xs text-purple-600 dark:text-purple-400 font-medium font-poppins line-clamp-1">
+  {founder.headline}
+</p>
                             </div>
                         </Link>
                         {founder.bio && (
@@ -207,7 +211,9 @@ const IdeaDetailPage: React.FC = () => {
             <DetailSection title="Quick Stats" icon={<ClipboardDocumentListIcon />}>
                  <ul className="text-sm text-[var(--text-secondary)] font-medium space-y-4">
                      <li className="flex items-center justify-between gap-3 bg-[var(--background-tertiary)] px-3 py-1.5 rounded-lg border border-[var(--border-primary)] shadow-sm">
-                         <span className="text-[10px] font-black uppercase text-[var(--text-muted)]">Phase</span>
+                         <span className="text-[10px] font-black uppercase text-[var(--text-muted)]">
+  Stage
+</span>
                          <span className="text-[var(--text-primary)] font-bold">{idea.stage}</span>
                      </li>
                      <li className="flex items-center justify-between gap-3 bg-[var(--background-tertiary)] px-3 py-1.5 rounded-lg border border-[var(--border-primary)] shadow-sm">
