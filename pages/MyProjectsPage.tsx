@@ -154,8 +154,7 @@ const totalApplications = receivedApplications.filter(
   </div>
 
 </div>
-            </div>
-        </div>
+            
     );
 };
 
