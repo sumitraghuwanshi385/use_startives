@@ -202,10 +202,12 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           </div>
 
           <div className="flex-grow overflow-hidden">
-            <h3 className="text-xl font-bold text-[var(--text-primary)] leading-tight group-hover:text-purple-600 transition-colors line-clamp-1 tracking-tight uppercase">
-              {idea.title}
-            </h3>
-            <p className="text-xs text-[var(--text-muted)] italic line-clamp-1 mt-0.5">{idea.tagline}</p>
+            <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins">
+  {idea.title}
+</h3>
+            <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
+  {idea.tagline}
+</p>
           </div>
         </div>
 
@@ -233,7 +235,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest">Open Positions</h4>
           <div className="flex flex-wrap gap-1.5">
             {idea.positions.slice(0, 2).map(pos => (
-              <span key={pos.id} className="text-[9px] font-black tracking-tight bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-3 py-1 rounded-full border border-[var(--border-primary)] shadow-none uppercase">
+              <span key={pos.id} className="text-[9px] font-black tracking-tight px-3 py-1 rounded-full uppercase bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-sm"
                 {pos.title}
               </span>
             ))}
