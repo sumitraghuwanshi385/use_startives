@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { StartupIdea } from '../types';
@@ -6,22 +6,7 @@ import { ChevronLeftIcon, BookmarkIcon, GlobeAltIcon, ShoppingBagIcon } from '..
 
 const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
-  const { unsaveProject, receivedApplications } = useAppContext();
-
-  const getId = (val: any) => {
-    if (!val) return null;
-    if (typeof val === "string") return val;
-    if (typeof val === "object") {
-      return val._id?.toString?.() || val.id?.toString?.();
-    }
-    return val.toString();
-  };
-
-  const totalApplications = receivedApplications.filter(
-    app => getId(app.ideaId) === getId(idea.id)
-  ).length;
-
-  const openPositions = idea.positions?.filter(p => p.isOpen).length || 0;
+  const { unsaveProject } = useAppContext();
 
   return (
     <div
@@ -56,27 +41,7 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-[var(--border-primary)] pt-4 gap-4">
-        <div className="flex items-center space-x-8">
-          <div>
-            <p className="font-semibold text-2xl text-purple-600">
-              {totalApplications}
-            </p>
-            <p className="text-xs font-poppins text-[var(--text-muted)]">
-              Total applications
-            </p>
-          </div>
-
-          <div>
-            <p className="font-semibold text-2xl text-sky-500">
-              {openPositions}
-            </p>
-            <p className="text-xs font-poppins text-[var(--text-muted)]">
-              Open roles
-            </p>
-          </div>
-        </div>
-
+      <div className="border-t border-[var(--border-primary)] pt-4">
         <span className="text-[10px] font-black uppercase tracking-widest text-purple-600">
           Details
         </span>
@@ -104,7 +69,7 @@ const SavedProjectsPage: React.FC = () => {
       <div className="flex justify-start mb-8">
         <Link
           to="/dashboard"
-          className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full px-5 py-2 shadow-none font-poppins"
+          className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full px-5 py-2 shadow-none"
         >
           <ChevronLeftIcon className="w-3.5 h-3.5" />
           <span>Dashboard</span>
@@ -153,8 +118,8 @@ const SavedProjectsPage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
-            <GlobeAltIcon className="w-16 h-16 text-neutral-300 mb-4 shadow-none" />
+          <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center shadow-none">
+            <GlobeAltIcon className="w-16 h-16 text-neutral-300 mb-4" />
             <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">
               Whitelist is empty
             </p>
@@ -167,8 +132,8 @@ const SavedProjectsPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
-          <ShoppingBagIcon className="w-16 h-16 text-neutral-300 mb-4 shadow-none" />
+        <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center shadow-none">
+          <ShoppingBagIcon className="w-16 h-16 text-neutral-300 mb-4" />
           <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">
             Asset list empty
           </p>
