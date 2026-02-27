@@ -142,6 +142,18 @@ const totalApplications = receivedApplications.filter(
 </div>
                     <Link to="/my-applications?tab=received" className="bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-300 text-[10px] font-black uppercase tracking-widest py-2 px-5 rounded-full hover:bg-purple-200 transition-all border border-purple-200 dark:border-purple-800/30">Manage applicants</Link>
                 </div>
+{/* Bottom Right Date */}
+  <div className="flex justify-end">
+    <p className="text-[10px] font-semibold text-[var(--text-muted)]">
+      {idea.createdAt
+        ? new Date(idea.createdAt).toLocaleDateString()
+        : idea.postedDate
+        ? new Date(idea.postedDate).toLocaleDateString()
+        : ""}
+    </p>
+  </div>
+
+</div>
             </div>
         </div>
     );
