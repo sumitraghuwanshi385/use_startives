@@ -66,25 +66,25 @@ const ProfilePillCard: React.FC<{
 );
 
 const STAGE_COLOR_MAP: Record<string, string> = {
-  "Idea Stage":
+  "Idea":
     "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
 
-  "Validation Stage":
-    "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300",
+  "MVP":
+    "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
 
-  "MVP Stage":
+  "Prototype":
     "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
 
-  "Pre-Seed Stage":
+  "Beta":
     "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
 
-  "Fundraising Stage":
+  "Launched":
     "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
 
-  "Scaling Stage":
+  "Scaling":
     "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
 
-  "Launched":
+  "Fundraising":
     "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
 
   "Acquired":
@@ -156,7 +156,10 @@ const userAssets = startupIdeas.filter(
   const userTalks = startalks.filter(talk => talk.authorId === user.id);
 
   const initials = user.name?.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() || 'U';
-  const countryFlag = user.country ? getFlagEmoji(user.country) : "🌍";
+  const countryFlag =
+  !loadingUser && user.country
+    ? getFlagEmoji(user.country)
+    : "";
 
   const isOwnProfile = currentUser?.id === user.id;
   const requestIsPending = !isOwnProfile && isRequestPending(user.id);
@@ -232,10 +235,14 @@ const userAssets = startupIdeas.filter(
                     <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3">
                         <h1 className="text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] leading-none">{user.name}</h1>
                         <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full border border-[var(--border-primary)]">
-                            <span className="text-xl">{countryFlag}</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-  {user.country || "Global"}
-</span>
+                            {!loadingUser && user.country && (
+  <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full border border-[var(--border-primary)]">
+    <span className="text-xl">{getFlagEmoji(user.country)}</span>
+    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+      {user.country}
+    </span>
+  </div>
+)}
                         </div>
                     </div>
                     <p className="text-lg text-purple-600 dark:text-purple-400 font-medium mt-2 font-poppins">
