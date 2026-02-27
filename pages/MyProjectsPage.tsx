@@ -153,10 +153,11 @@ const totalApplications = receivedApplications.filter(
     </p>
   </div>
 
-</div>
-            
+        </div>
+      </div>
     );
 };
+            
 
 const MyAssetListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: string) => void; }> = ({ idea, onDelete }) => {
     const navigate = useNavigate();
