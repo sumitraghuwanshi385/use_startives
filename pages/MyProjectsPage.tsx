@@ -78,7 +78,9 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
     const navigate = useNavigate();
     const { receivedApplications } = useAppContext();
     const pendingApplications = receivedApplications.filter(
-  app => app.ideaId === idea.id && app.status === 'Pending'
+  app =>
+    app.ideaId === idea.id &&
+    app.status?.toLowerCase() === 'pending'
 ).length;
     const openPositions = idea.positions.filter(p => p.isOpen).length;
 
@@ -91,8 +93,22 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
                              <img src={idea.imageUrl} alt={idea.title} className="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <p className="text-[8px] font-black uppercase tracking-[0.2em] bg-sky-100 dark:bg-sky-500/10 text-sky-700 dark:text-sky-300 px-2 py-0.5 rounded-full inline-block mb-1">{idea.stage}</p>
-                            <h3 onClick={() => navigate(`/idea/${idea.id}`)} className="text-xl font-bold tracking-tight text-[var(--text-primary)] hover:text-purple-500 cursor-pointer leading-tight">{idea.title}</h3>
+                            <div>
+  <h3
+    onClick={() => navigate(`/idea/${idea.id}`)}
+    className="text-xl font-semibold font-poppins text-[var(--text-primary)] hover:text-purple-500 cursor-pointer leading-tight"
+  >
+    {idea.title}
+  </h3>
+
+  <p className="text-sm font-poppins text-purple-600 mt-1">
+    {idea.tagline}
+  </p>
+
+  <p className="text-[10px] font-poppins text-[var(--text-muted)] mt-1">
+    {idea.stage}
+  </p>
+</div>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -100,7 +116,7 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
                         <button onClick={(e) => { e.stopPropagation(); onDelete(idea.id); }} className="p-2.5 rounded-full text-[var(--text-muted)] hover:text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all shadow-none"><TrashIcon className="w-5 h-5" /></button>
                     </div>
                 </div>
-                <p className="text-sm text-[var(--text-secondary)] line-clamp-2 my-4 font-medium italic opacity-80">{idea.tagline}</p>
+                <p className="text-sm font-poppins text-purple-600 line-clamp-2 my-3">{idea.tagline}</p>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-[var(--border-primary)] pt-4 gap-4">
                     <div className="flex items-center space-x-8">
                         <div>
@@ -108,7 +124,7 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
                             <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">New applications</p>
                         </div>
                         <div>
-                            <p className="font-black text-2xl text-sky-500">{openPositions}</p>
+                            <p className="text-[10px] font-poppins text-[var(--text-muted)]"></p>
                             <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">Open roles</p>
                         </div>
                     </div>
@@ -174,11 +190,14 @@ const MyProjectsPage: React.FC = () => {
   const myProjects = useMemo(() => startupIdeas.filter(idea => idea.founderEmail === currentUser.email && !idea.askingPrice), [startupIdeas, currentUser.email]);
   const myAssets = useMemo(() => startupIdeas.filter(idea => idea.founderEmail === currentUser.email && idea.askingPrice), [startupIdeas, currentUser.email]);
 
-  const confirmDelete = () => {
-    if(itemToDelete) { deleteIdea(itemToDelete); setItemToDelete(null); }
-    setIsModalOpen(false);
-  };
-  
+  const confirmDelete = async () => {
+  if (itemToDelete) {
+    await deleteIdea(itemToDelete);
+    setItemToDelete(null);
+  }
+  setIsModalOpen(false);
+};
+
   return (
     <div className="pb-20 max-w-6xl mx-auto">
       <div className="flex justify-start mb-8">
