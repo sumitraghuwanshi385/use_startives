@@ -122,16 +122,16 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 
 {/* APPLICATION META */}
 <div className="grid grid-cols-2 gap-3 mt-3">
-  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
-    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
-      Applied On
-    </p>
-    <p className="text-[var(--text-primary)] font-bold text-sm">
-      {application.createdAt
-        ? new Date(application.createdAt).toLocaleDateString()
-        : "-"}
-    </p>
-  </div>
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] text-center">
+  <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+    Applied On
+  </p>
+  <p className="text-sm font-bold text-[var(--text-primary)]">
+    {application.createdAt
+      ? new Date(application.createdAt).toLocaleDateString()
+      : "-"}
+  </p>
+</div>
 
 {/* DECISION STATUS */}
 {application.status !== "Pending" && (
@@ -245,7 +245,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
       applicant && currentUser?.connections?.includes(applicant.id);
 
     return (
-      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-4 font-poppins">
+      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-3.5 font-poppins">
 
         {/* HEADER */}
 <div className="flex items-center justify-between">
@@ -302,16 +302,16 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
 {/* APPLICATION META */}
 <div className="grid grid-cols-2 gap-3 mt-3">
-  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
-    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
-      Applied On
-    </p>
-    <p className="text-[var(--text-primary)] font-bold text-sm">
-      {application.createdAt
-        ? new Date(application.createdAt).toLocaleDateString()
-        : "-"}
-    </p>
-  </div>
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] text-center">
+  <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+    Applied On
+  </p>
+  <p className="text-sm font-bold text-[var(--text-primary)]">
+    {application.createdAt
+      ? new Date(application.createdAt).toLocaleDateString()
+      : "-"}
+  </p>
+</div>
 
 {/* DECISION STATUS */}
 {application.status !== "Pending" && (
