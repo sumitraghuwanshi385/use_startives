@@ -290,12 +290,12 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
     onChange={val => setStage(val)}
     options={[
       'Idea',
-      'Validation',
       'MVP',
-      'Pre-Seed',
-      'Fundraising',
-      'Scaling',
+      'Prototype',
+      'Beta',
       'Launched',
+      'Scaling',
+      'Fundraising',
       'Acquired'
     ]}
   />
