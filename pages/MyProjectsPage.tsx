@@ -77,9 +77,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, childr
 const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: string) => void; }> = ({ idea, onDelete }) => {
     const navigate = useNavigate();
     const { receivedApplications } = useAppContext();
-    const totalApplications = receivedApplications.filter(
-  app => app.ideaId === idea.id
-).length;
+    const totalApplications = receivedApplications.filter(app => {
+  const appIdeaId = app.ideaId?.toString();
+  const currentIdeaId = idea.id?.toString();
+  return appIdeaId === currentIdeaId;
+}).length;
     const openPositions = idea.positions.filter(p => p.isOpen).length;
 
     return (
