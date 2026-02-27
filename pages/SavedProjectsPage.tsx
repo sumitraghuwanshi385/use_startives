@@ -54,59 +54,55 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </div>
       </div>
 
-      {/* 🔥 Bottom Section (Same as ProjectsList card style) */}
       <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
-        
-        {/* LEFT SIDE */}
-        <div className="flex items-center gap-4">
 
-          {/* Details + Arrow */}
-          <div className="flex items-center text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 group-hover:translate-x-1 transition-transform">
-            Details
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-3 h-3"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
+  {/* 🔥 LEFT SIDE — Profile + Time */}
+  <div className="flex items-center gap-2">
+    {founder && (
+      <div
+        className="flex items-center space-x-2 group/founder hover:opacity-80 transition-opacity"
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/user/${idea.founderId}`);
+        }}
+      >
+        <img
+          src={
+            founder.profilePictureUrl ||
+            `https://i.pravatar.cc/150?u=${founder.id}`
+          }
+          className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800 shadow-none"
+        />
+        <span className="text-xs font-black text-[var(--text-secondary)]">
+          {founder.name?.split(' ')[0]}
+        </span>
+      </div>
+    )}
 
-        </div>
+    <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
+      <span className="opacity-30">•</span>
+      {timeAgo(idea.postedDate)}
+    </span>
+  </div>
 
-        {/* RIGHT SIDE */}
-        <div className="flex items-center gap-2">
-          {founder && (
-            <div
-              className="flex items-center space-x-2 group/founder hover:opacity-80 transition-opacity"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/user/${idea.founderId}`);
-              }}
-            >
-              <img
-                src={
-                  founder.profilePictureUrl ||
-                  `https://i.pravatar.cc/150?u=${founder.id}`
-                }
-                className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800 shadow-none"
-              />
-              <span className="text-xs font-black text-[var(--text-secondary)]">
-                {founder.name?.split(' ')[0]}
-              </span>
-            </div>
-          )}
+  {/* 🔥 RIGHT SIDE — Details + Arrow */}
+  <div className="flex items-center text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 group-hover:translate-x-1 transition-transform">
+    Details
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className="w-3 h-3"
+    >
+      <path
+        fillRule="evenodd"
+        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+        clipRule="evenodd"
+      />
+    </svg>
+  </div>
 
-          <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
-            <span className="opacity-30">•</span>
-            {timeAgo(idea.postedDate)}
-          </span>
-        </div>
+</div>
       </div>
     </div>
   );
