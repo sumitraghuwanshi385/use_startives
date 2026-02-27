@@ -156,10 +156,7 @@ const userAssets = startupIdeas.filter(
   const userTalks = startalks.filter(talk => talk.authorId === user.id);
 
   const initials = user.name?.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() || 'U';
-  const countryFlag =
-  !loadingUser && user.country
-    ? getFlagEmoji(user.country)
-    : "";
+  const countryFlag = user.country ? getFlagEmoji(user.country) : "🌍";
 
   const isOwnProfile = currentUser?.id === user.id;
   const requestIsPending = !isOwnProfile && isRequestPending(user.id);
@@ -235,14 +232,10 @@ const userAssets = startupIdeas.filter(
                     <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3">
                         <h1 className="text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] leading-none">{user.name}</h1>
                         <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full border border-[var(--border-primary)]">
-                            {!loadingUser && user.country && (
-  <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full border border-[var(--border-primary)]">
-    <span className="text-xl">{getFlagEmoji(user.country)}</span>
-    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-      {user.country}
-    </span>
-  </div>
-)}
+                            <span className="text-xl">{countryFlag}</span>
+<span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+  {user.country || "Global"}
+</span>
                         </div>
                     </div>
                     <p className="text-lg text-purple-600 dark:text-purple-400 font-medium mt-2 font-poppins">
@@ -268,6 +261,15 @@ const userAssets = startupIdeas.filter(
   {user.connections?.length || 0}
 </span>
                     </div>
+<div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
+  <BoltIcon className="w-3.5 h-3.5 text-emerald-500" />
+  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+    Updates
+  </span>
+  <span className="text-xs font-black text-[var(--text-primary)] ml-1">
+    {myTalks.length}
+  </span>
+</div>
                 </div>
 
                 {isOwnProfile && (
