@@ -410,56 +410,33 @@ if (!user.savedProjectIds) {
   const removeApplication = () => {};
   // ---------------- SAVE PROJECT ----------------
 
-const saveProject = async (projectId: string) => {
+const toggleSaveProject = async (projectId: string) => {
   if (!currentUser) return;
 
-  // 🔥 Optimistic UI update first
-  const updatedUser = {
-    ...currentUser,
-    savedProjectIds: [
-      ...(currentUser.savedProjectIds || []),
-      projectId
-    ]
-  };
-
-  setCurrentUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
+  const t = getAuthToken();
+  if (!t) return;
 
   try {
-    const t = getAuthToken();
-    await axios.post(
-      "/api/users/save-project",
+    const res = await axios.put(
+      "/api/auth/save-project",
       { projectId },
       { headers: { Authorization: `Bearer ${t}` } }
     );
+
+    if (res.data?.success) {
+      const updatedIds = res.data.savedProjectIds;
+
+      const updatedUser = {
+        ...currentUser,
+        savedProjectIds: updatedIds
+      };
+
+      setCurrentUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+
   } catch (err) {
-    console.error("Save failed", err);
-  }
-};
-
-const unsaveProject = async (projectId: string) => {
-  if (!currentUser) return;
-
-  // 🔥 Optimistic update
-  const updatedUser = {
-    ...currentUser,
-    savedProjectIds: (currentUser.savedProjectIds || []).filter(
-      id => id !== projectId
-    )
-  };
-
-  setCurrentUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
-
-  try {
-    const t = getAuthToken();
-    await axios.post(
-      "/api/users/unsave-project",
-      { projectId },
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
-  } catch (err) {
-    console.error("Unsave failed", err);
+    console.error("Toggle save failed", err);
   }
 };
 
@@ -647,7 +624,7 @@ useEffect(() => {
     addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
-    saveProject, unsaveProject, isProjectSaved, getUserById, 
+    toggleSaveProject, isProjectSaved, getUserById, 
     fetchUserProfile,
     markNotificationAsRead, markAllNotificationsAsRead,
     sentConnectionRequests, connectedUserIds, sendConnectionRequest,
