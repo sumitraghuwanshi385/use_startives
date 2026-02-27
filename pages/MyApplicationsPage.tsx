@@ -147,6 +147,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
     </p>
   </div>
 )}
+</div>
   
       {/* COVER LETTER */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
@@ -326,7 +327,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     </p>
   </div>
 )}
- 
+ </div>
         {/* COVER LETTER */}
         <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
           <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
