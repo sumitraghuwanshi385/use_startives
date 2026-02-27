@@ -310,12 +310,15 @@ const [isStageOpen, setIsStageOpen] = useState(false);
     };
 
     try {
-      await Promise.resolve(addIdea(ideaToSubmit as any));
-      navigate('/projects');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const success = await addIdea(ideaToSubmit);
+
+  if (success) {
+    navigate('/projects');
+  }
+} finally {
+  setIsLoading(false);
+}
+ };
 
   const inputClasses =
     'block w-full px-3.5 py-2.5 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg shadow-sm placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-purple-500 sm:text-sm text-[var(--text-primary)] font-poppins font-medium transition-colors duration-200';
