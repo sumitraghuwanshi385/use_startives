@@ -2,7 +2,13 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { StartupIdea } from '../types';
-import { ChevronLeftIcon, BookmarkIcon, GlobeAltIcon, ShoppingBagIcon, timeAgo } from '../constants';
+import {
+  ChevronLeftIcon,
+  BookmarkIcon,
+  GlobeAltIcon,
+  ShoppingBagIcon,
+  timeAgo
+} from '../constants';
 
 const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
@@ -14,14 +20,12 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   );
 
   return (
-    <div
-      className="bg-[var(--component-background)] rounded-[2rem] border border-[var(--border-primary)] transition-all duration-300 transform hover:border-purple-500/30 group font-poppins shadow-none cursor-pointer flex flex-col"
-      onClick={() =>
-        navigate(idea.askingPrice ? `/asset/${idea.id}` : `/idea/${idea.id}`)
-      }
-    >
-      <div className="p-5 flex-grow">
-        <div className="flex justify-between items-start mb-4">
+    <div className="bg-[var(--component-background)] rounded-[2rem] border border-[var(--border-primary)] transition-all duration-300 hover:border-purple-500/30 font-poppins shadow-none flex flex-col">
+
+      {/* TOP SECTION */}
+      <div className="p-5 pb-3 flex-grow">
+
+        <div className="flex justify-between items-start">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[var(--border-primary)] bg-neutral-100 shrink-0">
               <img
@@ -32,77 +36,87 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold font-poppins text-[var(--text-primary)] hover:text-purple-500 leading-tight">
+              <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight">
                 {idea.title}
               </h3>
 
-              <p className="text-sm font-poppins text-purple-600 mt-1">
+              {/* 🔥 Reduced gap here */}
+              <p className="text-sm text-purple-600 mt-0.5">
                 {idea.tagline}
               </p>
             </div>
           </div>
 
+          {/* SAVE BUTTON */}
           <button
-  type="button"
-  onClick={async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    await unsaveProject(idea.id);
-  }}
-  className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all shadow-none hover:bg-red-50"
->
-  <BookmarkIcon className="w-5 h-5" solid />
-</button>
+            type="button"
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              await unsaveProject(idea.id);
+            }}
+            className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all hover:bg-red-50"
+          >
+            <BookmarkIcon className="w-5 h-5" solid />
+          </button>
         </div>
+
       </div>
 
-      <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
+      {/* BOTTOM SECTION */}
+      <div className="flex justify-between items-center px-5 py-3 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)]">
 
-  {/* 🔥 LEFT SIDE — Profile + Time */}
-  <div className="flex items-center gap-2">
-    {founder && (
-      <div
-        className="flex items-center space-x-2 group/founder hover:opacity-80 transition-opacity"
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/user/${idea.founderId}`);
-        }}
-      >
-        <img
-          src={
-            founder.profilePictureUrl ||
-            `https://i.pravatar.cc/150?u=${founder.id}`
+        {/* LEFT: Profile + Time */}
+        <div className="flex items-center gap-2">
+          {founder && (
+            <div
+              className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/user/${idea.founderId}`);
+              }}
+            >
+              <img
+                src={
+                  founder.profilePictureUrl ||
+                  `https://i.pravatar.cc/150?u=${founder.id}`
+                }
+                className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
+              />
+              <span className="text-xs font-black text-[var(--text-secondary)]">
+                {founder.name?.split(' ')[0]}
+              </span>
+            </div>
+          )}
+
+          <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
+            <span className="opacity-30">•</span>
+            {timeAgo(idea.postedDate)}
+          </span>
+        </div>
+
+        {/* RIGHT: Details (Only clickable area) */}
+        <div
+          onClick={() =>
+            navigate(idea.askingPrice ? `/asset/${idea.id}` : `/idea/${idea.id}`)
           }
-          className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800 shadow-none"
-        />
-        <span className="text-xs font-black text-[var(--text-secondary)]">
-          {founder.name?.split(' ')[0]}
-        </span>
-      </div>
-    )}
+          className="flex items-center cursor-pointer text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 hover:translate-x-1 transition-transform"
+        >
+          Details
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-3 h-3"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
 
-    <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
-      <span className="opacity-30">•</span>
-      {timeAgo(idea.postedDate)}
-    </span>
-  </div>
-
-  {/* 🔥 RIGHT SIDE — Details + Arrow */}
-  <div className="flex items-center text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 group-hover:translate-x-1 transition-transform">
-    Details
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className="w-3 h-3"
-    >
-      <path
-        fillRule="evenodd"
-        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-        clipRule="evenodd"
-      />
-    </svg>
-  </div>
       </div>
     </div>
   );
@@ -131,7 +145,7 @@ const SavedProjectsPage: React.FC = () => {
       <div className="flex justify-start mb-8">
         <Link
           to="/dashboard"
-          className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full px-5 py-2 shadow-none"
+          className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full px-5 py-2"
         >
           <ChevronLeftIcon className="w-3.5 h-3.5" />
           <span>Dashboard</span>
@@ -148,12 +162,12 @@ const SavedProjectsPage: React.FC = () => {
       </div>
 
       <div className="flex justify-center mb-10">
-        <div className="inline-flex p-1 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full overflow-hidden shadow-none">
+        <div className="inline-flex p-1 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full overflow-hidden">
           <button
             onClick={() => setActiveTab('ventures')}
             className={`px-12 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
               activeTab === 'ventures'
-                ? 'button-gradient text-white shadow-none'
+                ? 'button-gradient text-white'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
@@ -163,7 +177,7 @@ const SavedProjectsPage: React.FC = () => {
             onClick={() => setActiveTab('assets')}
             className={`px-12 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
               activeTab === 'assets'
-                ? 'button-gradient text-white shadow-none'
+                ? 'button-gradient text-white'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
