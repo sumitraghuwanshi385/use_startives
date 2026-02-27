@@ -26,7 +26,7 @@ const formatIdea = (idea) => {
 const createIdea = async (req, res) => {
   try {
     const {
-      title, tagline, description, problem, buildingNow, founderQuote,
+      title, tagline, description, problem, buildingNow, founderQuote,teamSize,
       tags, stage, category, businessModel, workMode, location, websiteUrl,
       positionsData,
 
@@ -51,6 +51,7 @@ const createIdea = async (req, res) => {
       founderQuote,
       stage,
       tags,
+      teamSize,
       category,
       businessModel,
       workMode,
