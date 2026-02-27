@@ -122,8 +122,8 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 
 {/* APPLICATION META */}
 <div className="grid grid-cols-2 gap-3 mt-2">
-  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] flex flex-col items-center justify-center text-center">
-  <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
     Applied On
   </p>
   <p className="text-sm font-bold text-[var(--text-primary)] mt-1">
@@ -281,30 +281,30 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   </span>
 </div>
 
- {/* PROJECT */}
-{/* PROJECT */}
-<div className="text-sm font-semibold flex gap-1 -mb-1">
-  <span className="text-[var(--text-primary)]">Project:</span>
-  {idea && (
-    <Link
-      to={`/idea/${getId(idea)}`}
-      className="text-purple-500"
-    >
-      {idea.title}
-    </Link>
-  )}
-</div>
+ {/* PROJECT + ROLE */}
+<div className="space-y-1">
+  <div className="text-sm font-semibold flex gap-1">
+    <span className="text-[var(--text-primary)]">Project:</span>
+    {idea && (
+      <Link
+        to={`/idea/${getId(idea)}`}
+        className="text-purple-500"
+      >
+        {idea.title}
+      </Link>
+    )}
+  </div>
 
-        {/* ROLE */}
-        <div className="text-sm font-semibold flex gap-1 mt-0">
-          <span className="text-[var(--text-primary)]">Role:</span>
-          <span className="text-purple-500">{position?.title || "-"}</span>
-        </div>
+  <div className="text-sm font-semibold flex gap-1">
+    <span className="text-[var(--text-primary)]">Role:</span>
+    <span className="text-purple-500">{position?.title || "-"}</span>
+  </div>
+</div>
 
 {/* APPLICATION META */}
 <div className="grid grid-cols-2 gap-3 mt-2">
-  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] flex flex-col items-center justify-center text-center">
-  <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
     Applied On
   </p>
   <p className="text-sm font-bold text-[var(--text-primary)] mt-1">
