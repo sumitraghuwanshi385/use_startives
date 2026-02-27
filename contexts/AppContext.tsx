@@ -454,6 +454,11 @@ const unsaveProject = async (projectId: string) => {
   }
 };
 
+const isProjectSaved = (projectId: string) => {
+  if (!currentUser) return false;
+  return (currentUser.savedProjectIds || []).includes(projectId);
+};
+
 const addApplication = async (applicationData: any) => {
   if (!currentUser) return false;
 
