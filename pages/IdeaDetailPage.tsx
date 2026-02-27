@@ -311,7 +311,7 @@ const IdeaDetailPage: React.FC = () => {
                         )}
                     </div>
                      );
-                    ))}
+                    })}
                 </div>
                 ) : (
                 <p className="text-[var(--text-muted)] text-sm italic">No open positions at this time.</p>
