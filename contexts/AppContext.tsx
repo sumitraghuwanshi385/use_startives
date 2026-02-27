@@ -135,6 +135,11 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
       // Success path
       const { user, token: newToken } = response.data;
 
+// 🔥 Ensure savedProjectIds exists
+if (!user.savedProjectIds) {
+  user.savedProjectIds = [];
+}
+
       localStorage.setItem('authToken', newToken);
       localStorage.setItem('user', JSON.stringify(user));
 
@@ -403,9 +408,41 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 
   // ---------------- PLACEHOLDERS ----------------
   const removeApplication = () => {};
-  const saveProject = () => {};
-  const unsaveProject = () => {};
-  const isProjectSaved = () => false;
+  // ---------------- SAVE PROJECT ----------------
+
+const saveProject = (projectId: string) => {
+  if (!currentUser) return;
+
+  const updatedUser = {
+    ...currentUser,
+    savedProjectIds: [
+      ...(currentUser.savedProjectIds || []),
+      projectId
+    ]
+  };
+
+  setCurrentUser(updatedUser);
+  localStorage.setItem('user', JSON.stringify(updatedUser));
+};
+
+const unsaveProject = (projectId: string) => {
+  if (!currentUser) return;
+
+  const updatedUser = {
+    ...currentUser,
+    savedProjectIds: (currentUser.savedProjectIds || []).filter(
+      id => id !== projectId
+    )
+  };
+
+  setCurrentUser(updatedUser);
+  localStorage.setItem('user', JSON.stringify(updatedUser));
+};
+
+const isProjectSaved = (projectId: string) => {
+  if (!currentUser) return false;
+  return (currentUser.savedProjectIds || []).includes(projectId);
+};
 const addApplication = () => {};
 
 // ---------------- APPLICATIONS ----------------
