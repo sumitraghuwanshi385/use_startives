@@ -141,10 +141,10 @@ if (!user.savedProjectIds) {
 }
 
       localStorage.setItem('authToken', newToken);
-setToken(newToken);
+      localStorage.setItem('user', JSON.stringify(user));
 
-// 🔥 Fetch full updated user from backend
-await fetchCurrentUserProfile(newToken);
+      setToken(newToken);
+      setCurrentUser(user);
 
       if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
       if (user?.connections) setConnectedUserIds(user.connections);
@@ -338,24 +338,6 @@ await fetchCurrentUserProfile(newToken);
         }
       } catch (error) { console.error("Reaction failed:", error); }
   };
-
-// ---------------- FETCH CURRENT USER PROFILE ----------------
-const fetchCurrentUserProfile = async (authToken: string) => {
-  try {
-    const res = await axios.get('/api/auth/me', {
-      headers: { Authorization: `Bearer ${authToken}` }
-    });
-
-    if (res.data?.success) {
-      const fullUser = res.data.user;
-
-      setCurrentUser(fullUser);
-      localStorage.setItem('user', JSON.stringify(fullUser));
-    }
-  } catch (err) {
-    console.error("Fetch current user failed", err);
-  }
-};
 
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
