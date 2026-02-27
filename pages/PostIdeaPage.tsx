@@ -364,9 +364,32 @@ const [teamSize, setTeamSize] = useState('');
             <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required className={inputClasses} placeholder="e.g., EcoRoute Planner" />
           </FormRow>
 
-          <FormRow label="Tagline" htmlFor="tagline" icon={<Bars3BottomLeftIcon />} isRequired subtext="Catchy one-liner summing everything up.">
-            <input type="text" id="tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} required className={inputClasses} placeholder="Navigate the world, sustainably." />
-          </FormRow>
+          <FormRow 
+  label="Tagline" 
+  htmlFor="tagline" 
+  icon={<Bars3BottomLeftIcon />} 
+  isRequired 
+  subtext="Maximum 30 letters (including spaces)"
+>
+  <div>
+    <input
+      type="text"
+      id="tagline"
+      value={tagline}
+      maxLength={30}
+      onChange={(e) => setTagline(e.target.value)}
+      required
+      className={inputClasses}
+      placeholder="Navigate the world, sustainably."
+    />
+
+    <div className="flex justify-between mt-1 text-[10px] font-bold">
+      <span className={`${tagline.length === 30 ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
+        {tagline.length}/30
+      </span>
+    </div>
+  </div>
+</FormRow>
 
           <FormRow label="Description" htmlFor="description" icon={<PencilSquareIcon />} isRequired subtext="Tell the full story of your project.">
             <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows={5} required className={textAreaClasses} placeholder="The full vision..." />
