@@ -180,12 +180,12 @@ const ProfilePage: React.FC = () => {
                         <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Connections</span>
                         <span className="text-xs font-black text-[var(--text-primary)] ml-1">{connectedUserIds.length}</span>
                     </div>
-<div className="flex items-center gap-2 bg-emerald-100/60 dark:bg-emerald-900/30 backdrop-blur-md px-4 py-2 rounded-full border border-emerald-200 dark:border-emerald-800/30 shadow-sm">
-  <BoltIcon className="w-3.5 h-3.5 text-emerald-600" />
-  <span className="text-[9px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-300">
+<div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
+  <BoltIcon className="w-3.5 h-3.5 text-emerald-500" />
+  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">
     Updates
   </span>
-  <span className="text-xs font-black text-emerald-700 dark:text-emerald-300 ml-1">
+  <span className="text-xs font-black text-emerald-600 ml-1">
     {myTalks.length}
   </span>
 </div>
