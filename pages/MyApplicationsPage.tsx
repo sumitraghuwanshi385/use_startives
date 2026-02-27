@@ -391,6 +391,12 @@ const [statusFilter, setStatusFilter] = useState<
   const findIdea = (app: Application) =>
     startupIdeas.find((i) => getId(i) === getId(app.ideaId));
 
+const filteredApplications =
+  (activeTab === "sent" ? sentApplications : receivedApplications).filter(
+    (app) =>
+      statusFilter === "All" ? true : app.status === statusFilter
+  );
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 font-poppins">
 
