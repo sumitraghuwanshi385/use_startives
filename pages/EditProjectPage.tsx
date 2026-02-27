@@ -276,28 +276,36 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
   label="Tagline" 
   htmlFor="tagline" 
   icon={<Bars3BottomLeftIcon />} 
-  isRequired 
-  subtext="Maximum 30 letters (including spaces)"
+  isRequired
 >
-  <div>
-    <input
-      type="text"
-      id="tagline"
-      value={tagline}
-      maxLength={30}
-      onChange={(e) => setTagline(e.target.value)}
-      required
-      className={inputClasses}
-      placeholder="Navigate the world, sustainably."
-    />
+  <div className="space-y-1">
+    <div className="relative">
+      <input
+        type="text"
+        id="tagline"
+        value={tagline}
+        maxLength={30}
+        onChange={(e) => setTagline(e.target.value)}
+        required
+        className={`${inputClasses} pr-14`}
+        placeholder="Navigate the world, sustainably."
+      />
 
-    <div className="flex justify-between mt-1 text-[10px] font-bold">
-      <span className={`${tagline.length === 30 ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
+      {/* Counter inside input */}
+      <span className={`absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold ${
+        tagline.length === 30 ? 'text-red-500' : 'text-[var(--text-muted)]'
+      }`}>
         {tagline.length}/30
       </span>
     </div>
+
+    {/* Subheading below input */}
+    <p className="text-[10px] font-bold text-[var(--text-muted)]">
+      Maximum 30 letters (including spaces)
+    </p>
   </div>
 </FormRow>
+
           <FormRow label="Description" htmlFor="description" icon={<PencilSquareIcon />} isRequired subtext="Tell the full story of your project.">
             <textarea id="description" value={description} onChange={e => setDescription(e.target.value)} rows={5} required className={textAreaClasses} placeholder="The full vision..."/>
           </FormRow>
