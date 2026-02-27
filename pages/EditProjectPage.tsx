@@ -237,7 +237,7 @@ const [stage, setStage] = useState<string>('Validation');
       
       <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-2xl border border-[var(--border-primary)] shadow-sm space-y-12">
         <FormSection title="Project Core" icon={<IdeaStarIcon />} subtext="Refine the identity of your brand.">
-          <FormRow label="Idea Title" htmlFor="title" icon={<GrowthIcon />} isRequired subtext="Memorable and professional brand name.">
+          <FormRow label="Idea Title" htmlFor="title" icon={<IdeaStarIcon />} isRequired subtext="Memorable and professional brand name.">
             <input type="text" id="title" value={title} onChange={e => setTitle(e.target.value)} required className={inputClasses} placeholder="e.g., EcoRoute Planner"/>
           </FormRow>
           <FormRow label="Tagline" htmlFor="tagline" icon={<Bars3BottomLeftIcon />} isRequired subtext="Catchy one-liner summing everything up.">
@@ -262,7 +262,7 @@ const [stage, setStage] = useState<string>('Validation');
 <FormRow 
   label="Stage" 
   htmlFor="stage" 
-  icon={<IdeaStarIcon />} 
+  icon={<GrowthIcon />} 
   isRequired 
   subtext="Current progress of your project."
 >
