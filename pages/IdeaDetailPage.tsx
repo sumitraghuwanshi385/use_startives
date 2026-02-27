@@ -132,17 +132,27 @@ const IdeaDetailPage: React.FC = () => {
                                 Visit Project
                             </a>
                         )}
-                        {isOwner ? (
-                            <Link to={`/project/${idea.id}/edit`} className="bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] font-bold py-2 px-5 rounded-full text-[10px] uppercase tracking-widest transition-colors border border-[var(--border-primary)] flex items-center justify-center space-x-2">
-                                <PencilSquareIcon className="w-4 h-4"/>
-                                <span>Edit</span>
-                            </Link>
-                        ) : (
-                            <button onClick={handleSaveToggle} className={`flex items-center justify-center space-x-2 font-bold py-2 px-5 rounded-full text-[10px] uppercase tracking-widest transition-colors border ${isSaved ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30' : 'bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]'}`}>
-                                <BookmarkIcon className="w-4 h-4" solid={isSaved} />
-                                <span>{isSaved ? 'Saved' : 'Save'}</span>
-                            </button>
-                        )}
+                        {isOwner && (
+  <Link
+    to={`/project/${idea.id}/edit`}
+    className="bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] font-bold py-2 px-5 rounded-full text-[10px] uppercase tracking-widest transition-colors border border-[var(--border-primary)] flex items-center justify-center space-x-2"
+  >
+    <PencilSquareIcon className="w-4 h-4"/>
+    <span>Edit</span>
+  </Link>
+)}
+
+<button
+  onClick={handleSaveToggle}
+  className={`flex items-center justify-center space-x-2 font-bold py-2 px-5 rounded-full text-[10px] uppercase tracking-widest transition-colors border ${
+    isSaved
+      ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30'
+      : 'bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]'
+  }`}
+>
+  <BookmarkIcon className="w-4 h-4" solid={isSaved} />
+  <span>{isSaved ? 'Saved' : 'Save'}</span>
+</button>
                     </div>
                 </div>
             </div>
