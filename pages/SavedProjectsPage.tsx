@@ -12,7 +12,7 @@ import {
 
 const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
-  const { unsaveProject, getUserById } = useAppContext();
+  const { toggleSaveProject, getUserById } = useAppContext();
 
   const founder = useMemo(
     () => getUserById(idea.founderId),
@@ -49,13 +49,14 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
           {/* SAVE BUTTON */}
           <button
-            type="button"
-            onClick={async (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              await unsaveProject(idea.id);
-            }}
-            className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all hover:bg-red-50"
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleSaveProject(idea.id);
+  }}
+  className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all hover:bg-red-50"
+>"
           >
             <BookmarkIcon className="w-5 h-5" solid />
           </button>
