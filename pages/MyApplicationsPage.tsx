@@ -362,15 +362,6 @@ export const MyApplicationsPage: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-8 font-poppins">
 
-{/* 🔥 DEBUG BLOCK — YAHI DAALO */}
-    <div style={{ color: "red", fontSize: "12px" }}>
-      TOKEN: {localStorage.getItem("authToken")}
-      <br />
-      SENT COUNT: {sentApplications.length}
-      <br />
-      RECEIVED COUNT: {receivedApplications.length}
-    </div>
-
       <Link
         to="/dashboard"
         className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full px-5 py-2"
