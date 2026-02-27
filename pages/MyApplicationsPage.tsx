@@ -295,7 +295,6 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
       {idea.title}
     </Link>
   )}
-</div>
 
         {/* ROLE */}
         <div className="text-sm font-semibold flex gap-1">
