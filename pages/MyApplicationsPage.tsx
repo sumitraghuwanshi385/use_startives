@@ -454,10 +454,10 @@ const filteredApplications =
                 )
               }
               className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full transition-all ${
-                statusFilter === status
-                  ? "button-gradient text-white"
-                  : "text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-500/10"
-              }`}
+  statusFilter === status
+    ? "bg-purple-600 text-white"
+    : "text-[var(--text-muted)] hover:bg-[var(--background-secondary)]"
+}`}
             >
               {status}
             </button>
