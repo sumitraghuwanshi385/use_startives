@@ -376,6 +376,9 @@ export const MyApplicationsPage: React.FC = () => {
 
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
+const [statusFilter, setStatusFilter] = useState<
+  "All" | "Accepted" | "Pending" | "Rejected"
+>("All");
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -433,18 +436,46 @@ export const MyApplicationsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* ✅ STATUS FILTER PILLS */}
+      <div className="flex justify-center">
+        <div className="flex gap-2 bg-[var(--background-tertiary)] p-1.5 rounded-full border border-[var(--border-primary)]">
+          {["All", "Accepted", "Pending", "Rejected"].map((status) => (
+            <button
+              key={status}
+              onClick={() =>
+                setStatusFilter(
+                  status as "All" | "Accepted" | "Pending" | "Rejected"
+                )
+              }
+              className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full transition-all ${
+                statusFilter === status
+                  ? "button-gradient text-white"
+                  : "text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-500/10"
+              }`}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* APPLICATION LIST */}
       <div className="space-y-6 max-w-4xl mx-auto">
-        {activeTab === "sent"
-          ? sentApplications.map((app) => (
-              <SentCard key={getId(app)} application={app} idea={findIdea(app)} />
-            ))
-          : receivedApplications.map((app) => (
-              <ReceivedCard
-                key={getId(app)}
-                application={app}
-                idea={findIdea(app)}
-              />
-            ))}
+        {filteredApplications.map((app) =>
+          activeTab === "sent" ? (
+            <SentCard
+              key={getId(app)}
+              application={app}
+              idea={findIdea(app)}
+            />
+          ) : (
+            <ReceivedCard
+              key={getId(app)}
+              application={app}
+              idea={findIdea(app)}
+            />
+          )
+        )}
       </div>
     </div>
   );
