@@ -66,6 +66,33 @@ const MapPinIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" })
   </svg>
 );
 
+
+const STAGE_COLOR_MAP: Record<string, string> = {
+  "Idea Stage":
+    "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
+
+  "Validation Stage":
+    "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
+
+  "MVP Stage":
+    "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
+
+  "Pre-Seed Stage":
+    "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
+
+  "Fundraising Stage":
+    "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
+
+  "Scaling Stage":
+    "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
+
+  "Launched":
+    "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
+
+  "Acquired":
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
+};
+
 // --- Custom Dropdown Component ---
 interface CustomDropdownProps {
   label: string;
@@ -138,9 +165,14 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
       onClick={() => navigate(`/idea/${idea.id}`)}
     >
       <div className="absolute top-0 left-0 z-20">
-        <span className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-br-2xl border-r border-b border-[var(--border-primary)] bg-sky-100 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300 shadow-none inline-block">
-          {idea.stage}
-        </span>
+        <span
+  className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-br-2xl border-r border-b border-[var(--border-primary)] shadow-none inline-block ${
+    STAGE_COLOR_MAP[idea.stage] ||
+    "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"
+  }`}
+>
+  {idea.stage}
+</span>
       </div>
 
       <div className="absolute top-0 right-0 z-20">
@@ -202,7 +234,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           <div className="flex flex-wrap gap-1.5">
             {idea.positions.slice(0, 2).map(pos => (
               <span key={pos.id} className="text-[9px] font-black tracking-tight bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-3 py-1 rounded-full border border-[var(--border-primary)] shadow-none uppercase">
-                {pos.title}
+                {post.title}
               </span>
             ))}
             {idea.positions.length > 2 && (
