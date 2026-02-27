@@ -235,7 +235,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest">Open Positions</h4>
           <div className="flex flex-wrap gap-1.5">
             {idea.positions.slice(0, 2).map(pos => (
-              <span key={pos.id} className="text-[9px] font-black tracking-tight px-3 py-1 rounded-full uppercase bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-sm"
+              <span key={pos.id} className="text-[9px] font-black tracking-tight px-3 py-1 rounded-full uppercase bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-sm">
                 {pos.title}
               </span>
             ))}
