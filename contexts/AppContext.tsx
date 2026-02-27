@@ -237,23 +237,40 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 
   // ---------------- IDEAS ----------------
   const addIdea = async (ideaData: any) => {
-    if (!currentUser) return;
-    const t = getAuthToken();
-    setAuthLoadingState({ isLoading: true, messages: ["Launching project..."] });
-    try {
-        const response = await axios.post('/api/ideas', ideaData, { headers: { Authorization: `Bearer ${t}` } });
-        if (response.data.success) {
-            setStartupIdeas(prev => [response.data.idea, ...prev]);
-            addNotificationCallBack("Project launched successfully!", "success");
-        }
-    } catch (error: any) {
-        console.error("Add Idea Error:", error);
-        addNotificationCallBack(error.response?.data?.message || "Failed to launch project.", "error");
-    } finally {
-        setAuthLoadingState({ isLoading: false, messages: [] });
-    }
-  };
+  if (!currentUser) return false;
 
+  const t = getAuthToken();
+  if (!t) return false;
+
+  setAuthLoadingState({ isLoading: true, messages: ["Launching project..."] });
+
+  try {
+    const response = await axios.post(
+      '/api/ideas',
+      ideaData,
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (response.data?.success) {
+      // 🔥 Important: use backend returned idea
+      setStartupIdeas(prev => [response.data.idea, ...prev]);
+
+      addNotificationCallBack("Project launched successfully!", "success");
+      return true;
+    }
+
+    return false;
+  } catch (error: any) {
+    console.error("Add Idea Error:", error);
+    addNotificationCallBack(
+      error.response?.data?.message || "Failed to launch project.",
+      "error"
+    );
+    return false;
+  } finally {
+    setAuthLoadingState({ isLoading: false, messages: [] });
+  }
+};
   const updateIdea = () => {};
   const deleteIdea = () => {};
 
