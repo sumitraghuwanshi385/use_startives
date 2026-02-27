@@ -186,7 +186,7 @@ const ProfilePage: React.FC = () => {
     Updates
   </span>
   <span className="text-xs font-black text-emerald-700 dark:text-emerald-300 ml-1">
-    {userTalks.length}
+    {myTalks.length}
   </span>
 </div>
                 </div>
