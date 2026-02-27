@@ -133,15 +133,21 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
     </p>
   </div>
 
-
-  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
+{/* DECISION STATUS */}
+{application.status !== "Pending" && (
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
     <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
-      Status
+      Decision
     </p>
-    <p className="font-bold text-sm">{application.status}</p>
+    <p className="text-sm font-bold text-[var(--text-primary)]">
+      {application.status} •{" "}
+      {application.updatedAt
+        ? new Date(application.updatedAt).toLocaleDateString()
+        : "-"}
+    </p>
   </div>
-</div>
-
+)}
+  
       {/* COVER LETTER */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
         <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
@@ -155,20 +161,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       <AnswersBox application={application} />
 
       {/* ACCEPTED ACTIONS */}
-      {/* DECISION TIME */}
-{(application.status === "Accepted" ||
-  application.status === "Rejected") && (
-  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
-    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
-      Decision Time
-    </p>
-    <p className="text-sm font-bold text-[var(--text-primary)]">
-      {application.updatedAt
-        ? new Date(application.updatedAt).toLocaleString()
-        : "-"}
-    </p>
-  </div>
-)}
+      
 
 {/* ACCEPTED ACTIONS */}
 {application.status === "Accepted" && founder && (
@@ -285,7 +278,21 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     {application.status}
   </span>
 </div>
- 
+
+
+ {/* PROJECT */}
+<div className="text-sm font-semibold flex gap-1">
+  <span className="text-[var(--text-primary)]">Project:</span>
+  {idea && (
+    <Link
+      to={`/idea/${getId(idea)}`}
+      className="text-purple-500 hover:text-purple-600 transition font-medium"
+    >
+      {idea.title}
+    </Link>
+  )}
+</div>
+
         {/* ROLE */}
         <div className="text-sm font-semibold flex gap-1">
           <span className="text-[var(--text-primary)]">Role:</span>
@@ -305,13 +312,21 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     </p>
   </div>
 
-  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
+{/* DECISION STATUS */}
+{application.status !== "Pending" && (
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
     <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
-      Status
+      Decision
     </p>
-    <p className="font-bold text-sm">{application.status}</p>
+    <p className="text-sm font-bold text-[var(--text-primary)]">
+      {application.status} •{" "}
+      {application.updatedAt
+        ? new Date(application.updatedAt).toLocaleDateString()
+        : "-"}
+    </p>
   </div>
-</div>
+)}
+ 
         {/* COVER LETTER */}
         <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
           <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
@@ -323,21 +338,6 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         </div>
 
         <AnswersBox application={application} />
-
-        {/* DECISION TIME */}
-{(application.status === "Accepted" ||
-  application.status === "Rejected") && (
-  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
-    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
-      Decision Time
-    </p>
-    <p className="text-sm font-bold text-[var(--text-primary)]">
-      {application.updatedAt
-        ? new Date(application.updatedAt).toLocaleString()
-        : "-"}
-    </p>
-  </div>
-)}
 
 {/* ACTION BUTTONS */}
 {application.status === "Pending" && (
@@ -362,21 +362,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   </div>
 )}
 
-        {/* FOOTER */}
-        <div className="flex justify-between items-center pt-2 text-sm">
-          <div className="flex items-center gap-1">
-            <span className="font-semibold text-[var(--text-primary)]">
-              Project:
-            </span>
-            {idea && (
-              <Link
-                to={`/idea/${getId(idea)}`}
-                className="text-purple-500 hover:text-purple-600 transition font-medium"
-              >
-                {idea.title}
-              </Link>
-            )}
-          </div>
+        
         </div>
       </div>
     );
