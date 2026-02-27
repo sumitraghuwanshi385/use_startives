@@ -77,10 +77,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, childr
 const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: string) => void; }> = ({ idea, onDelete }) => {
     const navigate = useNavigate();
     const { receivedApplications } = useAppContext();
-    const pendingApplications = receivedApplications.filter(
-  app =>
-    app.ideaId === idea.id &&
-    app.status?.toLowerCase() === 'pending'
+    const totalApplications = receivedApplications.filter(
+  app => app.ideaId === idea.id
 ).length;
     const openPositions = idea.positions.filter(p => p.isOpen).length;
 
@@ -105,10 +103,6 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
     {idea.tagline}
   </p>
 
-  <p className="text-[10px] font-poppins text-[var(--text-muted)] mt-1">
-    {idea.stage}
-  </p>
-</div>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -116,18 +110,27 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
                         <button onClick={(e) => { e.stopPropagation(); onDelete(idea.id); }} className="p-2.5 rounded-full text-[var(--text-muted)] hover:text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all shadow-none"><TrashIcon className="w-5 h-5" /></button>
                     </div>
                 </div>
-                <p className="text-sm font-poppins text-purple-600 line-clamp-2 my-3">{idea.tagline}</p>
+                
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-[var(--border-primary)] pt-4 gap-4">
                     <div className="flex items-center space-x-8">
-                        <div>
-                            <p className="font-black text-2xl text-purple-600">{pendingApplications}</p>
-                            <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">New applications</p>
-                        </div>
-                        <div>
-                            <p className="text-[10px] font-poppins text-[var(--text-muted)]"></p>
-                            <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">Open roles</p>
-                        </div>
-                    </div>
+  <div>
+    <p className="font-semibold text-2xl text-purple-600">
+      {totalApplications}
+    </p>
+    <p className="text-xs font-poppins text-[var(--text-muted)]">
+      Total applications
+    </p>
+  </div>
+
+  <div>
+    <p className="font-semibold text-2xl text-sky-500">
+      {openPositions}
+    </p>
+    <p className="text-xs font-poppins text-[var(--text-muted)]">
+      Open roles
+    </p>
+  </div>
+</div>
                     <Link to="/my-applications?tab=received" className="bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-300 text-[10px] font-black uppercase tracking-widest py-2 px-5 rounded-full hover:bg-purple-200 transition-all border border-purple-200 dark:border-purple-800/30">Manage applicants</Link>
                 </div>
             </div>
