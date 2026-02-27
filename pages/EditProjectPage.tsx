@@ -13,6 +13,12 @@ const CheckIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) 
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
 );
 
+export const UsersIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
+    h("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", strokeWidth: 1.5, stroke: "currentColor", className: className },
+        h("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" })
+    )
+);
+
 const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -177,6 +183,7 @@ const [stage, setStage] = useState<string>('Validation');
   const [positions, setPositions] = useState<Array<Omit<Position, 'id' | 'isOpen'> & { tempId: number; newQuestion?: string }>>([]);
   const [nextPositionTempId, setNextPositionTempId] = useState(Date.now());
   const [isLoading, setIsLoading] = useState(false);
+const [teamSize, setTeamSize] = useState('');
 
   useEffect(() => {
     if (!ideaId) return;
@@ -190,6 +197,7 @@ const [stage, setStage] = useState<string>('Validation');
     setSolution(idea.buildingNow || '');
     setFounderQuote(idea.founderQuote || '');
     setTags(idea.tags.join(', '));
+setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
     setCategory(idea.category || 'SaaS');
     setBusinessModel(idea.businessModel || 'B2B');
     setWorkMode(idea.workMode || 'Remote');
@@ -203,7 +211,7 @@ const [stage, setStage] = useState<string>('Validation');
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    if (!title || !tagline || !description || !problem || !solution || !founderQuote || !tags || !location || !imagePreviewUrl) {
+    if (!title || !tagline || !description || !problem || !solution || !founderQuote || !tags || !location || !imagePreviewUrl || !teamSize) {
         addNotification('Please fill in all mandatory fields.', 'error');
         setIsLoading(false);
         return;
@@ -279,6 +287,25 @@ const [stage, setStage] = useState<string>('Validation');
       'Launched',
       'Acquired'
     ]}
+  />
+</FormRow>
+
+<FormRow
+  label="Team Size"
+  htmlFor="teamSize"
+  icon={<UsersIcon />}
+  isRequired
+  subtext="How many members are currently in your team?"
+>
+  <input
+    type="number"
+    id="teamSize"
+    value={teamSize}
+    onChange={(e) => setTeamSize(e.target.value)}
+    required
+    min="1"
+    className={inputClasses}
+    placeholder="Enter number (e.g., 3)"
   />
 </FormRow>
           
