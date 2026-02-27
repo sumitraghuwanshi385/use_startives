@@ -29,6 +29,10 @@ const ideaSchema = mongoose.Schema({
     // --- Meta Info ---
     tags: [String],
 stage: { type: String, required: true },
+teamSize: {
+  type: Number,
+  required: true
+},
     category: { type: String, required: true },
     businessModel: { type: String, required: true },
     workMode: { type: String, required: true },
