@@ -77,10 +77,24 @@ const IdeaDetailPage: React.FC = () => {
   const isSaved = isProjectSaved(idea.id);
 
   const handleSaveToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!currentUser) { navigate('/login'); return; }
-    isSaved ? unsaveProject(idea.id) : saveProject(idea.id);
-  };
+  e.stopPropagation();
+
+  console.log("CLICKED SAVE");
+  console.log("Current User:", currentUser);
+  console.log("Is Saved:", isSaved);
+  console.log("Idea ID:", idea.id);
+
+  if (!currentUser) {
+    navigate('/login');
+    return;
+  }
+
+  if (isSaved) {
+    unsaveProject(idea.id);
+  } else {
+    saveProject(idea.id);
+  }
+};
   
   return (
     <div className="space-y-6">
@@ -281,7 +295,7 @@ const IdeaDetailPage: React.FC = () => {
                             </div>
                             {currentUser && !isOwner && (
   hasApplied ? (
-    <div className="flex flex-col items-end">
+    <div className="flex flex-col items-start">
       <button className="bg-gray-200 text-gray-600 text-xs font-bold py-2 px-6 rounded-full cursor-not-allowed">
         Applied
       </button>
