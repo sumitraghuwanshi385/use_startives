@@ -121,12 +121,12 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       </div>
 
 {/* APPLICATION META */}
-<div className="grid grid-cols-2 gap-3 mt-3">
-  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] text-center">
+<div className="grid grid-cols-2 gap-3 mt-2">
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] flex flex-col items-center justify-center text-center">
   <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
     Applied On
   </p>
-  <p className="text-sm font-bold text-[var(--text-primary)]">
+  <p className="text-sm font-bold text-[var(--text-primary)] mt-1">
     {application.createdAt
       ? new Date(application.createdAt).toLocaleDateString()
       : "-"}
@@ -245,7 +245,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
       applicant && currentUser?.connections?.includes(applicant.id);
 
     return (
-      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-3.5 font-poppins">
+      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
         {/* HEADER */}
 <div className="flex items-center justify-between">
@@ -282,7 +282,8 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 </div>
 
  {/* PROJECT */}
-<div className="text-sm font-semibold flex gap-1">
+{/* PROJECT */}
+<div className="text-sm font-semibold flex gap-1 -mb-1">
   <span className="text-[var(--text-primary)]">Project:</span>
   {idea && (
     <Link
@@ -295,18 +296,18 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 </div>
 
         {/* ROLE */}
-        <div className="text-sm font-semibold flex gap-1">
+        <div className="text-sm font-semibold flex gap-1 mt-0">
           <span className="text-[var(--text-primary)]">Role:</span>
           <span className="text-purple-500">{position?.title || "-"}</span>
         </div>
 
 {/* APPLICATION META */}
-<div className="grid grid-cols-2 gap-3 mt-3">
-  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] text-center">
+<div className="grid grid-cols-2 gap-3 mt-2">
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)] flex flex-col items-center justify-center text-center">
   <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
     Applied On
   </p>
-  <p className="text-sm font-bold text-[var(--text-primary)]">
+  <p className="text-sm font-bold text-[var(--text-primary)] mt-1">
     {application.createdAt
       ? new Date(application.createdAt).toLocaleDateString()
       : "-"}
