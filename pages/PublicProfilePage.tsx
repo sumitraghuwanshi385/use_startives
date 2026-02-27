@@ -229,14 +229,14 @@ const PublicProfilePage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 border-t border-[var(--border-primary)] pt-5">
-                    {isOwnProfile && (
-                        <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)] font-medium">
-                            <EnvelopeOpenIcon className="w-4 h-4 opacity-50 text-purple-500" />
-                            <span>{user.email}</span>
-                        </div>
-                    )}
-                </div>
+                {isOwnProfile && (
+  <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 pt-2">
+    <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)] font-medium">
+      <EnvelopeOpenIcon className="w-4 h-4 opacity-50 text-purple-500" />
+      <span>{user.email}</span>
+    </div>
+  </div>
+)}
             </div>
         </div>
       </section>
