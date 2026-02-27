@@ -120,6 +120,28 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
         <span className="text-purple-500">{position?.title || "-"}</span>
       </div>
 
+{/* APPLICATION META */}
+<div className="grid grid-cols-2 gap-3 mt-3">
+  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+      Applied On
+    </p>
+    <p className="text-[var(--text-primary)] font-bold text-sm">
+      {application.createdAt
+        ? new Date(application.createdAt).toLocaleDateString()
+        : "-"}
+    </p>
+  </div>
+
+
+  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+      Status
+    </p>
+    <p className="font-bold text-sm">{application.status}</p>
+  </div>
+</div>
+
       {/* COVER LETTER */}
       <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
         <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
@@ -134,6 +156,20 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 
       {/* ACCEPTED ACTIONS */}
       {application.status === "Accepted" && founder && (
+{(application.status === "Accepted" ||
+  application.status === "Rejected") && (
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+      Decision Time
+    </p>
+    <p className="text-sm font-bold text-[var(--text-primary)]">
+      {application.updatedAt
+        ? new Date(application.updatedAt).toLocaleString()
+        : "-"}
+    </p>
+  </div>
+)}
+
         <div className="flex gap-3">
           {isConnected ? (
             <div className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white text-center">
@@ -181,11 +217,13 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
             </div>
           </div>
 
-          <div className="text-xs text-[var(--text-muted)]">
-            {application.createdAt
-              ? new Date(application.createdAt).toLocaleDateString()
-              : "N/A"}
-          </div>
+          
+<span
+            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
+          >
+            {application.status}
+          </span>
+        </div>
         </div>
       )}
     </div>
@@ -242,12 +280,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
             </div>
           </div>
 
-          <span
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
-          >
-            {application.status}
-          </span>
-        </div>
+          
 
         {/* ROLE */}
         <div className="text-sm font-semibold flex gap-1">
@@ -255,6 +288,26 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
           <span className="text-purple-500">{position?.title || "-"}</span>
         </div>
 
+{/* APPLICATION META */}
+<div className="grid grid-cols-2 gap-3 mt-3">
+  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+      Applied On
+    </p>
+    <p className="text-[var(--text-primary)] font-bold text-sm">
+      {application.createdAt
+        ? new Date(application.createdAt).toLocaleDateString()
+        : "-"}
+    </p>
+  </div>
+
+  <div className="bg-[var(--background-tertiary)] px-3 py-2 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+      Status
+    </p>
+    <p className="font-bold text-sm">{application.status}</p>
+  </div>
+</div>
         {/* COVER LETTER */}
         <div className="bg-[var(--background-tertiary)] p-4 rounded-2xl border border-[var(--border-primary)]">
           <p className="text-[10px] font-black uppercase tracking-widest text-purple-500">
@@ -268,6 +321,19 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         <AnswersBox application={application} />
 
         {application.status === "Pending" && (
+{(application.status === "Accepted" ||
+  application.status === "Rejected") && (
+  <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
+    <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
+      Decision Time
+    </p>
+    <p className="text-sm font-bold text-[var(--text-primary)]">
+      {application.updatedAt
+        ? new Date(application.updatedAt).toLocaleString()
+        : "-"}
+    </p>
+  </div>
+)}
           <div className="flex gap-3">
             <button
               onClick={() =>
@@ -329,11 +395,13 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
             )}
           </div>
 
-          <div className="text-[var(--text-muted)]">
-            {application.createdAt
-              ? new Date(application.createdAt).toLocaleDateString()
-              : "N/A"}
-          </div>
+          <span
+            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
+          >
+            {application.status}
+          </span>
+        </div>
+
         </div>
       </div>
     );
