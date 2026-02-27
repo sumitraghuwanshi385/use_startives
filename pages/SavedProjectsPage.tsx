@@ -56,7 +56,6 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
     toggleSaveProject(idea.id);
   }}
   className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all hover:bg-red-50"
->"
           >
             <BookmarkIcon className="w-5 h-5" solid />
           </button>
