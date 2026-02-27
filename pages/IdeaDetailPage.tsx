@@ -49,8 +49,7 @@ const IdeaDetailPage: React.FC = () => {
   getIdeaById, 
   currentUser, 
   isProjectSaved, 
-  saveProject, 
-  unsaveProject, 
+  toggleSaveProject,
   getUserById,
   sendConnectionRequest,
   isUserConnected,
@@ -89,11 +88,15 @@ const IdeaDetailPage: React.FC = () => {
     return;
   }
 
-  if (isSaved) {
-    unsaveProject(idea.id);
-  } else {
-    saveProject(idea.id);
+  const handleSaveToggle = (e: React.MouseEvent) => {
+  e.stopPropagation();
+
+  if (!currentUser) {
+    navigate('/login');
+    return;
   }
+
+  toggleSaveProject(idea.id);
 };
   
   return (
