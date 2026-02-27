@@ -176,7 +176,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
       </div>
 
       <div className="absolute top-0 right-0 z-20">
-        <button
+        
           <button
   onClick={(e) => {
     e.stopPropagation();
