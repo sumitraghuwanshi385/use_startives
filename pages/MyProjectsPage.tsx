@@ -102,7 +102,7 @@ const MyProjectListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: str
   <p className="text-sm font-poppins text-purple-600 mt-1">
     {idea.tagline}
   </p>
-
+</div>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
