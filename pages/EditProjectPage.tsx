@@ -1,4 +1,3 @@
-
 import React, { useState, FormEvent, useRef, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
@@ -13,6 +12,29 @@ const ChevronDownIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-
 const CheckIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
 );
+
+const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.8}
+    stroke="currentColor"
+    className={className}
+  >
+    <rect x="3" y="3" width="7" height="7" rx="2" />
+    <rect x="14" y="3" width="7" height="7" rx="2" />
+    <rect x="3" y="14" width="7" height="7" rx="2" />
+    <rect x="14" y="14" width="7" height="7" rx="2" />
+  </svg>
+);
+
+const GrowthIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+  </svg>
+);
+
 const TagIcon: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className || "w-6 h-6"}><path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" /><path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" /></svg>
 );
@@ -215,7 +237,7 @@ const [stage, setStage] = useState<string>('Validation');
       
       <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-2xl border border-[var(--border-primary)] shadow-sm space-y-12">
         <FormSection title="Project Core" icon={<IdeaStarIcon />} subtext="Refine the identity of your brand.">
-          <FormRow label="Idea Title" htmlFor="title" icon={<IdeaStarIcon />} isRequired subtext="Memorable and professional brand name.">
+          <FormRow label="Idea Title" htmlFor="title" icon={<GrowthIcon />} isRequired subtext="Memorable and professional brand name.">
             <input type="text" id="title" value={title} onChange={e => setTitle(e.target.value)} required className={inputClasses} placeholder="e.g., EcoRoute Planner"/>
           </FormRow>
           <FormRow label="Tagline" htmlFor="tagline" icon={<Bars3BottomLeftIcon />} isRequired subtext="Catchy one-liner summing everything up.">
@@ -265,7 +287,7 @@ const [stage, setStage] = useState<string>('Validation');
           </FormRow>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormRow label="Category" htmlFor="category" icon={<BookmarkSquareIcon />} isRequired subtext="Select your market sector.">
+              <FormRow label="Category" htmlFor="category" icon={<CategoryIcon />} isRequired subtext="Select your market sector.">
                 <CustomSelect value={category} onChange={val => setCategory(val as StartupCategory)} options={STARTUP_CATEGORIES} />
               </FormRow>
               <FormRow label="Business Model" htmlFor="businessModel" icon={<CubeTransparentIcon />} isRequired subtext="How will this scale?">
