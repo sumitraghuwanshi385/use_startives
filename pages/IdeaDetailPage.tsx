@@ -190,14 +190,15 @@ const IdeaDetailPage: React.FC = () => {
                             </div>
                         </Link>
                         {idea.founderQuote && (
-  <div className="relative">
-    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
-    <p className="text-xs text-[var(--text-secondary)] italic pl-3 leading-relaxed">
+  <div className="mt-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] p-3 rounded-xl">
+    <p className="text-[9px] font-black uppercase tracking-widest text-purple-600 mb-1">
+      Founder Message:
+    </p>
+    <p className="text-xs text-[var(--text-primary)] leading-relaxed">
       {idea.founderQuote}
     </p>
   </div>
 )}
-
 {currentUser && currentUser.id !== founder.id && (
   <div className="pt-3">
     {isUserConnected(founder.id) ? (
