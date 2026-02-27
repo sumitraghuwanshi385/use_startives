@@ -155,7 +155,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 // --- Project Card Component (same as you had, unchanged) ---
 const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
-  const { saveProject, unsaveProject, isProjectSaved, currentUser, getUserById } = useAppContext();
+  const { toggleSaveProject, isProjectSaved, currentUser, getUserById } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
   const founder = useMemo(() => getUserById(idea.founderId), [idea.founderId, getUserById]);
 
@@ -177,11 +177,15 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
       <div className="absolute top-0 right-0 z-20">
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (!currentUser) { navigate('/login'); return; }
-            isSaved ? unsaveProject(idea.id) : saveProject(idea.id);
-          }}
+          <button
+  onClick={(e) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    toggleSaveProject(idea.id);
+  }}
           className={`w-12 h-12 rounded-bl-2xl flex items-center justify-center transition-all duration-300 border-l border-b border-[var(--border-primary)]
             ${isSaved ? 'bg-red-500 text-white border-red-600' : 'bg-white dark:bg-neutral-950 text-neutral-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}
         >
