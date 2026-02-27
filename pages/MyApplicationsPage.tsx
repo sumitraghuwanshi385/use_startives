@@ -365,7 +365,6 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
         
         </div>
-      </div>
     );
   };
 
