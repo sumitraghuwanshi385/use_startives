@@ -68,25 +68,25 @@ const MapPinIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" })
 
 
 const STAGE_COLOR_MAP: Record<string, string> = {
-  "Idea Stage":
+  "Idea":
     "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
 
-  "Validation Stage":
+  "MVP":
     "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
 
-  "MVP Stage":
+  "Prototype":
     "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
 
-  "Pre-Seed Stage":
+  "Beta":
     "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
 
-  "Fundraising Stage":
+  "Launched":
     "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
 
-  "Scaling Stage":
+  "Scaling":
     "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
 
-  "Launched":
+  "Fundraising":
     "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
 
   "Acquired":
@@ -411,7 +411,7 @@ const displayIdeas =
               icon={<GrowthIcon />}
               value={filters.stage}
               onChange={(v) => setFilters((f) => ({ ...f, stage: v }))}
-              options={['All', 'Idea Stage', 'Validation Stage', 'MVP Stage', 'Pre-Seed Stage', 'Fundraising Stage', 'Scaling Stage', 'Launched', 'Acquired'].map(s => ({ value: s, label: s }))}
+              options={['All', 'Idea', 'MVP', 'Prototype', 'Beta', 'Launched', 'Scaling', 'Fundraising', 'Acquired'].map(s => ({ value: s, label: s }))}
             />
 
             <CustomDropdown
