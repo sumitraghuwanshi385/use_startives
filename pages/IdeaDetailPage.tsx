@@ -54,7 +54,8 @@ const IdeaDetailPage: React.FC = () => {
   getUserById,
   sendConnectionRequest,
   isUserConnected,
-  isRequestPending
+  isRequestPending,
+  sentApplications
 } = useAppContext();
   const navigate = useNavigate();
 
@@ -103,7 +104,7 @@ const IdeaDetailPage: React.FC = () => {
                         <h1 className="text-3xl sm:text-4xl font-startives-brand text-[var(--text-primary)] tracking-tighter leading-none">{idea.title}</h1>
                         <p className="mt-2 text-lg text-purple-600 dark:text-purple-400 font-medium font-poppins">
   {idea.tagline}
-</p
+</p>
                     </div>
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
                         {idea.websiteUrl && (
@@ -259,7 +260,13 @@ const IdeaDetailPage: React.FC = () => {
             <DetailSection title={`Active Openings (${idea.positions.filter(p => p.isOpen).length})`} icon={<IdentificationIcon />}>
                 {idea.positions.filter(p => p.isOpen).length > 0 ? (
                 <div className="space-y-6">
-                    {idea.positions.filter(p => p.isOpen !== false).map(position => (
+                    {idea.positions.filter(p => p.isOpen !== false).map(position => {
+
+  const hasApplied = sentApplications?.some(
+    app => app.positionId === position._id
+  );
+
+  return (
   <div key={position._id} className="bg-[var(--component-secondary-background)] p-6 rounded-2xl border border-[var(--border-primary)] group hover:border-purple-500/30 transition-all">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                             <div>
@@ -273,10 +280,24 @@ const IdeaDetailPage: React.FC = () => {
                                 </div>
                             </div>
                             {currentUser && !isOwner && (
-                                <Link to={`/idea/${idea.id}/position/${position._id}/apply`} className="button-gradient inline-flex items-center text-white font-bold py-2 px-6 rounded-full text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105">
-                                    Apply Now
-                                </Link>
-                            )}
+  hasApplied ? (
+    <div className="flex flex-col items-end">
+      <button className="bg-gray-200 text-gray-600 text-xs font-bold py-2 px-6 rounded-full cursor-not-allowed">
+        Applied
+      </button>
+      <span className="text-[10px] text-green-600 mt-1 font-medium">
+        You have already applied
+      </span>
+    </div>
+  ) : (
+    <Link
+      to={`/idea/${idea.id}/position/${position._id}/apply`}
+      className="button-gradient inline-flex items-center text-white font-bold py-2 px-6 rounded-full text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105"
+    >
+      Apply Now
+    </Link>
+  )
+)}
                         </div>
                         <p className="text-[var(--text-secondary)] mb-5 text-sm leading-relaxed whitespace-pre-wrap font-medium">{position.description}</p>
                         {position.skills.length > 0 && (
@@ -289,6 +310,7 @@ const IdeaDetailPage: React.FC = () => {
                             </div>
                         )}
                     </div>
+                     );
                     ))}
                 </div>
                 ) : (
