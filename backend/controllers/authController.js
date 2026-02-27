@@ -175,33 +175,85 @@ const getUserById = async (req, res) => {
     }
 };
 
+// @desc    Get logged in user
+// @route   GET /api/auth/me
+const getCurrentUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ success: false });
+        }
+
+        return res.json({
+            success: true,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                headline: user.headline,
+                country: user.country,
+                profilePictureUrl: user.profilePictureUrl,
+                savedProjectIds: user.savedProjectIds,
+                connections: user.connections,
+                connectionRequests: user.connectionRequests,
+                sentRequests: user.sentRequests,
+                createdAt: user.createdAt,
+            }
+        });
+
+    } catch (error) {
+        return res.status(500).json({ success: false });
+    }
+};
+
 // @desc    Save or unsave a project
 // @route   PUT /api/auth/save-project
 const toggleSavedProject = async (req, res) => {
     try {
         const { projectId } = req.body;
+
+        if (!projectId) {
+            return res.status(400).json({ success: false, message: "Project ID required" });
+        }
+
         const user = await User.findById(req.user._id);
 
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        const index = user.savedProjectIds.indexOf(projectId);
+        const alreadySaved = user.savedProjectIds.includes(projectId);
 
-        if (index === -1) {
-            user.savedProjectIds.push(projectId);
+        if (alreadySaved) {
+            user.savedProjectIds = user.savedProjectIds.filter(
+                id => id !== projectId
+            );
         } else {
-            user.savedProjectIds.splice(index, 1);
+            user.savedProjectIds.push(projectId);
         }
 
         await user.save();
 
         return res.json({
             success: true,
-            savedProjectIds: user.savedProjectIds,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                headline: user.headline,
+                country: user.country,
+                profilePictureUrl: user.profilePictureUrl,
+                savedProjectIds: user.savedProjectIds,
+                connections: user.connections,
+                connectionRequests: user.connectionRequests,
+                sentRequests: user.sentRequests,
+                createdAt: user.createdAt,
+            }
         });
 
     } catch (error) {
+        console.error("Toggle Save Error:", error);
         return res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -212,4 +264,5 @@ module.exports = {
     updateUserProfile,
     toggleSavedProject,
     getUserById,
+    getCurrentUser,
 };
