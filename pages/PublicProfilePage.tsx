@@ -267,7 +267,7 @@ const userAssets = startupIdeas.filter(
     Updates
   </span>
   <span className="text-xs font-black text-[var(--text-primary)] ml-1">
-    {myTalks.length}
+    {userTalks.length}
   </span>
 </div>
                 </div>
@@ -325,7 +325,7 @@ const userAssets = startupIdeas.filter(
                     <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
                         <GlobeModernIcon className="w-3 h-3" />
                     </div>
-                    Projects Spearheaded
+                    Projects Listed
                 </h3>
                 {userProjects.length > 0 ? (
                     <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
@@ -356,7 +356,7 @@ badgeColor={
                     <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
                         <ShoppingBagIcon className="w-3 h-3" />
                     </div>
-                    Verified Assets
+                     Assets Listed
                 </h3>
                 {userAssets.length > 0 ? (
                     <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
