@@ -276,8 +276,72 @@ if (!user.savedProjectIds) {
     setAuthLoadingState({ isLoading: false, messages: [] });
   }
 };
-  const updateIdea = () => {};
-  const deleteIdea = () => {};
+  const updateIdea = async (ideaId: string, updatedData: any) => {
+  if (!currentUser) return false;
+
+  const t = getAuthToken();
+  if (!t) return false;
+
+  try {
+    const res = await axios.put(
+      `/api/ideas/${ideaId}`,
+      updatedData,
+      {
+        headers: { Authorization: `Bearer ${t}` }
+      }
+    );
+
+    if (res.data?.success) {
+      const updatedIdea = res.data.idea;
+
+      // 🔥 update local state
+      setStartupIdeas(prev =>
+        prev.map(idea =>
+          idea.id === ideaId ? updatedIdea : idea
+        )
+      );
+
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error("Update idea failed", error);
+    return false;
+  }
+};
+  
+const deleteIdea = async (ideaId: string) => {
+  if (!currentUser) return false;
+
+  const t = getAuthToken();
+  if (!t) return false;
+
+  try {
+    const res = await axios.delete(
+      `/api/ideas/${ideaId}`,
+      {
+        headers: { Authorization: `Bearer ${t}` }
+      }
+    );
+
+    if (res.data?.success) {
+      // 🔥 Remove from local state
+      setStartupIdeas(prev =>
+        prev.filter(idea => idea.id !== ideaId)
+      );
+
+      addNotificationCallBack("Project deleted successfully.", "success");
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error("Delete idea failed", error);
+    addNotificationCallBack("Failed to delete project.", "error");
+    return false;
+  }
+};
 
   // ---------------- STARTALKS ----------------
   const addStartalk = async (content: string, imageUrl?: string) => {
