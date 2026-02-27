@@ -140,11 +140,11 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       Decision
     </p>
     <p className="text-sm font-bold text-[var(--text-primary)]">
-      {application.status} •{" "}
-      {application.updatedAt
-        ? new Date(application.updatedAt).toLocaleDateString()
-        : "-"}
-    </p>
+  {application.updatedAt
+    ? new Date(application.updatedAt).toLocaleDateString()
+    : "-"}
+</p>
+
   </div>
 )}
 </div>
@@ -189,7 +189,6 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   </div>
 )}
 
-      {/* FOOTER */}
       {/* FOOTER */}
 {founder && (
   <div className="flex justify-between items-center pt-3">
@@ -246,19 +245,23 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
       applicant && currentUser?.connections?.includes(applicant.id);
 
     return (
-      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
+      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-4 font-poppins">
 
         {/* HEADER */}
 <div className="flex items-center justify-between">
   <div className="flex items-center gap-3">
     {applicant && (
-      <Link to={`/user/${applicant.id}`}>
-        <img
-          src={applicant.profilePictureUrl}
-          className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
-        />
-      </Link>
-    )}
+      <div className="text-sm font-semibold flex gap-1">
+  <span className="text-[var(--text-primary)]">Project:</span>
+  {idea && (
+    <Link
+      to={`/idea/${getId(idea)}`}
+      className="text-purple-500"
+    >
+      {idea.title}
+    </Link>
+  )}
+</div>
 
     <div>
       <Link
@@ -320,11 +323,10 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
       Decision
     </p>
     <p className="text-sm font-bold text-[var(--text-primary)]">
-      {application.status} •{" "}
-      {application.updatedAt
-        ? new Date(application.updatedAt).toLocaleDateString()
-        : "-"}
-    </p>
+  {application.updatedAt
+    ? new Date(application.updatedAt).toLocaleDateString()
+    : "-"}
+</p>
   </div>
 )}
  </div>
