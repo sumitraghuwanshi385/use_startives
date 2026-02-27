@@ -234,7 +234,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           <div className="flex flex-wrap gap-1.5">
             {idea.positions.slice(0, 2).map(pos => (
               <span key={pos.id} className="text-[9px] font-black tracking-tight bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-3 py-1 rounded-full border border-[var(--border-primary)] shadow-none uppercase">
-                {post.title}
+                {pos.title}
               </span>
             ))}
             {idea.positions.length > 2 && (
