@@ -443,7 +443,38 @@ const isProjectSaved = (projectId: string) => {
   if (!currentUser) return false;
   return (currentUser.savedProjectIds || []).includes(projectId);
 };
-const addApplication = () => {};
+
+const addApplication = async (applicationData: any) => {
+  if (!currentUser) return false;
+
+  const t = localStorage.getItem("authToken");
+  if (!t) return false;
+
+  try {
+    const res = await axios.post(
+      "/api/applications",
+      applicationData,
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (res.data?.success) {
+      const newApp = {
+        ...res.data.application,
+        id: res.data.application._id || res.data.application.id
+      };
+
+      // 👇 Immediately update state
+      setSentApplications(prev => [newApp, ...prev]);
+
+      return true;
+    }
+
+    return false;
+  } catch (err) {
+    console.error("Application submit failed", err);
+    return false;
+  }
+};
 
 // ---------------- APPLICATIONS ----------------
 
