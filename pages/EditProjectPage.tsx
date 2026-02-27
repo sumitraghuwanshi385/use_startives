@@ -276,7 +276,8 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
   label="Tagline" 
   htmlFor="tagline" 
   icon={<Bars3BottomLeftIcon />} 
-  isRequired
+  isRequired 
+  subtext="Catchy one-liner summing everything up."
 >
   <div className="space-y-1">
     <div className="relative">
@@ -284,8 +285,12 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
         type="text"
         id="tagline"
         value={tagline}
-        maxLength={30}
-        onChange={(e) => setTagline(e.target.value)}
+        maxLength={30}  // 🔥 HARD LIMIT
+        onChange={(e) => {
+          if (e.target.value.length <= 30) {
+            setTagline(e.target.value);
+          }
+        }}
         required
         className={`${inputClasses} pr-14`}
         placeholder="Navigate the world, sustainably."
@@ -299,7 +304,7 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
       </span>
     </div>
 
-    {/* Subheading below input */}
+    {/* Limit info below input */}
     <p className="text-[10px] font-bold text-[var(--text-muted)]">
       Maximum 30 letters (including spaces)
     </p>
