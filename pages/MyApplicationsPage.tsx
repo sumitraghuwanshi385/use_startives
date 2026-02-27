@@ -155,7 +155,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       <AnswersBox application={application} />
 
       {/* ACCEPTED ACTIONS */}
-      {application.status === "Accepted" && founder && (
+      {/* DECISION TIME */}
 {(application.status === "Accepted" ||
   application.status === "Rejected") && (
   <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
@@ -170,66 +170,64 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   </div>
 )}
 
-        <div className="flex gap-3">
-          {isConnected ? (
-            <div className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white text-center">
-              CONNECTED
-            </div>
-          ) : (
-            <button
-              onClick={() => sendConnectionRequest(founder.id)}
-              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
-            >
-              ADD CONNECTION
-            </button>
-          )}
+{/* ACCEPTED ACTIONS */}
+{application.status === "Accepted" && founder && (
+  <div className="flex gap-3">
+    {isConnected ? (
+      <div className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white text-center">
+        CONNECTED
+      </div>
+    ) : (
+      <button
+        onClick={() => sendConnectionRequest(founder.id)}
+        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
+      >
+        ADD CONNECTION
+      </button>
+    )}
 
-          <Link
-            to={`/messages?chatWith=${founder.id}`}
-            className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100 border border-sky-200 text-sky-600 text-center"
-          >
-            MESSAGE
-          </Link>
-        </div>
-      )}
+    <Link
+      to={`/messages?chatWith=${founder.id}`}
+      className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100 border border-sky-200 text-sky-600 text-center"
+    >
+      MESSAGE
+    </Link>
+  </div>
+)}
 
       {/* FOOTER */}
-      {founder && (
-        <div className="flex justify-between items-center pt-3">
-          <div className="flex items-center gap-3">
-            <Link to={`/user/${founder.id}`}>
-              <img
-                src={founder.profilePictureUrl}
-                className="w-9 h-9 rounded-full object-cover border border-[var(--border-secondary)]"
-              />
-            </Link>
+      {/* FOOTER */}
+{founder && (
+  <div className="flex justify-between items-center pt-3">
+    <div className="flex items-center gap-3">
+      <Link to={`/user/${founder.id}`}>
+        <img
+          src={founder.profilePictureUrl}
+          className="w-9 h-9 rounded-full object-cover border border-[var(--border-secondary)]"
+        />
+      </Link>
 
-            <div>
-              <Link
-                to={`/user/${founder.id}`}
-                className="text-sm font-medium text-[var(--text-primary)] font-poppins"
-              >
-                {founder.name}
-              </Link>
-              <p className="text-xs text-purple-500 font-poppins">
-                {founder.headline}
-              </p>
-            </div>
-          </div>
-
-          
-<span
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
-          >
-            {application.status}
-          </span>
-        </div>
-        </div>
-      )}
+      <div>
+        <Link
+          to={`/user/${founder.id}`}
+          className="text-sm font-medium text-[var(--text-primary)] font-poppins"
+        >
+          {founder.name}
+        </Link>
+        <p className="text-xs text-purple-500 font-poppins">
+          {founder.headline}
+        </p>
+      </div>
     </div>
+  </div>
+)}
+
+</div>
   );
 };
+          
 
+       
 /* ================= RECEIVED CARD ================= */
 
 const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
@@ -256,32 +254,38 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     return (
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {applicant && (
-              <Link to={`/user/${applicant.id}`}>
-                <img
-                  src={applicant.profilePictureUrl}
-                  className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
-                />
-              </Link>
-            )}
+        {/* HEADER */}
+<div className="flex items-center justify-between">
+  <div className="flex items-center gap-3">
+    {applicant && (
+      <Link to={`/user/${applicant.id}`}>
+        <img
+          src={applicant.profilePictureUrl}
+          className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
+        />
+      </Link>
+    )}
 
-            <div>
-              <Link
-                to={`/user/${applicant?.id}`}
-                className="text-sm font-medium text-[var(--text-primary)] font-poppins"
-              >
-                {applicant?.name}
-              </Link>
-              <p className="text-xs text-purple-500 font-poppins">
-                {applicant?.headline}
-              </p>
-            </div>
-          </div>
+    <div>
+      <Link
+        to={`/user/${applicant?.id}`}
+        className="text-sm font-medium text-[var(--text-primary)] font-poppins"
+      >
+        {applicant?.name}
+      </Link>
+      <p className="text-xs text-purple-500 font-poppins">
+        {applicant?.headline}
+      </p>
+    </div>
+  </div>
 
-          
-
+<span
+    className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
+  >
+    {application.status}
+  </span>
+</div>
+ 
         {/* ROLE */}
         <div className="text-sm font-semibold flex gap-1">
           <span className="text-[var(--text-primary)]">Role:</span>
@@ -320,7 +324,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
         <AnswersBox application={application} />
 
-        {application.status === "Pending" && (
+        {/* DECISION TIME */}
 {(application.status === "Accepted" ||
   application.status === "Rejected") && (
   <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
@@ -334,50 +338,29 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     </p>
   </div>
 )}
-          <div className="flex gap-3">
-            <button
-              onClick={() =>
-                updateApplicationStatus(application.id, "Rejected")
-              }
-              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-red-600 text-white"
-            >
-              REJECT
-            </button>
 
-            <button
-              onClick={() =>
-                updateApplicationStatus(application.id, "Accepted")
-              }
-              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
-            >
-              ACCEPT
-            </button>
-          </div>
-        )}
+{/* ACTION BUTTONS */}
+{application.status === "Pending" && (
+  <div className="flex gap-3">
+    <button
+      onClick={() =>
+        updateApplicationStatus(application.id, "Rejected")
+      }
+      className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-red-600 text-white"
+    >
+      REJECT
+    </button>
 
-        {application.status === "Accepted" && applicant && (
-          <div className="flex gap-3">
-            {isConnected ? (
-              <div className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white text-center">
-                CONNECTED
-              </div>
-            ) : (
-              <button
-                onClick={() => sendConnectionRequest(applicant.id)}
-                className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
-              >
-                ADD CONNECTION
-              </button>
-            )}
-
-            <Link
-              to={`/messages?chatWith=${applicant.id}`}
-              className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100 border border-sky-200 text-sky-600 text-center"
-            >
-              MESSAGE
-            </Link>
-          </div>
-        )}
+    <button
+      onClick={() =>
+        updateApplicationStatus(application.id, "Accepted")
+      }
+      className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
+    >
+      ACCEPT
+    </button>
+  </div>
+)}
 
         {/* FOOTER */}
         <div className="flex justify-between items-center pt-2 text-sm">
@@ -394,14 +377,6 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
               </Link>
             )}
           </div>
-
-          <span
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
-          >
-            {application.status}
-          </span>
-        </div>
-
         </div>
       </div>
     );
