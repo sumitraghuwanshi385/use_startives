@@ -395,7 +395,7 @@ const filteredApplications =
   (activeTab === "sent" ? sentApplications : receivedApplications).filter(
     (app) =>
       statusFilter === "All" ? true : app.status === statusFilter
-  );
+  ); 
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 font-poppins">
