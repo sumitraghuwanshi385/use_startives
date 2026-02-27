@@ -133,29 +133,26 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
       }
 
       // Success path
-      const { token: newToken } = response.data;
+      const { user, token: newToken } = response.data;
 
-// Save token first
-localStorage.setItem('authToken', newToken);
-setToken(newToken);
-
-// 🔥 Fetch fresh user from backend
-const meRes = await axios.get('/api/auth/users/' + response.data.user.id);
-
-if (meRes.data?.success) {
-  const freshUser = meRes.data.user;
-
-  setCurrentUser(freshUser);
-  localStorage.setItem('user', JSON.stringify(freshUser));
-
-  if (freshUser?.sentRequests) setSentConnectionRequests(freshUser.sentRequests);
-  if (freshUser?.connections) setConnectedUserIds(freshUser.connections);
+// 🔥 Ensure savedProjectIds exists
+if (!user.savedProjectIds) {
+  user.savedProjectIds = [];
 }
 
-await fetchConnections();
+      localStorage.setItem('authToken', newToken);
+      localStorage.setItem('user', JSON.stringify(user));
 
-setShowOnboardingModal(fromSignup || !response.data.user?.headline);
-return true;
+      setToken(newToken);
+      setCurrentUser(user);
+
+      if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
+      if (user?.connections) setConnectedUserIds(user.connections);
+
+      await fetchConnections();
+
+      setShowOnboardingModal(fromSignup || !user?.headline);
+      return true;
     } catch (error: any) {
       console.error("Login API Error:", error);
       addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
@@ -600,23 +597,19 @@ setReceivedApplications(prev =>
 
       const storedToken = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('user');
-      if (storedToken) {
-  setToken(storedToken);
-
-  try {
-    const res = await axios.get('/api/auth/users/me', {
-      headers: { Authorization: `Bearer ${storedToken}` }
-    });
-
-    if (res.data?.success) {
-      setCurrentUser(res.data.user);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-    }
-  } catch (err) {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-  }
-}
+      if (storedToken && storedUser) {
+          try {
+              const parsedUser = JSON.parse(storedUser);
+              setToken(storedToken);
+              setCurrentUser(parsedUser);
+              if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
+              if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
+              setTimeout(() => { fetchConnections(); }, 0);
+          } catch (e) {
+              localStorage.removeItem('authToken');
+              localStorage.removeItem('user');
+          }
+      }
       setIsLoading(false);
     };
     loadInitialData();
