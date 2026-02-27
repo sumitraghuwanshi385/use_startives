@@ -229,13 +229,26 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
     }
     
     updateIdea(ideaId!, {
-      title, tagline, description, problem, buildingNow: solution, stage,founderQuote,
-      tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-      category, businessModel, workMode, location,
-      websiteUrl: websiteUrl || undefined,
-      positions: positions.map(({tempId, newQuestion, ...rest}: any) => ({ ...rest, isOpen: true })),
-      imageUrl: imagePreviewUrl || '',
-    });
+  title,
+  tagline,
+  description,
+  problem,
+  buildingNow: solution,
+  founderQuote,
+  teamSize: Number(teamSize),  // 🔥 THIS LINE IS IMPORTANT
+  stage,
+  tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+  category,
+  businessModel,
+  workMode,
+  location,
+  websiteUrl: websiteUrl || undefined,
+  positions: positions.map(({ tempId, newQuestion, ...rest }: any) => ({
+    ...rest,
+    isOpen: true
+  })),
+  imageUrl: imagePreviewUrl || '',
+});
 
     setIsLoading(false);
     addNotification('Project updated successfully!', 'success');
