@@ -413,50 +413,58 @@ if (!user.savedProjectIds) {
 const saveProject = async (projectId: string) => {
   if (!currentUser) return;
 
-  const t = getAuthToken();
-  if (!t) return;
+  // 🔥 Optimistic UI update first
+  const updatedUser = {
+    ...currentUser,
+    savedProjectIds: [
+      ...(currentUser.savedProjectIds || []),
+      projectId
+    ]
+  };
+
+  setCurrentUser(updatedUser);
+  localStorage.setItem("user", JSON.stringify(updatedUser));
 
   try {
-    const res = await axios.post(
+    const t = getAuthToken();
+    await axios.post(
       "/api/users/save-project",
       { projectId },
       { headers: { Authorization: `Bearer ${t}` } }
     );
-
-    if (res.data?.success) {
-      setCurrentUser(res.data.user);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-    }
   } catch (err) {
-    console.error("Save project failed", err);
+    console.error("Save failed", err);
   }
 };
 
 const unsaveProject = async (projectId: string) => {
   if (!currentUser) return;
 
-  const t = getAuthToken();
-  if (!t) return;
+  // 🔥 Optimistic update
+  const updatedUser = {
+    ...currentUser,
+    savedProjectIds: (currentUser.savedProjectIds || []).filter(
+      id => id !== projectId
+    )
+  };
+
+  setCurrentUser(updatedUser);
+  localStorage.setItem("user", JSON.stringify(updatedUser));
 
   try {
-    const res = await axios.post(
+    const t = getAuthToken();
+    await axios.post(
       "/api/users/unsave-project",
       { projectId },
       { headers: { Authorization: `Bearer ${t}` } }
     );
-
-    if (res.data?.success) {
-      setCurrentUser(res.data.user);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-    }
   } catch (err) {
-    console.error("Unsave project failed", err);
+    console.error("Unsave failed", err);
   }
 };
 
 const isProjectSaved = (projectId: string) => {
-  if (!currentUser) return false;
-  return (currentUser.savedProjectIds || []).includes(projectId);
+  return !!currentUser?.savedProjectIds?.includes(projectId);
 };
 
 const addApplication = async (applicationData: any) => {
