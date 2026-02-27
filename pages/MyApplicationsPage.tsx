@@ -251,7 +251,38 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 <div className="flex items-center justify-between">
   <div className="flex items-center gap-3">
     {applicant && (
-      <div className="text-sm font-semibold flex gap-1">
+      <>
+        <Link to={`/user/${applicant.id}`}>
+          <img
+            src={applicant.profilePictureUrl}
+            className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
+          />
+        </Link>
+
+        <div>
+          <Link
+            to={`/user/${applicant.id}`}
+            className="text-sm font-medium text-[var(--text-primary)]"
+          >
+            {applicant.name}
+          </Link>
+          <p className="text-xs text-purple-500">
+            {applicant.headline}
+          </p>
+        </div>
+      </>
+    )}
+  </div>
+
+  <span
+    className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
+  >
+    {application.status}
+  </span>
+</div>
+
+ {/* PROJECT */}
+<div className="text-sm font-semibold flex gap-1">
   <span className="text-[var(--text-primary)]">Project:</span>
   {idea && (
     <Link
@@ -262,39 +293,6 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     </Link>
   )}
 </div>
-
-    <div>
-      <Link
-        to={`/user/${applicant?.id}`}
-        className="text-sm font-medium text-[var(--text-primary)] font-poppins"
-      >
-        {applicant?.name}
-      </Link>
-      <p className="text-xs text-purple-500 font-poppins">
-        {applicant?.headline}
-      </p>
-    </div>
-  </div>
-
-<span
-    className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full ${getStatusStyle(application.status)}`}
-  >
-    {application.status}
-  </span>
-</div>
-
-
- {/* PROJECT */}
-<div className="text-sm font-semibold flex gap-1">
-  <span className="text-[var(--text-primary)]">Project:</span>
-  {idea && (
-    <Link
-      to={`/idea/${getId(idea)}`}
-      className="text-purple-500 hover:text-purple-600 transition font-medium"
-    >
-      {idea.title}
-    </Link>
-  )}
 
         {/* ROLE */}
         <div className="text-sm font-semibold flex gap-1">
