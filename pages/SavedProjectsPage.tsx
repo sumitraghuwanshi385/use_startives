@@ -43,14 +43,16 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           </div>
 
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              unsaveProject(idea.id);
-            }}
-            className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all shadow-none hover:bg-red-50"
-          >
-            <BookmarkIcon className="w-5 h-5" solid />
-          </button>
+  type="button"
+  onClick={async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await unsaveProject(idea.id);
+  }}
+  className="p-2.5 rounded-full text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all shadow-none hover:bg-red-50"
+>
+  <BookmarkIcon className="w-5 h-5" solid />
+</button>
         </div>
       </div>
 
@@ -101,8 +103,6 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
       />
     </svg>
   </div>
-
-</div>
       </div>
     </div>
   );
