@@ -7,12 +7,14 @@ const {
     loginUser, 
     updateUserProfile, 
     toggleSavedProject,
-    getUserById 
+    getUserById,
+    getCurrentUser
 } = require('../controllers/authController');
 
 // --- PUBLIC ROUTES (No Login Required) ---
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
+router.get('/me', protect, getCurrentUser);
 router.get('/users/:id', getUserById); // ✅ Ye public rehna chahiye taaki sab profile dekh sakein
 
 // --- PROTECTED ROUTES (Login Required) ---
