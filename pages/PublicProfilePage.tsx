@@ -65,6 +65,32 @@ const ProfilePillCard: React.FC<{
     </Link>
 );
 
+const STAGE_COLOR_MAP: Record<string, string> = {
+  "Idea Stage":
+    "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
+
+  "Validation Stage":
+    "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300",
+
+  "MVP Stage":
+    "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
+
+  "Pre-Seed Stage":
+    "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
+
+  "Fundraising Stage":
+    "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
+
+  "Scaling Stage":
+    "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
+
+  "Launched":
+    "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
+
+  "Acquired":
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
+};
+
 const PublicProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const { 
@@ -302,7 +328,10 @@ const userAssets = startupIdeas.filter(
                                 imageUrl={idea.imageUrl}
                                 link={`/idea/${idea.id}`}
                                 badge={idea.stage}
-                                badgeColor="bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300"
+badgeColor={
+  STAGE_COLOR_MAP[idea.stage] ||
+  "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"
+}
                             />
                         ))}
                     </div>
