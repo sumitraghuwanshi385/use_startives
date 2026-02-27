@@ -120,12 +120,17 @@ const PublicProfilePage: React.FC = () => {
   // Assign to user variable
   const user = fetchedUser;
   
-  const userProjects = startupIdeas.filter(idea => idea.founderId === user.id && !idea.askingPrice);
-  const userAssets = startupIdeas.filter(idea => idea.founderId === user.id && idea.askingPrice);
+  const userProjects = startupIdeas.filter(
+  idea => idea.founderId?.toString() === user.id?.toString() && !idea.askingPrice
+);
+
+const userAssets = startupIdeas.filter(
+  idea => idea.founderId?.toString() === user.id?.toString() && idea.askingPrice
+);
   const userTalks = startalks.filter(talk => talk.authorId === user.id);
 
   const initials = user.name?.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() || 'U';
-  const countryFlag = getFlagEmoji(user.country);
+  const countryFlag = user.country ? getFlagEmoji(user.country) : "🌍";
 
   const isOwnProfile = currentUser?.id === user.id;
   const requestIsPending = !isOwnProfile && isRequestPending(user.id);
@@ -159,7 +164,6 @@ const PublicProfilePage: React.FC = () => {
     return base;
   };
 
-  const connectionCount = isOwnProfile ? connectedUserIds.length : ((user.id.length * 7 + 12) % 300 + 40);
 
   return (
     <div className="space-y-6 pb-20 max-w-6xl mx-auto">
@@ -203,7 +207,9 @@ const PublicProfilePage: React.FC = () => {
                         <h1 className="text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] leading-none">{user.name}</h1>
                         <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full border border-[var(--border-primary)]">
                             <span className="text-xl">{countryFlag}</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{user.country}</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+  {user.country || "Global"}
+</span>
                         </div>
                     </div>
                     <p className="text-lg text-purple-600 dark:text-purple-400 font-medium mt-2 font-poppins">
@@ -225,7 +231,9 @@ const PublicProfilePage: React.FC = () => {
                     <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
                         <UsersIcon className="w-3.5 h-3.5 text-blue-500" />
                         <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Connections</span>
-                        <span className="text-xs font-black text-[var(--text-primary)] ml-1">{connectionCount}</span>
+                        <span className="text-xs font-black text-[var(--text-primary)] ml-1">
+  {user.connections?.length || 0}
+</span>
                     </div>
                 </div>
 
