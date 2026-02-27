@@ -36,6 +36,22 @@ const ChevronDownIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-
   </svg>
 );
 
+const PeopleIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.8}
+    stroke="currentColor"
+    className={className}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19a4 4 0 00-8 0" />
+    <circle cx="11" cy="11" r="3" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 19a4 4 0 00-3-3.87" />
+    <circle cx="17" cy="10" r="2.5" />
+  </svg>
+);
+
 const GrowthIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
@@ -224,6 +240,7 @@ const [stage, setStage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
 const [isStageOpen, setIsStageOpen] = useState(false);
+const [teamSize, setTeamSize] = useState('');
 
   const [nextPositionTempId, setNextPositionTempId] = useState(1);
 
@@ -277,7 +294,7 @@ const [isStageOpen, setIsStageOpen] = useState(false);
 
     setIsLoading(true);
 
-  if (!title || !tagline || !description || !problem || !solution || !founderQuote || !tags || !location || !imagePreviewUrl || !stage)   {
+  if (!title || !tagline || !description || !problem || !solution || !founderQuote || !tags || !location || !imagePreviewUrl || !stage || !teamSize)   {
       addNotification('Please fill in all mandatory fields.', 'error');
       setIsLoading(false);
       return;
@@ -293,6 +310,7 @@ const [isStageOpen, setIsStageOpen] = useState(false);
       founderName: currentUser?.name || 'User',
       tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
       stage,
+      teamSize: Number(teamSize),
       category,
       businessModel,
       workMode,
@@ -379,6 +397,25 @@ const [isStageOpen, setIsStageOpen] = useState(false);
     onChange={(val) => setStage(val)}
     options={STAGE_OPTIONS}
     placeholder="Select Stage"
+  />
+</FormRow>
+
+<FormRow
+  label="Team Size"
+  htmlFor="teamSize"
+  icon={<PeopleIcon />}
+  isRequired
+  subtext="How many members are currently in your team?"
+>
+  <input
+    type="number"
+    id="teamSize"
+    value={teamSize}
+    onChange={(e) => setTeamSize(e.target.value)}
+    required
+    min="1"
+    className={inputClasses}
+    placeholder="Enter number (e.g., 3)"
   />
 </FormRow>
 
