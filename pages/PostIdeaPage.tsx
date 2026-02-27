@@ -19,13 +19,13 @@ import {
 } from '../constants';
 
 const STAGE_OPTIONS = [
-  'Idea Stage',
-  'Validation Stage',
-  'MVP Stage',
-  'Pre-Seed Stage',
-  'Fundraising Stage',
-  'Scaling Stage',
+  'Idea',
+  'MVP',
+  'Prototype',
+  'Beta',
   'Launched',
+  'Scaling',
+  'Fundraising',
   'Acquired'
 ];
 
