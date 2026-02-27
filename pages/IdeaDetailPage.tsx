@@ -189,14 +189,14 @@ const IdeaDetailPage: React.FC = () => {
 </p>
                             </div>
                         </Link>
-                        {founder.bio && (
-                            <div className="relative">
-                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
-                                <p className="text-xs text-[var(--text-secondary)] italic pl-3 leading-relaxed line-clamp-4">
-                                    {founder.bio}
-                                </p>
-                            </div>
-                        )}
+                        {idea.founderQuote && (
+  <div className="relative">
+    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
+    <p className="text-xs text-[var(--text-secondary)] italic pl-3 leading-relaxed">
+      {idea.founderQuote}
+    </p>
+  </div>
+)}
 
 {currentUser && currentUser.id !== founder.id && (
   <div className="pt-3">
