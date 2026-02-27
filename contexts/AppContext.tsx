@@ -410,38 +410,48 @@ if (!user.savedProjectIds) {
   const removeApplication = () => {};
   // ---------------- SAVE PROJECT ----------------
 
-const saveProject = (projectId: string) => {
+const saveProject = async (projectId: string) => {
   if (!currentUser) return;
 
-  const updatedUser = {
-    ...currentUser,
-    savedProjectIds: [
-      ...(currentUser.savedProjectIds || []),
-      projectId
-    ]
-  };
+  const t = getAuthToken();
+  if (!t) return;
 
-  setCurrentUser(updatedUser);
-  localStorage.setItem('user', JSON.stringify(updatedUser));
+  try {
+    const res = await axios.post(
+      "/api/users/save-project",
+      { projectId },
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (res.data?.success) {
+      setCurrentUser(res.data.user);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+    }
+  } catch (err) {
+    console.error("Save project failed", err);
+  }
 };
 
-const unsaveProject = (projectId: string) => {
+const unsaveProject = async (projectId: string) => {
   if (!currentUser) return;
 
-  const updatedUser = {
-    ...currentUser,
-    savedProjectIds: (currentUser.savedProjectIds || []).filter(
-      id => id !== projectId
-    )
-  };
+  const t = getAuthToken();
+  if (!t) return;
 
-  setCurrentUser(updatedUser);
-  localStorage.setItem('user', JSON.stringify(updatedUser));
-};
+  try {
+    const res = await axios.post(
+      "/api/users/unsave-project",
+      { projectId },
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
 
-const isProjectSaved = (projectId: string) => {
-  if (!currentUser) return false;
-  return (currentUser.savedProjectIds || []).includes(projectId);
+    if (res.data?.success) {
+      setCurrentUser(res.data.user);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+    }
+  } catch (err) {
+    console.error("Unsave project failed", err);
+  }
 };
 
 const addApplication = async (applicationData: any) => {
