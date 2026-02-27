@@ -146,6 +146,7 @@ const EditProjectPage: React.FC = () => {
   const [founderQuote, setFounderQuote] = useState('');
   const [tags, setTags] = useState('');
   const [category, setCategory] = useState<StartupCategory>('SaaS');
+const [stage, setStage] = useState<string>('Validation');
   const [businessModel, setBusinessModel] = useState<BusinessModel>('B2B');
   const [workMode, setWorkMode] = useState<WorkMode>('Remote');
   const [location, setLocation] = useState('');
@@ -170,6 +171,7 @@ const EditProjectPage: React.FC = () => {
     setCategory(idea.category || 'SaaS');
     setBusinessModel(idea.businessModel || 'B2B');
     setWorkMode(idea.workMode || 'Remote');
+    setStage(idea.stage || 'Validation');
     setLocation(idea.location || '');
     setWebsiteUrl(idea.websiteUrl || '');
     setImagePreviewUrl(idea.imageUrl);
@@ -186,7 +188,7 @@ const EditProjectPage: React.FC = () => {
     }
     
     updateIdea(ideaId!, {
-      title, tagline, description, problem, buildingNow: solution, founderQuote,
+      title, tagline, description, problem, buildingNow: solution, stage,founderQuote,
       tags: tags.split(',').map(t => t.trim()).filter(Boolean),
       category, businessModel, workMode, location,
       websiteUrl: websiteUrl || undefined,
@@ -234,13 +236,36 @@ const EditProjectPage: React.FC = () => {
           <FormRow label="Founder's Spark" htmlFor="founderQuote" isRequired subtext="The personal context behind this venture.">
             <textarea id="founderQuote" value={founderQuote} onChange={e => setFounderQuote(e.target.value)} rows={2} required className={textAreaClasses} placeholder="I started this because..."/>
           </FormRow>
+
+<FormRow 
+  label="Stage" 
+  htmlFor="stage" 
+  icon={<IdeaStarIcon />} 
+  isRequired 
+  subtext="Current progress of your project."
+>
+  <CustomSelect
+    value={stage}
+    onChange={val => setStage(val)}
+    options={[
+      'Idea',
+      'Validation',
+      'MVP',
+      'Pre-Seed',
+      'Fundraising',
+      'Scaling',
+      'Launched',
+      'Acquired'
+    ]}
+  />
+</FormRow>
           
           <FormRow label="Tags" htmlFor="tags" icon={<TagIcon />} isRequired subtext="Keywords for discoverability (e.g., AI, SaaS)">
             <input type="text" id="tags" value={tags} onChange={e => setTags(e.target.value)} required className={inputClasses} placeholder="AI, Sustainability, B2B"/>
           </FormRow>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormRow label="Industry" htmlFor="category" icon={<BookmarkSquareIcon />} isRequired subtext="Select your market sector.">
+              <FormRow label="Category" htmlFor="category" icon={<BookmarkSquareIcon />} isRequired subtext="Select your market sector.">
                 <CustomSelect value={category} onChange={val => setCategory(val as StartupCategory)} options={STARTUP_CATEGORIES} />
               </FormRow>
               <FormRow label="Business Model" htmlFor="businessModel" icon={<CubeTransparentIcon />} isRequired subtext="How will this scale?">
