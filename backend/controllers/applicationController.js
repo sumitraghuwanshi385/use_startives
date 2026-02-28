@@ -49,7 +49,8 @@ const createApplication = async (req, res) => {
       await Notification.create({
         receiver: idea.founderId,
         sender: req.user._id,
-        type: 'APPLICATION_APPLY',
+        type: 'APPLICATION',
+        status: 'PENDING',
         title: 'New Application',
         message: `${req.user.name} applied`,
         ideaId: idea._id,
@@ -189,7 +190,8 @@ const updateApplicationStatus = async (req, res) => {
     await Notification.create({
       receiver: application.applicantId,
       sender: req.user._id,
-      type: "APPLICATION_STATUS",
+      type: "APPLICATION",
+      status: status,
       title: "Application Update",
       message:
         status === "ACCEPTED"
