@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants'; 
 import { useTheme } from '../contexts/ThemeContext';
+import { NotificationDropdown } from "./NotificationDropdown";
 
 // --- Icons ---
 const ArrowRightOnRectangleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
@@ -61,7 +62,7 @@ const ThemeIconButton: React.FC = () => {
 };
 
 const Header: React.FC = () => {
-  const { currentUser, logout } = useAppContext(); 
+  const { currentUser, logout, appNotifications } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -163,7 +164,7 @@ const bellRef = useRef<HTMLDivElement>(null);
             <>
               <ThemeIconButton />
               
-              <div ref={profileDropdownRef} className="relative">
+              
                 <button onClick={handleMenuClick} className={commonIconButtonClasses} aria-label="Open menu">
                     <HamburgerIcon className={`w-6 h-6 ${isMenuAnimating ? 'animate-icon-click' : ''}`} />
                 </button>
@@ -175,16 +176,18 @@ const bellRef = useRef<HTMLDivElement>(null);
     <BellIcon className="w-5 h-5" />
 
     {/* 🔴 Notification Badge */}
-    {appNotifications.length > 0 && (
-      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
-        {appNotifications.length}
-      </span>
-    )}
+    {unreadCount > 0 && (
+  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+    {unreadCount}
+  </span>
+)}
   </button>
 
   {showNotifications && <NotificationDropdown />}
 </div>
 
+
+<div ref={profileDropdownRef} className="relative">
                 <div className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] ring-1 ring-black ring-opacity-5 focus:outline-none border border-[var(--border-primary)] shadow-2xl transition ease-out duration-200 ${profileDropdownOpen ? 'transform opacity-100 scale-100' : 'transform opacity-0 scale-95 pointer-events-none'}`}>
                   <div className="py-1" role="menu" aria-orientation="vertical">
                     <Link to="/profile" className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]" role="menuitem">
