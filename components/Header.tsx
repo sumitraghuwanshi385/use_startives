@@ -67,7 +67,7 @@ const ThemeIconButton: React.FC = () => {
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications } = useAppContext();
 const unreadCount = Array.isArray(appNotifications)
-  ? appNotifications.length
+  ? appNotifications.filter((n: any) => !n.isRead).length
   : 0;
   const navigate = useNavigate();
   const location = useLocation();
@@ -77,6 +77,7 @@ const unreadCount = Array.isArray(appNotifications)
 
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
+const [shake, setShake] = useState(false);
 const bellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -89,6 +90,16 @@ const bellRef = useRef<HTMLDivElement>(null);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+useEffect(() => {
+  const triggerShake = () => {
+    setShake(true);
+    setTimeout(() => setShake(false), 600);
+  };
+
+  window.addEventListener("new-notification", triggerShake);
+  return () =>
+    window.removeEventListener("new-notification", triggerShake);
+}, []);
 
  useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
@@ -173,11 +184,24 @@ const bellRef = useRef<HTMLDivElement>(null);
       {/* 🔔 Notification Bell */}
       <div ref={bellRef} className="relative">
         <button
-          onClick={() => setShowNotifications(!showNotifications)}
+  onClick={() => {
+    if (showNotifications) {
+      // closing dropdown → mark all read
+      fetch("/api/notifications/read-all", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    }
+
+    setShowNotifications(!showNotifications);
+  }}
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
         >
-          <BellIcon className="w-6 h-6" />
-
+          <div className={shake ? "shake" : ""}>
+  <BellIcon className="w-6 h-6" />
+</div>
           {unreadCount > 0 && (
             <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-semibold min-w-[16px] h-4 px-1 flex items-center justify-center rounded-full shadow-sm">
               {unreadCount}
