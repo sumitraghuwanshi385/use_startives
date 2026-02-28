@@ -608,36 +608,37 @@ const fetchApplications = async () => {
 
 // Update status
 const updateApplicationStatus = async (id: string, status: string) => {
-  const t = getAuthToken();
-  if (!t) return;
-
   try {
-    const res = await axios.put(
-      `/api/applications/${id}/status`,
-      { status },
-      { headers: { Authorization: `Bearer ${t}` } }
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(
+      `${API_BASE_URL}/api/applications/${id}/status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      }
     );
 
-    if (res.data.success) {
-      setSentApplications(prev =>
-  prev.map(app =>
-    app.id === id ? { ...app, status } : app
-  )
-);
+    const data = await res.json();
 
-setReceivedApplications(prev =>
-  prev.map(app =>
-    app.id === id ? { ...app, status } : app
-  )
-);
-
-await fetchNotifications();
+    if (!res.ok) {
+      alert(data.message || "Update failed");
+      return;
     }
-  } catch (err) {
-    console.error("Status update failed", err);
+
+    // 🔥 VERY IMPORTANT — REFRESH DATA
+    await fetchReceivedApplications();
+    await fetchSentApplications();
+
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong");
   }
 };
-
   // ---------------- INITIAL LOAD ----------------
   useEffect(() => {
     const loadInitialData = async () => {
