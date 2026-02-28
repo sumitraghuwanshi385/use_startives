@@ -18,12 +18,12 @@ const getId = (val: any) => {
 /* ================= STATUS ================= */
 
 const getStatusStyle = (status: string) => {
-  switch (status) {
-    case "Accepted":
+  switch (status?.toUpperCase()) {
+    case "ACCEPTED":
       return "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300";
-    case "Rejected":
+    case "REJECTED":
       return "bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-300";
-    case "Reviewed":
+    case "REVIEWED":
       return "bg-sky-100 text-sky-600 dark:bg-sky-500/10 dark:text-sky-300";
     default:
       return "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/10 dark:text-yellow-300";
@@ -134,7 +134,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
 </div>
 
 {/* DECISION STATUS */}
-{application.status !== "Pending" && (
+{application.status?.toUpperCase() !== "PENDING" && (
   <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
     <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
       Decision
@@ -165,7 +165,7 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       
 
 {/* ACCEPTED ACTIONS */}
-{application.status === "Accepted" && founder && (
+{application.status?.toUpperCase() === "ACCEPTED" && founder && (
   <div className="flex gap-3">
     {isConnected ? (
       <div className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white text-center">
@@ -315,7 +315,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 </div>
 
 {/* DECISION STATUS */}
-{application.status !== "Pending" && (
+{application.status?.toUpperCase() !== "PENDING" && (
   <div className="bg-[var(--background-tertiary)] px-4 py-3 rounded-xl border border-[var(--border-primary)]">
     <p className="text-[8px] font-black uppercase text-[var(--text-muted)]">
       Decision
@@ -345,7 +345,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   <div className="flex gap-3">
     <button
       onClick={() =>
-        updateApplicationStatus(getId(application), "Rejected")
+        updateApplicationStatus(getId(application), "REJECTED")
       }
       className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-red-600 text-white"
     >
@@ -354,7 +354,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
     <button
   onClick={() =>
-updateApplicationStatus (getId(application), "Accepted")
+updateApplicationStatus(getId(application), "ACCEPTED")
 }
 className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
 >
@@ -418,7 +418,7 @@ const [statusFilter, setStatusFilter] = useState<
 const filteredApplications =
   (activeTab === "sent" ? sentApplications : receivedApplications).filter(
     (app) =>
-      statusFilter === "All" ? true : app.status === statusFilter
+      statusFilter === "All" ? true : app.status?.toUpperCase() === statusFilter.toUpperCase()
   ); 
 
   return (
