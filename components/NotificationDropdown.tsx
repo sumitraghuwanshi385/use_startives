@@ -50,13 +50,18 @@ export const NotificationDropdown: React.FC = () => {
       new Date(a.createdAt).getTime()
   );
 
-  const applications = sorted
-    .filter((n: any) => n.type === "APPLICATION" && !n.isRead)
-    .slice(0, 3);
+  // ✅ REMOVE SLICE LIMIT FOR FULL DATA
+  const applicationsAll = sorted.filter(
+    (n: any) => n.type === "APPLICATION" && !n.isRead
+  );
 
-  const connections = sorted
-    .filter((n: any) => n.type === "CONNECTION" && !n.isRead)
-    .slice(0, 3);
+  const connectionsAll = sorted.filter(
+    (n: any) => n.type === "CONNECTION" && !n.isRead
+  );
+
+  // ✅ TOP VIEW ONLY 3
+  const applications = applicationsAll.slice(0, 3);
+  const connections = connectionsAll.slice(0, 3);
 
   const handleNavigate = (path: string, id: string) => {
     markNotificationAsRead?.(id);
@@ -64,7 +69,7 @@ export const NotificationDropdown: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-2 top-14 w-[280px] sm:w-[300px] max-w-[90vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
+    <div className="absolute right-2 top-14 w-[340px] sm:w-[360px] max-w-[95vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
 
       {/* HEADER */}
       <div className="px-5 py-4 border-b border-[var(--border-primary)]">
@@ -102,7 +107,7 @@ export const NotificationDropdown: React.FC = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="max-h-[360px] overflow-y-auto px-4 py-5 space-y-4">
+      <div className="max-h-[420px] overflow-y-auto px-4 py-5 space-y-4">
 
         {/* APPLICATIONS */}
         {activeTab === "applications" &&
@@ -129,7 +134,7 @@ export const NotificationDropdown: React.FC = () => {
                 n.senderName ||
                 "Someone";
 
-              const status = n.status || n.meta?.status;
+              const status = n.status;
 
               let statusUI = null;
 
@@ -175,7 +180,7 @@ export const NotificationDropdown: React.FC = () => {
                     {user}
                   </p>
 
-                  {!status && (
+                  {status === "PENDING" && (
                     <p className="text-xs text-[var(--text-secondary)] mt-1">
                       Applied for{" "}
                       <span className="font-semibold text-[var(--text-primary)]">
@@ -213,9 +218,10 @@ export const NotificationDropdown: React.FC = () => {
                   className="relative p-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30"
                 >
                   <button
-                    onClick={() =>
-                      markNotificationAsRead?.(safeId(n))
-                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      markNotificationAsRead?.(safeId(n));
+                    }}
                     className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                   >
                     ✕
