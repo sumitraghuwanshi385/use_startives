@@ -6,8 +6,8 @@ const path = require('path');
 const http = require('http');
 const { Server } = require('socket.io');
 
-// Load env FIRST
-dotenv.config();
+// 🔥 IMPORTANT CHANGE
+dotenv.config({ path: __dirname + '/.env' });
 
 // DB
 const connectDB = require('./config/db');
