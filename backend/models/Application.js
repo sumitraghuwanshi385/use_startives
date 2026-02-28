@@ -2,12 +2,8 @@ const mongoose = require('mongoose');
 
 const answerSchema = new mongoose.Schema(
   {
-    question: {
-      type: String,
-    },
-    answer: {
-      type: String,
-    },
+    question: String,
+    answer: String,
   },
   { _id: false }
 );
@@ -38,12 +34,11 @@ const applicationSchema = new mongoose.Schema(
 
     answers: [answerSchema],
 
-    // 🔥 IMPORTANT — UPPERCASE ENUM
+    // 🔥 NO ENUM — SIMPLE STRING
     status: {
-  type: String,
-  enum: ['Pending', 'Accepted', 'Rejected', 'Reviewed'],
-  default: 'Pending',
-},
+      type: String,
+      default: 'Pending',
+    },
   },
   { timestamps: true }
 );
