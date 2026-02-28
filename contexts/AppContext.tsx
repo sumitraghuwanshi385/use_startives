@@ -7,22 +7,7 @@ import { MOCK_USERS_RAW, EnvelopeOpenIcon } from '../constants';
 axios.defaults.baseURL = 'https://startives.onrender.com';
 axios.defaults.withCredentials = true;
 
-// --- Initial Mock Notifications ---
-const INITIAL_APP_NOTIFICATIONS: AppNotification[] = [
-  {
-    id: 'appReceived1',
-    category: 'applications_to_my_project' as NotificationCategory,
-    icon: React.createElement(EnvelopeOpenIcon, { className: 'w-5 h-5 text-sky-500' }),
-    title: 'New Application: EcoRoute Planner',
-    description: 'John Smith applied for "Lead Frontend Developer". View their application.',
-    timestamp: new Date(Date.now() - 3600000).toISOString(),
-    isRead: false,
-    status: 'pending',
-    relatedProjectId: 'idea-1-mock',
-    relatedUserId: 'user-john-smith',
-    relatedApplicationId: 'app-mock-1',
-  },
-];
+
 
 const INITIAL_APPLICATIONS: Application[] = [];
 
@@ -34,7 +19,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [sentApplications, setSentApplications] = useState<Application[]>([]);
 const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
   const [notifications, setNotifications] = useState<AppSystemNotification[]>([]);
-  const [appNotifications, setAppNotifications] = useState<AppNotification[]>(INITIAL_APP_NOTIFICATIONS);
+  const [appNotifications, setAppNotifications] =
+  useState<AppNotification[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   
   // Start empty; fill from backend
@@ -77,6 +63,32 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
   };
 
   const getAuthToken = () => token || localStorage.getItem('authToken');
+
+
+// ---------------- FETCH NOTIFICATIONS ----------------
+const fetchNotifications = async () => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.get('/api/notifications', {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data?.success && Array.isArray(res.data.notifications)) {
+      const normalized = res.data.notifications.map((n: any) => ({
+        ...n,
+        id: n._id || n.id
+      }));
+
+      setAppNotifications(normalized);
+    } else {
+      setAppNotifications([]);
+    }
+  } catch (err) {
+    console.error("Notification fetch failed", err);
+  }
+};
 
   // ---------------- CONNECTIONS ----------------
   const fetchConnections = useCallback(async () => {
@@ -461,6 +473,7 @@ const deleteIdea = async (ideaId: string) => {
         if (res.data?.success) {
             addNotificationCallBack("You are now connected!", "success");
             await fetchConnections();
+await fetchNotifications();
         }
     } catch (error) { addNotificationCallBack("Failed to accept request.", "error"); }
   };
@@ -621,6 +634,8 @@ setReceivedApplications(prev =>
     app.id === id ? { ...app, status } : app
   )
 );
+
+await fetchNotifications();
     }
   } catch (err) {
     console.error("Status update failed", err);
@@ -682,8 +697,13 @@ useEffect(() => {
   fetchApplications();
 }, [token, currentUser]);
 
+useEffect(() => {
+  if (!token || !currentUser) return;
+  fetchNotifications();
+}, [token, currentUser]);
+
   const contextValue = useMemo(() => ({
-    startupIdeas, startalks, sentApplications,
+    startupIdeas, startalks, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
     addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
