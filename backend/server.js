@@ -8,6 +8,9 @@ const { Server } = require('socket.io');
 
 // 🔥 IMPORTANT CHANGE
 dotenv.config({ path: __dirname + '/.env' });
+console.log("CWD:", process.cwd());
+console.log("DIRNAME:", __dirname);
+console.log("ENV VALUE:", process.env.MONGO_URI);
 
 // DB
 const connectDB = require('./config/db');
