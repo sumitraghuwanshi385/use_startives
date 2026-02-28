@@ -197,10 +197,8 @@ setCurrentUser(user);
 if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
 if (user?.connections) setConnectedUserIds(user.connections);
 
-// 👇 ADD THESE TWO LINES
+// 👇 ONLY THIS
 await fetchConnections();
-await fetchApplications();      // 🔥 IMPORTANT
-await fetchNotifications();     // 🔥 IMPORTANT
 
 setShowOnboardingModal(fromSignup || !user?.headline);
 return true;
