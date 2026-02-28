@@ -1,3 +1,10 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
+
+export const NotificationDropdown: React.FC = () => {
+  const {
+
 const NotificationDropdown = () => {
   const {
     appNotifications,
