@@ -36,7 +36,6 @@ const createApplication = async (req, res) => {
       applicantId: req.user._id,
       coverLetter,
       answers,
-      status: "PENDING",
     });
 
     // 🔔 NOTIFY FOUNDER (NOT APPLICANT)
@@ -57,7 +56,6 @@ const createApplication = async (req, res) => {
         ideaTitle: idea.title,
         positionId: positionId,
         positionTitle: position ? position.title : '',
-        status: "PENDING",
         groupKey: `application_${ideaId}`,
       });
     }
@@ -132,7 +130,14 @@ const getSentApplications = async (req, res) => {
 // ✅ UPDATE STATUS (Founder)
 const updateApplicationStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    let { status } = req.body;
+
+    if (!["Pending", "Accepted", "Rejected", "Reviewed"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value",
+      });
+    }
 
     const application = await Application.findById(req.params.id)
       .populate('ideaId');
@@ -144,7 +149,6 @@ const updateApplicationStatus = async (req, res) => {
       });
     }
 
-    // Only founder can update
     if (
       application.ideaId.founderId.toString() !==
       req.user._id.toString()
@@ -164,18 +168,19 @@ const updateApplicationStatus = async (req, res) => {
       (p) => p._id.toString() === application.positionId.toString()
     );
 
-    // 🔔 NOTIFY APPLICANT ABOUT STATUS CHANGE
     await Notification.create({
-      receiver: application.applicantId,   // ✅ Applicant gets update
+      receiver: application.applicantId,
       sender: req.user._id,
       type: 'APPLICATION',
       title: 'Application Update',
-      message: `Your application was ${status}`,
+      message:
+        status === "Accepted"
+          ? `Congratulations! You have been selected for ${position?.title} in ${idea.title}`
+          : `Your application for ${position?.title} in ${idea.title} was not selected`,
       ideaId: idea._id,
       ideaTitle: idea.title,
       positionId: application.positionId,
       positionTitle: position ? position.title : '',
-      status: status,   // ✅ CRITICAL
       groupKey: `application_${idea._id}`,
     });
 
@@ -191,7 +196,6 @@ const updateApplicationStatus = async (req, res) => {
     });
   }
 };
-
 
 
 module.exports = {
