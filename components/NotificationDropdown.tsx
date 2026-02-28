@@ -43,15 +43,11 @@ export const NotificationDropdown: React.FC = () => {
   }, []);
 
   const applications = appNotifications.filter(
-    (n: any) =>
-      n.type === "APPLICATION" &&
-      !n.isRead
+    (n: any) => n.type === "APPLICATION" && !n.isRead
   );
 
   const connections = appNotifications.filter(
-    (n: any) =>
-      n.type === "CONNECTION" &&
-      !n.isRead
+    (n: any) => n.type === "CONNECTION" && !n.isRead
   );
 
   const safeId = (n: any) => n._id || n.id;
@@ -62,13 +58,11 @@ export const NotificationDropdown: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-0 top-14 w-[300px] max-w-[90vw] sm:w-[320px] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
+    <div className="absolute right-2 top-14 w-[300px] sm:w-[320px] max-w-[92vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
 
       {/* HEADER */}
       <div className="px-5 py-4 border-b border-[var(--border-primary)]">
-        <h3 className="text-base font-semibold">
-          Notifications
-        </h3>
+        <h3 className="text-base font-semibold">Notifications</h3>
         <p className="text-[10px] tracking-widest uppercase text-[var(--text-muted)] mt-1">
           STAY UPDATED
         </p>
@@ -102,12 +96,12 @@ export const NotificationDropdown: React.FC = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="max-h-[420px] overflow-y-auto px-4 py-4 space-y-3">
+      <div className="max-h-[420px] overflow-y-auto px-4 py-5 space-y-4">
 
         {/* ================= APPLICATIONS ================= */}
         {activeTab === "applications" &&
           (applications.length === 0 ? (
-            <p className="text-sm text-center text-[var(--text-muted)] font-poppins">
+            <p className="text-sm text-center text-[var(--text-muted)]">
               No new applications
             </p>
           ) : (
@@ -117,7 +111,7 @@ export const NotificationDropdown: React.FC = () => {
                 onClick={() =>
                   handleNavigate("/applications", safeId(n))
                 }
-                className="relative p-4 rounded-xl bg-[var(--background-tertiary)] border border-purple-500/30 hover:shadow-md transition cursor-pointer"
+                className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent border border-purple-500/30 hover:border-purple-500/60 transition cursor-pointer"
               >
                 {/* CLOSE */}
                 <button
@@ -125,31 +119,31 @@ export const NotificationDropdown: React.FC = () => {
                     e.stopPropagation();
                     markNotificationAsRead?.(safeId(n));
                   }}
-                  className="absolute top-2 right-2 text-xs text-[var(--text-muted)] hover:text-red-500"
+                  className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                 >
                   ✕
                 </button>
 
-                {/* REAL PROJECT NAME ONLY */}
-                <p className="text-[10px] font-bold uppercase tracking-wide text-purple-500 mb-1">
+                {/* PROJECT NAME */}
+                <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
                   {n.ideaTitle}
                 </p>
 
-                {/* TITLE */}
-                <p className="text-sm font-semibold">
-                  New application
+                {/* MAIN LINE */}
+                <p className="mt-1 text-sm font-semibold">
+                  {n.sender?.name}
                 </p>
 
-                {/* ROLE MESSAGE */}
-                <p className="text-xs text-[var(--text-secondary)] font-poppins mt-1 leading-relaxed">
-                  {n.sender?.name || "Someone"} applied for{" "}
-                  <span className="font-semibold">
+                {/* ROLE LINE */}
+                <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
+                  Applied for{" "}
+                  <span className="font-semibold text-[var(--text-primary)]">
                     {n.positionTitle}
                   </span>
                 </p>
 
                 {/* TIME */}
-                <span className="absolute bottom-2 right-3 text-[10px] text-[var(--text-muted)]">
+                <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
                   {timeAgo(n.createdAt)}
                 </span>
               </div>
