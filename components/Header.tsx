@@ -51,6 +51,7 @@ const Header: React.FC = () => {
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
+const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -135,6 +136,17 @@ const Header: React.FC = () => {
                 <button onClick={handleMenuClick} className={commonIconButtonClasses} aria-label="Open menu">
                     <HamburgerIcon className={`w-6 h-6 ${isMenuAnimating ? 'animate-icon-click' : ''}`} />
                 </button>
+<div className="relative">
+  <button
+    onClick={() => setShowNotifications(!showNotifications)}
+    className="relative w-10 h-10 rounded-full flex items-center justify-center bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
+  >
+    <BellIcon className="w-5 h-5" />
+  </button>
+
+  {showNotifications && <NotificationDropdown />}
+</div>
+
                 <div className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] ring-1 ring-black ring-opacity-5 focus:outline-none border border-[var(--border-primary)] shadow-2xl transition ease-out duration-200 ${profileDropdownOpen ? 'transform opacity-100 scale-100' : 'transform opacity-0 scale-95 pointer-events-none'}`}>
                   <div className="py-1" role="menu" aria-orientation="vertical">
                     <Link to="/profile" className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]" role="menuitem">
