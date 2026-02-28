@@ -18,7 +18,7 @@ const timeAgo = (date: string) => {
 
   for (const key in intervals) {
     const interval = Math.floor(seconds / intervals[key]);
-    if (interval >= 1) return `${interval}${key}`;
+    if (interval >= 1) return `${interval}${key} ago`;
   }
 
   return "now";
@@ -41,13 +41,15 @@ export const NotificationDropdown: React.FC = () => {
     fetchNotifications?.();
   }, []);
 
-  /* -------- FILTER USING BACKEND TYPE -------- */
+  /* -------- Filter Real Data Only -------- */
   const applications = appNotifications.filter(
-    (n: any) => n.type === "APPLICATION"
+    (n: any) =>
+      n.category === "applications_to_my_project"
   );
 
   const connections = appNotifications.filter(
-    (n: any) => n.type === "CONNECTION"
+    (n: any) =>
+      n.category === "connections"
   );
 
   return (
@@ -55,10 +57,7 @@ export const NotificationDropdown: React.FC = () => {
 
       {/* HEADER */}
       <div className="px-6 py-4 border-b border-[var(--border-primary)]">
-        <h3 className="text-lg font-semibold">notifications</h3>
-        <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">
-          real time updates
-        </p>
+        <h3 className="text-lg font-bold uppercase">Notifications</h3>
       </div>
 
       {/* -------- PILL SWITCH -------- */}
@@ -66,7 +65,7 @@ export const NotificationDropdown: React.FC = () => {
         <div className="flex bg-[var(--background-tertiary)] p-1 rounded-full">
           <button
             onClick={() => setActiveTab("applications")}
-            className={`flex-1 py-2 text-xs rounded-full transition font-semibold ${
+            className={`flex-1 py-2 text-xs font-bold uppercase rounded-full transition ${
               activeTab === "applications"
                 ? "button-gradient text-white"
                 : "text-[var(--text-secondary)]"
@@ -77,7 +76,7 @@ export const NotificationDropdown: React.FC = () => {
 
           <button
             onClick={() => setActiveTab("connections")}
-            className={`flex-1 py-2 text-xs rounded-full transition font-semibold ${
+            className={`flex-1 py-2 text-xs font-bold uppercase rounded-full transition ${
               activeTab === "connections"
                 ? "button-gradient text-white"
                 : "text-[var(--text-secondary)]"
@@ -91,11 +90,11 @@ export const NotificationDropdown: React.FC = () => {
       {/* -------- CONTENT -------- */}
       <div className="max-h-96 overflow-y-auto px-4 py-4 space-y-3">
 
-        {/* APPLICATIONS TAB */}
+        {/* APPLICATION TAB */}
         {activeTab === "applications" && (
           applications.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
-              no new applications
+              No new applications.
             </p>
           ) : (
             applications.map((n: any) => (
@@ -109,8 +108,8 @@ export const NotificationDropdown: React.FC = () => {
                     <p className="text-sm font-semibold">
                       {n.title}
                     </p>
-                    <p className="text-xs text-[var(--text-secondary)] mt-1">
-                      {n.message}
+                    <p className="text-xs text-[var(--text-secondary)]">
+                      {n.description}
                     </p>
                   </div>
 
@@ -123,11 +122,11 @@ export const NotificationDropdown: React.FC = () => {
           )
         )}
 
-        {/* CONNECTIONS TAB */}
+        {/* CONNECTION TAB */}
         {activeTab === "connections" && (
           connections.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
-              no new connections
+              No new connections.
             </p>
           ) : (
             connections.map((n: any) => (
@@ -144,27 +143,23 @@ export const NotificationDropdown: React.FC = () => {
                   </span>
                 </div>
 
-                <p className="text-xs text-[var(--text-secondary)]">
-                  {n.message}
-                </p>
-
                 <div className="flex gap-2">
                   <button
                     onClick={() =>
-                      acceptConnectionRequest?.(n.sender)
+                      acceptConnectionRequest?.(n.relatedUserId)
                     }
-                    className="flex-1 bg-green-500 text-white text-xs font-semibold py-1.5 rounded-full"
+                    className="flex-1 bg-green-500 text-white text-xs font-bold uppercase py-1.5 rounded-full"
                   >
-                    accept
+                    Accept
                   </button>
 
                   <button
                     onClick={() =>
-                      declineConnectionRequest?.(n.sender)
+                      declineConnectionRequest?.(n.relatedUserId)
                     }
-                    className="flex-1 bg-red-500 text-white text-xs font-semibold py-1.5 rounded-full"
+                    className="flex-1 bg-red-500 text-white text-xs font-bold uppercase py-1.5 rounded-full"
                   >
-                    cancel
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -179,9 +174,9 @@ export const NotificationDropdown: React.FC = () => {
               ? "/applications"
               : "/connections"
           }
-          className="block text-center text-xs font-semibold text-purple-600 hover:underline mt-3"
+          className="block text-center text-xs font-bold uppercase text-purple-600 hover:underline mt-3"
         >
-          view all
+          View All →
         </Link>
 
       </div>
