@@ -63,9 +63,9 @@ const ThemeIconButton: React.FC = () => {
 
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications } = useAppContext();
-const unreadCount =
-  appNotifications?.filter((n: any) => !n?.isRead).length || 0;
-
+const unreadCount = Array.isArray(appNotifications)
+  ? appNotifications.length
+  : 0;
   const navigate = useNavigate();
   const location = useLocation();
   
