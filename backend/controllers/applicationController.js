@@ -49,14 +49,14 @@ const createApplication = async (req, res) => {
       await Notification.create({
         receiver: idea.founderId,
         sender: req.user._id,
-        type: 'APPLICATION',
+        type: 'APPLICATION_APPLY',
         title: 'New Application',
         message: `${req.user.name} applied`,
         ideaId: idea._id,
         ideaTitle: idea.title,
         positionId: positionId,
         positionTitle: position ? position.title : '',
-        groupKey: `application_${ideaId}`,
+        groupKey: `application_apply_${application._id}`,
       });
     }
 
@@ -189,7 +189,7 @@ const updateApplicationStatus = async (req, res) => {
     await Notification.create({
       receiver: application.applicantId,
       sender: req.user._id,
-      type: "APPLICATION",
+      type: "APPLICATION_STATUS",
       title: "Application Update",
       message:
         status === "ACCEPTED"
@@ -199,7 +199,7 @@ const updateApplicationStatus = async (req, res) => {
       ideaTitle: idea.title,
       positionId: application.positionId,
       positionTitle: position ? position.title : "",
-      groupKey: `application_${idea._id}`,
+      groupKey: `application_status_${application._id}`,
     });
 
     res.json({
