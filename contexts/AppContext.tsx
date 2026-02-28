@@ -53,45 +53,17 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
     setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
-  const markNotificationAsRead = async (id: string) => {
-  const t = getAuthToken();
-  if (!t) return;
+  const markNotificationAsRead = (id: string) => {
+    setAppNotifications(prev => prev.map(n => n.id === id ? {...n, isRead: true} : n));
+  };
 
-  try {
-    await axios.patch(
-      `/api/notifications/${id}/read`,
-      {},
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+  const markAllNotificationsAsRead = (cat?: NotificationCategory) => {
+    if (cat) setAppNotifications(prev => prev.map(n => n.category === cat ? {...n, isRead: true} : n));
+    else setAppNotifications(prev => prev.map(n => ({...n, isRead: true})));
+  };
 
-    setAppNotifications(prev =>
-      prev.map(n =>
-        n._id === id ? { ...n, isRead: true } : n
-      )
-    );
-  } catch (err) {
-    console.error("Mark as read failed", err);
-  }
-};
+  const getAuthToken = () => token || localStorage.getItem('authToken');
 
-const markAllNotificationsAsRead = async () => {
-  const t = getAuthToken();
-  if (!t) return;
-
-  try {
-    await axios.patch(
-      `/api/notifications/read-all`,
-      {},
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
-
-    setAppNotifications(prev =>
-      prev.map(n => ({ ...n, isRead: true }))
-    );
-  } catch (err) {
-    console.error("Mark all failed", err);
-  }
-};
 
 // ---------------- FETCH NOTIFICATIONS ----------------
 const fetchNotifications = async () => {
@@ -99,28 +71,20 @@ const fetchNotifications = async () => {
   if (!t) return;
 
   try {
-    const res = await axios.get("/api/notifications", {
-      headers: { Authorization: `Bearer ${t}` },
+    const res = await axios.get('/api/notifications', {
+      headers: { Authorization: `Bearer ${t}` }
     });
 
-    // Backend directly array return karta hai
-    if (Array.isArray(res.data)) {
-      const normalized = res.data.map((n: any) => ({
+    if (res.data?.success && Array.isArray(res.data.notifications)) {
+      const normalized = res.data.notifications.map((n: any) => ({
         ...n,
-        _id: n._id,
-        type: n.type,
-        title: n.title,
-        message: n.message,
-        isRead: n.isRead,
-        createdAt: n.createdAt,
-        sender: n.sender,
+        id: n._id || n.id
       }));
 
       setAppNotifications(normalized);
     } else {
       setAppNotifications([]);
     }
-
   } catch (err) {
     console.error("Notification fetch failed", err);
   }
@@ -192,16 +156,15 @@ if (!user.savedProjectIds) {
       localStorage.setItem('user', JSON.stringify(user));
 
       setToken(newToken);
-setCurrentUser(user);
+      setCurrentUser(user);
 
-if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
-if (user?.connections) setConnectedUserIds(user.connections);
+      if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
+      if (user?.connections) setConnectedUserIds(user.connections);
 
-// 👇 ONLY THIS
-await fetchConnections();
+      await fetchConnections();
 
-setShowOnboardingModal(fromSignup || !user?.headline);
-return true;
+      setShowOnboardingModal(fromSignup || !user?.headline);
+      return true;
     } catch (error: any) {
       console.error("Login API Error:", error);
       addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
