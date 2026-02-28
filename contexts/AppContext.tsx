@@ -192,15 +192,18 @@ if (!user.savedProjectIds) {
       localStorage.setItem('user', JSON.stringify(user));
 
       setToken(newToken);
-      setCurrentUser(user);
+setCurrentUser(user);
 
-      if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
-      if (user?.connections) setConnectedUserIds(user.connections);
+if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
+if (user?.connections) setConnectedUserIds(user.connections);
 
-      await fetchConnections();
+// 👇 ADD THESE TWO LINES
+await fetchConnections();
+await fetchApplications();      // 🔥 IMPORTANT
+await fetchNotifications();     // 🔥 IMPORTANT
 
-      setShowOnboardingModal(fromSignup || !user?.headline);
-      return true;
+setShowOnboardingModal(fromSignup || !user?.headline);
+return true;
     } catch (error: any) {
       console.error("Login API Error:", error);
       addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
