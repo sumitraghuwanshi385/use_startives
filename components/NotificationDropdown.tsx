@@ -44,7 +44,6 @@ export const NotificationDropdown: React.FC = () => {
 
   const safeId = (n: any) => n._id || n.id;
 
-  /* ---- SORT + LIMIT 3 ---- */
   const sorted = [...appNotifications].sort(
     (a: any, b: any) =>
       new Date(b.createdAt).getTime() -
@@ -114,21 +113,41 @@ export const NotificationDropdown: React.FC = () => {
           ) : (
             applications.map((n: any) => {
               const project =
-                n.idea?.title ||
                 n.ideaTitle ||
-                n.meta?.ideaTitle ||
-                "Your Project";
+                n.idea?.title ||
+                n.projectTitle ||
+                "Project";
 
               const role =
-                n.position?.title ||
                 n.positionTitle ||
-                n.meta?.positionTitle ||
-                "Open Role";
+                n.position?.title ||
+                n.role ||
+                "Role";
 
               const user =
                 n.sender?.name ||
                 n.senderName ||
                 "Someone";
+
+              const status = n.status || n.meta?.status;
+
+              let statusUI = null;
+
+              if (status === "ACCEPTED") {
+                statusUI = (
+                  <p className="text-xs mt-1 text-green-500 font-semibold">
+                    🎉 Congratulations! You have been selected for {role} in {project}.
+                  </p>
+                );
+              }
+
+              if (status === "REJECTED") {
+                statusUI = (
+                  <p className="text-xs mt-1 text-red-400">
+                    We appreciate your interest in {project}. Unfortunately, this time the selection did not go forward for {role}. Keep building 🚀
+                  </p>
+                );
+              }
 
               return (
                 <div
@@ -156,12 +175,16 @@ export const NotificationDropdown: React.FC = () => {
                     {user}
                   </p>
 
-                  <p className="text-xs text-[var(--text-secondary)] mt-1">
-                    Applied for{" "}
-                    <span className="font-semibold text-[var(--text-primary)]">
-                      {role}
-                    </span>
-                  </p>
+                  {!status && (
+                    <p className="text-xs text-[var(--text-secondary)] mt-1">
+                      Applied for{" "}
+                      <span className="font-semibold text-[var(--text-primary)]">
+                        {role}
+                      </span>
+                    </p>
+                  )}
+
+                  {statusUI}
 
                   <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
                     {timeAgo(n.createdAt)}
@@ -207,7 +230,7 @@ export const NotificationDropdown: React.FC = () => {
                   </p>
 
                   <p className="text-xs text-[var(--text-secondary)] mt-1">
-                    Wants to connect with you
+                    Wants to collaborate with you
                   </p>
 
                   <div className="flex gap-2 mt-3">
