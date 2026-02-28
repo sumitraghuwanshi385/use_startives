@@ -130,8 +130,9 @@ const getSentApplications = async (req, res) => {
 // ✅ UPDATE STATUS (Founder)
 const updateApplicationStatus = async (req, res) => {
   try {
-    let { status } = req.body;
+    const { status } = req.body;
 
+    // Validate status
     if (!["Pending", "Accepted", "Rejected", "Reviewed"].includes(status)) {
       return res.status(400).json({
         success: false,
@@ -139,48 +140,57 @@ const updateApplicationStatus = async (req, res) => {
       });
     }
 
-    const application = await Application.findById(req.params.id)
-      .populate('ideaId');
+    // Find application
+    const application = await Application.findById(req.params.id);
 
     if (!application) {
       return res.status(404).json({
         success: false,
-        message: 'Application not found',
+        message: "Application not found",
       });
     }
 
-    if (
-      application.ideaId.founderId.toString() !==
-      req.user._id.toString()
-    ) {
+    // Find idea separately (safer than populate)
+    const idea = await Idea.findById(application.ideaId);
+
+    if (!idea) {
+      return res.status(404).json({
+        success: false,
+        message: "Idea not found",
+      });
+    }
+
+    // Founder authorization check
+    if (idea.founderId.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized',
+        message: "Not authorized",
       });
     }
 
+    // Update status
     application.status = status;
     await application.save();
 
-    const idea = application.ideaId;
-
-    const position = idea.positions.find(
+    // Find position safely
+    const position = idea.positions?.find(
       (p) => p._id.toString() === application.positionId.toString()
     );
 
+    // Create notification for applicant
     await Notification.create({
       receiver: application.applicantId,
       sender: req.user._id,
-      type: 'APPLICATION',
-      title: 'Application Update',
+      type: "APPLICATION",
+      title: "Application Update",
       message:
         status === "Accepted"
-          ? `Congratulations! You have been selected for ${position?.title} in ${idea.title}`
-          : `Your application for ${position?.title} in ${idea.title} was not selected`,
+          ? `Congratulations! You have been selected for ${position?.title || "the role"} in ${idea.title}`
+          : `Your application for ${position?.title || "the role"} in ${idea.title} was not selected`,
       ideaId: idea._id,
       ideaTitle: idea.title,
       positionId: application.positionId,
-      positionTitle: position ? position.title : '',
+      positionTitle: position ? position.title : "",
       groupKey: `application_${idea._id}`,
     });
 
@@ -190,13 +200,13 @@ const updateApplicationStatus = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("UPDATE ERROR:", error);
     res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 
 module.exports = {
   createApplication,
