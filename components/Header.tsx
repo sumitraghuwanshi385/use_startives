@@ -176,10 +176,10 @@ const bellRef = useRef<HTMLDivElement>(null);
           onClick={() => setShowNotifications(!showNotifications)}
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
         >
-          <BellIcon className="w-5 h-5" />
+          <BellIcon className="w-6 h-6" />
 
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
+            <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-semibold min-w-[16px] h-4 px-1 flex items-center justify-center rounded-full shadow-sm">
               {unreadCount}
             </span>
           )}
