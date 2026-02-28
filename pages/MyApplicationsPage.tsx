@@ -356,7 +356,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   onClick={() =>
 updateApplicationStatus (getId(application), "Accepted")
 }
-className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest round ed-full bg-emerald-600 text-white"
+className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
 >
  ACCEPT
 
