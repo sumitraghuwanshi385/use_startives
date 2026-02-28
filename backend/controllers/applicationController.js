@@ -47,7 +47,7 @@ const createApplication = async (req, res) => {
       );
 
       await Notification.create({
-        receiver: idea.founderId,   // ✅ Founder gets notification
+        receiver: idea.founderId,
         sender: req.user._id,
         type: 'APPLICATION',
         title: 'New Application',
@@ -73,7 +73,6 @@ const createApplication = async (req, res) => {
     });
   }
 };
-
 
 
 // ✅ GET RECEIVED APPLICATIONS (Founder)
@@ -102,7 +101,6 @@ const getReceivedApplications = async (req, res) => {
 };
 
 
-
 // ✅ GET SENT APPLICATIONS (Applicant)
 const getSentApplications = async (req, res) => {
   try {
@@ -126,15 +124,24 @@ const getSentApplications = async (req, res) => {
 };
 
 
-
 // ✅ UPDATE STATUS (Founder)
 const updateApplicationStatus = async (req, res) => {
   try {
-    const { status } = req.body;
-console.log("🔥 STATUS RECEIVED:", status); // 👈 YAHAN ADD KARNA HAI
+    let { status } = req.body;
 
-    // Validate status
-    if (!["Pending", "Accepted", "Rejected", "Reviewed"].includes(status)) {
+    console.log("🔥 STATUS RECEIVED:", status);
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: "Status required",
+      });
+    }
+
+    // 🔥 Convert to UPPERCASE to match model enum
+    status = status.toUpperCase();
+
+    if (!["PENDING", "ACCEPTED", "REJECTED", "REVIEWED"].includes(status)) {
       return res.status(400).json({
         success: false,
         message: "Invalid status value",
@@ -151,7 +158,7 @@ console.log("🔥 STATUS RECEIVED:", status); // 👈 YAHAN ADD KARNA HAI
       });
     }
 
-    // Find idea separately (safer than populate)
+    // Find idea separately
     const idea = await Idea.findById(application.ideaId);
 
     if (!idea) {
@@ -185,7 +192,7 @@ console.log("🔥 STATUS RECEIVED:", status); // 👈 YAHAN ADD KARNA HAI
       type: "APPLICATION",
       title: "Application Update",
       message:
-        status === "Accepted"
+        status === "ACCEPTED"
           ? `Congratulations! You have been selected for ${position?.title || "the role"} in ${idea.title}`
           : `Your application for ${position?.title || "the role"} in ${idea.title} was not selected`,
       ideaId: idea._id,
@@ -208,6 +215,7 @@ console.log("🔥 STATUS RECEIVED:", status); // 👈 YAHAN ADD KARNA HAI
     });
   }
 };
+
 
 module.exports = {
   createApplication,
