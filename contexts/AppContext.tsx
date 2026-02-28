@@ -608,35 +608,41 @@ const fetchApplications = async () => {
 
 // Update status
 const updateApplicationStatus = async (id: string, status: string) => {
-  try {
-    const token = localStorage.getItem("token");
+  const t = getAuthToken();
+  if (!t) {
+    alert("No auth token found");
+    return;
+  }
 
-    const res = await fetch(
-      `${API_BASE_URL}/api/applications/${id}/status`,
+  try {
+    const res = await axios.put(
+      `/api/applications/${id}/status`,
+      { status },
       {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status }),
+        headers: { Authorization: `Bearer ${t}` }
       }
     );
 
-    const data = await res.json();
+    if (res.data?.success) {
+      // 🔥 Immediately update local state
+      setReceivedApplications(prev =>
+        prev.map(app =>
+          app.id === id ? { ...app, status } : app
+        )
+      );
 
-    if (!res.ok) {
-      alert(data.message || "Update failed");
-      return;
+      setSentApplications(prev =>
+        prev.map(app =>
+          app.id === id ? { ...app, status } : app
+        )
+      );
+
+      await fetchNotifications();
     }
 
-    // 🔥 VERY IMPORTANT — REFRESH DATA
-    await fetchReceivedApplications();
-    await fetchSentApplications();
-
   } catch (error) {
-    console.error(error);
-    alert("Something went wrong");
+    console.error("Status update failed", error);
+    alert("Failed to update status");
   }
 };
   // ---------------- INITIAL LOAD ----------------
