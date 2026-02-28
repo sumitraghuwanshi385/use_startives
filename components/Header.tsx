@@ -10,20 +10,24 @@ const ArrowRightOnRectangleIcon: React.FC<{ className?: string }> = ({ className
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
 );
 
-export const BellIcon = ({ className = "w-6 h-6" }) => (
+export const BellIcon: React.FC<{ className?: string }> = ({
+  className = "w-6 h-6",
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.7}
+    fill="none"
     stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M14.857 17H9.143m9.714 0a2.143 2.143 0 01-2.143 2.143H7.286A2.143 2.143 0 015.143 17m13.714 0V11a6.857 6.857 0 10-13.714 0v6m13.714 0H5.143"
-    />
+    {/* Bell Body */}
+    <path d="M6 8a6 6 0 0 1 12 0v5c0 1 .4 2 1 3H5c.6-1 1-2 1-3V8z" />
+
+    {/* Clapper */}
+    <circle cx="12" cy="19" r="1.5" />
   </svg>
 );
 
