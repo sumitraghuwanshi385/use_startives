@@ -75,16 +75,18 @@ const fetchNotifications = async () => {
       headers: { Authorization: `Bearer ${t}` }
     });
 
-    if (res.data?.success && Array.isArray(res.data.notifications)) {
-      const normalized = res.data.notifications.map((n: any) => ({
+    // ✅ Backend direct array return karta hai
+    if (Array.isArray(res.data)) {
+      const normalized = res.data.map((n: any) => ({
         ...n,
-        id: n._id || n.id
+        id: n._id,   // dropdown ke liye id normalize
       }));
 
       setAppNotifications(normalized);
     } else {
       setAppNotifications([]);
     }
+
   } catch (err) {
     console.error("Notification fetch failed", err);
   }
