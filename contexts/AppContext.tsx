@@ -67,22 +67,16 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 
 // ---------------- FETCH NOTIFICATIONS ----------------
 const fetchNotifications = async () => {
-  const t = getAuthToken();
+  const t = localStorage.getItem("authToken");
   if (!t) return;
 
   try {
-    const res = await axios.get('/api/notifications', {
-      headers: { Authorization: `Bearer ${t}` }
+    const res = await axios.get("/api/notifications", {
+      headers: { Authorization: `Bearer ${t}` },
     });
 
-    // ✅ Backend direct array return karta hai
-    if (Array.isArray(res.data)) {
-      const normalized = res.data.map((n: any) => ({
-        ...n,
-        id: n._id,   // dropdown ke liye id normalize
-      }));
-
-      setAppNotifications(normalized);
+    if (res.data?.success && Array.isArray(res.data.notifications)) {
+      setAppNotifications(res.data.notifications);
     } else {
       setAppNotifications([]);
     }
