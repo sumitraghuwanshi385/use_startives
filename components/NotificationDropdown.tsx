@@ -36,20 +36,18 @@ export const NotificationDropdown: React.FC = () => {
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
-  /* -------- Fetch Notifications -------- */
+  /* -------- FETCH REAL NOTIFICATIONS -------- */
   useEffect(() => {
     fetchNotifications?.();
   }, []);
 
-  /* -------- Filter Real Data Only -------- */
+  /* -------- CORRECT FILTER (BACKEND TYPE) -------- */
   const applications = appNotifications.filter(
-    (n: any) =>
-      n.category === "applications_to_my_project"
+    (n: any) => n.type === "APPLICATION"
   );
 
   const connections = appNotifications.filter(
-    (n: any) =>
-      n.category === "connections"
+    (n: any) => n.type === "CONNECTION"
   );
 
   return (
@@ -57,7 +55,9 @@ export const NotificationDropdown: React.FC = () => {
 
       {/* HEADER */}
       <div className="px-6 py-4 border-b border-[var(--border-primary)]">
-        <h3 className="text-lg font-bold uppercase">Notifications</h3>
+        <h3 className="text-lg font-bold tracking-wide uppercase">
+          NOTIFICATIONS
+        </h3>
       </div>
 
       {/* -------- PILL SWITCH -------- */}
@@ -71,7 +71,7 @@ export const NotificationDropdown: React.FC = () => {
                 : "text-[var(--text-secondary)]"
             }`}
           >
-            Applications
+            APPLICATIONS
           </button>
 
           <button
@@ -82,7 +82,7 @@ export const NotificationDropdown: React.FC = () => {
                 : "text-[var(--text-secondary)]"
             }`}
           >
-            Connections
+            CONNECTIONS
           </button>
         </div>
       </div>
@@ -90,26 +90,76 @@ export const NotificationDropdown: React.FC = () => {
       {/* -------- CONTENT -------- */}
       <div className="max-h-96 overflow-y-auto px-4 py-4 space-y-3">
 
-        {/* APPLICATION TAB */}
-        {activeTab === "applications" && (
-          applications.length === 0 ? (
-            <p className="text-sm text-center text-[var(--text-muted)]">
+        {/* ================= APPLICATIONS ================= */}
+        {activeTab === "applications" &&
+          (applications.length === 0 ? (
+            <p className="text-sm text-center text-[var(--text-muted)] font-poppins">
               No new applications.
             </p>
           ) : (
             applications.map((n: any) => (
               <div
-                key={n.id}
-                onClick={() => markNotificationAsRead?.(n.id)}
-                className="bg-[var(--background-tertiary)] p-3 rounded-xl hover:bg-[var(--component-background-hover)] cursor-pointer transition"
+                key={n._id}
+                onClick={() => markNotificationAsRead?.(n._id)}
+                className={`p-3 rounded-xl cursor-pointer transition border ${
+                  n.isRead
+                    ? "bg-[var(--background-tertiary)] border-transparent"
+                    : "bg-[var(--background-tertiary)] border-purple-500/40"
+                } hover:bg-[var(--component-background-hover)]`}
               >
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start gap-2">
                   <div>
+                    {/* Headline */}
+                    <p className="text-xs font-bold uppercase tracking-wide text-purple-500 mb-1">
+                      APPLICATION
+                    </p>
+
+                    {/* Title */}
                     <p className="text-sm font-semibold">
                       {n.title}
                     </p>
-                    <p className="text-xs text-[var(--text-secondary)]">
-                      {n.description}
+
+                    {/* Message */}
+                    <p className="text-xs text-[var(--text-secondary)] font-poppins">
+                      {n.message}
+                    </p>
+                  </div>
+
+                  <span className="text-[10px] text-[var(--text-muted)] whitespace-nowrap">
+                    {timeAgo(n.createdAt)}
+                  </span>
+                </div>
+              </div>
+            ))
+          ))}
+
+        {/* ================= CONNECTIONS ================= */}
+        {activeTab === "connections" &&
+          (connections.length === 0 ? (
+            <p className="text-sm text-center text-[var(--text-muted)] font-poppins">
+              No new connections.
+            </p>
+          ) : (
+            connections.map((n: any) => (
+              <div
+                key={n._id}
+                className="p-3 rounded-xl bg-[var(--background-tertiary)] space-y-2 border border-[var(--border-primary)]"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    {/* Headline */}
+                    <p className="text-xs font-bold uppercase tracking-wide text-purple-500 mb-1">
+                      CONNECTION
+                    </p>
+
+                    {/* Title */}
+                    <p className="text-sm font-semibold">
+                      {n.title}
+                    </p>
+
+                    {/* Message */}
+                    <p className="text-xs text-[var(--text-secondary)] font-poppins">
+                      {n.message}
                     </p>
                   </div>
 
@@ -117,55 +167,29 @@ export const NotificationDropdown: React.FC = () => {
                     {timeAgo(n.createdAt)}
                   </span>
                 </div>
-              </div>
-            ))
-          )
-        )}
 
-        {/* CONNECTION TAB */}
-        {activeTab === "connections" && (
-          connections.length === 0 ? (
-            <p className="text-sm text-center text-[var(--text-muted)]">
-              No new connections.
-            </p>
-          ) : (
-            connections.map((n: any) => (
-              <div
-                key={n.id}
-                className="bg-[var(--background-tertiary)] p-3 rounded-xl space-y-3"
-              >
-                <div className="flex justify-between">
-                  <p className="text-sm font-semibold">
-                    {n.title}
-                  </p>
-                  <span className="text-[10px] text-[var(--text-muted)]">
-                    {timeAgo(n.createdAt)}
-                  </span>
-                </div>
-
-                <div className="flex gap-2">
+                <div className="flex gap-2 pt-1">
                   <button
                     onClick={() =>
-                      acceptConnectionRequest?.(n.relatedUserId)
+                      acceptConnectionRequest?.(n.sender?._id || n.sender)
                     }
-                    className="flex-1 bg-green-500 text-white text-xs font-bold uppercase py-1.5 rounded-full"
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
                   >
-                    Accept
+                    ACCEPT
                   </button>
 
                   <button
                     onClick={() =>
-                      declineConnectionRequest?.(n.relatedUserId)
+                      declineConnectionRequest?.(n.sender?._id || n.sender)
                     }
-                    className="flex-1 bg-red-500 text-white text-xs font-bold uppercase py-1.5 rounded-full"
+                    className="flex-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
                   >
-                    Cancel
+                    CANCEL
                   </button>
                 </div>
               </div>
             ))
-          )
-        )}
+          ))}
 
         {/* VIEW ALL */}
         <Link
@@ -176,7 +200,7 @@ export const NotificationDropdown: React.FC = () => {
           }
           className="block text-center text-xs font-bold uppercase text-purple-600 hover:underline mt-3"
         >
-          View All →
+          VIEW ALL →
         </Link>
 
       </div>
