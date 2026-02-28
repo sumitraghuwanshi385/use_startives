@@ -78,6 +78,22 @@ const unreadCount = Array.isArray(appNotifications)
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
 const [shake, setShake] = useState(false);
+const prevCountRef = useRef(unreadCount);
+
+useEffect(() => {
+  if (unreadCount > prevCountRef.current) {
+    // 🔔 play sound
+    const audio = new Audio("/notification.mp3");
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+
+    // 🔔 shake bell
+    setShake(true);
+    setTimeout(() => setShake(false), 600);
+  }
+
+  prevCountRef.current = unreadCount;
+}, [unreadCount]);
 const bellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,16 +106,6 @@ const bellRef = useRef<HTMLDivElement>(null);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-useEffect(() => {
-  const triggerShake = () => {
-    setShake(true);
-    setTimeout(() => setShake(false), 600);
-  };
-
-  window.addEventListener("new-notification", triggerShake);
-  return () =>
-    window.removeEventListener("new-notification", triggerShake);
-}, []);
 
  useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
