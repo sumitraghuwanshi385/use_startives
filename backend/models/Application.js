@@ -40,10 +40,10 @@ const applicationSchema = new mongoose.Schema(
 
     // 🔥 IMPORTANT — UPPERCASE ENUM
     status: {
-      type: String,
-      enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'REVIEWED'],
-      default: 'PENDING',
-    },
+  type: String,
+  enum: ['Pending', 'Accepted', 'Rejected', 'Reviewed'],
+  default: 'Pending',
+},
   },
   { timestamps: true }
 );
