@@ -144,12 +144,16 @@ await application.save();
 
 // 🔔 NOTIFY APPLICANT ABOUT STATUS CHANGE
 await Notification.create({
-  receiver: application.applicantId,
+  receiver: idea.founderId,
   sender: req.user._id,
   type: 'APPLICATION',
-  title: 'Application Update',
-  message: `Your application status changed to ${status}`,
-  groupKey: `application_${application.ideaId._id}`,
+  title: 'New Application',
+  message: `${req.user.name} applied`,
+  ideaId: idea._id,
+  ideaTitle: idea.title,
+  positionId: positionId,
+  positionTitle: idea.positions.find(p => p._id.toString() === positionId)?.title,
+  groupKey: `application_${ideaId}`,
 });
 
 res.json({  
