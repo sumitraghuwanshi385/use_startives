@@ -341,11 +341,11 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         <AnswersBox application={application} />
 
 {/* ACTION BUTTONS */}
-{application.status === "Pending" && (
+{application.status?.toLowerCase() === "pending" && (
   <div className="flex gap-3">
     <button
       onClick={() =>
-        updateApplicationStatus(application.id, "Rejected")
+        updateApplicationStatus(getId(application), "Rejected")
       }
       className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-red-600 text-white"
     >
@@ -354,7 +354,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
     <button
       onClick={() =>
-        updateApplicationStatus(application.id, "Accepted")
+        updateApplicationStatus(getId(application), "Accepted")
       }
       className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
     >
@@ -363,6 +363,30 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   </div>
 )}
 
+{/* ACCEPTED ACTIONS */}
+{application.status?.toLowerCase() === "accepted" && applicant && (
+  <div className="flex gap-3">
+    {isConnected ? (
+      <div className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white text-center">
+        CONNECTED
+      </div>
+    ) : (
+      <button
+        onClick={() => sendConnectionRequest(applicant.id)}
+        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
+      >
+        ADD CONNECTION
+      </button>
+    )}
+
+    <Link
+      to={`/messages?chatWith=${applicant.id}`}
+      className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-sky-100 border border-sky-200 text-sky-600 text-center"
+    >
+      MESSAGE
+    </Link>
+  </div>
+)}
         
         </div>
     );
