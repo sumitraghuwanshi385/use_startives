@@ -131,6 +131,7 @@ const getSentApplications = async (req, res) => {
 const updateApplicationStatus = async (req, res) => {
   try {
     const { status } = req.body;
+console.log("🔥 STATUS RECEIVED:", status); // 👈 YAHAN ADD KARNA HAI
 
     // Validate status
     if (!["Pending", "Accepted", "Rejected", "Reviewed"].includes(status)) {
