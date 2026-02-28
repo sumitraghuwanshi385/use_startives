@@ -6,6 +6,7 @@ const notificationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+      index: true,
     },
 
     sender: {
@@ -17,17 +18,20 @@ const notificationSchema = new mongoose.Schema(
       type: String,
       enum: ['APPLICATION', 'MESSAGE', 'CONNECTION'],
       required: true,
+      index: true,
     },
 
     title: {
       type: String,
+      trim: true,
     },
 
     message: {
       type: String,
+      trim: true,
     },
 
-    // ✅ ADD THESE 4 FIELDS
+    // 🔹 IDEA INFO
     ideaId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Idea',
@@ -35,26 +39,44 @@ const notificationSchema = new mongoose.Schema(
 
     ideaTitle: {
       type: String,
+      trim: true,
     },
 
+    // 🔹 POSITION INFO
     positionId: {
       type: mongoose.Schema.Types.ObjectId,
     },
 
     positionTitle: {
       type: String,
+      trim: true,
     },
 
+    // 🔹 APPLICATION STATUS
+    status: {
+      type: String,
+      enum: ['PENDING', 'ACCEPTED', 'REJECTED'],
+    },
+
+    // 🔹 READ STATUS
     isRead: {
       type: Boolean,
       default: false,
+      index: true,
     },
 
+    // 🔹 GROUPING (for preventing duplicates if needed)
     groupKey: {
       type: String,
+      index: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
+
+// 🔥 Compound index for fast user notification fetch
+notificationSchema.index({ receiver: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Notification', notificationSchema);
