@@ -100,9 +100,6 @@ useEffect(() => {
 
   prevCountRef.current = unreadCount;
 }, [unreadCount]);
-
-  prevCountRef.current = unreadCount;
-}, [unreadCount]);
 const bellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
