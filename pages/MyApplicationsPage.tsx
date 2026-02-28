@@ -345,7 +345,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
   <div className="flex gap-3">
     <button
       onClick={() =>
-        updateApplicationStatus(getId(application), "Rejected")
+        updateApplicationStatus(application._id, "Rejected")
       }
       className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-red-600 text-white"
     >
@@ -354,7 +354,7 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
 
     <button
       onClick={() =>
-        updateApplicationStatus(getId(application), "Accepted")
+        updateApplicationStatus(application._id, "Accepted")
       }
       className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-600 text-white"
     >
