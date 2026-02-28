@@ -8,6 +8,24 @@ import { useTheme } from '../contexts/ThemeContext';
 const ArrowRightOnRectangleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
 );
+
+export const BellIcon = ({ className = "w-6 h-6" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.7}
+    stroke="currentColor"
+    className={className}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M14.857 17H9.143m9.714 0a2.143 2.143 0 01-2.143 2.143H7.286A2.143 2.143 0 015.143 17m13.714 0V11a6.857 6.857 0 10-13.714 0v6m13.714 0H5.143"
+    />
+  </svg>
+);
+
 const HamburgerIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -52,6 +70,7 @@ const Header: React.FC = () => {
 
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
+const bellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,7 +81,19 @@ const [showNotifications, setShowNotifications] = useState(false);
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  
+
+
+ useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (bellRef.current && !bellRef.current.contains(event.target as Node)) {
+      setShowNotifications(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
+ 
   useEffect(() => {
     setProfileDropdownOpen(false);
   }, [location.pathname]);
@@ -136,12 +167,19 @@ const [showNotifications, setShowNotifications] = useState(false);
                 <button onClick={handleMenuClick} className={commonIconButtonClasses} aria-label="Open menu">
                     <HamburgerIcon className={`w-6 h-6 ${isMenuAnimating ? 'animate-icon-click' : ''}`} />
                 </button>
-<div className="relative">
+<div ref={bellRef} className="relative">
   <button
     onClick={() => setShowNotifications(!showNotifications)}
-    className="relative w-10 h-10 rounded-full flex items-center justify-center bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
+    className="relative w-11 h-11 rounded-full flex items-center justify-center bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)] transition-all"
   >
     <BellIcon className="w-5 h-5" />
+
+    {/* 🔴 Notification Badge */}
+    {appNotifications.length > 0 && (
+      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+        {appNotifications.length}
+      </span>
+    )}
   </button>
 
   {showNotifications && <NotificationDropdown />}
