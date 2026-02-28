@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 
-/* ---------------- TIME AGO FORMAT ---------------- */
+/* ---------------- TIME AGO ---------------- */
 const timeAgo = (date: string) => {
   const seconds = Math.floor(
     (new Date().getTime() - new Date(date).getTime()) / 1000
@@ -18,8 +18,9 @@ const timeAgo = (date: string) => {
 
   for (const key in intervals) {
     const interval = Math.floor(seconds / intervals[key]);
-    if (interval >= 1) return `${interval}${key}`;
+    if (interval >= 1) return `${interval}${key} ago`;
   }
+
   return "now";
 };
 
@@ -35,166 +36,144 @@ export const NotificationDropdown: React.FC = () => {
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
-  const prevUnread = useRef(0);
-
-  /* ---------------- SMART POLLING ---------------- */
+  /* -------- Fetch Notifications -------- */
   useEffect(() => {
     fetchNotifications?.();
-
-    const interval = setInterval(() => {
-      fetchNotifications?.();
-    }, 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
-  /* ---------------- SOUND + SHAKE + SYNC ---------------- */
-  useEffect(() => {
-    const unread = appNotifications.filter((n: any) => !n.isRead).length;
-
-    if (unread > prevUnread.current) {
-      const audio = new Audio("/notification.mp3");
-      audio.play().catch(() => {});
-
-      window.dispatchEvent(new Event("new-notification")); // shake bell
-
-      localStorage.setItem("notif-sync", Date.now().toString());
-    }
-
-    prevUnread.current = unread;
-  }, [appNotifications]);
-
-  /* ---------------- CROSS TAB SYNC ---------------- */
-  useEffect(() => {
-    const sync = () => fetchNotifications?.();
-    window.addEventListener("storage", sync);
-    return () => window.removeEventListener("storage", sync);
-  }, []);
-
-  /* ---------------- GROUPING ---------------- */
-  const grouped = appNotifications.reduce((acc: any, n: any) => {
-    const key = n.groupKey || n.id;
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(n);
-    return acc;
-  }, {});
-
-  const applications = Object.values(grouped).filter(
-    (group: any) => group[0]?.category === "applications_to_my_project"
+  /* -------- Filter Real Data Only -------- */
+  const applications = appNotifications.filter(
+    (n: any) =>
+      n.category === "applications_to_my_project"
   );
 
-  const connections = Object.values(grouped).filter(
-    (group: any) => group[0]?.category === "connections"
+  const connections = appNotifications.filter(
+    (n: any) =>
+      n.category === "connections"
   );
 
   return (
-    <div className="absolute right-0 mt-3 w-96 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50 transition-all duration-300">
+    <div className="absolute right-0 mt-3 w-96 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
 
       {/* HEADER */}
       <div className="px-6 py-4 border-b border-[var(--border-primary)]">
-        <h3 className="text-lg font-bold">Notifications</h3>
+        <h3 className="text-lg font-bold uppercase">Notifications</h3>
       </div>
 
-      {/* PILL SWITCH */}
-      <div className="flex px-4 pt-4 gap-2">
-        {["applications", "connections"].map((tab) => (
+      {/* -------- PILL SWITCH -------- */}
+      <div className="px-4 pt-4">
+        <div className="flex bg-[var(--background-tertiary)] p-1 rounded-full">
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab as any)}
+            onClick={() => setActiveTab("applications")}
             className={`flex-1 py-2 text-xs font-bold uppercase rounded-full transition ${
-              activeTab === tab
-                ? "button-gradient text-white shadow-md"
-                : "bg-[var(--background-tertiary)] text-[var(--text-secondary)]"
+              activeTab === "applications"
+                ? "button-gradient text-white"
+                : "text-[var(--text-secondary)]"
             }`}
           >
-            {tab}
+            Applications
           </button>
-        ))}
+
+          <button
+            onClick={() => setActiveTab("connections")}
+            className={`flex-1 py-2 text-xs font-bold uppercase rounded-full transition ${
+              activeTab === "connections"
+                ? "button-gradient text-white"
+                : "text-[var(--text-secondary)]"
+            }`}
+          >
+            Connections
+          </button>
+        </div>
       </div>
 
-      {/* CONTENT */}
+      {/* -------- CONTENT -------- */}
       <div className="max-h-96 overflow-y-auto px-4 py-4 space-y-3">
 
-        {activeTab === "applications" &&
-          (applications.length === 0 ? (
+        {/* APPLICATION TAB */}
+        {activeTab === "applications" && (
+          applications.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
               No new applications.
             </p>
           ) : (
-            applications.map((group: any, index: number) => {
-              const first = group[0];
-              return (
-                <div
-                  key={index}
-                  onClick={() => markNotificationAsRead?.(first.id)}
-                  className="bg-[var(--background-tertiary)] p-3 rounded-xl hover:bg-[var(--component-background-hover)] cursor-pointer transition"
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-semibold">
-                        {group.length > 1
-                          ? `${group.length} New Applications`
-                          : first.title}
-                      </p>
-                      <p className="text-xs text-[var(--text-secondary)]">
-                        {first.description}
-                      </p>
-                    </div>
-                    <span className="text-[10px] text-[var(--text-muted)]">
-                      {timeAgo(first.createdAt)}
-                    </span>
+            applications.map((n: any) => (
+              <div
+                key={n.id}
+                onClick={() => markNotificationAsRead?.(n.id)}
+                className="bg-[var(--background-tertiary)] p-3 rounded-xl hover:bg-[var(--component-background-hover)] cursor-pointer transition"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm font-semibold">
+                      {n.title}
+                    </p>
+                    <p className="text-xs text-[var(--text-secondary)]">
+                      {n.description}
+                    </p>
                   </div>
-                </div>
-              );
-            })
-          ))}
 
-        {activeTab === "connections" &&
-          (connections.length === 0 ? (
+                  <span className="text-[10px] text-[var(--text-muted)]">
+                    {timeAgo(n.createdAt)}
+                  </span>
+                </div>
+              </div>
+            ))
+          )
+        )}
+
+        {/* CONNECTION TAB */}
+        {activeTab === "connections" && (
+          connections.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
               No new connections.
             </p>
           ) : (
-            connections.map((group: any, index: number) => {
-              const first = group[0];
-              return (
-                <div
-                  key={index}
-                  className="bg-[var(--background-tertiary)] p-3 rounded-xl space-y-2"
-                >
-                  <div className="flex justify-between">
-                    <p className="text-sm font-semibold">{first.title}</p>
-                    <span className="text-[10px] text-[var(--text-muted)]">
-                      {timeAgo(first.createdAt)}
-                    </span>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() =>
-                        acceptConnectionRequest?.(first.relatedUserId)
-                      }
-                      className="bg-green-500 text-white text-xs px-3 py-1 rounded-full uppercase"
-                    >
-                      Accept
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        declineConnectionRequest?.(first.relatedUserId)
-                      }
-                      className="bg-red-500 text-white text-xs px-3 py-1 rounded-full uppercase"
-                    >
-                      Cancel
-                    </button>
-                  </div>
+            connections.map((n: any) => (
+              <div
+                key={n.id}
+                className="bg-[var(--background-tertiary)] p-3 rounded-xl space-y-3"
+              >
+                <div className="flex justify-between">
+                  <p className="text-sm font-semibold">
+                    {n.title}
+                  </p>
+                  <span className="text-[10px] text-[var(--text-muted)]">
+                    {timeAgo(n.createdAt)}
+                  </span>
                 </div>
-              );
-            })
-          ))}
 
+                <div className="flex gap-2">
+                  <button
+                    onClick={() =>
+                      acceptConnectionRequest?.(n.relatedUserId)
+                    }
+                    className="flex-1 bg-green-500 text-white text-xs font-bold uppercase py-1.5 rounded-full"
+                  >
+                    Accept
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      declineConnectionRequest?.(n.relatedUserId)
+                    }
+                    className="flex-1 bg-red-500 text-white text-xs font-bold uppercase py-1.5 rounded-full"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ))
+          )
+        )}
+
+        {/* VIEW ALL */}
         <Link
-          to={activeTab === "applications" ? "/applications" : "/connections"}
+          to={
+            activeTab === "applications"
+              ? "/applications"
+              : "/connections"
+          }
           className="block text-center text-xs font-bold uppercase text-purple-600 hover:underline mt-3"
         >
           View All →
