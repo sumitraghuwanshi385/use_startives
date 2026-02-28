@@ -38,26 +38,27 @@ const application = await Application.create({
 });  
 
 // 🔔 CREATE NOTIFICATION FOR FOUNDER
-const idea = await Idea.findById(ideaId);
+// 🔔 NOTIFY APPLICANT ABOUT STATUS CHANGE
 
-if (idea && idea.founderId) {
-  const position = idea.positions.find(
-  (p) => p._id.toString() === positionId
+const idea = await Idea.findById(application.ideaId._id);
+
+const position = idea.positions.find(
+  (p) => p._id.toString() === application.positionId.toString()
 );
 
 await Notification.create({
-  receiver: idea.founderId,
+  receiver: application.applicantId,
   sender: req.user._id,
   type: 'APPLICATION',
-  title: 'New Application',
-  message: `${req.user.name} applied`,
+  title: 'Application Update',
+  message: `Status updated`,
   ideaId: idea._id,
   ideaTitle: idea.title,
-  positionId: positionId,
-  positionTitle: position?.title,
-  groupKey: `application_${ideaId}`,
+  positionId: application.positionId,
+  positionTitle: position ? position.title : '',
+  status: status, // VERY IMPORTANT
+  groupKey: `application_${idea._id}`,
 });
-}
 
 res.status(201).json({  
   success: true,  
