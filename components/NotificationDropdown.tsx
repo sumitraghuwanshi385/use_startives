@@ -42,23 +42,30 @@ export const NotificationDropdown: React.FC = () => {
     fetchNotifications?.();
   }, []);
 
-  const applications = appNotifications.filter(
-    (n: any) => n.type === "APPLICATION" && !n.isRead
-  );
-
-  const connections = appNotifications.filter(
-    (n: any) => n.type === "CONNECTION" && !n.isRead
-  );
-
   const safeId = (n: any) => n._id || n.id;
+
+  /* ---- SORT + LIMIT 3 ---- */
+  const sorted = [...appNotifications].sort(
+    (a: any, b: any) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  );
+
+  const applications = sorted
+    .filter((n: any) => n.type === "APPLICATION" && !n.isRead)
+    .slice(0, 3);
+
+  const connections = sorted
+    .filter((n: any) => n.type === "CONNECTION" && !n.isRead)
+    .slice(0, 3);
 
   const handleNavigate = (path: string, id: string) => {
     markNotificationAsRead?.(id);
-    navigate(path, { state: { highlightId: id } });
+    navigate(path);
   };
 
   return (
-    <div className="absolute right-2 top-14 w-[300px] sm:w-[320px] max-w-[92vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
+    <div className="absolute right-2 top-14 w-[280px] sm:w-[300px] max-w-[90vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
 
       {/* HEADER */}
       <div className="px-5 py-4 border-b border-[var(--border-primary)]">
@@ -96,124 +103,144 @@ export const NotificationDropdown: React.FC = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="max-h-[420px] overflow-y-auto px-4 py-5 space-y-4">
+      <div className="max-h-[360px] overflow-y-auto px-4 py-5 space-y-4">
 
-        {/* ================= APPLICATIONS ================= */}
+        {/* APPLICATIONS */}
         {activeTab === "applications" &&
           (applications.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
               No new applications
             </p>
           ) : (
-            applications.map((n: any) => (
-              <div
-                key={safeId(n)}
-                onClick={() =>
-                  handleNavigate("/applications", safeId(n))
-                }
-                className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent border border-purple-500/30 hover:border-purple-500/60 transition cursor-pointer"
-              >
-                {/* CLOSE */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    markNotificationAsRead?.(safeId(n));
-                  }}
-                  className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
+            applications.map((n: any) => {
+              const project =
+                n.idea?.title ||
+                n.ideaTitle ||
+                n.meta?.ideaTitle ||
+                "Your Project";
+
+              const role =
+                n.position?.title ||
+                n.positionTitle ||
+                n.meta?.positionTitle ||
+                "Open Role";
+
+              const user =
+                n.sender?.name ||
+                n.senderName ||
+                "Someone";
+
+              return (
+                <div
+                  key={safeId(n)}
+                  onClick={() =>
+                    handleNavigate("/applications", safeId(n))
+                  }
+                  className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 hover:border-purple-500/60 transition cursor-pointer"
                 >
-                  ✕
-                </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      markNotificationAsRead?.(safeId(n));
+                    }}
+                    className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
+                  >
+                    ✕
+                  </button>
 
-                {/* PROJECT NAME */}
-                <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
-                  {n.ideaTitle}
-                </p>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
+                    {project}
+                  </p>
 
-                {/* MAIN LINE */}
-                <p className="mt-1 text-sm font-semibold">
-                  {n.sender?.name}
-                </p>
+                  <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
+                    {user}
+                  </p>
 
-                {/* ROLE LINE */}
-                <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
-                  Applied for{" "}
-                  <span className="font-semibold text-[var(--text-primary)]">
-                    {n.positionTitle}
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">
+                    Applied for{" "}
+                    <span className="font-semibold text-[var(--text-primary)]">
+                      {role}
+                    </span>
+                  </p>
+
+                  <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
+                    {timeAgo(n.createdAt)}
                   </span>
-                </p>
-
-                {/* TIME */}
-                <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
-                  {timeAgo(n.createdAt)}
-                </span>
-              </div>
-            ))
+                </div>
+              );
+            })
           ))}
 
-        {/* ================= CONNECTIONS ================= */}
+        {/* CONNECTIONS */}
         {activeTab === "connections" &&
           (connections.length === 0 ? (
-            <p className="text-sm text-center text-[var(--text-muted)] font-poppins">
+            <p className="text-sm text-center text-[var(--text-muted)]">
               No new connections
             </p>
           ) : (
-            connections.map((n: any) => (
-              <div
-                key={safeId(n)}
-                className="relative p-4 rounded-xl bg-[var(--background-tertiary)] border border-green-500/30"
-              >
-                <button
-                  onClick={() =>
-                    markNotificationAsRead?.(safeId(n))
-                  }
-                  className="absolute top-2 right-2 text-xs text-[var(--text-muted)] hover:text-red-500"
+            connections.map((n: any) => {
+              const user =
+                n.sender?.name ||
+                n.senderName ||
+                "User";
+
+              return (
+                <div
+                  key={safeId(n)}
+                  className="relative p-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30"
                 >
-                  ✕
-                </button>
-
-                <p className="text-[10px] font-bold uppercase tracking-wide text-green-500 mb-1">
-                  CONNECTION REQUEST
-                </p>
-
-                <p className="text-sm font-semibold">
-                  {n.sender?.name || "User"} wants to connect
-                </p>
-
-                <p className="text-xs text-[var(--text-secondary)] font-poppins mt-1 leading-relaxed">
-                  Accept to start collaborating together
-                </p>
-
-                <div className="flex gap-2 mt-3">
                   <button
                     onClick={() =>
-                      acceptConnectionRequest?.(
-                        n.sender?._id || n.sender
-                      )
+                      markNotificationAsRead?.(safeId(n))
                     }
-                    className="flex-1 bg-green-500 hover:bg-green-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
+                    className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                   >
-                    ACCEPT
+                    ✕
                   </button>
 
-                  <button
-                    onClick={() =>
-                      declineConnectionRequest?.(
-                        n.sender?._id || n.sender
-                      )
-                    }
-                    className="flex-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
-                  >
-                    CANCEL
-                  </button>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-green-500">
+                    CONNECTION REQUEST
+                  </p>
+
+                  <p className="mt-1 text-sm font-semibold">
+                    {user}
+                  </p>
+
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">
+                    Wants to connect with you
+                  </p>
+
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() =>
+                        acceptConnectionRequest?.(
+                          n.sender?._id || n.sender
+                        )
+                      }
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
+                    >
+                      ACCEPT
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        declineConnectionRequest?.(
+                          n.sender?._id || n.sender
+                        )
+                      }
+                      className="flex-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
+                    >
+                      CANCEL
+                    </button>
+                  </div>
+
+                  <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
+                    {timeAgo(n.createdAt)}
+                  </span>
                 </div>
-
-                <span className="absolute bottom-2 right-3 text-[10px] text-[var(--text-muted)]">
-                  {timeAgo(n.createdAt)}
-                </span>
-              </div>
-            ))
+              );
+            })
           ))}
-
       </div>
 
       {/* VIEW ALL */}
@@ -231,7 +258,6 @@ export const NotificationDropdown: React.FC = () => {
           VIEW ALL →
         </button>
       </div>
-
     </div>
   );
 };
