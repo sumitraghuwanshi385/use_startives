@@ -1,5 +1,6 @@
 const Application = require('../models/Application');
 const Idea = require('../models/Idea');
+const Notification = require('../models/Notification');
 
 // ✅ CREATE APPLICATION
 // POST /api/applications
@@ -35,6 +36,20 @@ const application = await Application.create({
   coverLetter,  
   answers,  
 });  
+
+// 🔔 CREATE NOTIFICATION FOR FOUNDER
+const idea = await Idea.findById(ideaId);
+
+if (idea && idea.founderId) {
+  await Notification.create({
+    receiver: idea.founderId,
+    sender: req.user._id,
+    type: 'APPLICATION',
+    title: 'New Application',
+    message: `${req.user.name} applied to your idea`,
+    groupKey: `application_${ideaId}`,
+  });
+}
 
 res.status(201).json({  
   success: true,  
@@ -125,6 +140,17 @@ if (application.ideaId.founderId.toString() !== req.user._id.toString()) {
 
 application.status = status;  
 await application.save();  
+
+
+// 🔔 NOTIFY APPLICANT ABOUT STATUS CHANGE
+await Notification.create({
+  receiver: application.applicantId,
+  sender: req.user._id,
+  type: 'APPLICATION',
+  title: 'Application Update',
+  message: `Your application status changed to ${status}`,
+  groupKey: `application_${application.ideaId._id}`,
+});
 
 res.json({  
   success: true,  
