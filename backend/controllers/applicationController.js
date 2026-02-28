@@ -41,14 +41,22 @@ const application = await Application.create({
 const idea = await Idea.findById(ideaId);
 
 if (idea && idea.founderId) {
-  await Notification.create({
-    receiver: idea.founderId,
-    sender: req.user._id,
-    type: 'APPLICATION',
-    title: 'New Application',
-    message: `${req.user.name} applied to your idea`,
-    groupKey: `application_${ideaId}`,
-  });
+  const position = idea.positions.find(
+  (p) => p._id.toString() === positionId
+);
+
+await Notification.create({
+  receiver: idea.founderId,
+  sender: req.user._id,
+  type: 'APPLICATION',
+  title: 'New Application',
+  message: `${req.user.name} applied`,
+  ideaId: idea._id,
+  ideaTitle: idea.title,
+  positionId: positionId,
+  positionTitle: position?.title,
+  groupKey: `application_${ideaId}`,
+});
 }
 
 res.status(201).json({  
@@ -144,16 +152,16 @@ await application.save();
 
 // 🔔 NOTIFY APPLICANT ABOUT STATUS CHANGE
 await Notification.create({
-  receiver: idea.founderId,
+  receiver: application.applicantId,
   sender: req.user._id,
   type: 'APPLICATION',
-  title: 'New Application',
-  message: `${req.user.name} applied`,
-  ideaId: idea._id,
-  ideaTitle: idea.title,
-  positionId: positionId,
-  positionTitle: idea.positions.find(p => p._id.toString() === positionId)?.title,
-  groupKey: `application_${ideaId}`,
+  title: 'Application Update',
+  message: `Status updated`,
+  ideaId: application.ideaId._id,
+  ideaTitle: application.ideaId.title,
+  positionId: application.positionId,
+  positionTitle: application.positionTitle,
+  groupKey: `application_${application.ideaId._id}`,
 });
 
 res.json({  
