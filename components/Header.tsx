@@ -15,19 +15,17 @@ export const BellIcon: React.FC<{ className?: string }> = ({
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
     fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
     stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
     className={className}
   >
-    {/* Bell Body */}
-    <path d="M6 8a6 6 0 0 1 12 0v5c0 1 .4 2 1 3H5c.6-1 1-2 1-3V8z" />
-
-    {/* Clapper */}
-    <circle cx="12" cy="19" r="1.5" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M14.857 17H9.143M18 17H6m12 0v-5a6 6 0 10-12 0v5m12 0H6"
+    />
   </svg>
 );
 
