@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants'; 
 import { useTheme } from '../contexts/ThemeContext';
-import { NotificationDropdown } from "./NotificationDropdown";
 
 // --- Icons ---
 const ArrowRightOnRectangleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
@@ -62,10 +61,7 @@ const ThemeIconButton: React.FC = () => {
 };
 
 const Header: React.FC = () => {
-  const { currentUser, logout, appNotifications } = useAppContext();
-const unreadCount = Array.isArray(appNotifications)
-  ? appNotifications.length
-  : 0;
+  const { currentUser, logout } = useAppContext(); 
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -162,118 +158,75 @@ const bellRef = useRef<HTMLDivElement>(null);
           </nav>
         </div>
 
-        <div className="flex items-center space-x-2">
-  {currentUser ? (
-    <>
-      <ThemeIconButton />
+        <div className="flex items-center space-x-1">
+          {currentUser ? (
+            <>
+              <ThemeIconButton />
+              
+              
+                <button onClick={handleMenuClick} className={commonIconButtonClasses} aria-label="Open menu">
+                    <HamburgerIcon className={`w-6 h-6 ${isMenuAnimating ? 'animate-icon-click' : ''}`} />
+                </button>
+<div ref={bellRef} className="relative">
+  <button
+    onClick={() => setShowNotifications(!showNotifications)}
+    className="relative w-11 h-11 rounded-full flex items-center justify-center bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)] transition-all"
+  >
+    <BellIcon className="w-5 h-5" />
 
-      {/* 🔔 Notification Bell */}
-      <div ref={bellRef} className="relative">
-        <button
-          onClick={() => setShowNotifications(!showNotifications)}
-          className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
-        >
-          <BellIcon className="w-5 h-5" />
+    {/* 🔴 Notification Badge */}
+    {appNotifications.length > 0 && (
+      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+        {appNotifications.length}
+      </span>
+    )}
+  </button>
 
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
-              {unreadCount}
-            </span>
-          )}
-        </button>
+  {showNotifications && <NotificationDropdown />}
+</div>
 
-        {showNotifications && <NotificationDropdown />}
-      </div>
-
-      {/* ☰ Hamburger Menu */}
-      <div ref={profileDropdownRef} className="relative">
-        <button
-          onClick={handleMenuClick}
-          className={commonIconButtonClasses}
-          aria-label="Open menu"
-        >
-          <HamburgerIcon
-            className={`w-6 h-6 ${
-              isMenuAnimating ? "animate-icon-click" : ""
-            }`}
-          />
-        </button>
-
-        {/* Dropdown */}
-        <div
-          className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] border border-[var(--border-primary)] shadow-2xl transition duration-200 ${
-            profileDropdownOpen
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none"
-          }`}
-        >
-          <div className="py-1">
-
-            {/* Profile */}
-            <Link
-              to="/profile"
-              className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm ring-2 ring-white/20">
-                  {currentUser.profilePictureUrl ? (
-                    <img
-                      src={currentUser.profilePictureUrl}
-                      alt={currentUser.name}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  ) : (
-                    getInitials(currentUser.name)
-                  )}
-                </div>
-                <div className="overflow-hidden">
-                  <p className="text-sm font-semibold truncate">
-                    {currentUser.name}
-                  </p>
-                  <p className="text-xs text-[var(--text-muted)] truncate">
-                    {currentUser.email}
-                  </p>
+<div ref={profileDropdownRef} className="relative">
+                <div className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] ring-1 ring-black ring-opacity-5 focus:outline-none border border-[var(--border-primary)] shadow-2xl transition ease-out duration-200 ${profileDropdownOpen ? 'transform opacity-100 scale-100' : 'transform opacity-0 scale-95 pointer-events-none'}`}>
+                  <div className="py-1" role="menu" aria-orientation="vertical">
+                    <Link to="/profile" className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]" role="menuitem">
+                        <div className="flex items-center space-x-3">
+                           <div className="w-10 h-10 rounded-full icon-bg-gradient flex-shrink-0 flex items-center justify-center text-white font-semibold text-sm ring-2 ring-white/20">
+                            {currentUser.profilePictureUrl ? (
+                              <img src={currentUser.profilePictureUrl} alt={currentUser.name} className="w-full h-full object-cover rounded-full" />
+                            ) : ( getInitials(currentUser.name) )}
+                          </div>
+                          <div className="overflow-hidden">
+                            <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{currentUser.name}</p>
+                            <p className="text-xs text-[var(--text-muted)] truncate">{currentUser.email}</p>
+                          </div>
+                        </div>
+                    </Link>
+                    <div className="py-1">
+                        {mobileMenuLinks.map(link => (
+                          <Link key={link.name} to={link.path} className="block px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)] focus:outline-none" role="menuitem">
+                            {link.name}
+                          </Link>
+                        ))}
+                    </div>
+                    <div className="border-t border-[var(--border-primary)]">
+                        <button onClick={handleLogout} className="w-full text-left flex items-center space-x-2 px-4 py-3 text-sm text-[var(--accent-danger-text)] hover:bg-[var(--accent-danger-background)] hover:text-[var(--accent-danger-hover)] focus:outline-none" role="menuitem">
+                          <ArrowRightOnRectangleIcon className="w-5 h-5"/>
+                          <span>Logout</span>
+                        </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </Link>
-
-            {/* Menu Links */}
-            {mobileMenuLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="block px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]"
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            {/* Logout */}
-            <div className="border-t border-[var(--border-primary)]">
-              <button
-                onClick={handleLogout}
-                className="w-full text-left flex items-center space-x-2 px-4 py-3 text-sm text-[var(--accent-danger-text)] hover:bg-[var(--accent-danger-background)]"
-              >
-                <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                <span>Logout</span>
+            </>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <ThemeIconButton />
+              <button onClick={() => navigate('/signup')} className="button-gradient text-white font-semibold rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-red-500/50 py-1.5 px-4 text-xs">
+                Join Now
               </button>
             </div>
-          </div>
+          )}
         </div>
-      </div>
-    </>
-  ) : (
-    <div className="flex items-center space-x-2">
-      <ThemeIconButton />
-      <button
-        onClick={() => navigate('/signup')}
-        className="button-gradient text-white font-semibold rounded-full py-1.5 px-4 text-xs"
-      >
-        Join Now
-      </button>
-    </div>
-  )}
-</div>
       </div>
     </header>
   );
