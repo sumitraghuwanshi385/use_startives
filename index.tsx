@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import "./global.css";
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {
   document.body.innerHTML =
