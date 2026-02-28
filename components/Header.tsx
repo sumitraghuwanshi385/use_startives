@@ -78,19 +78,28 @@ const unreadCount = Array.isArray(appNotifications)
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
 const [shake, setShake] = useState(false);
-const prevCountRef = useRef(unreadCount);
+
+const prevCountRef = useRef<number | null>(null);
 
 useEffect(() => {
+  // skip first render
+  if (prevCountRef.current === null) {
+    prevCountRef.current = unreadCount;
+    return;
+  }
+
+  // only when count increases
   if (unreadCount > prevCountRef.current) {
-    // 🔔 play sound
     const audio = new Audio("/notification.mp3");
     audio.volume = 0.6;
     audio.play().catch(() => {});
 
-    // 🔔 shake bell
     setShake(true);
     setTimeout(() => setShake(false), 600);
   }
+
+  prevCountRef.current = unreadCount;
+}, [unreadCount]);
 
   prevCountRef.current = unreadCount;
 }, [unreadCount]);
