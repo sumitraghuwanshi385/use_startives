@@ -9,7 +9,11 @@ const formatIdea = (idea) => {
 
   ideaObj.id = ideaObj._id.toString();
 
-  // Convert positions ids
+  // 🔥 FIX: convert founderId properly
+  if (ideaObj.founderId) {
+    ideaObj.founderId = ideaObj.founderId.toString();
+  }
+
   if (ideaObj.positions && ideaObj.positions.length > 0) {
     ideaObj.positions = ideaObj.positions.map((pos) => ({
       ...pos,
@@ -17,22 +21,9 @@ const formatIdea = (idea) => {
     }));
   }
 
-  // 🔥 SAFE founder handling
-  if (ideaObj.founderId && typeof ideaObj.founderId === "object") {
-    ideaObj.founderId = {
-      id: ideaObj.founderId._id
-        ? ideaObj.founderId._id.toString()
-        : ideaObj.founderId.id,
-      name: ideaObj.founderId.name || "",
-      profilePictureUrl: ideaObj.founderId.profilePictureUrl || "",
-      headline: ideaObj.founderId.headline || "",
-    };
-  }
-
   delete ideaObj._id;
   return ideaObj;
 };
-
 // =======================================
 // CREATE IDEA
 // POST /api/ideas
