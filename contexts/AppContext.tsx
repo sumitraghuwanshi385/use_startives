@@ -121,27 +121,16 @@ const fetchNotifications = async () => {
 
       setConnectedUserIds(ids);
 
-      setUsers(prev => {
-        const existing = new Set(prev.map(u => u.id));
-        const mapped: User[] = backendUsers.map((u: any) => ({
-          id: u.id || u._id,
-          name: u.name || '',
-          email: u.email || '',
-          headline: u.headline,
-          country: u.country,
-          bio: u.bio,
-          profilePictureUrl: u.profilePictureUrl || '',
-          skills: u.skills || [],
-          interests: u.interests || [],
-          socialLinks: u.socialLinks || {},
-          savedProjectIds: u.savedProjectIds || [],
-          connections: u.connections || [],
-          connectionRequests: u.connectionRequests || [],
-          sentRequests: u.sentRequests || []
-        }));
-        const add = mapped.filter(u => !existing.has(u.id));
-        return [...prev, ...add];
+      // 🔥 IMPORTANT FIX — refresh currentUser properly
+      const profileRes = await axios.get('/api/auth/me', {
+        headers: { Authorization: `Bearer ${t}` }
       });
+
+      if (profileRes.data?.success) {
+        const updatedUser = profileRes.data.user;
+        setCurrentUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      }
     }
   } catch (err) {
     console.error('fetchConnections failed', err);
