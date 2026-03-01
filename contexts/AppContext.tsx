@@ -781,7 +781,11 @@ useEffect(() => {
 
 useEffect(() => {
   if (!token || !currentUser) return;
+
+  fetchAllUsers();      // 👈 ADD THIS
+  fetchConnections();   // 👈 ADD THIS
   fetchApplications();
+
 }, [token, currentUser]);
 
 useEffect(() => {
