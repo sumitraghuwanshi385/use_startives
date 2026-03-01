@@ -65,7 +65,7 @@ const ThemeIconButton: React.FC = () => {
 };
 
 const Header: React.FC = () => {
-  const { currentUser, logout, appNotifications } = useAppContext();
+  const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
 
 const rawUnreadCount = Array.isArray(appNotifications)
   ? appNotifications.filter((n: any) => !n.isRead).length
@@ -212,7 +212,7 @@ return () => document.removeEventListener("click", handleClickOutside);
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
-
+markAllNotificationsAsRead();
       window.dispatchEvent(new Event("notification-read"));
 
     } catch (err) {
