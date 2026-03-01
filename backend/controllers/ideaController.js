@@ -1,20 +1,31 @@
-// backend/controllers/ideaController.js
 const Idea = require('../models/Idea');
 
 
 // =======================================
-// Helper: format _id → id
+// Helper: format Mongo _id → id
 // =======================================
 const formatIdea = (idea) => {
   const ideaObj = idea.toObject();
 
+  // Convert main id
   ideaObj.id = ideaObj._id.toString();
 
+  // Convert positions ids
   if (ideaObj.positions && ideaObj.positions.length > 0) {
     ideaObj.positions = ideaObj.positions.map((pos) => ({
       ...pos,
       id: pos._id.toString(),
     }));
+  }
+
+  // 🔥 Handle populated founder
+  if (ideaObj.founderId && ideaObj.founderId._id) {
+    ideaObj.founderId = {
+      id: ideaObj.founderId._id.toString(),
+      name: ideaObj.founderId.name,
+      profilePictureUrl: ideaObj.founderId.profilePictureUrl,
+      headline: ideaObj.founderId.headline,
+    };
   }
 
   delete ideaObj._id;
@@ -65,13 +76,15 @@ const createIdea = async (req, res) => {
       imageUrl: finalImageUrl,
       positions: positionsData,
       founderId: req.user._id,
-      founderName: req.user.name,
-      founderEmail: req.user.email,
     });
+
+    // 🔥 Populate founder after create
+    const populatedIdea = await Idea.findById(newIdea._id)
+      .populate("founderId", "name profilePictureUrl headline");
 
     return res.status(201).json({
       success: true,
-      idea: formatIdea(newIdea)
+      idea: formatIdea(populatedIdea)
     });
 
   } catch (error) {
@@ -112,7 +125,9 @@ const getIdeas = async (req, res) => {
     if (stage && stage !== 'All') query.stage = stage;
     if (location && location !== 'All') query.location = location;
 
-    const ideas = await Idea.find(query).sort({ postedDate: -1 });
+    const ideas = await Idea.find(query)
+      .populate("founderId", "name profilePictureUrl headline")
+      .sort({ postedDate: -1 });
 
     return res.json({
       success: true,
@@ -135,7 +150,8 @@ const getIdeas = async (req, res) => {
 // =======================================
 const getIdeaById = async (req, res) => {
   try {
-    const idea = await Idea.findById(req.params.id);
+    const idea = await Idea.findById(req.params.id)
+      .populate("founderId", "name profilePictureUrl headline");
 
     if (!idea) {
       return res.status(404).json({
@@ -173,7 +189,6 @@ const updateIdea = async (req, res) => {
       });
     }
 
-    // 🔥 Only founder can update
     if (idea.founderId.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -181,38 +196,16 @@ const updateIdea = async (req, res) => {
       });
     }
 
-    const {
-      title, tagline, description, problem,
-      buildingNow, founderQuote, teamSize,
-      stage, tags, category,
-      businessModel, workMode,
-      location, websiteUrl,
-      positions,
-      imageUrl
-    } = req.body;
-
-    idea.title = title ?? idea.title;
-    idea.tagline = tagline ?? idea.tagline;
-    idea.description = description ?? idea.description;
-    idea.problem = problem ?? idea.problem;
-    idea.buildingNow = buildingNow ?? idea.buildingNow;
-    idea.founderQuote = founderQuote ?? idea.founderQuote;
-    idea.teamSize = teamSize ?? idea.teamSize;
-    idea.stage = stage ?? idea.stage;
-    idea.tags = tags ?? idea.tags;
-    idea.category = category ?? idea.category;
-    idea.businessModel = businessModel ?? idea.businessModel;
-    idea.workMode = workMode ?? idea.workMode;
-    idea.location = location ?? idea.location;
-    idea.websiteUrl = websiteUrl ?? idea.websiteUrl;
-    idea.positions = positions ?? idea.positions;
-    idea.imageUrl = imageUrl ?? idea.imageUrl;
+    Object.assign(idea, req.body);
 
     await idea.save();
 
+    const populatedIdea = await Idea.findById(idea._id)
+      .populate("founderId", "name profilePictureUrl headline");
+
     return res.json({
       success: true,
-      idea: formatIdea(idea)
+      idea: formatIdea(populatedIdea)
     });
 
   } catch (error) {
