@@ -65,6 +65,24 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 
   const getAuthToken = () => token || localStorage.getItem('authToken');
 
+const removeAppNotification = async (id: string) => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    // 🔥 Backend delete (agar route hai)
+    await axios.delete(`/api/notifications/${id}`, {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+  } catch (err) {
+    console.log("Backend delete failed (continuing frontend remove)");
+  }
+
+  // 🔥 Always remove from frontend state
+  setAppNotifications(prev =>
+    prev.filter(n => (n._id || n.id) !== id)
+  );
+};
 
 // ---------------- FETCH NOTIFICATIONS ----------------
 const fetchNotifications = async () => {
@@ -726,7 +744,7 @@ useEffect(() => {
     removeApplication,
     toggleSaveProject, isProjectSaved, getUserById, 
     fetchUserProfile,
-    markNotificationAsRead, markAllNotificationsAsRead,
+    markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, 
     sentConnectionRequests, connectedUserIds, sendConnectionRequest,
     acceptConnectionRequest, declineConnectionRequest, removeConnection,
     isRequestPending, isUserConnected,
