@@ -9,3 +9,18 @@
 .shake {
   animation: shake 0.5s ease-in-out;
 }
+
+@keyframes dropdownFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0px) scale(1);
+  }
+}
+
+.animate-dropdownFade {
+  animation: dropdownFade 0.18s ease-out;
+}
