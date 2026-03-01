@@ -117,6 +117,7 @@ const connections = sorted.filter(
             </p>
           ) : (
             applications.map((n: any) => {
+console.log("FULL NOTIFICATION:", n);
               const project =
                 n.ideaTitle ||
                 n.idea?.title ||
