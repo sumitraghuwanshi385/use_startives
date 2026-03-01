@@ -157,14 +157,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
-  const founder = useMemo(() => {
-  return getUserById(idea.founderId) || {
-    id: idea.founderId,
-    name: "Founder",
-    profilePictureUrl: ""
-  };
-}, [idea.founderId, getUserById]);
-
+  const founder = idea.founderId;
   return (
     <article
       className="group relative bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:border-purple-500/30 overflow-hidden cursor-pointer flex flex-col h-full shadow-none font-poppins"
