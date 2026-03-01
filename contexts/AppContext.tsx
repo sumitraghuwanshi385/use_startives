@@ -504,30 +504,43 @@ const deleteIdea = async (ideaId: string) => {
   };
 
   const acceptConnectionRequest = async (requesterId: string) => {
-    if (!currentUser) return;
-    const t = getAuthToken();
-    try {
-        const res = await axios.post(`/api/connections/accept/${requesterId}`, {}, { headers: { Authorization: `Bearer ${t}` } });
-        if (res.data?.success) {
-            addNotificationCallBack("You are now connected!", "success");
-            await fetchConnections();
-await fetchNotifications();
-        }
-    } catch (error) { addNotificationCallBack("Failed to accept request.", "error"); }
-  };
-
-const declineConnectionRequest = async (notificationId: string) => {
+  if (!currentUser) return;
   const t = getAuthToken();
   if (!t) return;
 
   try {
-    const res = await axios.delete(`/api/connections/decline/${notificationId}`, {
-  headers: { Authorization: `Bearer ${t}` }
-});
+    const res = await axios.post(
+      `/api/connections/accept/${requesterId}`,
+      {},
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
 
     if (res.data?.success) {
-  await fetchConnections(); // 🔥 refresh currentUser
-}
+      await fetchAllUsers();
+      await fetchConnections();
+      await fetchNotifications();
+    }
+
+  } catch (error) {
+    console.error("Accept failed", error);
+  }
+};
+
+const declineConnectionRequest = async (requesterId: string) => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.delete(
+      `/api/connections/decline/${requesterId}`,
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (res.data?.success) {
+      await fetchAllUsers();
+      await fetchConnections();
+      await fetchNotifications();
+    }
 
   } catch (err) {
     console.error("Decline failed", err);
@@ -539,12 +552,14 @@ const declineConnectionRequest = async (notificationId: string) => {
   if (!t) return;
 
   try {
-    const res = await axios.delete(`/api/connections/${userId}`, {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+    const res = await axios.delete(
+      `/api/connections/${userId}`,
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
 
     if (res.data?.success) {
-      await fetchConnections(); // 🔥 refresh properly
+      await fetchAllUsers();
+      await fetchConnections();
     }
 
   } catch (err) {
@@ -741,8 +756,8 @@ const updateApplicationStatus = async (id: string, status: string) => {
     if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
     if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
 
-    await fetchAllUsers();        // 🔥 ADD THIS
-    setTimeout(() => { fetchConnections(); }, 0);
+    await fetchAllUsers();
+await fetchConnections();
 
   } catch (e) {
               localStorage.removeItem('authToken');
