@@ -52,18 +52,11 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
 
   /* 🔥 Hide deleted project notifications */
   const applications = sorted.filter(
-  (n: any) =>
-    n.type === "APPLICATION" &&
-    n.createdAt &&
-    (n.ideaTitle || n.idea?.title) &&
-    (n.sender?.name)
+  (n: any) => n.type === "APPLICATION"
 );
 
 const connections = sorted.filter(
-  (n: any) =>
-    n.type === "CONNECTION" &&
-    n.createdAt &&
-    n.sender?.name
+  (n: any) => n.type === "CONNECTION"
 );
 
   const handleNavigate = (path: string, id?: string) => {
@@ -125,6 +118,7 @@ const connections = sorted.filter(
             </p>
           ) : (
             applications.map((n: any) => {
+if (!n.ideaTitle && !n.idea?.title && !n.sender) return null;
               const project =
                 n.ideaTitle ||
                 n.idea?.title ||
@@ -217,6 +211,7 @@ const connections = sorted.filter(
             </p>
           ) : (
             connections.map((n: any) => {
+if (!n.sender) return null;
               const user =
                 n.sender?.name ||
                 "User";
