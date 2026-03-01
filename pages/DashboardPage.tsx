@@ -245,29 +245,40 @@ const DashboardPage: React.FC = () => {
 
   const myProjects = startupIdeas.filter(idea => idea.founderEmail === currentUser?.email);
 
-  const [sentApplicationsCount, receivedApplicationsCount] = useMemo(() => {
-  if (!currentUser) return [0, 0];
+  const totalApplicationsCount = useMemo(() => {
+  if (!currentUser) return 0;
 
+  // Sent applications (where current user is applicant)
   const sent = sentApplications.filter(
-    app => app.applicantEmail === currentUser.email
+    (app) =>
+      app.applicantId === currentUser.id ||
+      app.applicantId?._id === currentUser.id
   ).length;
 
+  // Projects owned by current user
   const myProjectIds = startupIdeas
-    .filter(idea => idea.founderEmail === currentUser.email)
-    .map(idea => idea.id);
+    .filter((idea) => idea.founderId === currentUser.id)
+    .map((idea) => idea.id);
 
-  const received = receivedApplications.filter(
-    app => myProjectIds.includes(app.ideaId)
+  // Received applications (applications on my projects)
+  const received = receivedApplications.filter((app) =>
+    myProjectIds.includes(
+      typeof app.ideaId === "object" ? app.ideaId._id : app.ideaId
+    )
   ).length;
 
-  return [sent, received];
-}, [sentApplications, receivedApplications, startupIdeas, currentUser]);
-
+  return sent + received;
+}, [
+  sentApplications,
+  receivedApplications,
+  startupIdeas,
+  currentUser,
+]);
 
   const stats = [
     { title: 'Ventures', value: myProjects.length, icon: '🚀', subtext: 'Active ventures', isPrimary: true, linkTo: '/my-projects', animationDelay: '0.1s' },
     { title: 'Connections', value: connectedUserIds.length, icon: '🤝', subtext: 'Your network', linkTo: '/connections', animationDelay: '0.2s' },
-    { title: 'Applications', value: sentApplicationsCount + receivedApplicationsCount, icon: '📨', subtext: 'Track opportunities', linkTo: '/my-applications', animationDelay: '0.3s' },
+    { title: 'Applications', value: totalApplicationsCount, icon: '📨', subtext: 'Track opportunities', linkTo: '/my-applications', animationDelay: '0.3s' },
     { title: 'Whitelist', value: currentUser?.savedProjectIds?.length || 0, icon: '⭐', subtext: 'Saved ventures', linkTo: '/saved-projects', animationDelay: '0.4s' },
   ];
 
@@ -283,7 +294,7 @@ const DashboardPage: React.FC = () => {
                     Dashboard
                   </h1>
                   <p className="text-lg text-[var(--text-secondary)] font-medium font-poppins">
-                    Greetings, {currentUser?.name.split(' ')[0]}. What are we building today?
+                    Greetings, {currentUser?.name.split(' ')[0]}. What are you building today?
                   </p>
               </div>
               <div className="flex flex-row gap-4 mt-2 w-full md:w-auto md:min-w-[380px]">
