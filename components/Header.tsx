@@ -110,8 +110,8 @@ useEffect(() => {
         setProfileDropdownOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
 
@@ -198,7 +198,9 @@ useEffect(() => {
       {/* 🔔 Notification Bell */}
       <div ref={bellRef} className="relative">
         <button
-  onClick={async () => {
+  onClick={async (e) => {
+  e.stopPropagation();
+
   const nextState = !showNotifications;
   setShowNotifications(nextState);
 
