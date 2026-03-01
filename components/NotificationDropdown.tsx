@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 
@@ -24,8 +24,9 @@ const timeAgo = (date: string) => {
   return "now";
 };
 
-export const NotificationDropdown: React.FC = () => {
+export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const {
     appNotifications = [],
@@ -38,9 +39,42 @@ export const NotificationDropdown: React.FC = () => {
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
+  /* 🔥 Fetch + mark unread as read when opened */
   useEffect(() => {
     fetchNotifications?.();
+
+    appNotifications.forEach((n: any) => {
+      if (!n.isRead) {
+        markNotificationAsRead?.(n._id || n.id);
+      }
+    });
   }, []);
+
+  /* 🔥 Outside click + ESC close */
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        onClose?.();
+      }
+    };
+
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [onClose]);
 
   const safeId = (n: any) => n._id || n.id;
 
@@ -50,21 +84,29 @@ export const NotificationDropdown: React.FC = () => {
       new Date(a.createdAt).getTime()
   );
 
+  /* 🔥 Hide deleted project notifications */
   const applications = sorted.filter(
-    (n: any) => n.type === "APPLICATION" && !n.isRead
+    (n: any) =>
+      n.type === "APPLICATION" &&
+      !n.isRead &&
+      (n.ideaId || n.ideaTitle)
   );
 
   const connections = sorted.filter(
     (n: any) => n.type === "CONNECTION" && !n.isRead
   );
 
-  const handleNavigate = (path: string, id: string) => {
-    markNotificationAsRead?.(id);
+  const handleNavigate = (path: string, id?: string) => {
+    if (id) markNotificationAsRead?.(id);
     navigate(path);
+    onClose?.();
   };
 
   return (
-    <div className="fixed left-1/2 -translate-x-1/2 top-20 w-[92vw] max-w-[420px] sm:max-w-[440px] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
+    <div
+      ref={dropdownRef}
+      className="fixed left-1/2 -translate-x-1/2 top-20 w-[92vw] max-w-[420px] sm:max-w-[440px] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50 animate-dropdownFade"
+    >
 
       {/* HEADER */}
       <div className="px-5 py-4 border-b border-[var(--border-primary)]">
@@ -146,18 +188,14 @@ export const NotificationDropdown: React.FC = () => {
                     ✕
                   </button>
 
-                  {/* 🔥 TEXT UPDATED ONLY */}
-
                   {!status && (
                     <>
                       <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
                         New application received
                       </p>
-
                       <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
                         {project}
                       </p>
-
                       <p className="text-xs text-[var(--text-secondary)] mt-1">
                         {user} has applied for the role of {role}.
                       </p>
@@ -169,11 +207,9 @@ export const NotificationDropdown: React.FC = () => {
                       <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
                         Application accepted
                       </p>
-
                       <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
                         {project}
                       </p>
-
                       <p className="text-xs text-green-500 mt-1">
                         You have been selected for the role of {role}.
                       </p>
@@ -185,11 +221,9 @@ export const NotificationDropdown: React.FC = () => {
                       <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
                         Application update
                       </p>
-
                       <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
                         {project}
                       </p>
-
                       <p className="text-xs text-red-400 mt-1">
                         Your application for the role of {role} was not selected.
                       </p>
@@ -204,7 +238,7 @@ export const NotificationDropdown: React.FC = () => {
             })
           ))}
 
-        {/* CONNECTIONS (UNCHANGED) */}
+        {/* CONNECTIONS (UNCHANGED UI) */}
         {activeTab === "connections" &&
           (connections.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
@@ -234,11 +268,9 @@ export const NotificationDropdown: React.FC = () => {
                   <p className="text-[11px] font-bold uppercase tracking-wide text-green-500">
                     CONNECTION REQUEST
                   </p>
-
                   <p className="mt-1 text-sm font-semibold">
                     {user}
                   </p>
-
                   <p className="text-xs text-[var(--text-secondary)] mt-1">
                     Wants to collaborate with you
                   </p>
@@ -280,7 +312,7 @@ export const NotificationDropdown: React.FC = () => {
       <div className="border-t border-[var(--border-primary)] px-4 py-3">
         <button
           onClick={() =>
-            navigate(
+            handleNavigate(
               activeTab === "applications"
                 ? "/my-applications"
                 : "/connections"
