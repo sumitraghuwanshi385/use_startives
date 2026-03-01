@@ -148,6 +148,27 @@ const fetchNotifications = async () => {
   }
 }, [token]);
 
+const fetchAllUsers = async () => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.get('/api/auth/users', {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data?.success) {
+      const normalized = res.data.users.map((u: any) => ({
+        ...u,
+        id: u._id || u.id
+      }));
+      setUsers(normalized);
+    }
+  } catch (err) {
+    console.error("Fetch all users failed", err);
+  }
+};
+
   // ---------------- AUTH (FIXED) ----------------
   const login = async (credential: string, password?: string, fromSignup: boolean = false): Promise<boolean> => {
     setAuthLoadingState({ isLoading: true, messages: ["Authenticating..."]});
@@ -177,6 +198,7 @@ if (!user.savedProjectIds) {
       if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
       if (user?.connections) setConnectedUserIds(user.connections);
 
+await fetchAllUsers();  
       await fetchConnections();
 
       setShowOnboardingModal(fromSignup || !user?.headline);
@@ -522,10 +544,8 @@ const declineConnectionRequest = async (notificationId: string) => {
     });
 
     if (res.data?.success) {
-      // 🔥 Remove instantly from UI
-      setConnectedUserIds(prev =>
-        prev.filter(id => id !== userId)
-      );
+  await fetchConnections();   // 🔥 Only backend refresh
+}
 
       // Optional but safe
       await fetchConnections();
@@ -716,14 +736,18 @@ const updateApplicationStatus = async (id: string, status: string) => {
       const storedToken = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('user');
       if (storedToken && storedUser) {
-          try {
-              const parsedUser = JSON.parse(storedUser);
-              setToken(storedToken);
-              setCurrentUser(parsedUser);
-              if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
-              if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
-              setTimeout(() => { fetchConnections(); }, 0);
-          } catch (e) {
+  try {
+    const parsedUser = JSON.parse(storedUser);
+    setToken(storedToken);
+    setCurrentUser(parsedUser);
+
+    if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
+    if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
+
+    await fetchAllUsers();        // 🔥 ADD THIS
+    setTimeout(() => { fetchConnections(); }, 0);
+
+  } catch (e) {
               localStorage.removeItem('authToken');
               localStorage.removeItem('user');
           }
