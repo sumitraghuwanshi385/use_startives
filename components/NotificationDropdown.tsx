@@ -41,16 +41,7 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
     useState<"applications" | "connections">("applications");
 
   /* 🔥 Fetch + mark unread as read when opened */
-  useEffect(() => {
-    fetchNotifications?.();
-
-    appNotifications.forEach((n: any) => {
-      if (!n.isRead) {
-        markNotificationAsRead?.(n._id || n.id);
-      }
-    });
-  }, []);
-
+  
   const safeId = (n: any) => n._id || n.id;
 
   const sorted = [...appNotifications].sort(
@@ -60,13 +51,14 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   );
 
   /* 🔥 Hide deleted project notifications */
-  
-const applications = sorted.filter(
-(n: any) => n.type === "APPLICATION" && !n.isRead
+  const applications = sorted.filter(
+  (n: any) =>
+    n.type === "APPLICATION" &&
+    (n.ideaId || n.ideaTitle)
 );
 
 const connections = sorted.filter(
-(n: any) => n.type === "CONNECTION" && !n.isRead
+  (n: any) => n.type === "CONNECTION"
 );
 
   const handleNavigate = (path: string, id?: string) => {
