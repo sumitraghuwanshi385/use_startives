@@ -107,45 +107,67 @@ const fetchNotifications = async () => {
 
   // ---------------- CONNECTIONS ----------------
   const fetchConnections = useCallback(async () => {
-    const t = getAuthToken();
-    if (!t) return;
+  const t = getAuthToken();
+  if (!t) return;
 
-    try {
-      const res = await axios.get('/api/connections', {
-        headers: { Authorization: `Bearer ${t}` },
+  try {
+    const res = await axios.get('/api/connections', {
+      headers: { Authorization: `Bearer ${t}` },
+    });
+
+    if (res.data?.success) {
+      const backendUsers = res.data.connections || [];
+      const ids = backendUsers.map((u: any) => u.id || u._id).filter(Boolean);
+
+      setConnectedUserIds(ids);
+
+      setUsers(prev => {
+        const existing = new Set(prev.map(u => u.id));
+        const mapped: User[] = backendUsers.map((u: any) => ({
+          id: u.id || u._id,
+          name: u.name || '',
+          email: u.email || '',
+          headline: u.headline,
+          country: u.country,
+          bio: u.bio,
+          profilePictureUrl: u.profilePictureUrl || '',
+          skills: u.skills || [],
+          interests: u.interests || [],
+          socialLinks: u.socialLinks || {},
+          savedProjectIds: u.savedProjectIds || [],
+          connections: u.connections || [],
+          connectionRequests: u.connectionRequests || [],
+          sentRequests: u.sentRequests || []
+        }));
+        const add = mapped.filter(u => !existing.has(u.id));
+        return [...prev, ...add];
       });
-
-      if (res.data?.success) {
-        const backendUsers = res.data.connections || [];
-        const ids = backendUsers.map((u: any) => u.id || u._id).filter(Boolean);
-        setConnectedUserIds(ids);
-
-        setUsers(prev => {
-          const existing = new Set(prev.map(u => u.id));
-          const mapped: User[] = backendUsers.map((u: any) => ({
-            id: u.id || u._id,
-            name: u.name || '',
-            email: u.email || '',
-            headline: u.headline,
-            country: u.country,
-            bio: u.bio,
-            profilePictureUrl: u.profilePictureUrl || '',
-            skills: u.skills || [],
-            interests: u.interests || [],
-            socialLinks: u.socialLinks || {},
-            savedProjectIds: u.savedProjectIds || [],
-            connections: u.connections || [],
-            connectionRequests: u.connectionRequests || [],
-            sentRequests: u.sentRequests || []
-          }));
-          const add = mapped.filter(u => !existing.has(u.id));
-          return [...prev, ...add];
-        });
-      }
-    } catch (err) {
-      console.error('fetchConnections failed', err);
     }
-  }, [token]);
+  } catch (err) {
+    console.error('fetchConnections failed', err);
+  }
+}, [token]);
+
+const fetchAllUsers = async () => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.get('/api/auth/users', {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data?.success) {
+      const normalized = res.data.users.map((u: any) => ({
+        ...u,
+        id: u._id || u.id
+      }));
+      setUsers(normalized);
+    }
+  } catch (err) {
+    console.error("Fetch all users failed", err);
+  }
+};
 
   // ---------------- AUTH (FIXED) ----------------
   const login = async (credential: string, password?: string, fromSignup: boolean = false): Promise<boolean> => {
@@ -176,6 +198,7 @@ if (!user.savedProjectIds) {
       if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
       if (user?.connections) setConnectedUserIds(user.connections);
 
+await fetchAllUsers();  
       await fetchConnections();
 
       setShowOnboardingModal(fromSignup || !user?.headline);
@@ -481,31 +504,42 @@ const deleteIdea = async (ideaId: string) => {
   };
 
   const acceptConnectionRequest = async (requesterId: string) => {
-    if (!currentUser) return;
-    const t = getAuthToken();
-    try {
-        const res = await axios.post(`/api/connections/accept/${requesterId}`, {}, { headers: { Authorization: `Bearer ${t}` } });
-        if (res.data?.success) {
-            addNotificationCallBack("You are now connected!", "success");
-            await fetchConnections();
-await fetchNotifications();
-        }
-    } catch (error) { addNotificationCallBack("Failed to accept request.", "error"); }
-  };
-
-const declineConnectionRequest = async (notificationId: string) => {
+  if (!currentUser) return;
   const t = getAuthToken();
   if (!t) return;
 
   try {
-    const res = await axios.delete(`/api/connections/decline/${notificationId}`, {
-  headers: { Authorization: `Bearer ${t}` }
-});
+    const res = await axios.post(
+      `/api/connections/accept/${requesterId}`,
+      {},
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
 
     if (res.data?.success) {
-      setAppNotifications(prev =>
-        prev.filter(n => (n._id || n.id) !== notificationId)
-      );
+      await fetchAllUsers();
+      await fetchConnections();
+      await fetchNotifications();
+    }
+
+  } catch (error) {
+    console.error("Accept failed", error);
+  }
+};
+
+const declineConnectionRequest = async (requesterId: string) => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.delete(
+      `/api/connections/decline/${requesterId}`,
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
+
+    if (res.data?.success) {
+      await fetchAllUsers();
+      await fetchConnections();
+      await fetchNotifications();
     }
 
   } catch (err) {
@@ -518,17 +552,13 @@ const declineConnectionRequest = async (notificationId: string) => {
   if (!t) return;
 
   try {
-    const res = await axios.delete(`/api/connections/${userId}`, {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+    const res = await axios.delete(
+      `/api/connections/${userId}`,
+      { headers: { Authorization: `Bearer ${t}` } }
+    );
 
     if (res.data?.success) {
-      // 🔥 Remove instantly from UI
-      setConnectedUserIds(prev =>
-        prev.filter(id => id !== userId)
-      );
-
-      // Optional but safe
+      await fetchAllUsers();
       await fetchConnections();
     }
 
@@ -536,6 +566,7 @@ const declineConnectionRequest = async (notificationId: string) => {
     console.error("Remove connection failed", err);
   }
 };
+
   const isRequestPending = (id: string) => sentConnectionRequests.includes(id);
   const isUserConnected = (id: string) => connectedUserIds.includes(id);
 
@@ -717,14 +748,18 @@ const updateApplicationStatus = async (id: string, status: string) => {
       const storedToken = localStorage.getItem('authToken');
       const storedUser = localStorage.getItem('user');
       if (storedToken && storedUser) {
-          try {
-              const parsedUser = JSON.parse(storedUser);
-              setToken(storedToken);
-              setCurrentUser(parsedUser);
-              if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
-              if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
-              setTimeout(() => { fetchConnections(); }, 0);
-          } catch (e) {
+  try {
+    const parsedUser = JSON.parse(storedUser);
+    setToken(storedToken);
+    setCurrentUser(parsedUser);
+
+    if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
+    if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
+
+    await fetchAllUsers();
+await fetchConnections();
+
+  } catch (e) {
               localStorage.removeItem('authToken');
               localStorage.removeItem('user');
           }
