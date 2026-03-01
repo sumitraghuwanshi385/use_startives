@@ -104,10 +104,13 @@ useEffect(() => {
   prevCountRef.current = rawUnreadCount;
 }, [rawUnreadCount]);
 
-  useEffect(() => {
+useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
-    if (bellRef.current && !bellRef.current.contains(event.target as Node)) {
-      setShowNotifications(false);
+    if (
+      profileDropdownRef.current &&
+      !profileDropdownRef.current.contains(event.target as Node)
+    ) {
+      setProfileDropdownOpen(false);
     }
   };
 
@@ -117,6 +120,7 @@ useEffect(() => {
     document.removeEventListener("click", handleClickOutside);
   };
 }, []);
+
 
   useEffect(() => {
     setProfileDropdownOpen(false);
@@ -134,6 +138,26 @@ useEffect(() => {
     setProfileDropdownOpen(prev => !prev);
   };
   
+const handleBellClick = async () => {
+  const nextState = !showNotifications;
+  setShowNotifications(nextState);
+
+  if (nextState) {
+    try {
+      await fetch("/api/notifications/read-all", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      markAllNotificationsAsRead();
+    } catch (err) {
+      console.log("Read-all failed");
+    }
+  }
+};
+
   // Desktop Nav Links
   const navLinks = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -190,30 +214,7 @@ useEffect(() => {
       {/* 🔔 Notification Bell */}
       <div ref={bellRef} className="relative">
         <button
-  onClick={async (e) => {
-  e.stopPropagation();
-
-  if (showNotifications) {
-    setShowNotifications(false);
-    return;
-  }
-
-  setShowNotifications(true);
-
-  try {
-    await fetch("/api/notifications/read-all", {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    });
-
-    markAllNotificationsAsRead();
-
-  } catch (err) {
-    console.log("Read-all failed");
-  }
-}}
+  onClick={handleBellClick}
 
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
         >
