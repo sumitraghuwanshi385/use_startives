@@ -213,6 +213,7 @@ useEffect(() => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+window.dispatchEvent(new Event("notification-read"));
   } catch (err) {
     console.log("Read-all failed");
   }
