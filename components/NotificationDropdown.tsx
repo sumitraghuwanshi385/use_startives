@@ -50,32 +50,6 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
     });
   }, []);
 
-  /* 🔥 Outside click + ESC close */
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        onClose?.();
-      }
-    };
-
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose?.();
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    document.addEventListener("keydown", handleEsc);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("keydown", handleEsc);
-    };
-  }, [onClose]);
-
   const safeId = (n: any) => n._id || n.id;
 
   const sorted = [...appNotifications].sort(
@@ -105,6 +79,7 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   return (
     <div
       ref={dropdownRef}
+      onClick={(e) => e.stopPropagation()}
       className="fixed left-1/2 -translate-x-1/2 top-20 w-[92vw] max-w-[420px] sm:max-w-[440px] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50 animate-dropdownFade"
     >
 
