@@ -40,6 +40,10 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
+useEffect(() => {
+  fetchNotifications?.();
+}, []);
+
   /* 🔥 Fetch + mark unread as read when opened */
   
   const safeId = (n: any) => n._id || n.id;
@@ -213,11 +217,11 @@ const user =
             </p>
           ) : (
             connections.map((n: any) => {
-if (!n.sender) return null;
               const user =
-                n.sender?.name ||
-                "User";
-
+  n.sender?.name ??
+  n.senderName ??
+  n.senderId ??
+  "User";
               return (
                 <div
                   key={safeId(n)}
