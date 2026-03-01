@@ -40,9 +40,16 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
+  /* 🔥 Fetch + mark unread as read when opened */
   useEffect(() => {
-fetchNotifications?.();
-}, []);
+    fetchNotifications?.();
+
+    appNotifications.forEach((n: any) => {
+      if (!n.isRead) {
+        markNotificationAsRead?.(n._id || n.id);
+      }
+    });
+  }, []);
 
   const safeId = (n: any) => n._id || n.id;
 
