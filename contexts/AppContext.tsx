@@ -705,6 +705,18 @@ useEffect(() => {
   fetchNotifications();
 }, [token, currentUser]);
 
+useEffect(() => {
+  const handleNotificationRead = () => {
+    fetchNotifications();
+  };
+
+  window.addEventListener("notification-read", handleNotificationRead);
+
+  return () => {
+    window.removeEventListener("notification-read", handleNotificationRead);
+  };
+}, []);
+
   const contextValue = useMemo(() => ({
     startupIdeas, startalks, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
