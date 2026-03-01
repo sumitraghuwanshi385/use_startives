@@ -105,17 +105,6 @@ useEffect(() => {
 }, [rawUnreadCount]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
-        setProfileDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
-
-
- useEffect(() => {
   const handleClickOutside = (event: MouseEvent) => {
     if (bellRef.current && !bellRef.current.contains(event.target as Node)) {
       setShowNotifications(false);
@@ -123,9 +112,12 @@ return () => document.removeEventListener("click", handleClickOutside);
   };
 
   document.addEventListener("click", handleClickOutside);
-return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
- 
+
+  return () => {
+    document.removeEventListener("click", handleClickOutside);
+  };
+}, []);
+
   useEffect(() => {
     setProfileDropdownOpen(false);
   }, [location.pathname]);
@@ -201,26 +193,28 @@ return () => document.removeEventListener("click", handleClickOutside);
   onClick={async (e) => {
   e.stopPropagation();
 
-  const nextState = !showNotifications;
-  setShowNotifications(nextState);
+  if (showNotifications) {
+    setShowNotifications(false);
+    return;
+  }
 
-  if (nextState) {
-    try {
-      await fetch("/api/notifications/read-all", {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
-markAllNotificationsAsRead();
-      window.dispatchEvent(new Event("notification-read"));
+  setShowNotifications(true);
 
-    } catch (err) {
-      console.log("Read-all failed");
-    }
+  try {
+    await fetch("/api/notifications/read-all", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    });
+
+    markAllNotificationsAsRead();
+
+  } catch (err) {
+    console.log("Read-all failed");
   }
 }}
-  
+
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
         >
           <div className={shake ? "shake" : ""}>
