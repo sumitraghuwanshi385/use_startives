@@ -132,7 +132,7 @@ export const NotificationDropdown: React.FC = () => {
                 <div
                   key={safeId(n)}
                   onClick={() =>
-                    handleNavigate("/applications", safeId(n))
+                    handleNavigate("/my-applications", safeId(n))
                   }
                   className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 hover:border-purple-500/60 transition cursor-pointer"
                 >
@@ -282,7 +282,7 @@ export const NotificationDropdown: React.FC = () => {
           onClick={() =>
             navigate(
               activeTab === "applications"
-                ? "/applications"
+                ? "/my-applications"
                 : "/connections"
             )
           }
