@@ -136,23 +136,20 @@ const EmptyState: React.FC<{ icon: React.ReactElement; title: string; message: s
 type ActiveTab = 'connected' | 'received';
 
 export const ConnectionsPage: React.FC = () => {
-  const { appNotifications, getUserById, connectedUserIds, acceptConnectionRequest, declineConnectionRequest, removeConnection } = useAppContext();
+  const { currentUser, getUserById, connectedUserIds, acceptConnectionRequest, declineConnectionRequest, removeConnection } = useAppContext();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<ActiveTab>("connected");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userToModify, setUserToModify] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const receivedRequests = useMemo(() =>
-  appNotifications
-    .filter(n => n.type === 'CONNECTION' && n.status === 'PENDING')
-    .map(n => ({
-      notification: n,
-      sender: n.sender
-    }))
-    .filter(item => item.sender),
-  [appNotifications]
-);
+  const receivedRequests = useMemo(() => {
+  if (!currentUser?.connectionRequests) return [];
+
+  return currentUser.connectionRequests
+    .map((userId: string) => getUserById(userId))
+    .filter((user): user is User => Boolean(user));
+}, [currentUser, getUserById]);
   
   const connections = useMemo(() => connectedUserIds
     .map(userId => getUserById(userId))
@@ -201,8 +198,8 @@ export const ConnectionsPage: React.FC = () => {
               } />
           )) : <EmptyState icon={<NoConnectionsGraphic />} title="No connections" message="Build your network by reaching out to other innovators." ctaLink="/projects" ctaLabel="Find people" /> )}
 
-          {activeTab === 'received' && (receivedRequests.length > 0 ? receivedRequests.map(({ notification, sender }) => (
-              <CompactUserCard key={notification.id} user={sender} actions={
+          {activeTab === 'received' && (receivedRequests.length > 0 ? receivedRequests.map((sender) => (
+  <CompactUserCard key={sender.id} user={sender} actions={
                   <>
                       <button onClick={() => declineConnectionRequest(sender.id)} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] hover:bg-neutral-200 transition-colors shadow-none">Decline</button>
                       <button onClick={() => acceptConnectionRequest(sender.id)} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white hover:scale-105 transition-all shadow-none">Accept</button>
