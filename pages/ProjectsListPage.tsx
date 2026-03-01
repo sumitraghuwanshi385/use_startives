@@ -253,7 +253,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
       <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
         <div className="flex items-center gap-2">
-         {founder && (
+         {idea.founderId && (
   <div
   className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
   onClick={(e) => {
@@ -266,7 +266,9 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
     className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
   />
   <span className="text-xs font-black text-[var(--text-secondary)]">
-    {idea.founderName?.split(" ")[0] || "Founder"}
+    {idea.founderName
+      ? idea.founderName.split(" ")[0]
+      : "Founder"}
   </span>
 </div>
 )}
