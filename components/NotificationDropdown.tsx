@@ -54,13 +54,16 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   const applications = sorted.filter(
   (n: any) =>
     n.type === "APPLICATION" &&
-    (n.ideaTitle || n.idea?.title || n.sender)
+    n.createdAt &&
+    (n.ideaTitle || n.idea?.title) &&
+    (n.sender?.name)
 );
 
 const connections = sorted.filter(
   (n: any) =>
     n.type === "CONNECTION" &&
-    n.sender
+    n.createdAt &&
+    n.sender?.name
 );
 
   const handleNavigate = (path: string, id?: string) => {
