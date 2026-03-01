@@ -493,8 +493,49 @@ await fetchNotifications();
     } catch (error) { addNotificationCallBack("Failed to accept request.", "error"); }
   };
 
-  const declineConnectionRequest = () => {};
-  const removeConnection = () => {};
+const declineConnectionRequest = async (notificationId: string) => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.delete(`/api/notifications/${notificationId}`, {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data?.success) {
+      setAppNotifications(prev =>
+        prev.filter(n => (n._id || n.id) !== notificationId)
+      );
+    }
+
+  } catch (err) {
+    console.error("Decline failed", err);
+  }
+};
+
+  const removeConnection = async (userId: string) => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.delete(`/api/connections/${userId}`, {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data?.success) {
+      // 🔥 Remove instantly from UI
+      setConnectedUserIds(prev =>
+        prev.filter(id => id !== userId)
+      );
+
+      // Optional but safe
+      await fetchConnections();
+    }
+
+  } catch (err) {
+    console.error("Remove connection failed", err);
+  }
+};
   const isRequestPending = (id: string) => sentConnectionRequests.includes(id);
   const isUserConnected = (id: string) => connectedUserIds.includes(id);
 
@@ -742,7 +783,8 @@ useEffect(() => {
     addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
-    toggleSaveProject, isProjectSaved, getUserById, 
+    toggleSaveProject, isProjectSaved, getUserById, removeConnection,
+declineConnectionRequest,
     fetchUserProfile,
     markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, 
     sentConnectionRequests, connectedUserIds, sendConnectionRequest,
