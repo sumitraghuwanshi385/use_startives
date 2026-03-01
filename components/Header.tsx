@@ -66,6 +66,9 @@ const ThemeIconButton: React.FC = () => {
 
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications } = useAppContext();
+
+const [badgeCleared, setBadgeCleared] = useState(false);
+
 const rawUnreadCount = Array.isArray(appNotifications)
   ? appNotifications.filter((n: any) => !n.isRead).length
   : 0;
@@ -79,7 +82,6 @@ const unreadCount = badgeCleared ? 0 : rawUnreadCount;
 
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
-const [badgeCleared, setBadgeCleared] = useState(false);
 const [shake, setShake] = useState(false);
 
 const prevCountRef = useRef<number | null>(null);
