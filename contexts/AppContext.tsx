@@ -57,10 +57,11 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
     setAppNotifications(prev => prev.map(n => n.id === id ? {...n, isRead: true} : n));
   };
 
-  const markAllNotificationsAsRead = (cat?: NotificationCategory) => {
-    if (cat) setAppNotifications(prev => prev.map(n => n.category === cat ? {...n, isRead: true} : n));
-    else setAppNotifications(prev => prev.map(n => ({...n, isRead: true})));
-  };
+  const markAllNotificationsAsRead = () => {
+  setAppNotifications(prev =>
+    prev.map(n => ({ ...n, isRead: true }))
+  );
+};
 
   const getAuthToken = () => token || localStorage.getItem('authToken');
 
