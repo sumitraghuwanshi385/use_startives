@@ -120,19 +120,22 @@ const connections = sorted.filter(
             applications.map((n: any) => {
 if (!n.ideaTitle && !n.idea?.title && !n.sender) return null;
               const project =
-                n.ideaTitle ||
-                n.idea?.title ||
-                "Project";
+  n.ideaTitle ||
+  n.idea?.title ||
+  n.ideaId ||
+  "Project";
 
-              const role =
-                n.positionTitle ||
-                n.position?.title ||
-                "Role";
+const role =
+  n.positionTitle ||
+  n.position?.title ||
+  n.positionId ||
+  "Role";
 
-              const user =
-                n.sender?.name ||
-                "Someone";
-
+const user =
+  n.sender?.name ||
+  n.senderName ||
+  n.senderId ||
+  "Someone";
               const status = n.status;
 
               return (
