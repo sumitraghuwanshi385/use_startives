@@ -102,7 +102,7 @@ useEffect(() => {
   }
 
   prevCountRef.current = rawUnreadCount;
-}, [rawUnreadCount, badgeCleared]);
+}, [rawUnreadCount]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
