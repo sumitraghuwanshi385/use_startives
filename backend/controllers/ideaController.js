@@ -2,28 +2,42 @@ const Idea = require('../models/Idea');
 
 
 // =======================================
-// Helper: format Mongo _id → id
+// Helper: format DB document safely
 // =======================================
 const formatIdea = (idea) => {
-  const ideaObj = idea.toObject();
+  if (!idea) return null;
 
-  ideaObj.id = ideaObj._id.toString();
+  const ideaObj = idea.toObject ? idea.toObject() : idea;
 
-  // 🔥 FIX: convert founderId properly
+  // Convert main _id
+  ideaObj.id = ideaObj._id?.toString();
+
+  // 🔥 IMPORTANT FIX: convert founderId properly
   if (ideaObj.founderId) {
     ideaObj.founderId = ideaObj.founderId.toString();
   }
 
-  if (ideaObj.positions && ideaObj.positions.length > 0) {
+  // Ensure founderName always exists
+  ideaObj.founderName = ideaObj.founderName || "Founder";
+
+  // Convert positions safely
+  if (Array.isArray(ideaObj.positions)) {
     ideaObj.positions = ideaObj.positions.map((pos) => ({
       ...pos,
-      id: pos._id.toString(),
+      id: pos._id?.toString(),
     }));
+  } else {
+    ideaObj.positions = [];
   }
 
   delete ideaObj._id;
+  delete ideaObj.__v;
+
   return ideaObj;
 };
+
+
+
 // =======================================
 // CREATE IDEA
 // POST /api/ideas
@@ -31,10 +45,20 @@ const formatIdea = (idea) => {
 const createIdea = async (req, res) => {
   try {
     const {
-      title, tagline, description, problem, buildingNow,
-      founderQuote, teamSize,
-      tags, stage, category, businessModel,
-      workMode, location, websiteUrl,
+      title,
+      tagline,
+      description,
+      problem,
+      buildingNow,
+      founderQuote,
+      teamSize,
+      tags,
+      stage,
+      category,
+      businessModel,
+      workMode,
+      location,
+      websiteUrl,
       positionsData,
       imageDataUrl,
       imageUrl
@@ -65,17 +89,15 @@ const createIdea = async (req, res) => {
       location,
       websiteUrl,
       imageUrl: finalImageUrl,
-      positions: positionsData,
+      positions: positionsData || [],
       founderId: req.user._id,
+      founderName: req.user.name,
+      founderEmail: req.user.email,
     });
-
-    // 🔥 Populate founder after create
-    const populatedIdea = await Idea.findById(newIdea._id)
-      .populate("founderId", "name profilePictureUrl headline");
 
     return res.status(201).json({
       success: true,
-      idea: formatIdea(populatedIdea)
+      idea: formatIdea(newIdea)
     });
 
   } catch (error) {
@@ -86,6 +108,7 @@ const createIdea = async (req, res) => {
     });
   }
 };
+
 
 
 // =======================================
@@ -116,9 +139,7 @@ const getIdeas = async (req, res) => {
     if (stage && stage !== 'All') query.stage = stage;
     if (location && location !== 'All') query.location = location;
 
-    const ideas = await Idea.find(query)
-      .populate("founderId", "name profilePictureUrl headline")
-      .sort({ postedDate: -1 });
+    const ideas = await Idea.find(query).sort({ createdAt: -1 });
 
     return res.json({
       success: true,
@@ -135,14 +156,14 @@ const getIdeas = async (req, res) => {
 };
 
 
+
 // =======================================
 // GET SINGLE IDEA
 // GET /api/ideas/:id
 // =======================================
 const getIdeaById = async (req, res) => {
   try {
-    const idea = await Idea.findById(req.params.id)
-      .populate("founderId", "name profilePictureUrl headline");
+    const idea = await Idea.findById(req.params.id);
 
     if (!idea) {
       return res.status(404).json({
@@ -157,12 +178,14 @@ const getIdeaById = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("getIdeaById error:", error);
     return res.status(500).json({
       success: false,
       message: error.message
     });
   }
 };
+
 
 
 // =======================================
@@ -187,16 +210,47 @@ const updateIdea = async (req, res) => {
       });
     }
 
-    Object.assign(idea, req.body);
+    const {
+      title,
+      tagline,
+      description,
+      problem,
+      buildingNow,
+      founderQuote,
+      teamSize,
+      stage,
+      tags,
+      category,
+      businessModel,
+      workMode,
+      location,
+      websiteUrl,
+      positions,
+      imageUrl
+    } = req.body;
+
+    idea.title = title ?? idea.title;
+    idea.tagline = tagline ?? idea.tagline;
+    idea.description = description ?? idea.description;
+    idea.problem = problem ?? idea.problem;
+    idea.buildingNow = buildingNow ?? idea.buildingNow;
+    idea.founderQuote = founderQuote ?? idea.founderQuote;
+    idea.teamSize = teamSize ?? idea.teamSize;
+    idea.stage = stage ?? idea.stage;
+    idea.tags = tags ?? idea.tags;
+    idea.category = category ?? idea.category;
+    idea.businessModel = businessModel ?? idea.businessModel;
+    idea.workMode = workMode ?? idea.workMode;
+    idea.location = location ?? idea.location;
+    idea.websiteUrl = websiteUrl ?? idea.websiteUrl;
+    idea.positions = positions ?? idea.positions;
+    idea.imageUrl = imageUrl ?? idea.imageUrl;
 
     await idea.save();
 
-    const populatedIdea = await Idea.findById(idea._id)
-      .populate("founderId", "name profilePictureUrl headline");
-
     return res.json({
       success: true,
-      idea: formatIdea(populatedIdea)
+      idea: formatIdea(idea)
     });
 
   } catch (error) {
@@ -207,6 +261,7 @@ const updateIdea = async (req, res) => {
     });
   }
 };
+
 
 
 // =======================================
@@ -245,6 +300,7 @@ const deleteIdea = async (req, res) => {
     });
   }
 };
+
 
 
 module.exports = {
