@@ -117,7 +117,11 @@ const connections = sorted.filter(
             </p>
           ) : (
             applications.map((n: any) => {
-console.log("FULL NOTIFICATION:", n);
+return (
+  <pre style={{ fontSize: "10px", color: "red" }}>
+    {JSON.stringify(n, null, 2)}
+  </pre>
+);
               const project =
                 n.ideaTitle ||
                 n.idea?.title ||
