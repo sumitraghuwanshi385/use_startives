@@ -544,17 +544,14 @@ const declineConnectionRequest = async (notificationId: string) => {
     });
 
     if (res.data?.success) {
-  await fetchConnections();   // 🔥 Only backend refresh
-}
-
-      // Optional but safe
-      await fetchConnections();
+      await fetchConnections(); // 🔥 refresh properly
     }
 
   } catch (err) {
     console.error("Remove connection failed", err);
   }
 };
+
   const isRequestPending = (id: string) => sentConnectionRequests.includes(id);
   const isUserConnected = (id: string) => connectedUserIds.includes(id);
 
