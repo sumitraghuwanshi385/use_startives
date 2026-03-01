@@ -32,6 +32,7 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
     appNotifications = [],
     fetchNotifications,
     markNotificationAsRead,
+    removeAppNotification,
     acceptConnectionRequest,
     declineConnectionRequest,
   } = useAppContext();
@@ -154,11 +155,11 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
                   className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 hover:border-purple-500/60 transition cursor-pointer"
                 >
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      markNotificationAsRead?.(safeId(n));
-                    }}
-                    className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
+                   onClick={(e) => {
+  e.stopPropagation();
+  removeAppNotification?.(safeId(n));
+}}                    
+                   className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                   >
                     ✕
                   </button>
@@ -232,9 +233,10 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
                 >
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
-                      markNotificationAsRead?.(safeId(n));
-                    }}
+  e.stopPropagation();
+  removeAppNotification?.(safeId(n));
+}}
+                    
                     className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                   >
                     ✕
