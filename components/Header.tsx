@@ -67,13 +67,11 @@ const ThemeIconButton: React.FC = () => {
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications } = useAppContext();
 
-const [badgeCleared, setBadgeCleared] = useState(false);
-
 const rawUnreadCount = Array.isArray(appNotifications)
   ? appNotifications.filter((n: any) => !n.isRead).length
   : 0;
+const unreadCount = rawUnreadCount;
 
-const unreadCount = badgeCleared ? 0 : rawUnreadCount;
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -94,7 +92,7 @@ useEffect(() => {
     return;
   }
 
-  if (rawUnreadCount > prevCountRef.current && !badgeCleared) {
+  if (rawUnreadCount > prevCountRef.current) {
     const audio = new Audio("/notification.mp3");
     audio.volume = 0.6;
     audio.play().catch(() => {});
@@ -201,21 +199,25 @@ useEffect(() => {
       <div ref={bellRef} className="relative">
         <button
   onClick={async () => {
-  const nextState = !showNotifications;
+  if (showNotifications) {
+    // Already open → close
+    setShowNotifications(false);
+    return;
+  }
 
-  if (nextState === true) {
-    // Opening dropdown → clear badge instantly
-    setBadgeCleared(true);
-
+  // Open → mark all read in backend
+  try {
     await fetch("/api/notifications/read-all", {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+  } catch (err) {
+    console.log("Read-all failed");
   }
 
-  setShowNotifications(nextState);
+  setShowNotifications(true);
 }}
 
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
