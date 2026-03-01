@@ -498,9 +498,9 @@ const declineConnectionRequest = async (notificationId: string) => {
   if (!t) return;
 
   try {
-    const res = await axios.delete(`/api/notifications/${notificationId}`, {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+    const res = await axios.delete(`/api/connections/decline/${notificationId}`, {
+  headers: { Authorization: `Bearer ${t}` }
+});
 
     if (res.data?.success) {
       setAppNotifications(prev =>
@@ -788,7 +788,7 @@ declineConnectionRequest,
     fetchUserProfile,
     markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, 
     sentConnectionRequests, connectedUserIds, sendConnectionRequest,
-    acceptConnectionRequest, declineConnectionRequest, removeConnection,
+    acceptConnectionRequest,
     isRequestPending, isUserConnected,
     setShowOnboardingModal,
   }), [
