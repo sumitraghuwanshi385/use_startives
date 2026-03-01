@@ -119,3 +119,35 @@ exports.getUnreadCount = async (req, res) => {
     });
   }
 };
+
+/* =========================================
+   DELETE NOTIFICATION
+   DELETE /api/notifications/:id
+========================================= */
+exports.deleteNotification = async (req, res) => {
+  try {
+    const notification = await Notification.findOneAndDelete({
+      _id: req.params.id,
+      receiver: req.user._id, // 🔐 security
+    });
+
+    if (!notification) {
+      return res.status(404).json({
+        success: false,
+        message: "Notification not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Notification deleted",
+    });
+
+  } catch (error) {
+    console.error("Delete Notification Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
