@@ -41,6 +41,9 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
     useState<"applications" | "connections">("applications");
 
   /* 🔥 Fetch + mark unread as read when opened */
+useEffect(() => {
+  fetchNotifications?.();
+}, []);
   
   const safeId = (n: any) => n._id || n.id;
 
@@ -117,11 +120,6 @@ const connections = sorted.filter(
             </p>
           ) : (
             applications.map((n: any) => {
-return (
-  <pre style={{ fontSize: "10px", color: "red" }}>
-    {JSON.stringify(n, null, 2)}
-  </pre>
-);
               const project =
                 n.ideaTitle ||
                 n.idea?.title ||
@@ -156,7 +154,7 @@ return (
                     ✕
                   </button>
 
-                  {!status && (
+                  {status === "PENDING" && (
                     <>
                       <p className="text-[11px] font-bold uppercase tracking-wide text-purple-500">
                         New application received
