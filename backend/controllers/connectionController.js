@@ -78,4 +78,72 @@ const getConnections = async (req, res) => {
     }
 };
 
-module.exports = { sendRequest, acceptRequest, getConnections };
+// @desc    Decline Connection Request
+// @route   DELETE /api/connections/decline/:id
+const declineRequest = async (req, res) => {
+  try {
+    const requesterId = req.params.id;
+
+    const currentUser = await User.findById(req.user._id);
+    const requesterUser = await User.findById(requesterId);
+
+    if (!currentUser || !requesterUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Remove from my inbox
+    currentUser.connectionRequests = currentUser.connectionRequests.filter(
+      id => id.toString() !== requesterId
+    );
+
+    // Remove from sender sentRequests
+    if (requesterUser.sentRequests) {
+      requesterUser.sentRequests = requesterUser.sentRequests.filter(
+        id => id.toString() !== currentUser._id.toString()
+      );
+    }
+
+    await currentUser.save();
+    await requesterUser.save();
+
+    res.json({ success: true, message: "Request declined" });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Remove Connection
+// @route   DELETE /api/connections/:id
+const removeConnection = async (req, res) => {
+  try {
+    const targetUserId = req.params.id;
+
+    const currentUser = await User.findById(req.user._id);
+    const targetUser = await User.findById(targetUserId);
+
+    if (!currentUser || !targetUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Remove from both users
+    currentUser.connections = currentUser.connections.filter(
+      id => id.toString() !== targetUserId
+    );
+
+    targetUser.connections = targetUser.connections.filter(
+      id => id.toString() !== currentUser._id.toString()
+    );
+
+    await currentUser.save();
+    await targetUser.save();
+
+    res.json({ success: true, message: "Connection removed" });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { sendRequest, acceptRequest, getConnections, removeConnection,
+  declineRequest };
