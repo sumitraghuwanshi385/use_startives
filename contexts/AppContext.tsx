@@ -107,45 +107,57 @@ const fetchNotifications = async () => {
 
   // ---------------- CONNECTIONS ----------------
   const fetchConnections = useCallback(async () => {
-    const t = getAuthToken();
-    if (!t) return;
+  const t = getAuthToken();
+  if (!t) return;
 
-    try {
-      const res = await axios.get('/api/connections', {
-        headers: { Authorization: `Bearer ${t}` },
+  try {
+    const res = await axios.get('/api/connections', {
+      headers: { Authorization: `Bearer ${t}` },
+    });
+
+    if (res.data?.success) {
+      const backendUsers = res.data.connections || [];
+      const ids = backendUsers.map((u: any) => u.id || u._id).filter(Boolean);
+
+      setConnectedUserIds(ids);
+
+      // 🔥 UPDATE currentUser FULLY FROM BACKEND
+      const freshUserRes = await axios.get('/api/auth/profile', {
+        headers: { Authorization: `Bearer ${t}` }
       });
 
-      if (res.data?.success) {
-        const backendUsers = res.data.connections || [];
-        const ids = backendUsers.map((u: any) => u.id || u._id).filter(Boolean);
-        setConnectedUserIds(ids);
-
-        setUsers(prev => {
-          const existing = new Set(prev.map(u => u.id));
-          const mapped: User[] = backendUsers.map((u: any) => ({
-            id: u.id || u._id,
-            name: u.name || '',
-            email: u.email || '',
-            headline: u.headline,
-            country: u.country,
-            bio: u.bio,
-            profilePictureUrl: u.profilePictureUrl || '',
-            skills: u.skills || [],
-            interests: u.interests || [],
-            socialLinks: u.socialLinks || {},
-            savedProjectIds: u.savedProjectIds || [],
-            connections: u.connections || [],
-            connectionRequests: u.connectionRequests || [],
-            sentRequests: u.sentRequests || []
-          }));
-          const add = mapped.filter(u => !existing.has(u.id));
-          return [...prev, ...add];
-        });
+      if (freshUserRes.data?.success) {
+        const updatedUser = freshUserRes.data.user;
+        setCurrentUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
       }
-    } catch (err) {
-      console.error('fetchConnections failed', err);
+
+      setUsers(prev => {
+        const existing = new Set(prev.map(u => u.id));
+        const mapped: User[] = backendUsers.map((u: any) => ({
+          id: u.id || u._id,
+          name: u.name || '',
+          email: u.email || '',
+          headline: u.headline,
+          country: u.country,
+          bio: u.bio,
+          profilePictureUrl: u.profilePictureUrl || '',
+          skills: u.skills || [],
+          interests: u.interests || [],
+          socialLinks: u.socialLinks || {},
+          savedProjectIds: u.savedProjectIds || [],
+          connections: u.connections || [],
+          connectionRequests: u.connectionRequests || [],
+          sentRequests: u.sentRequests || []
+        }));
+        const add = mapped.filter(u => !existing.has(u.id));
+        return [...prev, ...add];
+      });
     }
-  }, [token]);
+  } catch (err) {
+    console.error('fetchConnections failed', err);
+  }
+}, [token]);
 
   // ---------------- AUTH (FIXED) ----------------
   const login = async (credential: string, password?: string, fromSignup: boolean = false): Promise<boolean> => {
@@ -503,10 +515,8 @@ const declineConnectionRequest = async (notificationId: string) => {
 });
 
     if (res.data?.success) {
-      setAppNotifications(prev =>
-        prev.filter(n => (n._id || n.id) !== notificationId)
-      );
-    }
+  await fetchConnections(); // 🔥 refresh currentUser
+}
 
   } catch (err) {
     console.error("Decline failed", err);
