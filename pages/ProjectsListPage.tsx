@@ -157,7 +157,7 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
-  const founder = idea.founderId;
+  const founder = getUserById(idea.founderId);
   return (
     <article
       className="group relative bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:border-purple-500/30 overflow-hidden cursor-pointer flex flex-col h-full shadow-none font-poppins"
@@ -253,24 +253,27 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
       <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
         <div className="flex items-center gap-2">
-         <div
-  className="flex items-center space-x-2 group/founder hover:opacity-80 transition-opacity"
-  onClick={(e) => {
-    e.stopPropagation();
-    navigate(`/user/${idea.founderId}`);
-  }}
->
-  <img
-    src={
-      founder.profilePictureUrl ||
-      `https://i.pravatar.cc/150?u=${founder.id}`
-    }
-    className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
-  />
-  <span className="text-xs font-black text-[var(--text-secondary)]">
-    {founder.name?.split(' ')[0] || "Founder"}
-  </span>
-</div>
+         {founder && (
+  <div
+    className="flex items-center space-x-2 group/founder hover:opacity-80 transition-opacity"
+    onClick={(e) => {
+      e.stopPropagation();
+      navigate(`/user/${founder.id}`);
+    }}
+  >
+    <img
+      src={
+        founder.profilePictureUrl
+          ? founder.profilePictureUrl
+          : `https://i.pravatar.cc/150?u=${founder.id}`
+      }
+      className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
+    />
+    <span className="text-xs font-black text-[var(--text-secondary)]">
+      {founder.name?.split(' ')[0]}
+    </span>
+  </div>
+)}
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
             <span className="opacity-30">•</span>
             {timeAgo(idea.postedDate)}
