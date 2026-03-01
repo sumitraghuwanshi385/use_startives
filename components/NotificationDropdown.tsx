@@ -40,12 +40,10 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
-useEffect(() => {
-  fetchNotifications?.();
+  useEffect(() => {
+fetchNotifications?.();
 }, []);
 
-  /* 🔥 Fetch + mark unread as read when opened */
-  
   const safeId = (n: any) => n._id || n.id;
 
   const sorted = [...appNotifications].sort(
@@ -55,12 +53,13 @@ useEffect(() => {
   );
 
   /* 🔥 Hide deleted project notifications */
-  const applications = sorted.filter(
-  (n: any) => n.type === "APPLICATION"
+  
+const applications = sorted.filter(
+(n: any) => n.type === "APPLICATION" && !n.isRead
 );
 
 const connections = sorted.filter(
-  (n: any) => n.type === "CONNECTION"
+(n: any) => n.type === "CONNECTION" && !n.isRead
 );
 
   const handleNavigate = (path: string, id?: string) => {
@@ -123,22 +122,19 @@ const connections = sorted.filter(
           ) : (
             applications.map((n: any) => {
               const project =
-  n.ideaTitle ??
-  n.idea?.title ??
-  n.ideaId ??
-  "Untitled Project";
+                n.ideaTitle ||
+                n.idea?.title ||
+                "Project";
 
-const role =
-  n.positionTitle ??
-  n.position?.title ??
-  n.positionId ??
-  "Role";
+              const role =
+                n.positionTitle ||
+                n.position?.title ||
+                "Role";
 
-const user =
-  n.sender?.name ??
-  n.senderName ??
-  n.senderId ??
-  "User";
+              const user =
+                n.sender?.name ||
+                "Someone";
+
               const status = n.status;
 
               return (
@@ -218,10 +214,9 @@ const user =
           ) : (
             connections.map((n: any) => {
               const user =
-  n.sender?.name ??
-  n.senderName ??
-  n.senderId ??
-  "User";
+                n.sender?.name ||
+                "User";
+
               return (
                 <div
                   key={safeId(n)}
