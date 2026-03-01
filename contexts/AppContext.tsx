@@ -121,17 +121,6 @@ const fetchNotifications = async () => {
 
       setConnectedUserIds(ids);
 
-      // 🔥 UPDATE currentUser FULLY FROM BACKEND
-      const freshUserRes = await axios.get('/api/auth/profile', {
-        headers: { Authorization: `Bearer ${t}` }
-      });
-
-      if (freshUserRes.data?.success) {
-        const updatedUser = freshUserRes.data.user;
-        setCurrentUser(updatedUser);
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-      }
-
       setUsers(prev => {
         const existing = new Set(prev.map(u => u.id));
         const mapped: User[] = backendUsers.map((u: any) => ({
