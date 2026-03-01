@@ -105,8 +105,13 @@ const CompactUserCard: React.FC<CompactUserCardProps> = ({ user, actions }) => (
         </Link>
         <div className="flex-grow overflow-hidden">
             <Link to={`/user/${user.id}`} className="group">
-                <h3 className="font-bold text-[var(--text-primary)] group-hover:text-purple-500 transition-colors truncate tracking-tight uppercase">{user.name}</h3>
-                <p className="text-[10px] font-medium text-[var(--text-muted)] truncate uppercase tracking-widest">{user.headline || 'Innovator'}</p>
+                <h3 className="font-semibold text-[var(--text-primary)] group-hover:text-purple-500 transition-colors truncate font-poppins">
+  {user.name}
+</h3>
+
+<p className="text-sm text-purple-500 truncate font-poppins">
+  {user.headline || 'Innovator'}
+</p>
             </Link>
         </div>
         <div className="flex-shrink-0 flex items-center gap-2">
