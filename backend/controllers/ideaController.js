@@ -7,7 +7,6 @@ const Idea = require('../models/Idea');
 const formatIdea = (idea) => {
   const ideaObj = idea.toObject();
 
-  // Convert main id
   ideaObj.id = ideaObj._id.toString();
 
   // Convert positions ids
@@ -18,20 +17,21 @@ const formatIdea = (idea) => {
     }));
   }
 
-  // 🔥 Handle populated founder
-  if (ideaObj.founderId && ideaObj.founderId._id) {
+  // 🔥 SAFE founder handling
+  if (ideaObj.founderId && typeof ideaObj.founderId === "object") {
     ideaObj.founderId = {
-      id: ideaObj.founderId._id.toString(),
-      name: ideaObj.founderId.name,
-      profilePictureUrl: ideaObj.founderId.profilePictureUrl,
-      headline: ideaObj.founderId.headline,
+      id: ideaObj.founderId._id
+        ? ideaObj.founderId._id.toString()
+        : ideaObj.founderId.id,
+      name: ideaObj.founderId.name || "",
+      profilePictureUrl: ideaObj.founderId.profilePictureUrl || "",
+      headline: ideaObj.founderId.headline || "",
     };
   }
 
   delete ideaObj._id;
   return ideaObj;
 };
-
 
 // =======================================
 // CREATE IDEA
