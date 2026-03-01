@@ -66,9 +66,11 @@ const ThemeIconButton: React.FC = () => {
 
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications } = useAppContext();
-const unreadCount = Array.isArray(appNotifications)
+const rawUnreadCount = Array.isArray(appNotifications)
   ? appNotifications.filter((n: any) => !n.isRead).length
   : 0;
+
+const unreadCount = badgeCleared ? 0 : rawUnreadCount;
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -77,19 +79,18 @@ const unreadCount = Array.isArray(appNotifications)
 
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
+const [badgeCleared, setBadgeCleared] = useState(false);
 const [shake, setShake] = useState(false);
 
 const prevCountRef = useRef<number | null>(null);
 
 useEffect(() => {
-  // skip first render
   if (prevCountRef.current === null) {
-    prevCountRef.current = unreadCount;
+    prevCountRef.current = rawUnreadCount;
     return;
   }
 
-  // only when count increases
-  if (unreadCount > prevCountRef.current) {
+  if (rawUnreadCount > prevCountRef.current && !badgeCleared) {
     const audio = new Audio("/notification.mp3");
     audio.volume = 0.6;
     audio.play().catch(() => {});
@@ -98,9 +99,8 @@ useEffect(() => {
     setTimeout(() => setShake(false), 600);
   }
 
-  prevCountRef.current = unreadCount;
-}, [unreadCount]);
-const bellRef = useRef<HTMLDivElement>(null);
+  prevCountRef.current = rawUnreadCount;
+}, [rawUnreadCount, badgeCleared]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -196,19 +196,24 @@ const bellRef = useRef<HTMLDivElement>(null);
       {/* 🔔 Notification Bell */}
       <div ref={bellRef} className="relative">
         <button
-  onClick={() => {
-    if (showNotifications) {
-      // closing dropdown → mark all read
-      fetch("/api/notifications/read-all", {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-    }
+  onClick={async () => {
+  const nextState = !showNotifications;
 
-    setShowNotifications(!showNotifications);
-  }}
+  if (nextState === true) {
+    // Opening dropdown → clear badge instantly
+    setBadgeCleared(true);
+
+    await fetch("/api/notifications/read-all", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  }
+
+  setShowNotifications(nextState);
+}}
+
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
         >
           <div className={shake ? "shake" : ""}>
@@ -221,7 +226,11 @@ const bellRef = useRef<HTMLDivElement>(null);
           )}
         </button>
 
-        {showNotifications && <NotificationDropdown />}
+        {showNotifications && (
+  <NotificationDropdown
+    onClose={() => setShowNotifications(false)}
+  />
+)}
       </div>
 
       {/* ☰ Hamburger Menu */}
