@@ -38,38 +38,58 @@ export const NotificationDropdown: React.FC = () => {
   const [activeTab, setActiveTab] =
     useState<"applications" | "connections">("applications");
 
+  const [hiddenIds, setHiddenIds] = useState<string[]>([]);
+
   useEffect(() => {
     fetchNotifications?.();
   }, []);
 
+  // ✅ Persist seen state (remove red dot after open once)
+  useEffect(() => {
+    localStorage.setItem("notifications_seen", "true");
+  }, []);
+
   const safeId = (n: any) => n._id || n.id;
 
-  const sorted = [...appNotifications].sort(
-    (a: any, b: any) =>
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-  );
+  const sorted = [...appNotifications]
+    .filter((n: any) => n.ideaId !== null) // ✅ remove deleted project notifications
+    .sort(
+      (a: any, b: any) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    );
 
-  // ✅ REMOVE SLICE LIMIT FOR FULL DATA
   const applicationsAll = sorted.filter(
-    (n: any) => n.type === "APPLICATION" && !n.isRead
+    (n: any) =>
+      n.type === "APPLICATION" &&
+      !n.isRead &&
+      !hiddenIds.includes(safeId(n))
   );
 
   const connectionsAll = sorted.filter(
-    (n: any) => n.type === "CONNECTION" && !n.isRead
+    (n: any) =>
+      n.type === "CONNECTION" &&
+      !n.isRead &&
+      !hiddenIds.includes(safeId(n))
   );
 
-  // ✅ TOP VIEW ONLY 3
   const applications = applicationsAll.slice(0, 3);
   const connections = connectionsAll.slice(0, 3);
 
   const handleNavigate = (path: string, id: string) => {
     markNotificationAsRead?.(id);
+    setHiddenIds((prev) => [...prev, id]);
     navigate(path);
   };
 
+  const handleHide = (e: any, id: string) => {
+    e.stopPropagation();
+    markNotificationAsRead?.(id);
+    setHiddenIds((prev) => [...prev, id]);
+  };
+
   return (
-    <div className="absolute right-2 top-14 w-[340px] sm:w-[360px] max-w-[95vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
+    <div className="absolute left-1/2 -translate-x-1/2 top-14 w-[380px] sm:w-[420px] max-w-[96vw] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-2xl shadow-2xl z-50">
 
       {/* HEADER */}
       <div className="px-5 py-4 border-b border-[var(--border-primary)]">
@@ -107,11 +127,11 @@ export const NotificationDropdown: React.FC = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="max-h-[420px] overflow-y-auto px-4 py-5 space-y-4">
+      <div className="max-h-[450px] overflow-y-auto px-4 py-5 space-y-4">
 
         {/* APPLICATIONS */}
         {activeTab === "applications" &&
-          (applications.length === 0 ? (
+          (applicationsAll.length === 0 ? (
             <p className="text-sm text-center text-[var(--text-muted)]">
               No new applications
             </p>
@@ -120,18 +140,15 @@ export const NotificationDropdown: React.FC = () => {
               const project =
                 n.ideaTitle ||
                 n.idea?.title ||
-                n.projectTitle ||
                 "Project";
 
               const role =
                 n.positionTitle ||
                 n.position?.title ||
-                n.role ||
                 "Role";
 
               const user =
                 n.sender?.name ||
-                n.senderName ||
                 "Someone";
 
               const status = n.status;
@@ -149,7 +166,7 @@ export const NotificationDropdown: React.FC = () => {
               if (status === "REJECTED") {
                 statusUI = (
                   <p className="text-xs mt-1 text-red-400">
-                    We appreciate your interest in {project}. Unfortunately, this time the selection did not go forward for {role}. Keep building 🚀
+                    We appreciate your interest in {project}. Unfortunately the selection did not move forward for {role}. Keep building 🚀
                   </p>
                 );
               }
@@ -163,10 +180,9 @@ export const NotificationDropdown: React.FC = () => {
                   className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 hover:border-purple-500/60 transition cursor-pointer"
                 >
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      markNotificationAsRead?.(safeId(n));
-                    }}
+                    onClick={(e) =>
+                      handleHide(e, safeId(n))
+                    }
                     className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                   >
                     ✕
@@ -180,12 +196,16 @@ export const NotificationDropdown: React.FC = () => {
                     {user}
                   </p>
 
-                  {status === "PENDING" && (
+                  {!status && (
                     <p className="text-xs text-[var(--text-secondary)] mt-1">
-                      Applied for{" "}
+                      <span className="font-semibold text-[var(--text-primary)]">
+                        {user}
+                      </span>{" "}
+                      has applied for the role of{" "}
                       <span className="font-semibold text-[var(--text-primary)]">
                         {role}
-                      </span>
+                      </span>{" "}
+                      in <span className="font-semibold">{project}</span>.
                     </p>
                   )}
 
@@ -209,7 +229,6 @@ export const NotificationDropdown: React.FC = () => {
             connections.map((n: any) => {
               const user =
                 n.sender?.name ||
-                n.senderName ||
                 "User";
 
               return (
@@ -218,10 +237,9 @@ export const NotificationDropdown: React.FC = () => {
                   className="relative p-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30"
                 >
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      markNotificationAsRead?.(safeId(n));
-                    }}
+                    onClick={(e) =>
+                      handleHide(e, safeId(n))
+                    }
                     className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
                   >
                     ✕
