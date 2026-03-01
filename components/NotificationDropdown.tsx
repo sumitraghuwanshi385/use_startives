@@ -51,16 +51,13 @@ export const NotificationDropdown: React.FC<{ onClose?: () => void }> = ({ onClo
   );
 
   /* 🔥 Hide deleted project notifications */
-  const applications = sorted.filter(
-  (n: any) =>
-    n.type === "APPLICATION" &&
-    (n.ideaId || n.ideaTitle)
+  
+const applications = sorted.filter(
+  (n: any) => n.type === "APPLICATION"
 );
-
 const connections = sorted.filter(
   (n: any) => n.type === "CONNECTION"
 );
-
   const handleNavigate = (path: string, id?: string) => {
     if (id) markNotificationAsRead?.(id);
     navigate(path);
