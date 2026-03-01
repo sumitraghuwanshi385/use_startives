@@ -199,28 +199,26 @@ useEffect(() => {
       <div ref={bellRef} className="relative">
         <button
   onClick={async () => {
-  if (showNotifications) {
-    // Already open → close
-    setShowNotifications(false);
-    return;
-  }
+  const nextState = !showNotifications;
+  setShowNotifications(nextState);
 
-  // Open → mark all read in backend
-  try {
-    await fetch("/api/notifications/read-all", {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-window.dispatchEvent(new Event("notification-read"));
-  } catch (err) {
-    console.log("Read-all failed");
-  }
+  if (nextState) {
+    try {
+      await fetch("/api/notifications/read-all", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
 
-  setShowNotifications(true);
+      window.dispatchEvent(new Event("notification-read"));
+
+    } catch (err) {
+      console.log("Read-all failed");
+    }
+  }
 }}
-
+  
           className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
         >
           <div className={shake ? "shake" : ""}>
