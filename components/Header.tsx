@@ -80,6 +80,8 @@ const unreadCount = badgeCleared ? 0 : rawUnreadCount;
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
+const bellRef = useRef<HTMLDivElement>(null);
+
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
 const [shake, setShake] = useState(false);
