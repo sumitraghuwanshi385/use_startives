@@ -53,14 +53,19 @@ useEffect(() => {
       new Date(a.createdAt).getTime()
   );
 
+console.log("Dropdown notifications:", appNotifications);
+
   /* 🔥 Hide deleted project notifications */
   
 const applications = sorted.filter(
   (n: any) => n.type === "APPLICATION"
 );
+
 const connections = sorted.filter(
-  (n: any) => n.type === "CONNECTION"
+  (n: any) =>
+    String(n.type || n.category).toUpperCase() === "CONNECTION"
 );
+
   const handleNavigate = (path: string, id?: string) => {
     if (id) markNotificationAsRead?.(id);
     navigate(path);
