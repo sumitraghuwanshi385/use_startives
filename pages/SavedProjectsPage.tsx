@@ -137,41 +137,27 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
         <div className="w-full h-full rounded-full bg-[var(--component-background)] flex items-center justify-center">
 
           {type === 'ventures' ? (
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="url(#savedGradient)"
-              strokeWidth="2"
-            >
-              <defs>
-                <linearGradient id="savedGradient" x1="0" y1="0" x2="24" y2="24">
-                  <stop offset="0%" stopColor="#ef4444" />
-                  <stop offset="100%" stopColor="#3b82f6" />
-                </linearGradient>
-              </defs>
-              <path d="M6 4h12v16l-6-4-6 4z" />
-            </svg>
-          ) : (
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="url(#assetGradient)"
-              strokeWidth="2"
-            >
-              <defs>
-                <linearGradient id="assetGradient" x1="0" y1="0" x2="24" y2="24">
-                  <stop offset="0%" stopColor="#ef4444" />
-                  <stop offset="100%" stopColor="#3b82f6" />
-                </linearGradient>
-              </defs>
-              <path d="M3 7l9-4 9 4-9 4-9-4z" />
-              <path d="M3 7v10l9 4 9-4V7" />
-            </svg>
-          )}
+  <svg
+    className="w-10 h-10 text-gray-400"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path d="M6 4h12v16l-6-4-6 4z" />
+  </svg>
+) : (
+  <svg
+    className="w-10 h-10 text-gray-400"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path d="M3 7l9-4 9 4-9 4-9-4z" />
+    <path d="M3 7v10l9 4 9-4V7" />
+  </svg>
+)}
 
         </div>
       </div>
