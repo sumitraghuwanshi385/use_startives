@@ -62,25 +62,6 @@ const App: React.FC = () => {
   const location = useLocation();
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
 
-// 🔐 GLOBAL AUTH GUARD (Stops dashboard blink on logout)
-const publicRoutes = [
-  "/",
-  "/login",
-  "/signup",
-  "/verify-email",
-  "/forgot-password",
-  "/new-password",
-  "/about",
-  "/privacy-policy",
-  "/contact-us",
-  "/sponsorship",
-  "/search"
-];
-
-if (!currentUser && !publicRoutes.includes(location.pathname)) {
-  return <Navigate to="/login" replace />;
-}
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -119,7 +100,7 @@ if (!currentUser && !publicRoutes.includes(location.pathname)) {
       {currentUser && showOnboardingModal && <OnboardingPage />}
       {showHeader && <Header />}
 <NotificationArea />
-      <main className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+      <main key={location.pathname} className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
