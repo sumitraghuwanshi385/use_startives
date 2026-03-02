@@ -29,10 +29,10 @@ const sendRequest = async (req, res) => {
         await currentUser.save();
 
 await Notification.create({
-    recipient: targetUser._id,   // jisko request mili
-    sender: currentUser._id,     // jisne bheja
-    type: "CONNECTION",
-    createdAt: new Date()
+    await Notification.create({
+    receiver: targetUser._id,   // ✅ correct field name
+    sender: currentUser._id,
+    type: "CONNECTION"
 });
 
         res.json({ success: true, message: 'Request sent' });
