@@ -8,34 +8,34 @@ const sendRequest = async (req, res) => {
         const targetUser = await User.findById(req.params.id);
         const currentUser = await User.findById(req.user._id);
 
-        if (!targetUser) return res.status(404).json({ message: 'User not found' });
+        if (!targetUser)
+            return res.status(404).json({ message: 'User not found' });
 
-        // Check validation
         if (currentUser.connections.includes(targetUser._id)) {
             return res.status(400).json({ message: 'Already connected' });
         }
+
         if (targetUser.connectionRequests.includes(currentUser._id)) {
             return res.status(400).json({ message: 'Request already sent' });
         }
 
-        // 1. Target ke inbox me request dalo
         targetUser.connectionRequests.push(currentUser._id);
-        
-        // 2. Apne sent box me record karo (Fixes "Request Sent" button state)
+
         if (!currentUser.sentRequests) currentUser.sentRequests = [];
         currentUser.sentRequests.push(targetUser._id);
 
         await targetUser.save();
         await currentUser.save();
 
-await Notification.create({
-    await Notification.create({
-    receiver: targetUser._id,   // ✅ correct field name
-    sender: currentUser._id,
-    type: "CONNECTION"
-});
+        // ✅ NOTIFICATION HERE (INSIDE TRY BLOCK)
+        await Notification.create({
+            receiver: targetUser._id,
+            sender: currentUser._id,
+            type: "CONNECTION"
+        });
 
         res.json({ success: true, message: 'Request sent' });
+
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
