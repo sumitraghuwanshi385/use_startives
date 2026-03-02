@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ClipboardDocumentListIcon, UserCircleIcon, ChevronLeftIcon, AppContextLinkIcon, IdentificationIcon, BookmarkIcon, PencilSquareIcon } from '../constants';
@@ -54,20 +54,22 @@ const IdeaDetailPage: React.FC = () => {
   sendConnectionRequest,
   isUserConnected,
   isRequestPending,
-  sentApplications
+  sentApplications,
+  fetchUserProfile
 } = useAppContext();
   const navigate = useNavigate();
 
   const idea = ideaId ? getIdeaById(ideaId) : undefined;
-  const founder = idea?.founderId
-  ? getUserById(
-      idea.founderId?.toString(),
-      'id'
-    ) || getUserById(
-      idea.founderId?.toString(),
-      'email'
-    )
+  
+const founder = idea?.founderId
+  ? getUserById(idea.founderId.toString(), 'id')
   : undefined;
+
+useEffect(() => {
+  if (idea?.founderId && !founder) {
+    fetchUserProfile(idea.founderId.toString());
+  }
+}, [idea?.founderId, founder]);
 
   if (!idea) {
     return (
@@ -184,64 +186,63 @@ const IdeaDetailPage: React.FC = () => {
         </div>
         <div className="lg:col-span-1 space-y-8 sticky top-24">
              <DetailSection title="Founder" icon={<UserCircleIcon />}>
-                {founder ? (
-                    <div className="space-y-4">
-                        <Link to={`/user/${founder.id}`} className="flex items-center space-x-3 group">
-                            <img src={founder.profilePictureUrl || `https://i.pravatar.cc/150?u=${founder.id}`} alt={founder.name} className="w-12 h-12 rounded-full object-cover border-2 border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors" />
-                            <div>
-                                <p className="font-bold text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">{founder.name}</p>
-                                <p className="text-xs text-purple-600 dark:text-purple-400 font-medium font-poppins line-clamp-1">
-  {founder.headline}
-</p>
-                            </div>
-                        </Link>
-                        {idea.founderQuote && (
-  <div className="mt-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] p-3 rounded-xl">
-    <p className="text-[9px] font-black uppercase tracking-widest text-purple-600 mb-1">
-      Founder Message:
-    </p>
-    <p className="text-xs text-[var(--text-primary)] leading-relaxed">
-      {idea.founderQuote}
-    </p>
-  </div>
-)}
-{currentUser && currentUser.id !== founder.id && (
-  <div className="pt-3">
-    {isUserConnected(founder.id) ? (
-      <button className="w-full bg-green-100 text-green-700 text-xs font-bold py-2 rounded-full border border-green-200">
-        Connected
-      </button>
-    ) : isRequestPending(founder.id) ? (
-      <button className="w-full bg-yellow-100 text-yellow-700 text-xs font-bold py-2 rounded-full border border-yellow-200">
-        Request Sent
-      </button>
-    ) : (
-      <button
-        onClick={() => sendConnectionRequest(founder.id)}
-        className="w-full button-gradient text-white text-xs font-bold py-2 rounded-full hover:scale-105 transition-all"
-      >
-        Connect
-      </button>
+                {founder && (
+  <div className="space-y-4">
+    <Link
+      to={`/user/${founder.id}`}
+      className="flex items-center space-x-3 group"
+    >
+      <img
+        src={
+          founder.profilePictureUrl ||
+          `https://i.pravatar.cc/150?u=${founder.id}`
+        }
+        alt={founder.name}
+        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors"
+      />
+      <div>
+        <p className="font-bold text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">
+          {founder.name}
+        </p>
+        <p className="text-xs text-purple-600 dark:text-purple-400 font-medium font-poppins line-clamp-1">
+          {founder.headline}
+        </p>
+      </div>
+    </Link>
+
+    {idea.founderQuote && (
+      <div className="mt-3 bg-[var(--background-tertiary)] border border-[var(--border-primary)] p-3 rounded-xl">
+        <p className="text-[9px] font-black uppercase tracking-widest text-purple-600 mb-1">
+          Founder Message:
+        </p>
+        <p className="text-xs text-[var(--text-primary)] leading-relaxed">
+          {idea.founderQuote}
+        </p>
+      </div>
+    )}
+
+    {currentUser && currentUser.id !== founder.id && (
+      <div className="pt-3">
+        {isUserConnected(founder.id) ? (
+          <button className="w-full bg-green-100 text-green-700 text-xs font-bold py-2 rounded-full border border-green-200">
+            Connected
+          </button>
+        ) : isRequestPending(founder.id) ? (
+          <button className="w-full bg-yellow-100 text-yellow-700 text-xs font-bold py-2 rounded-full border border-yellow-200">
+            Request Sent
+          </button>
+        ) : (
+          <button
+            onClick={() => sendConnectionRequest(founder.id)}
+            className="w-full button-gradient text-white text-xs font-bold py-2 rounded-full hover:scale-105 transition-all"
+          >
+            Connect
+          </button>
+        )}
+      </div>
     )}
   </div>
-)}
-
-                    </div>
-                ) : (
-  <div className="flex items-center space-x-3">
-    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
-      {getInitials(idea.founderName)}
-    </div>
-    <div>
-      <p className="font-bold text-[var(--text-primary)]">
-        {idea.founderName}
-      </p>
-      <p className="text-xs text-[var(--text-muted)]">
-        Founder
-      </p>
-    </div>
-  </div>
-)}
+)}                
             </DetailSection>
 
             <DetailSection title="Quick Stats" icon={<ClipboardDocumentListIcon />}>
