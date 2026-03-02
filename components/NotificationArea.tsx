@@ -65,11 +65,29 @@ const NotificationArea: React.FC = () => {
 const { notifications, removeNotification, currentUser } = useAppContext();
 
 const [dismissedRequests, setDismissedRequests] = useState<string[]>(() => {
-  return JSON.parse(localStorage.getItem("dismissedConnectionToasts") || "[]");
+  try {
+    const stored = localStorage.getItem("dismissedConnectionToasts");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
 });
+
+useEffect(() => {
+  const currentIds = currentUser?.connectionRequests || [];
+  const filtered = dismissedRequests.filter(id => currentIds.includes(id));
+
+  if (filtered.length !== dismissedRequests.length) {
+    setDismissedRequests(filtered);
+    localStorage.setItem("dismissedConnectionToasts", JSON.stringify(filtered));
+  }
+}, [currentUser]);
 
 const pendingRequests = (currentUser?.connectionRequests || [])
   .filter(id => !dismissedRequests.includes(id));
+
+console.log("connectionRequests:", currentUser?.connectionRequests);
+console.log("dismissed:", dismissedRequests);
 
 if (notifications.length === 0 && pendingRequests.length === 0) {
 return null;
