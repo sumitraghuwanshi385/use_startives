@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Notification = require('../models/Notification');
 
 // @desc    Send Connection Request
 // @route   POST /api/connections/request/:id
@@ -26,6 +27,13 @@ const sendRequest = async (req, res) => {
 
         await targetUser.save();
         await currentUser.save();
+
+await Notification.create({
+    recipient: targetUser._id,   // jisko request mili
+    sender: currentUser._id,     // jisne bheja
+    type: "CONNECTION",
+    createdAt: new Date()
+});
 
         res.json({ success: true, message: 'Request sent' });
     } catch (error) {
