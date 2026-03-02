@@ -277,7 +277,7 @@ const DashboardPage: React.FC = () => {
 
   const stats = [
     { title: 'Ventures', value: myProjects.length, icon: '🚀', subtext: 'Active ventures', isPrimary: true, linkTo: '/my-projects', animationDelay: '0.1s' },
-    { title: 'Connections', value: connectedUserIds.length, icon: '🤝', subtext: 'Your network', linkTo: '/connections', animationDelay: '0.2s' },
+    { title: 'Connections', value: currentUser?.connections?.length || 0, icon: '🤝', subtext: 'Your network', linkTo: '/connections', animationDelay: '0.2s' },
     { title: 'Applications', value: totalApplicationsCount, icon: '📨', subtext: 'Track opportunities', linkTo: '/my-applications', animationDelay: '0.3s' },
     { title: 'Whitelist', value: currentUser?.savedProjectIds?.length || 0, icon: '⭐', subtext: 'Saved ventures', linkTo: '/saved-projects', animationDelay: '0.4s' },
   ];
