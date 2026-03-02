@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { User } from '../types';
 
-const ConnectionRequestToast: React.FC<{ requesterId: string; onDismiss: (id: string) => void }> 
-= ({ requesterId, onDismiss }) => {
+const ConnectionRequestToast: React.FC<{
+  requesterId: string;
+  onDismiss: (id: string) => void;
+}>
 const { users, acceptConnectionRequest, fetchUserProfile } = useAppContext();
 const [requester, setRequester] = useState<User | undefined>(users.find(u => u.id === requesterId));
 const [isAccepted, setIsAccepted] = useState(false);
@@ -61,7 +63,12 @@ return (
 const NotificationArea: React.FC = () => {
 const { notifications, removeNotification, currentUser } = useAppContext();
 
-const pendingRequests = currentUser?.connectionRequests || [];
+const [dismissedRequests, setDismissedRequests] = useState<string[]>(() => {
+  return JSON.parse(localStorage.getItem("dismissedConnectionToasts") || "[]");
+});
+
+const pendingRequests = (currentUser?.connectionRequests || [])
+  .filter(id => !dismissedRequests.includes(id));
 
 if (notifications.length === 0 && pendingRequests.length === 0) {
 return null;
@@ -71,8 +78,18 @@ return (
 <div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end pointer-events-none">
 
   {pendingRequests.map((requestId: string) => (  
-      <ConnectionRequestToast key={requestId} requesterId={requestId} />  
-  ))}  
+      <ConnectionRequestToast
+  key={requestId}
+  requesterId={requestId}
+  onDismiss={(id) => {
+    const updated = [...dismissedRequests, id];
+    setDismissedRequests(updated);
+    localStorage.setItem(
+      "dismissedConnectionToasts",
+      JSON.stringify(updated)
+    );
+  }}
+/>
 
   {notifications.map((notification) => (  
     <div  
