@@ -116,25 +116,24 @@ const fetchNotifications = async () => {
     });
 
     if (res.data?.success) {
-  const backendUsers = res.data.connections || [];
+      const backendUsers = res.data.connections || [];
 
-  const normalizedUsers = backendUsers.map((u: any) => ({
-    ...u,
-    id: u._id || u.id
-  }));
+      const normalizedUsers = backendUsers.map((u: any) => ({
+        ...u,
+        id: u._id || u.id
+      }));
 
-  // 🔥 Important: directly update users state
-  setUsers(prev => {
-    const existingIds = prev.map(u => u.id);
-    const newOnes = normalizedUsers.filter(u => !existingIds.includes(u.id));
-    return [...prev, ...newOnes];
-  });
+      // ✅ Update users state
+      setUsers(prev => {
+        const existingIds = prev.map(u => u.id);
+        const newOnes = normalizedUsers.filter(u => !existingIds.includes(u.id));
+        return [...prev, ...newOnes];
+      });
 
-  const ids = normalizedUsers.map((u: any) => u.id);
+      const ids = normalizedUsers.map((u: any) => u.id);
+      setConnectedUserIds(ids);
 
-  setConnectedUserIds(ids);
-}
-      // 🔥 IMPORTANT FIX — refresh currentUser properly
+      // ✅ Refresh current user properly INSIDE success block
       const profileRes = await axios.get('/api/auth/me', {
         headers: { Authorization: `Bearer ${t}` }
       });
@@ -145,6 +144,7 @@ const fetchNotifications = async () => {
         localStorage.setItem("user", JSON.stringify(updatedUser));
       }
     }
+
   } catch (err) {
     console.error('fetchConnections failed', err);
   }
