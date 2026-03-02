@@ -56,7 +56,7 @@ const NoAssetsGraphic: React.FC = () => (
       stroke="url(#assetGrad)"
       strokeWidth="2.5"
       fill="none"
-      transform="translate(35,38) scale(1.7)"
+      transform="translate(50,50) scale(1.7)"
     >
       <path d="M3 7l9-4 9 4-9 4-9-4z" />
       <path d="M3 7v10l9 4 9-4V7" />
