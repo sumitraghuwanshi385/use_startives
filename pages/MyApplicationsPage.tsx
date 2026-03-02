@@ -494,24 +494,52 @@ const filteredApplications =
 
   {filteredApplications.length === 0 ? (
 
-    <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins">
+    <div className="py-28 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins">
 
-      <div className="relative mb-6">
-        <div className="absolute inset-0 rounded-full bg-purple-500/10 animate-ping"></div>
+      {/* ICON SECTION */}
+      <div className="relative mb-8">
+        
+        {/* Soft Gradient Pulse */}
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
 
-        <div className="relative w-20 h-20 rounded-full border border-[var(--border-primary)] flex items-center justify-center bg-[var(--background-tertiary)]">
+        {/* Gradient Circle */}
+        <div className="relative w-24 h-24 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-xl">
+          
           {activeTab === "sent" ? (
-            <IdentificationIcon className="w-10 h-10 text-gray-400 opacity-80" />
+            <IdentificationIcon className="w-10 h-10 text-white" />
           ) : (
-            <IdentificationIcon className="w-10 h-10 text-gray-400 opacity-80" />
+            /* Received New Icon */
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.8}
+              stroke="currentColor"
+              className="w-10 h-10 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 7h18M3 12h18M3 17h18"
+              />
+            </svg>
           )}
+
         </div>
       </div>
 
-      <p className="text-xs font-black text-[var(--text-muted)] uppercase italic tracking-widest">
+      {/* HEADLINE */}
+      <p className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">
         {activeTab === "sent"
           ? "No applications sent yet."
           : "No applications received yet."}
+      </p>
+
+      {/* SUBHEADLINE */}
+      <p className="text-sm text-[var(--text-muted)] italic mt-3 opacity-90 text-center max-w-md">
+        {activeTab === "sent"
+          ? "Start applying to exciting ventures and track your journey here."
+          : "Incoming applications from collaborators will appear here."}
       </p>
 
     </div>
