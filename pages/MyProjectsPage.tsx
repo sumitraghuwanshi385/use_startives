@@ -30,19 +30,38 @@ const NoProjectsGraphic: React.FC = () => (
 );
 
 const NoAssetsGraphic: React.FC = () => (
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24 mb-4">
-<defs>
-<linearGradient id="assetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-<stop offset="0%" stopColor="#EF4444" />
-<stop offset="100%" stopColor="#3B82F6" />
-</linearGradient>
-</defs>
-<circle cx="50" cy="50" r="35" fill="none" stroke="url(#assetGrad)" strokeWidth="4" strokeDasharray="5 5" />
-<path d="M3 7l9-4 9 4-9 4-9-4z" />
-              <path d="M3 7v10l9 4 9-4V7" /> stroke="url(#assetGrad)" strokeWidth="5" strokeLinecap="round" >
-<animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite" />
-</path>
-</svg>
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24 mb-4">
+    <defs>
+      <linearGradient id="assetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#EF4444" />
+        <stop offset="100%" stopColor="#3B82F6" />
+      </linearGradient>
+    </defs>
+
+    {/* Same dashed box like projects */}
+    <rect
+      x="20"
+      y="20"
+      width="60"
+      height="60"
+      rx="12"
+      fill="none"
+      stroke="url(#assetGrad)"
+      strokeWidth="2"
+      strokeDasharray="5 5"
+    />
+
+    {/* Asset Icon centered */}
+    <g
+      stroke="url(#assetGrad)"
+      strokeWidth="3"
+      fill="none"
+      transform="translate(25,30)"
+    >
+      <path d="M3 7l9-4 9 4-9 4-9-4z" />
+      <path d="M3 7v10l9 4 9-4V7" />
+    </g>
+  </svg>
 );
 
 // --- Modal Component ---
@@ -248,9 +267,13 @@ return (
       ) : (  
         <div className="text-center py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">  
             <NoProjectsGraphic />  
-            <p className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest italic">No active projects listed</p>  
-            <Link to="/post-idea" className="mt-4 inline-block text-purple-600 font-black uppercase text-[10px] hover:underline">Post your first idea</Link>  
-        </div>  
+            <h3 className="text-xl font-bold text-[var(--text-primary)] mt-4 tracking-tight uppercase">
+  No projects
+</h3>
+
+<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-xs mx-auto italic">
+  Manage and track your ventures from this space.
+</p>
       )  
     ) : (  
        myAssets.length > 0 ? (  
@@ -258,8 +281,13 @@ return (
       ) : (  
         <div className="text-center py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">  
             <NoAssetsGraphic />  
-            <p className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest italic">No assets enrolled</p>  
-            <Link to="/submit-asset" className="mt-4 inline-block text-orange-500 font-black uppercase text-[10px] hover:underline">List an asset for sale</Link>  
+            <h3 className="text-xl font-bold text-[var(--text-primary)] mt-4 tracking-tight uppercase">
+  No assets
+</h3>
+
+<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-xs mx-auto italic">
+  Your listed marketplace assets will appear here.
+</p>
         </div>  
       )  
     )}  
