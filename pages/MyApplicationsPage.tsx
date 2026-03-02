@@ -415,6 +415,20 @@ const [statusFilter, setStatusFilter] = useState<
   const findIdea = (app: Application) =>
     startupIdeas.find((i) => getId(i) === getId(app.ideaId));
 
+const validSentApplications = sentApplications.filter((app) =>
+  startupIdeas.some((idea) => getId(idea) === getId(app.ideaId))
+);
+
+const validReceivedApplications = receivedApplications.filter((app) =>
+  startupIdeas.some((idea) => getId(idea) === getId(app.ideaId))
+);
+
+const baseApplications =
+  activeTab === "sent"
+    ? validSentApplications
+    : validReceivedApplications;
+
+
 const filteredApplications =
   (activeTab === "sent" ? sentApplications : receivedApplications).filter(
     (app) =>
@@ -451,7 +465,7 @@ const filteredApplications =
                 : "text-[var(--text-muted)]"
             }`}
           >
-            SENT ({sentApplications.length})
+            SENT ({validSentApplications.length})
           </button>
           <button
             onClick={() => setActiveTab("received")}
@@ -461,7 +475,7 @@ const filteredApplications =
                 : "text-[var(--text-muted)]"
             }`}
           >
-            RECEIVED ({receivedApplications.length})
+            RECEIVED ({validReceivedApplications.length})
           </button>
         </div>
       </div>
@@ -488,6 +502,15 @@ const filteredApplications =
           ))}
         </div>
       </div>
+
+{/* ✅ DELETED APPLICATION NOTE */}
+<div className="max-w-3xl mx-auto mt-4">
+  <div className="backdrop-blur-xl bg-white/40 dark:bg-neutral-900/40 border border-white/30 dark:border-neutral-700/40 rounded-2xl px-5 py-3 text-center shadow-sm">
+    <p className="text-[10px] font-medium text-[var(--text-muted)] italic leading-relaxed">
+      If any application is not visible here, the related project may have been deleted by the founder or removed by the Startives team.
+    </p>
+  </div>
+</div>
 
       {/* APPLICATION LIST */}
 <div className="space-y-6 max-w-4xl mx-auto">
