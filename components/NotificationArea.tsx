@@ -62,7 +62,7 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, currentUser } = useAppContext();
+const { notifications, removeNotification, currentUser, appNotifications } = useAppContext();
 
 const storageKey = currentUser?.id
   ? `dismissedConnectionToasts_${currentUser.id}`
@@ -81,11 +81,13 @@ useEffect(() => {
   }
 }, [storageKey]);
 
-const pendingRequests = (currentUser?.connectionRequests || [])
-  .filter(id => !dismissedRequests.includes(id));
-
-console.log("connectionRequests:", currentUser?.connectionRequests);
-console.log("dismissed:", dismissedRequests);
+const pendingRequests = appNotifications
+  ?.filter(
+    (n: any) =>
+      n.type === "CONNECTION" &&
+      !dismissedRequests.includes(n.sender?._id || n.sender)
+  )
+  .map((n: any) => n.sender?._id || n.sender);
 
 if (notifications.length === 0 && pendingRequests.length === 0) {
 return null;
