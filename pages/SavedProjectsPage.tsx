@@ -127,15 +127,20 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
   return (
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* 💎 Static Vault Card (Smaller, No Animation) */}
+      {/* 💎 Visual Graphic */}
       <div className="relative mb-8">
 
-        <div className="relative w-24 h-32 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl shadow-lg flex items-center justify-center">
+        {/* Floating Particles (Back) */}
+        <div className="absolute -top-3 -left-3 w-5 h-5 bg-red-500 rounded-full animate-bounce opacity-70"></div>
+        <div className="absolute -bottom-3 -right-3 w-4 h-4 bg-blue-500 rounded-full animate-ping opacity-70"></div>
+
+        {/* Floating Card */}
+        <div className="relative w-24 h-32 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl shadow-lg flex items-center justify-center animate-float">
 
           {/* Inner Glass Layer */}
           <div className="absolute inset-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/20"></div>
 
-          {/* ICON (Smaller) */}
+          {/* ICON */}
           {type === 'ventures' ? (
             <svg
               className="relative w-9 h-9 text-white"
