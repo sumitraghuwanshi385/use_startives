@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { User } from '../types';
 
-const ConnectionRequestToast: React.FC<{ requesterId: string; onDismiss: (id: string) => void }> 
-= ({ requesterId, onDismiss }) => {
-const { users, acceptConnectionRequest, fetchUserProfile } = useAppContext();
+const ConnectionRequestToast: React.FC<{ requesterId: string }> = ({ requesterId }) => {
+const { users, acceptConnectionRequest, declineConnectionRequest, fetchUserProfile } = useAppContext();
 const [requester, setRequester] = useState<User | undefined>(users.find(u => u.id === requesterId));
 const [isAccepted, setIsAccepted] = useState(false);
 
@@ -45,7 +44,10 @@ return (
         </button>  
 
         <button  
-  onClick={() => onDismiss(requesterId)}   
+  onClick={async () => {
+    await declineConnectionRequest(requesterId);
+    setIsAccepted(true);
+  }}   
   className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
 >  
   ✕  
@@ -61,31 +63,18 @@ return (
 const NotificationArea: React.FC = () => {
 const { notifications, removeNotification, currentUser } = useAppContext();
 
-const [dismissedRequests, setDismissedRequests] = useState<string[]>(() => {
-  return JSON.parse(localStorage.getItem("dismissedConnectionToasts") || "[]");
-});
-
-const pendingRequests = (currentUser?.connectionRequests || [])
-  .filter(id => !dismissedRequests.includes(id));
+const pendingRequests = currentUser?.connectionRequests || [];
 
 if (notifications.length === 0 && pendingRequests.length === 0) {
 return null;
 }
 
 return (
-<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
+<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end pointer-events-none">
 
   {pendingRequests.map((requestId: string) => (  
-  <ConnectionRequestToast
-    key={requestId}
-    requesterId={requestId}
-    onDismiss={(id) => {
-      const updated = [...dismissedRequests, id];
-      setDismissedRequests(updated);
-      localStorage.setItem("dismissedConnectionToasts", JSON.stringify(updated));
-    }}
-  />
-))}
+      <ConnectionRequestToast key={requestId} requesterId={requestId} />  
+  ))}  
 
   {notifications.map((notification) => (  
     <div  
@@ -106,11 +95,13 @@ return (
       </p>  
         
       <button  
-  onClick={() => removeNotification(notification.id)}  
-  className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/20 transition text-[11px]"  
->
-  ✕
-</button>
+        onClick={() => removeNotification(notification.id)}  
+        className="ml-1 w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/20 transition text-[11px]"  
+        aria-label="Close notification"  
+      >  
+        ✕  
+      </button>  
+
     </div>  
   ))}  
 
