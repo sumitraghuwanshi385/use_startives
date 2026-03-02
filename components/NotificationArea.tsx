@@ -23,7 +23,7 @@ const handleAccept = async () => {
 if (!requester || isAccepted) return null;  
 
 return (  
-    className="pointer-events-auto bg-white dark:bg-neutral-900 px-3 py-2 rounded-full shadow-md border border-purple-500/20 flex items-center gap-3 w-fit max-w-[320px] animate-in slide-in-from-right-full duration-300"
+    <div className="pointer-events-auto bg-white dark:bg-neutral-900 px-3 py-2 rounded-full shadow-md border border-purple-500/20 flex items-center gap-3 w-fit max-w-[320px] animate-in slide-in-from-right-full duration-300">
         
         <img   
             src={requester.profilePictureUrl || "https://www.gravatar.com/avatar/?d=mp"}   
