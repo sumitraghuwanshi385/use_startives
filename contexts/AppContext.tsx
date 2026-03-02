@@ -816,16 +816,6 @@ useEffect(() => {
 }, [token, currentUser]);
 
 useEffect(() => {
-  if (!token || !currentUser) return;
-
-  const interval = setInterval(() => {
-    fetchNotifications();
-  }, 5000); // 🔥 every 5 seconds
-
-  return () => clearInterval(interval);
-}, [token, currentUser]);
-
-useEffect(() => {
   const handleNotificationRead = () => {
     fetchNotifications();
   };
