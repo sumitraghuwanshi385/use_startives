@@ -59,8 +59,14 @@ const IdeaDetailPage: React.FC = () => {
   const navigate = useNavigate();
 
   const idea = ideaId ? getIdeaById(ideaId) : undefined;
-  const founder = idea?.founderId 
-  ? getUserById(idea.founderId.toString(), 'id') 
+  const founder = idea?.founderId
+  ? getUserById(
+      idea.founderId?.toString(),
+      'id'
+    ) || getUserById(
+      idea.founderId?.toString(),
+      'email'
+    )
   : undefined;
 
   if (!idea) {
@@ -221,7 +227,21 @@ const IdeaDetailPage: React.FC = () => {
 )}
 
                     </div>
-                ) : <p className="text-sm text-[var(--text-muted)]">{idea.founderName}</p>}
+                ) : (
+  <div className="flex items-center space-x-3">
+    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
+      {getInitials(idea.founderName)}
+    </div>
+    <div>
+      <p className="font-bold text-[var(--text-primary)]">
+        {idea.founderName}
+      </p>
+      <p className="text-xs text-[var(--text-muted)]">
+        Founder
+      </p>
+    </div>
+  </div>
+)}
             </DetailSection>
 
             <DetailSection title="Quick Stats" icon={<ClipboardDocumentListIcon />}>
