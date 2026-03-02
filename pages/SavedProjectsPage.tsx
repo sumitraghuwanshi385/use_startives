@@ -127,23 +127,23 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
   return (
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* 💎 Visual Graphic */}
-      <div className="relative mb-8">
+      {/* 💎 Visual Graphic (Smaller) */}
+      <div className="relative mb-6">
 
-        {/* Floating Particles (Back) */}
-        <div className="absolute -top-3 -left-3 w-5 h-5 bg-red-500 rounded-full animate-bounce opacity-70"></div>
-        <div className="absolute -bottom-3 -right-3 w-4 h-4 bg-blue-500 rounded-full animate-ping opacity-70"></div>
+        {/* Floating Particles (Smaller) */}
+        <div className="absolute -top-2 -left-2 w-3 h-3 bg-red-500 rounded-full animate-bounce opacity-70"></div>
+        <div className="absolute -bottom-2 -right-2 w-2.5 h-2.5 bg-blue-500 rounded-full animate-ping opacity-70"></div>
 
-        {/* Floating Card */}
-        <div className="relative w-24 h-32 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl shadow-lg flex items-center justify-center animate-float">
+        {/* Floating Card (Reduced Size) */}
+        <div className="relative w-20 h-28 bg-gradient-to-br from-red-500 to-blue-500 rounded-xl shadow-md flex items-center justify-center animate-float">
 
           {/* Inner Glass Layer */}
-          <div className="absolute inset-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/20"></div>
+          <div className="absolute inset-1.5 bg-white/10 backdrop-blur-md rounded-lg border border-white/20"></div>
 
-          {/* ICON */}
+          {/* ICON (Smaller) */}
           {type === 'ventures' ? (
             <svg
-              className="relative w-9 h-9 text-white"
+              className="relative w-7 h-7 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -153,7 +153,7 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
             </svg>
           ) : (
             <svg
-              className="relative w-9 h-9 text-white"
+              className="relative w-7 h-7 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
