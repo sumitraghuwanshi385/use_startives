@@ -57,8 +57,8 @@ const NoAssetsGraphic: React.FC = () => (
   strokeWidth="3"
   fill="none"
 >
-  <path d="M35 45l15-7 15 7-15 7-15-7z" />
-<path d="M35 45v15l15 7 15-7V45" />
+  <path d="M35 44l15-7 15 7-15 7-15-7z" />
+<path d="M35 44v15l15 7 15-7V44" />
   <animate
     attributeName="opacity"
     values="0.4;1;0.4"
