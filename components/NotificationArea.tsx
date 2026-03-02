@@ -45,10 +45,7 @@ return (
         </button>  
 
         <button  
-  onClick={async () => {
-    await declineConnectionRequest(requesterId);
-    setIsAccepted(true);
-  }}   
+  onClick={() => onDismiss(requesterId)}   
   className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
 >  
   ✕  
@@ -68,14 +65,15 @@ const [dismissedRequests, setDismissedRequests] = useState<string[]>(() => {
   return JSON.parse(localStorage.getItem("dismissedConnectionToasts") || "[]");
 });
 
-const pendingRequests = currentUser?.connectionRequests || [];
+const pendingRequests = (currentUser?.connectionRequests || [])
+  .filter(id => !dismissedRequests.includes(id));
 
 if (notifications.length === 0 && pendingRequests.length === 0) {
 return null;
 }
 
 return (
-<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end pointer-events-none">
+<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
 
   {pendingRequests.map((requestId: string) => (  
   <ConnectionRequestToast
@@ -108,12 +106,11 @@ return (
       </p>  
         
       <button  
-  onClick={() => onDismiss(requesterId)}   
-  className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
->  
-  ✕  
+  onClick={() => removeNotification(notification.id)}  
+  className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/20 transition text-[11px]"  
+>
+  ✕
 </button>
-
     </div>  
   ))}  
 
