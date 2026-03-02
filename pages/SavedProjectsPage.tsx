@@ -125,37 +125,37 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 // 🔥 ADD THIS HERE (exactly here)
 const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type }) => {
   return (
-    <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
+    <div className="py-28 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins overflow-hidden">
 
-      {/* 🔥 FLOATING STACK ANIMATION */}
-      <div className="relative mb-8 w-28 h-20 animate-float">
+      {/* 🔥 Animated Glow Background */}
+      <div className="absolute w-64 h-64 bg-gradient-to-r from-red-500/20 to-blue-500/20 blur-3xl rounded-full animate-pulse"></div>
 
-        {/* Back Card */}
-        <div className="absolute inset-0 rotate-6 rounded-2xl bg-gradient-to-r from-red-500/20 to-blue-500/20 border border-[var(--border-primary)]"></div>
+      {/* 💎 Floating Vault Card */}
+      <div className="relative mb-10 perspective-1000">
 
-        {/* Middle Card */}
-        <div className="absolute inset-0 -rotate-6 rounded-2xl bg-[var(--background-tertiary)] border border-[var(--border-primary)]"></div>
+        <div className="relative w-32 h-40 bg-gradient-to-br from-red-500 to-blue-500 rounded-3xl shadow-2xl flex items-center justify-center transform hover:rotate-3 transition-all duration-700 animate-float">
 
-        {/* Front Card */}
-        <div className="relative w-full h-full rounded-2xl bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
+          {/* Inner Glass Layer */}
+          <div className="absolute inset-2 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20"></div>
 
+          {/* ICON */}
           {type === 'ventures' ? (
             <svg
-              className="w-8 h-8 text-white"
+              className="relative w-12 h-12 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1.8"
             >
               <path d="M6 4h12v16l-6-4-6 4z" />
             </svg>
           ) : (
             <svg
-              className="w-8 h-8 text-white"
+              className="relative w-12 h-12 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1.8"
             >
               <path d="M3 7l9-4 9 4-9 4-9-4z" />
               <path d="M3 7v10l9 4 9-4V7" />
@@ -163,27 +163,31 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
           )}
 
         </div>
+
+        {/* Floating Small Elements */}
+        <div className="absolute -top-4 -left-4 w-6 h-6 bg-red-500 rounded-full animate-bounce opacity-70"></div>
+        <div className="absolute -bottom-4 -right-4 w-5 h-5 bg-blue-500 rounded-full animate-ping opacity-70"></div>
+
       </div>
 
-      {/* HEADLINE (Exact Connections Style) */}
+      {/* HEADLINE (Connections style matched) */}
       <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
         {type === 'ventures'
           ? 'No saved ventures'
           : 'No saved assets'}
       </h3>
 
-      {/* SUBHEADLINE (Exact Connections Style) */}
+      {/* SUBHEADLINE (Connections style matched) */}
       <p className="text-xs font-medium text-[var(--text-muted)] italic mt-2 max-w-xs mx-auto">
         {type === 'ventures'
-          ? 'Save promising ventures to track them here.'
-          : 'Saved digital assets will appear here.'}
+          ? 'Save promising ventures to build your private vault.'
+          : 'Your curated digital assets will appear here.'}
       </p>
 
     </div>
   );
 };
 
-      
 const SavedProjectsPage: React.FC = () => {
   const { startupIdeas, currentUser } = useAppContext();
   const [activeTab, setActiveTab] = useState<'ventures' | 'assets'>('ventures');
