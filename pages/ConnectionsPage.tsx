@@ -151,12 +151,17 @@ export const ConnectionsPage: React.FC = () => {
     .filter((user): user is User => Boolean(user));
 }, [currentUser, getUserById]);
   
-  const connections = useMemo(() => connectedUserIds
-    .map(userId => getUserById(userId))
-    .filter((user): user is User => Boolean(user) && user.name.toLowerCase().includes(searchTerm.toLowerCase())),
-    [connectedUserIds, getUserById, searchTerm]
-  );
-  
+  const connections = useMemo(() => {
+  if (!currentUser?.connections) return [];
+
+  return currentUser.connections
+    .map((userId: string) => getUserById(userId))
+    .filter((user): user is User =>
+      Boolean(user) &&
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+}, [currentUser, getUserById, searchTerm]);
+
   const handleRemoveClick = (user: User) => { setUserToModify(user); setIsModalOpen(true); };
   const confirmAction = () => { if (userToModify) { removeConnection(userToModify.id); setUserToModify(null); } setIsModalOpen(false); };
 
