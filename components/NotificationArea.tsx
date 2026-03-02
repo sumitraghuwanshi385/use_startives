@@ -3,7 +3,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { User } from '../types';
 
 const ConnectionRequestToast: React.FC<{ requesterId: string }> = ({ requesterId }) => {
-const { users, acceptConnectionRequest, fetchUserProfile } = useAppContext();
+const { users, acceptConnectionRequest, declineConnectionRequest, fetchUserProfile } = useAppContext();
 const [requester, setRequester] = useState<User | undefined>(users.find(u => u.id === requesterId));
 const [isAccepted, setIsAccepted] = useState(false);
 
@@ -23,7 +23,7 @@ const handleAccept = async () => {
 if (!requester || isAccepted) return null;  
 
 return (  
-    <div className="pointer-events-auto bg-white dark:bg-neutral-900 px-4 py-2 rounded-full shadow-md border border-purple-500/20 flex items-center gap-2 w-[310px] animate-in slide-in-from-right-full duration-300">  
+    className="pointer-events-auto bg-white dark:bg-neutral-900 px-3 py-2 rounded-full shadow-md border border-purple-500/20 flex items-center gap-3 w-fit max-w-[320px] animate-in slide-in-from-right-full duration-300"
         
         <img   
             src={requester.profilePictureUrl || "https://www.gravatar.com/avatar/?d=mp"}   
@@ -44,12 +44,14 @@ return (
         </button>  
 
         <button  
-            onClick={() => setIsAccepted(true)}   
-            className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
-        >  
-            ✕  
-        </button>  
-
+  onClick={async () => {
+    await declineConnectionRequest(requesterId);
+    setIsAccepted(true);
+  }}   
+  className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
+>  
+  ✕  
+</button>
     </div>  
 );
 
