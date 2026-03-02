@@ -52,23 +52,21 @@ const NoAssetsGraphic: React.FC = () => (
     />
 
     {/* Centered Asset Icon */}
-    <g
-      stroke="url(#assetGrad)"
-      strokeWidth="2.5"
-      fill="none"
-      transform="translate(50,50) scale(1.7)"
-    >
-      <path d="M3 7l9-4 9 4-9 4-9-4z" />
-      <path d="M3 7v10l9 4 9-4V7" />
+  <g
+  stroke="url(#assetGrad)"
+  strokeWidth="3"
+  fill="none"
+>
+  <path d="M41 47l9-4 9 4-9 4-9-4z" />
+  <path d="M41 47v10l9 4 9-4V47" />
 
-      {/* Pulse animation */}
-      <animate
-        attributeName="opacity"
-        values="0.4;1;0.4"
-        dur="3s"
-        repeatCount="indefinite"
-      />
-    </g>
+  <animate
+    attributeName="opacity"
+    values="0.4;1;0.4"
+    dur="3s"
+    repeatCount="indefinite"
+  />
+</g>
   </svg>
 );
 
