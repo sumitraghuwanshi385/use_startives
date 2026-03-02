@@ -127,48 +127,53 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
   return (
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* 🔥 Animated Gradient Border Ring */}
-      <div
-        className="w-24 h-24 rounded-full p-[2px] mb-6 animate-float"
-        style={{
-          background: 'linear-gradient(135deg, #ef4444, #3b82f6)'
-        }}
-      >
-        <div className="w-full h-full rounded-full bg-[var(--component-background)] flex items-center justify-center">
+      {/* 🔥 FLOATING STACK ANIMATION */}
+      <div className="relative mb-8 w-28 h-20 animate-float">
+
+        {/* Back Card */}
+        <div className="absolute inset-0 rotate-6 rounded-2xl bg-gradient-to-r from-red-500/20 to-blue-500/20 border border-[var(--border-primary)]"></div>
+
+        {/* Middle Card */}
+        <div className="absolute inset-0 -rotate-6 rounded-2xl bg-[var(--background-tertiary)] border border-[var(--border-primary)]"></div>
+
+        {/* Front Card */}
+        <div className="relative w-full h-full rounded-2xl bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
 
           {type === 'ventures' ? (
-  <svg
-    className="w-10 h-10 text-gray-400 opacity-60"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-  >
-    <path d="M6 4h12v16l-6-4-6 4z" />
-  </svg>
-) : (
-  <svg
-    className="w-10 h-10 text-gray-400"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-  >
-    <path d="M3 7l9-4 9 4-9 4-9-4z" />
-    <path d="M3 7v10l9 4 9-4V7" />
-  </svg>
-)}
+            <svg
+              className="w-8 h-8 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M6 4h12v16l-6-4-6 4z" />
+            </svg>
+          ) : (
+            <svg
+              className="w-8 h-8 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M3 7l9-4 9 4-9 4-9-4z" />
+              <path d="M3 7v10l9 4 9-4V7" />
+            </svg>
+          )}
 
         </div>
       </div>
 
-      <h3 className="text-xl font-extrabold text-[var(--text-primary)] tracking-tight">
+      {/* HEADLINE (Exact Connections Style) */}
+      <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
         {type === 'ventures'
-          ? 'NO SAVED VENTURES'
-          : 'NO SAVED ASSETS'}
+          ? 'No saved ventures'
+          : 'No saved assets'}
       </h3>
 
-      <p className="text-sm text-[var(--text-muted)] italic mt-2 max-w-md">
+      {/* SUBHEADLINE (Exact Connections Style) */}
+      <p className="text-xs font-medium text-[var(--text-muted)] italic mt-2 max-w-xs mx-auto">
         {type === 'ventures'
           ? 'Save promising ventures to track them here.'
           : 'Saved digital assets will appear here.'}
@@ -177,7 +182,6 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
     </div>
   );
 };
-
 
       
 const SavedProjectsPage: React.FC = () => {
