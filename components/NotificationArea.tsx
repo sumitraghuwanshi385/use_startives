@@ -5,7 +5,8 @@ import { User } from '../types';
 const ConnectionRequestToast: React.FC<{
   requesterId: string;
   onDismiss: (id: string) => void;
-}>
+}> = ({ requesterId, onDismiss }) => {
+
 const { users, acceptConnectionRequest, fetchUserProfile } = useAppContext();
 const [requester, setRequester] = useState<User | undefined>(users.find(u => u.id === requesterId));
 const [isAccepted, setIsAccepted] = useState(false);
@@ -75,21 +76,22 @@ return null;
 }
 
 return (
-<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end pointer-events-none">
+<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
 
   {pendingRequests.map((requestId: string) => (  
-      <ConnectionRequestToast
-  key={requestId}
-  requesterId={requestId}
-  onDismiss={(id) => {
-    const updated = [...dismissedRequests, id];
-    setDismissedRequests(updated);
-    localStorage.setItem(
-      "dismissedConnectionToasts",
-      JSON.stringify(updated)
-    );
-  }}
-/>
+  <ConnectionRequestToast
+    key={requestId}
+    requesterId={requestId}
+    onDismiss={(id) => {
+      const updated = [...dismissedRequests, id];
+      setDismissedRequests(updated);
+      localStorage.setItem(
+        "dismissedConnectionToasts",
+        JSON.stringify(updated)
+      );
+    }}
+  />
+))}
 
   {notifications.map((notification) => (  
     <div  
