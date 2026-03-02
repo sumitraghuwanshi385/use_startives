@@ -128,32 +128,52 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
       {/* Grey Icon Circle */}
-      <div className="w-24 h-24 rounded-full border border-dashed border-[var(--border-primary)] flex items-center justify-center mb-6">
+  {/* Gradient Circle */}
+<div
+  className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
+  style={{
+    background: 'linear-gradient(135deg, #ef4444, #3b82f6)'
+  }}
+>
+  <div className="w-[90px] h-[90px] rounded-full bg-[var(--component-background)] flex items-center justify-center">
 
-        {type === 'ventures' ? (
-          <svg
-            className="w-10 h-10 text-gray-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M6 4h12v16l-6-4-6 4z" />
-          </svg>
-        ) : (
-          <svg
-            className="w-10 h-10 text-gray-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M3 7l9-4 9 4-9 4-9-4z" />
-            <path d="M3 7v10l9 4 9-4V7" />
-          </svg>
-        )}
+    {type === 'ventures' ? (
+      <svg
+        className="w-10 h-10"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="url(#savedGrad)"
+        strokeWidth="2"
+      >
+        <defs>
+          <linearGradient id="savedGrad" x1="0" y1="0" x2="24" y2="24">
+            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="100%" stopColor="#3b82f6" />
+          </linearGradient>
+        </defs>
+        <path d="M6 4h12v16l-6-4-6 4z" />
+      </svg>
+    ) : (
+      <svg
+        className="w-10 h-10"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="url(#assetGrad)"
+        strokeWidth="2"
+      >
+        <defs>
+          <linearGradient id="assetGrad" x1="0" y1="0" x2="24" y2="24">
+            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="100%" stopColor="#3b82f6" />
+          </linearGradient>
+        </defs>
+        <path d="M3 7l9-4 9 4-9 4-9-4z" />
+        <path d="M3 7v10l9 4 9-4V7" />
+      </svg>
+    )}
 
-      </div>
+  </div>
+</div>
 
       <h3 className="text-xl font-extrabold text-[var(--text-primary)] tracking-tight">
         {type === 'ventures'
