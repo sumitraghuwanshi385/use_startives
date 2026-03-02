@@ -125,16 +125,20 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 // 🔥 ADD THIS HERE (exactly here)
 const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type }) => {
   return (
-    <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
+    <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* Minimal Graphic (Smaller) */}
-      <div className="relative mb-6">
+      {/* 💎 Static Vault Card (Smaller, No Animation) */}
+      <div className="relative mb-8">
 
-        <div className="w-20 h-24 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-md">
+        <div className="relative w-24 h-32 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl shadow-lg flex items-center justify-center">
 
+          {/* Inner Glass Layer */}
+          <div className="absolute inset-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/20"></div>
+
+          {/* ICON (Smaller) */}
           {type === 'ventures' ? (
             <svg
-              className="w-7 h-7 text-white"
+              className="relative w-9 h-9 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -144,7 +148,7 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
             </svg>
           ) : (
             <svg
-              className="w-7 h-7 text-white"
+              className="relative w-9 h-9 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -159,18 +163,18 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
 
       </div>
 
-      {/* Headline (Connections style match) */}
+      {/* HEADLINE */}
       <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
         {type === 'ventures'
           ? 'No saved ventures'
           : 'No saved assets'}
       </h3>
 
-      {/* Subheadline */}
+      {/* SUBHEADLINE */}
       <p className="text-xs font-medium text-[var(--text-muted)] italic mt-2 max-w-xs mx-auto">
         {type === 'ventures'
-          ? 'Save promising ventures to track them here.'
-          : 'Saved digital assets will appear here.'}
+          ? 'Save promising ventures to build your private vault.'
+          : 'Your curated digital assets will appear here.'}
       </p>
 
     </div>
