@@ -187,13 +187,31 @@ const SavedProjectsPage: React.FC = () => {
       </div>
 
       <div className="space-y-6 max-w-4xl mx-auto">
-        {activeTab === 'ventures'
-          ? savedProjects.map((idea) => (
-              <SavedProjectCard key={idea.id} idea={idea} />
-            ))
-          : savedAssets.map((idea) => (
-              <SavedProjectCard key={idea.id} idea={idea} />
-            ))}
+        {activeTab === 'ventures' ? (
+  savedProjects.length > 0 ? (
+    savedProjects.map((idea) => (
+      <SavedProjectCard key={idea.id} idea={idea} />
+    ))
+  ) : (
+    <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
+      <GlobeAltIcon className="w-16 h-16 text-neutral-300 mb-4 shadow-none"/>
+      <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">
+        Whitelist is empty
+      </p>
+    </div>
+  )
+) : savedAssets.length > 0 ? (
+  savedAssets.map((idea) => (
+    <SavedProjectCard key={idea.id} idea={idea} />
+  ))
+) : (
+  <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
+    <ShoppingBagIcon className="w-16 h-16 text-neutral-300 mb-4 shadow-none"/>
+    <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">
+      Asset list empty
+    </p>
+  </div>
+)}
       </div>
     </div>
   );
