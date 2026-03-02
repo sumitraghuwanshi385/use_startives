@@ -101,11 +101,10 @@ return (
     onDismiss={(id) => {
       const updated = [...dismissedRequests, id];
       setDismissedRequests(updated);
-if (storageKey) {
-      localStorage.setItem(
-  storageKey,
-  JSON.stringify(updated)
-);
+
+      if (storageKey) {
+        localStorage.setItem(storageKey, JSON.stringify(updated));
+      }
     }}
   />
 ))}
