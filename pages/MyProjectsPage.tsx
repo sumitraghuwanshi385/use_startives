@@ -274,6 +274,7 @@ return (
 <p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-xs mx-auto italic">
   Manage and track your ventures from this space.
 </p>
+</div>
       )  
     ) : (  
        myAssets.length > 0 ? (  
