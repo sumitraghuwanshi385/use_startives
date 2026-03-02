@@ -125,36 +125,72 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 // 🔥 ADD THIS HERE (exactly here)
 const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type }) => {
   return (
-    <div className="relative py-24 rounded-[3rem] border border-[var(--border-primary)] bg-[var(--component-background)] flex flex-col items-center justify-center text-center overflow-hidden font-poppins">
+    <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* 🔥 Soft Gradient Glow Background */}
-      <div className="absolute inset-0 opacity-10 animate-pulse"
-        style={{
-          background: 'linear-gradient(135deg, #ef4444, #6366f1)'
-        }}
-      />
+      {/* Animated Icon Container */}
+      <div className="relative mb-6 animate-float">
 
-      {/* 🔥 Animated Gradient Circle */}
-      <div className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center mb-6 animate-float"
-        style={{
-          background: 'linear-gradient(135deg, #ef4444, #6366f1)'
-        }}
-      >
-        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-          <div className="w-5 h-5 rounded-full bg-white opacity-80"></div>
+        {/* Gradient Ring */}
+        <div
+          className="w-24 h-24 rounded-full p-[2px]"
+          style={{
+            background: 'linear-gradient(135deg, #ef4444, #3b82f6)'
+          }}
+        >
+          <div className="w-full h-full rounded-full bg-[var(--component-background)] flex items-center justify-center">
+            
+            {type === 'ventures' ? (
+              /* Bookmark Icon */
+              <svg
+                className="w-10 h-10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="url(#grad1)"
+                strokeWidth="2"
+              >
+                <defs>
+                  <linearGradient id="grad1" x1="0" y1="0" x2="24" y2="24">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="100%" stopColor="#3b82f6" />
+                  </linearGradient>
+                </defs>
+                <path d="M6 4h12v16l-6-4-6 4z" />
+              </svg>
+            ) : (
+              /* Asset Box Icon */
+              <svg
+                className="w-10 h-10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="url(#grad2)"
+                strokeWidth="2"
+              >
+                <defs>
+                  <linearGradient id="grad2" x1="0" y1="0" x2="24" y2="24">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="100%" stopColor="#3b82f6" />
+                  </linearGradient>
+                </defs>
+                <path d="M3 7l9-4 9 4-9 4-9-4z" />
+                <path d="M3 7v10l9 4 9-4V7" />
+              </svg>
+            )}
+
+          </div>
         </div>
+
       </div>
 
-      <h3 className="relative z-10 text-xl font-extrabold text-[var(--text-primary)] tracking-tight mb-2">
+      <h3 className="text-lg font-extrabold text-[var(--text-primary)] tracking-tight mb-2">
         {type === 'ventures'
           ? 'No Saved Ventures'
           : 'No Saved Assets'}
       </h3>
 
-      <p className="relative z-10 text-sm text-[var(--text-muted)] max-w-xs">
+      <p className="text-sm text-[var(--text-muted)] max-w-xs">
         {type === 'ventures'
-          ? 'Start exploring innovative ideas and build your curated whitelist.'
-          : 'Browse assets and save the ones that match your vision.'}
+          ? 'Save promising ventures to track them here.'
+          : 'Saved digital assets will appear here.'}
       </p>
 
     </div>
