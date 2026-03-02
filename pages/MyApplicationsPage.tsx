@@ -496,17 +496,14 @@ const filteredApplications =
 
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins">
 
-      {/* ICON SECTION (Slightly Smaller) */}
+      {/* ICON SECTION (same as before, untouched) */}
       <div className="relative mb-6">
-        
         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
 
         <div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
-          
           {activeTab === "sent" ? (
             <IdentificationIcon className="w-8 h-8 text-white" />
           ) : (
-            /* Received Icon */
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -522,19 +519,18 @@ const filteredApplications =
               />
             </svg>
           )}
-
         </div>
       </div>
 
-      {/* HEADLINE */}
-      <p className="text-xl font-extrabold text-[var(--text-primary)] tracking-tight uppercase">
+      {/* HEADLINE — EXACT SAME STYLE AS CONNECTION PAGE */}
+      <h3 className="text-xl font-bold text-[var(--text-primary)] mt-4 tracking-tight uppercase">
         {activeTab === "sent"
-          ? "NO APPLICATIONS SENT YET."
-          : "NO APPLICATIONS RECEIVED YET."}
-      </p>
+          ? "No applications sent yet"
+          : "No applications received yet"}
+      </h3>
 
-      {/* SUBHEADLINE (Smaller + Italic + Bold) */}
-      <p className="text-[12px] font-semibold italic text-[var(--text-muted)] mt-2 opacity-90 text-center max-w-md">
+      {/* SUBHEADLINE — EXACT SAME STYLE AS CONNECTION PAGE */}
+      <p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-xs mx-auto italic text-center">
         {activeTab === "sent"
           ? "Start applying to exciting ventures and track your journey here."
           : "Incoming applications from collaborators will appear here."}
