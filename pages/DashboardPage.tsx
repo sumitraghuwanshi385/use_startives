@@ -248,26 +248,40 @@ const DashboardPage: React.FC = () => {
   const totalApplicationsCount = useMemo(() => {
   if (!currentUser) return 0;
 
-  // Sent applications (where current user is applicant)
-  const sent = sentApplications.filter(
-    (app) =>
-      app.applicantId === currentUser.id ||
-      app.applicantId?._id === currentUser.id
-  ).length;
+  /* ✅ Only count applications whose idea still exists */
 
-  // Projects owned by current user
+  const existingIdeaIds = startupIdeas.map((idea) =>
+    typeof idea.id === "object" ? idea.id._id : idea.id
+  );
+
+  // VALID SENT (idea exists)
+  const validSent = sentApplications.filter((app) => {
+    const ideaId =
+      typeof app.ideaId === "object" ? app.ideaId._id : app.ideaId;
+
+    const isMine =
+      app.applicantId === currentUser.id ||
+      app.applicantId?._id === currentUser.id;
+
+    return isMine && existingIdeaIds.includes(ideaId);
+  }).length;
+
+  // My project IDs
   const myProjectIds = startupIdeas
     .filter((idea) => idea.founderId === currentUser.id)
-    .map((idea) => idea.id);
+    .map((idea) =>
+      typeof idea.id === "object" ? idea.id._id : idea.id
+    );
 
-  // Received applications (applications on my projects)
-  const received = receivedApplications.filter((app) =>
-    myProjectIds.includes(
-      typeof app.ideaId === "object" ? app.ideaId._id : app.ideaId
-    )
-  ).length;
+  // VALID RECEIVED (idea exists + belongs to me)
+  const validReceived = receivedApplications.filter((app) => {
+    const ideaId =
+      typeof app.ideaId === "object" ? app.ideaId._id : app.ideaId;
 
-  return sent + received;
+    return myProjectIds.includes(ideaId);
+  }).length;
+
+  return validSent + validReceived;
 }, [
   sentApplications,
   receivedApplications,
