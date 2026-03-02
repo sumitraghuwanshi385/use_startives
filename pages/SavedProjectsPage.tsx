@@ -138,7 +138,7 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
 
           {type === 'ventures' ? (
   <svg
-    className="w-10 h-10 text-gray-400"
+    className="w-10 h-10 text-gray-500 dark:text-gray-400"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
