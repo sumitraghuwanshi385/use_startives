@@ -44,10 +44,7 @@ return (
         </button>  
 
         <button  
-  onClick={async () => {
-    await declineConnectionRequest(requesterId);
-    setIsAccepted(true);
-  }}   
+  onClick={() => setIsAccepted(true)}   
   className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
 >  
   ✕  
