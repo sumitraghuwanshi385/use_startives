@@ -22,6 +22,56 @@ import {
 GlobeModernIcon
 } from '../constants';
 
+interface ConfirmModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
+}
+
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] w-full max-w-[320px] overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col font-poppins">
+        <div className="p-6 text-center">
+          <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mx-auto mb-4">
+            <TrashIcon className="w-6 h-6" />
+          </div>
+          <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2 tracking-tight">
+            {title}
+          </h3>
+          <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">
+            {message}
+          </p>
+        </div>
+        <div className="flex border-t border-[var(--border-primary)]">
+          <button
+            onClick={onClose}
+            className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:bg-[var(--background-tertiary)] border-r border-[var(--border-primary)]"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Local Icons ---
 const PencilSquareIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className || "w-5 h-5"}>
@@ -100,6 +150,8 @@ const ProfilePillCard: React.FC<{
 const ProfilePage: React.FC = () => {
   const { currentUser, startupIdeas, connectedUserIds, startalks, deleteStartalk, deleteIdea } = useAppContext();
   const navigate = useNavigate();
+
+const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
 
   if (!currentUser) {
     navigate('/login'); 
@@ -230,7 +282,12 @@ const ProfilePage: React.FC = () => {
                 {myTalks.length > 0 ? (
                     <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar snap-x snap-mandatory px-2">
                         {myTalks.map(talk => (
-                            <StartalkCard key={talk.id} talk={talk} onDeleteRequest={(id) => deleteStartalk(id)} className="flex-shrink-0 w-[320px] sm:w-[480px] snap-start shadow-none" />
+                            <StartalkCard 
+  key={talk.id} 
+  talk={talk} 
+  onDeleteRequest={(id) => setTalkToDeleteId(id)} 
+  className="flex-shrink-0 w-[320px] sm:w-[480px] snap-start shadow-none" 
+/>
                         ))}
                     </div>
                 ) : (
@@ -389,6 +446,18 @@ badgeColor={
             </div>
         </div>
       </div>
+<ConfirmModal
+  isOpen={!!talkToDeleteId}
+  onClose={() => setTalkToDeleteId(null)}
+  onConfirm={() => {
+    if (talkToDeleteId) {
+      deleteStartalk(talkToDeleteId);
+      setTalkToDeleteId(null);
+    }
+  }}
+  title="Delete startalk?"
+  message="This will permanently remove your update. This action cannot be undone."
+/>
     </div>
   );
 };
