@@ -503,7 +503,7 @@ const deleteIdea = async (ideaId: string) => {
 await fetchConnections();      
     await fetchNotifications(); 
 }
-        }
+        
     } catch (error: any) {
         addNotificationCallBack(error.response?.data?.message || "Failed to send request.", "error");
     }
