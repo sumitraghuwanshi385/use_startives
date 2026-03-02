@@ -30,18 +30,35 @@ const NoProjectsGraphic: React.FC = () => (
 );
 
 const NoAssetsGraphic: React.FC = () => (
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24 mb-4">
-        <defs>
-            <linearGradient id="assetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#10B981" />
-                <stop offset="100%" stopColor="#3B82F6" />
-            </linearGradient>
-        </defs>
-        <circle cx="50" cy="50" r="35" fill="none" stroke="url(#assetGrad)" strokeWidth="2" strokeDasharray="6 4" />
-        <path d="M40 50 L 48 58 L 65 42" stroke="url(#assetGrad)" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <animateTransform attributeName="transform" type="scale" values="0.9;1.1;0.9" dur="4s" repeatCount="indefinite" additive="sum" />
-        </path>
-    </svg>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-20 h-20 mb-4"
+  >
+    <defs>
+      <linearGradient id="assetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#EF4444" />
+        <stop offset="100%" stopColor="#3B82F6" />
+      </linearGradient>
+    </defs>
+
+    {/* Outer Ring */}
+    <circle
+      cx="50"
+      cy="50"
+      r="35"
+      fill="none"
+      stroke="url(#assetGrad)"
+      strokeWidth="2"
+      strokeDasharray="6 4"
+    />
+
+    {/* Saved Asset Bookmark Icon */}
+    <path
+      d="M35 28h30v42l-15-9-15 9z"
+      fill="url(#assetGrad)"
+    />
+  </svg>
 );
 
 // --- Modal Component ---
@@ -231,10 +248,14 @@ const MyProjectsPage: React.FC = () => {
           </Link>
       </div>
 
-      <div className="text-left mb-6 font-poppins px-1">
-          <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter">Ventures</h1>
-          <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">Manage your ventures and digital assets in one place.</p>
-      </div>
+      <div className="text-left mb-6 px-1">
+  <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter">
+    Ventures
+  </h1>
+  <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">
+    Manage your ventures and digital assets from one place.
+  </p>
+</div>
 
       <div className="flex justify-center mb-10">
           <div className="inline-flex p-1 bg-[var(--background-tertiary)] border border-[var(--border-primary)] rounded-full shadow-none font-poppins">
@@ -260,7 +281,9 @@ const MyProjectsPage: React.FC = () => {
           ) : (
             <div className="text-center py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
                 <NoAssetsGraphic />
-                <p className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest italic">No assets enrolled</p>
+                <p className="text-xs font-medium text-[var(--text-muted)] italic mt-2">
+  No assets listed yet.
+</p>
                 <Link to="/submit-asset" className="mt-4 inline-block text-orange-500 font-black uppercase text-[10px] hover:underline">List an asset for sale</Link>
             </div>
           )
