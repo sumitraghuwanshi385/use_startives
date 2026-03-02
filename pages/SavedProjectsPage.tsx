@@ -122,6 +122,40 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   );
 };
 
+// 🔥 ADD THIS HERE (exactly here)
+const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type }) => {
+  return (
+    <div className="relative py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center overflow-hidden font-poppins">
+
+      {/* Animated Glow */}
+      <div className="absolute w-80 h-80 rounded-full blur-3xl opacity-20 animate-pulse"
+        style={{
+          background: type === 'ventures'
+            ? 'linear-gradient(135deg, #a855f7, #6366f1)'
+            : 'linear-gradient(135deg, #3b82f6, #06b6d4)'
+        }}
+      />
+
+      {/* Floating Animated Dots */}
+      <div className="relative z-10 flex items-center justify-center gap-4 mb-6">
+        <div className="w-6 h-6 rounded-full bg-purple-400/60 animate-bounce"></div>
+        <div className="w-10 h-10 rounded-full bg-purple-500/60 animate-pulse"></div>
+        <div className="w-6 h-6 rounded-full bg-purple-400/60 animate-bounce delay-150"></div>
+      </div>
+
+      <h3 className="relative z-10 text-lg font-extrabold uppercase tracking-widest text-[var(--text-primary)] mb-2">
+        {type === 'ventures' ? 'No saved ventures' : 'No saved assets'}
+      </h3>
+
+      <p className="relative z-10 text-xs italic text-[var(--text-muted)] font-medium tracking-wide text-center max-w-xs">
+        {type === 'ventures'
+          ? 'Explore projects and build your whitelist.'
+          : 'Browse assets to grow your collection.'}
+      </p>
+    </div>
+  );
+};
+
 const SavedProjectsPage: React.FC = () => {
   const { startupIdeas, currentUser } = useAppContext();
   const [activeTab, setActiveTab] = useState<'ventures' | 'assets'>('ventures');
@@ -187,30 +221,20 @@ const SavedProjectsPage: React.FC = () => {
       </div>
 
       <div className="space-y-6 max-w-4xl mx-auto">
-        {activeTab === 'ventures' ? (
+       {activeTab === 'ventures' ? (
   savedProjects.length > 0 ? (
     savedProjects.map((idea) => (
       <SavedProjectCard key={idea.id} idea={idea} />
     ))
   ) : (
-    <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
-      <GlobeAltIcon className="w-16 h-16 text-neutral-300 mb-4 shadow-none"/>
-      <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">
-        Whitelist is empty
-      </p>
-    </div>
+    <WhitelistEmptyGraphic type="ventures" />
   )
 ) : savedAssets.length > 0 ? (
   savedAssets.map((idea) => (
     <SavedProjectCard key={idea.id} idea={idea} />
   ))
 ) : (
-  <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center font-poppins shadow-none">
-    <ShoppingBagIcon className="w-16 h-16 text-neutral-300 mb-4 shadow-none"/>
-    <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">
-      Asset list empty
-    </p>
-  </div>
+  <WhitelistEmptyGraphic type="assets" />
 )}
       </div>
     </div>
