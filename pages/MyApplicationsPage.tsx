@@ -494,28 +494,26 @@ const filteredApplications =
 
   {filteredApplications.length === 0 ? (
 
-    <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins">
+    <div className="py-28 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins">
 
-      {/* ICON SECTION */}
-      <div className="relative mb-7">
+      {/* ICON SECTION (UNCHANGED) */}
+      <div className="relative mb-8">
         
-        {/* Gradient Pulse */}
         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
 
-        {/* Gradient Circle */}
-        <div className="relative w-22 h-22 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
-
+        <div className="relative w-24 h-24 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-xl">
+          
           {activeTab === "sent" ? (
-            <IdentificationIcon className="w-9 h-9 text-white" />
+            <IdentificationIcon className="w-10 h-10 text-white" />
           ) : (
-            /* NEW RECEIVED ICON (Inbox style) */
+            /* Received Icon */
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.8}
               stroke="currentColor"
-              className="w-9 h-9 text-white"
+              className="w-10 h-10 text-white"
             >
               <path
                 strokeLinecap="round"
@@ -528,15 +526,15 @@ const filteredApplications =
         </div>
       </div>
 
-      {/* HEADLINE */}
+      {/* HEADLINE (Smaller + UPPERCASE) */}
       <p className="text-xl font-extrabold text-[var(--text-primary)] tracking-tight uppercase">
         {activeTab === "sent"
           ? "NO APPLICATIONS SENT YET."
           : "NO APPLICATIONS RECEIVED YET."}
       </p>
 
-      {/* SUBHEADLINE */}
-      <p className="text-[13px] text-[var(--text-muted)] italic mt-2 opacity-85 text-center max-w-md">
+      {/* SUBHEADLINE (Smaller + Italic) */}
+      <p className="text-[13px] text-[var(--text-muted)] italic mt-2 opacity-90 text-center max-w-md">
         {activeTab === "sent"
           ? "Start applying to exciting ventures and track your journey here."
           : "Incoming applications from collaborators will appear here."}
@@ -565,6 +563,6 @@ const filteredApplications =
   )}
 
 </div>
-    </div>
+ </div>
   );
 };
