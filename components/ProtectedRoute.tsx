@@ -7,12 +7,13 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { currentUser, isLoading } = useAppContext();
+  const { currentUser, authChecked } = useAppContext();
   const location = useLocation();
 
   // ⛔ Wait until context fully loads
-  if (isLoading) return null;
-
+  if (!authChecked) {
+  return null;
+}
   // 🔐 If no authenticated user → redirect
   if (!currentUser) {
     return <Navigate to="/login" state={{ from: location }} replace />;
