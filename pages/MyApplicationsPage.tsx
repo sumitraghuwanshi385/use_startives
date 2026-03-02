@@ -503,15 +503,36 @@ const filteredApplications =
         </div>
       </div>
 
-{/* ✅ DELETED APPLICATION NOTE */}
+{/* ✅ PREMIUM DELETED APPLICATION NOTE */}
 <div className="max-w-3xl mx-auto mt-4">
-  <div className="backdrop-blur-xl bg-white/40 dark:bg-neutral-900/40 border border-white/30 dark:border-neutral-700/40 rounded-2xl px-5 py-3 text-center shadow-sm">
-    <p className="text-[10px] font-medium text-[var(--text-muted)] italic leading-relaxed">
-      If any application is not visible here, the related project may have been deleted by the founder or removed by the Startives team.
-    </p>
+  <div className="
+    relative overflow-hidden
+    backdrop-blur-2xl
+    bg-white/70 dark:bg-neutral-900/60
+    border border-neutral-200 dark:border-neutral-700
+    rounded-2xl
+    px-5 py-3.5
+    shadow-sm
+  ">
+
+    {/* subtle gradient glow */}
+    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
+
+    <div className="relative flex items-start gap-3">
+
+      {/* Icon */}
+      <div className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+        <IdentificationIcon className="w-3.5 h-3.5 text-white" />
+      </div>
+
+      {/* Text */}
+      <p className="text-[9.5px] md:text-[10px] font-medium text-[var(--text-muted)] leading-relaxed text-left">
+        If an application is not visible here, the related project may have been deleted by the founder or removed by the Startives team.
+      </p>
+
+    </div>
   </div>
 </div>
-
       {/* APPLICATION LIST */}
 <div className="space-y-6 max-w-4xl mx-auto">
 
