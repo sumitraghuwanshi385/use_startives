@@ -499,6 +499,10 @@ const deleteIdea = async (ideaId: string) => {
         if (res.data?.success) {
             setSentConnectionRequests(prev => [...prev, targetUserId]);
             addNotificationCallBack("Connection request sent!", "success");
+
+await fetchConnections();      
+    await fetchNotifications(); 
+}
         }
     } catch (error: any) {
         addNotificationCallBack(error.response?.data?.message || "Failed to send request.", "error");
