@@ -125,33 +125,38 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 // 🔥 ADD THIS HERE (exactly here)
 const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type }) => {
   return (
-    <div className="relative py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center overflow-hidden font-poppins">
+    <div className="relative py-24 rounded-[3rem] border border-[var(--border-primary)] bg-[var(--component-background)] flex flex-col items-center justify-center text-center overflow-hidden font-poppins">
 
-      {/* Animated Glow */}
-      <div className="absolute w-80 h-80 rounded-full blur-3xl opacity-20 animate-pulse"
+      {/* 🔥 Soft Gradient Glow Background */}
+      <div className="absolute inset-0 opacity-10 animate-pulse"
         style={{
-          background: type === 'ventures'
-            ? 'linear-gradient(135deg, #a855f7, #6366f1)'
-            : 'linear-gradient(135deg, #3b82f6, #06b6d4)'
+          background: 'linear-gradient(135deg, #ef4444, #6366f1)'
         }}
       />
 
-      {/* Floating Animated Dots */}
-      <div className="relative z-10 flex items-center justify-center gap-4 mb-6">
-        <div className="w-6 h-6 rounded-full bg-purple-400/60 animate-bounce"></div>
-        <div className="w-10 h-10 rounded-full bg-purple-500/60 animate-pulse"></div>
-        <div className="w-6 h-6 rounded-full bg-purple-400/60 animate-bounce delay-150"></div>
+      {/* 🔥 Animated Gradient Circle */}
+      <div className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center mb-6 animate-float"
+        style={{
+          background: 'linear-gradient(135deg, #ef4444, #6366f1)'
+        }}
+      >
+        <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+          <div className="w-5 h-5 rounded-full bg-white opacity-80"></div>
+        </div>
       </div>
 
-      <h3 className="relative z-10 text-lg font-extrabold uppercase tracking-widest text-[var(--text-primary)] mb-2">
-        {type === 'ventures' ? 'No saved ventures' : 'No saved assets'}
+      <h3 className="relative z-10 text-xl font-extrabold text-[var(--text-primary)] tracking-tight mb-2">
+        {type === 'ventures'
+          ? 'No Saved Ventures'
+          : 'No Saved Assets'}
       </h3>
 
-      <p className="relative z-10 text-xs italic text-[var(--text-muted)] font-medium tracking-wide text-center max-w-xs">
+      <p className="relative z-10 text-sm text-[var(--text-muted)] max-w-xs">
         {type === 'ventures'
-          ? 'Explore projects and build your whitelist.'
-          : 'Browse assets to grow your collection.'}
+          ? 'Start exploring innovative ideas and build your curated whitelist.'
+          : 'Browse assets and save the ones that match your vision.'}
       </p>
+
     </div>
   );
 };
