@@ -521,9 +521,21 @@ const filteredApplications =
     <div className="relative flex items-start gap-3">
 
       {/* Icon */}
-      <div className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0 shadow-sm">
-        <IdentificationIcon className="w-3.5 h-3.5 text-white" />
-      </div>
+      {/* Info Icon */}
+<div className="w-7 h-7 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-3.5 h-3.5 text-white"
+  >
+    <circle cx="12" cy="12" r="9" />
+    <line x1="12" y1="10" x2="12" y2="16" />
+    <circle cx="12" cy="7" r="1" fill="white" stroke="none" />
+  </svg>
+</div>
 
       {/* Text */}
       <p className="text-[9.5px] md:text-[10px] font-medium text-[var(--text-muted)] leading-relaxed text-left">
