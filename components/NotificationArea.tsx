@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { User } from '../types';
 
-const ConnectionRequestToast: React.FC<{ requesterId: string }> = ({ requesterId }) => {
-const { users, acceptConnectionRequest, declineConnectionRequest, fetchUserProfile } = useAppContext();
+const ConnectionRequestToast: React.FC<{ requesterId: string; onDismiss: (id: string) => void }> 
+= ({ requesterId, onDismiss }) => {
+const { users, acceptConnectionRequest, fetchUserProfile } = useAppContext();
 const [requester, setRequester] = useState<User | undefined>(users.find(u => u.id === requesterId));
 const [isAccepted, setIsAccepted] = useState(false);
 
@@ -44,7 +45,7 @@ return (
         </button>  
 
         <button  
-  onClick={() => setIsAccepted(true)}   
+  onClick={() => onDismiss(requesterId)}  
   className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/10 transition text-[10px]"  
 >  
   ✕  
