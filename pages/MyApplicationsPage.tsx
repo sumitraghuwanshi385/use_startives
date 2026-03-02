@@ -490,23 +490,53 @@ const filteredApplications =
       </div>
 
       {/* APPLICATION LIST */}
-      <div className="space-y-6 max-w-4xl mx-auto">
-        {filteredApplications.map((app) =>
-          activeTab === "sent" ? (
-            <SentCard
-              key={getId(app)}
-              application={app}
-              idea={findIdea(app)}
-            />
+<div className="space-y-6 max-w-4xl mx-auto">
+
+  {filteredApplications.length === 0 ? (
+
+    <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins">
+
+      <div className="relative mb-6">
+        <div className="absolute inset-0 rounded-full bg-purple-500/10 animate-ping"></div>
+
+        <div className="relative w-20 h-20 rounded-full border border-[var(--border-primary)] flex items-center justify-center bg-[var(--background-tertiary)]">
+          {activeTab === "sent" ? (
+            <IdentificationIcon className="w-10 h-10 text-gray-400 opacity-80" />
           ) : (
-            <ReceivedCard
-              key={getId(app)}
-              application={app}
-              idea={findIdea(app)}
-            />
-          )
-        )}
+            <IdentificationIcon className="w-10 h-10 text-gray-400 opacity-80" />
+          )}
+        </div>
       </div>
+
+      <p className="text-xs font-black text-[var(--text-muted)] uppercase italic tracking-widest">
+        {activeTab === "sent"
+          ? "No applications sent yet."
+          : "No applications received yet."}
+      </p>
+
+    </div>
+
+  ) : (
+
+    filteredApplications.map((app) =>
+      activeTab === "sent" ? (
+        <SentCard
+          key={getId(app)}
+          application={app}
+          idea={findIdea(app)}
+        />
+      ) : (
+        <ReceivedCard
+          key={getId(app)}
+          application={app}
+          idea={findIdea(app)}
+        />
+      )
+    )
+
+  )}
+
+</div>
     </div>
   );
 };
