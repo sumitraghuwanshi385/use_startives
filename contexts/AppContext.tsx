@@ -778,7 +778,7 @@ await fetchConnections();
 } else {
   setAuthChecked(true);
 }
-      }
+      
       setIsLoading(false);
 setAuthChecked(true);
     };
