@@ -125,23 +125,16 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 // 🔥 ADD THIS HERE (exactly here)
 const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type }) => {
   return (
-    <div className="py-28 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins overflow-hidden">
+    <div className="py-20 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* 🔥 Animated Glow Background */}
-      <div className="absolute w-64 h-64 bg-gradient-to-r from-red-500/20 to-blue-500/20 blur-3xl rounded-full animate-pulse"></div>
+      {/* Minimal Graphic (Smaller) */}
+      <div className="relative mb-6">
 
-      {/* 💎 Floating Vault Card */}
-      <div className="relative mb-10 perspective-1000">
+        <div className="w-20 h-24 bg-gradient-to-br from-red-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-md">
 
-        <div className="relative w-32 h-40 bg-gradient-to-br from-red-500 to-blue-500 rounded-3xl shadow-2xl flex items-center justify-center transform hover:rotate-3 transition-all duration-700 animate-float">
-
-          {/* Inner Glass Layer */}
-          <div className="absolute inset-2 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20"></div>
-
-          {/* ICON */}
           {type === 'ventures' ? (
             <svg
-              className="relative w-12 h-12 text-white"
+              className="w-7 h-7 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -151,7 +144,7 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
             </svg>
           ) : (
             <svg
-              className="relative w-12 h-12 text-white"
+              className="w-7 h-7 text-white"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -164,24 +157,20 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
 
         </div>
 
-        {/* Floating Small Elements */}
-        <div className="absolute -top-4 -left-4 w-6 h-6 bg-red-500 rounded-full animate-bounce opacity-70"></div>
-        <div className="absolute -bottom-4 -right-4 w-5 h-5 bg-blue-500 rounded-full animate-ping opacity-70"></div>
-
       </div>
 
-      {/* HEADLINE (Connections style matched) */}
+      {/* Headline (Connections style match) */}
       <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
         {type === 'ventures'
           ? 'No saved ventures'
           : 'No saved assets'}
       </h3>
 
-      {/* SUBHEADLINE (Connections style matched) */}
+      {/* Subheadline */}
       <p className="text-xs font-medium text-[var(--text-muted)] italic mt-2 max-w-xs mx-auto">
         {type === 'ventures'
-          ? 'Save promising ventures to build your private vault.'
-          : 'Your curated digital assets will appear here.'}
+          ? 'Save promising ventures to track them here.'
+          : 'Saved digital assets will appear here.'}
       </p>
 
     </div>
