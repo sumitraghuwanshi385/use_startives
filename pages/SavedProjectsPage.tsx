@@ -127,9 +127,9 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
   return (
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* Gradient Border Circle (RED → BLUE) */}
+      {/* 🔥 Animated Gradient Border Ring */}
       <div
-        className="w-24 h-24 rounded-full p-[2px] mb-6"
+        className="w-24 h-24 rounded-full p-[2px] mb-6 animate-float"
         style={{
           background: 'linear-gradient(135deg, #ef4444, #3b82f6)'
         }}
@@ -138,14 +138,15 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
 
           {type === 'ventures' ? (
             <svg
-              className="w-10 h-10"
+              width="40"
+              height="40"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="url(#savedGrad)"
+              stroke="url(#savedGradient)"
               strokeWidth="2"
             >
               <defs>
-                <linearGradient id="savedGrad" x1="0" y1="0" x2="24" y2="24">
+                <linearGradient id="savedGradient" x1="0" y1="0" x2="24" y2="24">
                   <stop offset="0%" stopColor="#ef4444" />
                   <stop offset="100%" stopColor="#3b82f6" />
                 </linearGradient>
@@ -154,14 +155,15 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
             </svg>
           ) : (
             <svg
-              className="w-10 h-10"
+              width="40"
+              height="40"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="url(#assetGrad)"
+              stroke="url(#assetGradient)"
               strokeWidth="2"
             >
               <defs>
-                <linearGradient id="assetGrad" x1="0" y1="0" x2="24" y2="24">
+                <linearGradient id="assetGradient" x1="0" y1="0" x2="24" y2="24">
                   <stop offset="0%" stopColor="#ef4444" />
                   <stop offset="100%" stopColor="#3b82f6" />
                 </linearGradient>
