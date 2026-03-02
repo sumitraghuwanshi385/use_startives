@@ -29,7 +29,7 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
   const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
   const [isLoading, setIsLoading] = useState(true);
   const [authLoadingState, setAuthLoadingState] = useState({ isLoading: false, messages: [] as string[] });
-  const [authChecked, setAuthChecked] = useState(false);
+  
   const [showOnboardingModal, setShowOnboardingModal] = useState(false);
   const [pendingVerificationUser, setPendingVerificationUser] = useState<{email: string; code: string} | null>(null);
   
@@ -250,19 +250,14 @@ await fetchAllUsers();
   };
 
   const logout = () => {
-  setAuthChecked(false);
-
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('user');
-
-  setToken(null);
-  setCurrentUser(null);
-  setConnectedUserIds([]);
-  setSentConnectionRequests([]);
-  setUsers([]);
-
-  setAuthChecked(true);
-};
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+    setToken(null);
+    setCurrentUser(null);
+    setConnectedUserIds([]);
+    setSentConnectionRequests([]);
+    setUsers([]);
+  };
   
   const updateUser = async (updates: UserProfileUpdate): Promise<boolean> => {
     if (!currentUser) return false;
@@ -772,15 +767,11 @@ const updateApplicationStatus = async (id: string, status: string) => {
 await fetchConnections();
 
   } catch (e) {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('user');
-}
-} else {
-  setAuthChecked(true);
-}
-      
+              localStorage.removeItem('authToken');
+              localStorage.removeItem('user');
+          }
+      }
       setIsLoading(false);
-setAuthChecked(true);
     };
     loadInitialData();
   }, [fetchConnections]);
@@ -843,12 +834,12 @@ declineConnectionRequest,
     fetchUserProfile,
     markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, 
     sentConnectionRequests, connectedUserIds, sendConnectionRequest,
-    acceptConnectionRequest,authChecked, 
+    acceptConnectionRequest,
     isRequestPending, isUserConnected,
     setShowOnboardingModal,
   }), [
     startupIdeas, startalks, sentApplications,
-receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, authChecked, showOnboardingModal,
+receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
     addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
   ]);
 
