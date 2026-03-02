@@ -64,15 +64,17 @@ return (
 const NotificationArea: React.FC = () => {
 const { notifications, removeNotification, currentUser } = useAppContext();
 
+const storageKey = `dismissedConnectionToasts_${currentUser?.id}`;
+
 const [dismissedRequests, setDismissedRequests] = useState<string[]>(() => {
   try {
-    const stored = localStorage.getItem("dismissedConnectionToasts");
+    if (!currentUser?.id) return [];
+    const stored = localStorage.getItem(`dismissedConnectionToasts_${currentUser.id}`);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
   }
 });
-
 
 const pendingRequests = (currentUser?.connectionRequests || [])
   .filter(id => !dismissedRequests.includes(id));
@@ -95,9 +97,9 @@ return (
       const updated = [...dismissedRequests, id];
       setDismissedRequests(updated);
       localStorage.setItem(
-        "dismissedConnectionToasts",
-        JSON.stringify(updated)
-      );
+  storageKey,
+  JSON.stringify(updated)
+);
     }}
   />
 ))}
