@@ -100,7 +100,7 @@ const App: React.FC = () => {
       {currentUser && showOnboardingModal && <OnboardingPage />}
       {showHeader && <Header />}
 <NotificationArea />
-      <main key={location.pathname} className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+      <main className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
