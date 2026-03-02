@@ -73,15 +73,6 @@ const [dismissedRequests, setDismissedRequests] = useState<string[]>(() => {
   }
 });
 
-useEffect(() => {
-  const currentIds = currentUser?.connectionRequests || [];
-  const filtered = dismissedRequests.filter(id => currentIds.includes(id));
-
-  if (filtered.length !== dismissedRequests.length) {
-    setDismissedRequests(filtered);
-    localStorage.setItem("dismissedConnectionToasts", JSON.stringify(filtered));
-  }
-}, [currentUser]);
 
 const pendingRequests = (currentUser?.connectionRequests || [])
   .filter(id => !dismissedRequests.includes(id));
