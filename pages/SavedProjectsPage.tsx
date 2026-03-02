@@ -127,11 +127,11 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
   return (
     <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center text-center font-poppins">
 
-      {/* Gradient Border Circle */}
+      {/* Gradient Border Circle (RED → BLUE) */}
       <div
         className="w-24 h-24 rounded-full p-[2px] mb-6"
         style={{
-          background: 'linear-gradient(135deg, #f97316, #3b82f6)' // 🔥 orange → blue
+          background: 'linear-gradient(135deg, #ef4444, #3b82f6)'
         }}
       >
         <div className="w-full h-full rounded-full bg-[var(--component-background)] flex items-center justify-center">
@@ -146,7 +146,7 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
             >
               <defs>
                 <linearGradient id="savedGrad" x1="0" y1="0" x2="24" y2="24">
-                  <stop offset="0%" stopColor="#f97316" />
+                  <stop offset="0%" stopColor="#ef4444" />
                   <stop offset="100%" stopColor="#3b82f6" />
                 </linearGradient>
               </defs>
@@ -162,7 +162,7 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
             >
               <defs>
                 <linearGradient id="assetGrad" x1="0" y1="0" x2="24" y2="24">
-                  <stop offset="0%" stopColor="#f97316" />
+                  <stop offset="0%" stopColor="#ef4444" />
                   <stop offset="100%" stopColor="#3b82f6" />
                 </linearGradient>
               </defs>
@@ -190,6 +190,8 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
   );
 };
 
+
+      
 const SavedProjectsPage: React.FC = () => {
   const { startupIdeas, currentUser } = useAppContext();
   const [activeTab, setActiveTab] = useState<'ventures' | 'assets'>('ventures');
