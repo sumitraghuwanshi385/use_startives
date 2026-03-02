@@ -518,10 +518,12 @@ const deleteIdea = async (ideaId: string) => {
     );
 
     if (res.data?.success) {
-      await fetchAllUsers();
-      await fetchConnections();
-      await fetchNotifications();
-    }
+  addNotificationCallBack("Connection accepted successfully!", "success");
+
+  await fetchAllUsers();
+  await fetchConnections();
+  await fetchNotifications();
+}
 
   } catch (error) {
     console.error("Accept failed", error);
@@ -539,11 +541,12 @@ const declineConnectionRequest = async (requesterId: string) => {
     );
 
     if (res.data?.success) {
-      await fetchAllUsers();
-      await fetchConnections();
-      await fetchNotifications();
-    }
+  addNotificationCallBack("Connection request declined.", "info");
 
+  await fetchAllUsers();
+  await fetchConnections();
+  await fetchNotifications();
+}
   } catch (err) {
     console.error("Decline failed", err);
   }
@@ -560,9 +563,11 @@ const declineConnectionRequest = async (requesterId: string) => {
     );
 
     if (res.data?.success) {
-      await fetchAllUsers();
-      await fetchConnections();
-    }
+  addNotificationCallBack("Connection removed successfully.", "success");
+
+  await fetchAllUsers();
+  await fetchConnections();
+}
 
   } catch (err) {
     console.error("Remove connection failed", err);
