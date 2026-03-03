@@ -553,8 +553,9 @@ const confirmDeleteChat = async () => {
 
           <button
             onClick={() => setIsCreateTeamOpen(true)}
-            className="px-4 py-2 text-[10px] font-bold rounded-full bg-purple-600 text-white"
+            className="flex items-center gap-2 px-5 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-purple-600 text-white"
           >
+<UsersIcon className="w-4 h-4" />
             Launch Team
           </button>
         </div>
@@ -576,7 +577,7 @@ const confirmDeleteChat = async () => {
             onClick={() => setActiveType('teams')}
             className={`flex-1 py-2 text-[11px] font-bold rounded-full transition ${
               activeType === 'teams'
-                ? 'bg-purple-600 text-white'
+               ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md'
                 : 'text-[var(--text-muted)]'
             }`}
           >
