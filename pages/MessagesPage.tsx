@@ -724,9 +724,6 @@ const confirmDeleteChat = async () => {
 
       <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
 
-          return (
-            <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
-
               <div
                 className={`max-w-[75%] rounded-2xl overflow-hidden ${
   isMe
@@ -820,6 +817,7 @@ const confirmDeleteChat = async () => {
 
               </div>
             </div>
+</>
           );
         })
       ) : (
