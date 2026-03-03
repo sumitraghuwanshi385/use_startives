@@ -259,13 +259,13 @@ const connections = sorted.filter(
           <p
   className={`text-xs mt-1 ${
     isAccepted
-      ? "text-purple-600 font-medium"
+      ? "text-emerald-600 font-medium"
       : "text-[var(--text-secondary)]"
   }`}
 >
   {isAccepted
-    ? "You are now connected. Start building something great together."
-    : "Sent you a collaboration request. Tap to review in Invites."}
+    ? "You’re now officially connected. Start collaborating, share ideas, and build something meaningful together."
+    : "Sent you a collaboration request. Tap to review it in your Invites section."}
 </p>
 
           <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
