@@ -33,3 +33,8 @@
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+.dot-pattern-bg {
+  background-image: radial-gradient(circle, rgba(120,119,198,0.25) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
