@@ -62,7 +62,17 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, currentUser } = useAppContext();
+const { notifications, removeNotification, currentUser, fetchCurrentUser } = useAppContext();
+
+useEffect(() => {
+  if (!currentUser) return;
+
+  const interval = setInterval(() => {
+    fetchCurrentUser();
+  }, 5000); // every 5 sec
+
+  return () => clearInterval(interval);
+}, [currentUser]);
 
 const storageKey = currentUser?.id
   ? `dismissedConnectionToasts_${currentUser.id}`
