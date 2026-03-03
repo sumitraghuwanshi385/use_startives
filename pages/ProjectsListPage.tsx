@@ -379,20 +379,32 @@ const displayIdeas =
             <div>
               <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">Discover Projects</h1>
               <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
-              {isFetching && <p className="text-xs text-[var(--text-muted)] mt-2">Loading filtered results…</p>}
-            </div>
+              
 
-            <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none overflow-hidden relative">
-              <div className="flex items-center gap-2 relative z-10">
-                <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
-                <p className="text-sm font-black">{totalProjects}</p>
-              </div>
-              <div className="w-px h-4 bg-white/20 relative z-10"></div>
-              <div className="flex items-center gap-2 relative z-10">
-                <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">New This Week</p>
-                <p className="text-sm font-black">{newThisWeek}</p>
-              </div>
-            </div>
+            <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none relative">
+              <div className="flex items-center justify-center gap-8 relative z-10 text-center">
+
+  <div className="flex flex-col items-center justify-center min-w-[100px]">
+    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+      Total Projects
+    </p>
+    <p className="text-sm font-black">
+      {totalProjects}
+    </p>
+  </div>
+
+  <div className="w-px h-5 bg-white/20"></div>
+
+  <div className="flex flex-col items-center justify-center min-w-[100px]">
+    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+      New This Week
+    </p>
+    <p className="text-sm font-black">
+      {newThisWeek}
+    </p>
+  </div>
+
+</div>
           </div>
         </div>
 
