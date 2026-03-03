@@ -553,7 +553,7 @@ const confirmDeleteChat = async () => {
 
           <button
             onClick={() => setIsCreateTeamOpen(true)}
-            className="flex items-center gap-2 px-5 py-2 text-[10px] font-black uppercase tracking-widest rounded-full bg-purple-600 text-white"
+            className="flex items-center gap-2 px-4 py-2 text-[9px] font-black uppercase tracking-widest rounded-full bg-purple-600 text-white"
           >
 <UsersIcon className="w-4 h-4" />
             Launch Team
@@ -566,7 +566,7 @@ const confirmDeleteChat = async () => {
             onClick={() => setActiveType('direct')}
             className={`flex-1 py-2 text-[11px] font-bold rounded-full transition ${
               activeType === 'direct'
-                ? 'bg-purple-600 text-white'
+                ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md'
                 : 'text-[var(--text-muted)]'
             }`}
           >
@@ -587,12 +587,12 @@ const confirmDeleteChat = async () => {
       </div>
 
       {/* Chat List */}
-      <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-2">
+      <div className="flex-1 overflow-y-auto px-3 pb-4">
         {filteredChats.map(chat => (
           <div
-            key={chat.id}
-            onClick={() => setSelectedChatId(chat.id)}
-            className={`p-3 rounded-xl cursor-pointer transition border ${
+  key={chat.id}
+  onClick={() => setSelectedChatId(chat.id)}
+  className={`p-4 cursor-pointer transition border-b border-[var(--border-primary)] ${
               selectedChatId === chat.id
                 ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-400'
                 : 'border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900'
