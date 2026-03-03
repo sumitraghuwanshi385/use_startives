@@ -179,7 +179,8 @@ const getUserById = async (req, res) => {
 // @route   GET /api/auth/me
 const getCurrentUser = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user._id)
+            .lean(); // 🔥 important
 
         if (!user) {
             return res.status(404).json({ success: false });
@@ -194,15 +195,16 @@ const getCurrentUser = async (req, res) => {
                 headline: user.headline,
                 country: user.country,
                 profilePictureUrl: user.profilePictureUrl,
-                savedProjectIds: user.savedProjectIds,
-                connections: user.connections,
-                connectionRequests: user.connectionRequests,
-                sentRequests: user.sentRequests,
+                savedProjectIds: user.savedProjectIds || [],
+                connections: user.connections || [],
+                connectionRequests: user.connectionRequests || [],
+                sentRequests: user.sentRequests || [],
                 createdAt: user.createdAt,
             }
         });
 
     } catch (error) {
+        console.error("GetCurrentUser Error:", error);
         return res.status(500).json({ success: false });
     }
 };
