@@ -403,7 +403,7 @@ const displayIdeas =
       {newThisWeek}
     </p>
   </div>
-
+</div>
 </div>
 
         {/* Search */}
