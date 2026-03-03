@@ -539,6 +539,7 @@ const confirmDeleteChat = async () => {
     <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] bg-white dark:bg-black/20 flex flex-col ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
 
       {/* Sidebar Header */}
+<div className="px-2 sm:px-4 lg:px-8 pt-2 pb-6 shrink-0">
       <div className="text-left mb-6">
   <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">
     Messenger
