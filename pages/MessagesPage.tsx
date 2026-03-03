@@ -343,6 +343,29 @@ useEffect(() => {
     useEffect(() => {
   if (!selectedChatId) return;
 
+const markAsRead = async () => {
+  try {
+    await axios.patch(
+      `${API_BASE}/api/chat/${selectedChatId}/read`,
+      {},
+      { headers: authHeaders }
+    );
+
+    // 🔥 reset local unread immediately
+    setChats(prev =>
+      prev.map(chat =>
+        chat.id === selectedChatId
+          ? { ...chat, unreadCount: 0 }
+          : chat
+      )
+    );
+  } catch (err) {
+    console.error("mark read failed");
+  }
+};
+
+markAsRead();
+
   const container = messagesEndRef.current?.parentElement;
   if (!container) return;
 
