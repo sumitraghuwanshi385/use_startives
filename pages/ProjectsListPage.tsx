@@ -382,39 +382,39 @@ const displayIdeas =
     
             </div>
 
-          <div className="bg-white dark:bg-neutral-900 
-  border-2 border-[var(--border-primary)] 
-  rounded-[2.5rem] 
-  px-10 py-5 
-  relative overflow-hidden 
-  mt-4"
->
-  {/* Subtle Gradient Glow (Same Asset Page Style) */}
-  <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full -mr-24 -mt-24 pointer-events-none"></div>
+          <div className="w-full flex justify-center mt-6">
+  <div className="
+    flex items-center justify-between
+    w-full max-w-4xl
+    px-10 py-5
+    rounded-full
+    bg-gradient-to-r from-red-500 via-purple-500 to-blue-500
+    text-white
+    shadow-lg
+  ">
 
-  <div className="flex items-center justify-center gap-10 relative z-10">
-
-    <div className="flex flex-col items-center min-w-[120px]">
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] mb-2">
+    <div className="flex items-center gap-6">
+      <p className="text-sm font-extrabold tracking-[0.3em] uppercase opacity-80">
         Total Projects
       </p>
-      <p className="text-3xl font-black tracking-tighter italic text-[var(--text-primary)]">
+      <p className="text-4xl font-black tracking-tight">
         {totalProjects}
       </p>
     </div>
 
-    <div className="w-px h-12 bg-[var(--border-primary)]"></div>
+    <div className="w-px h-10 bg-white/40"></div>
 
-    <div className="flex flex-col items-center min-w-[120px]">
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] mb-2">
+    <div className="flex items-center gap-6">
+      <p className="text-sm font-extrabold tracking-[0.3em] uppercase opacity-80">
         New This Week
       </p>
-      <p className="text-3xl font-black tracking-tighter italic text-[var(--text-primary)]">
+      <p className="text-4xl font-black tracking-tight">
         {newThisWeek}
       </p>
     </div>
-</div>
+
   </div>
+</div>
           </div>
         </div>
 
