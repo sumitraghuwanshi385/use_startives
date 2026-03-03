@@ -82,22 +82,32 @@ const NotificationArea: React.FC = () => {
       ))}
 
       {notifications.map((notification) => (
-        <div
-          key={notification.id}
-          className="pointer-events-auto flex items-center gap-2 px-5 py-2 rounded-full shadow-lg"
-        >
-          <p className="text-[10px] font-black uppercase tracking-widest">
-            {notification.message}
-          </p>
+  <div
+    key={notification.id}
+    role="alert"
+    aria-live="assertive"
+    className={`pointer-events-auto flex items-center gap-2 px-5 py-2 rounded-full shadow-lg animate-in slide-in-from-right-full duration-300
+      ${
+        notification.type === "error"
+          ? "bg-red-500 text-white"
+          : notification.type === "success"
+          ? "button-gradient text-white"
+          : "bg-white dark:bg-neutral-900 text-[var(--text-primary)] border border-gray-200 dark:border-neutral-700"
+      }`}
+  >
+    <p className="text-[10px] font-black uppercase tracking-widest">
+      {notification.message}
+    </p>
 
-          <button
-            onClick={() => removeNotification(notification.id)}
-            className="ml-1 w-4 h-4 flex items-center justify-center"
-          >
-            ✕
-          </button>
-        </div>
-      ))}
+    <button
+      onClick={() => removeNotification(notification.id)}
+      className="ml-1 w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/20 transition text-[11px]"
+      aria-label="Close notification"
+    >
+      ✕
+    </button>
+  </div>
+))}
 
     </div>
   );
