@@ -211,73 +211,64 @@ const connections = sorted.filter(
 
         {/* CONNECTIONS (UNCHANGED UI) */}
         {activeTab === "connections" &&
-          (connections.length === 0 ? (
-            <p className="text-sm text-center text-[var(--text-muted)]">
-              No new connections
-            </p>
-          ) : (
-            connections.map((n: any) => {
-              const user =
-                n.sender?.name ||
-                "User";
+  (connections.length === 0 ? (
+    <p className="text-sm text-center text-[var(--text-muted)]">
+      No new connections
+    </p>
+  ) : (
+    connections.map((n: any) => {
+      const userName = n.sender?.name || "A user";
+      const userId = n.sender?._id || n.sender;
+      const status = n.status; // make sure backend sends this
 
-              return (
-                <div
-                  key={safeId(n)}
-                  className="relative p-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30"
-                >
-                  <button
-                    onClick={(e) => {
-  e.stopPropagation();
-  removeAppNotification?.(safeId(n));
-}}
-                    
-                    className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
-                  >
-                    ✕
-                  </button>
+      const isAccepted = status === "ACCEPTED";
 
-                  <p className="text-[11px] font-bold uppercase tracking-wide text-green-500">
-                    CONNECTION REQUEST
-                  </p>
-                  <p className="mt-1 text-sm font-semibold">
-                    {user}
-                  </p>
-                  <p className="text-xs text-[var(--text-secondary)] mt-1">
-                    Wants to collaborate with you
-                  </p>
+      return (
+        <div
+          key={safeId(n)}
+          onClick={() => handleNavigate("/connections", safeId(n))}
+          className="relative p-4 rounded-2xl bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30 hover:border-green-500/60 transition cursor-pointer group"
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              removeAppNotification?.(safeId(n));
+            }}
+            className="absolute top-3 right-3 text-xs text-[var(--text-muted)] hover:text-red-500"
+          >
+            ✕
+          </button>
 
-                  <div className="flex gap-2 mt-3">
-                    <button
-                      onClick={() =>
-                        acceptConnectionRequest?.(
-                          n.sender?._id || n.sender
-                        )
-                      }
-                      className="flex-1 bg-green-500 hover:bg-green-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
-                    >
-                      ACCEPT
-                    </button>
+          <p className="text-[11px] font-bold uppercase tracking-wide text-green-500">
+            {isAccepted ? "Connection Accepted" : "New Connection Request"}
+          </p>
 
-                    <button
-                      onClick={() =>
-                        declineConnectionRequest?.(
-                          n.sender?._id || n.sender
-                        )
-                      }
-                      className="flex-1 bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase py-1.5 rounded-full transition"
-                    >
-                      CANCEL
-                    </button>
-                  </div>
+          <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/user/${userId}`);
+                onClose?.();
+              }}
+              className="text-green-600 hover:underline cursor-pointer"
+            >
+              {userName}
+            </span>
+          </p>
 
-                  <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
-                    {timeAgo(n.createdAt)}
-                  </span>
-                </div>
-              );
-            })
-          ))}
+          <p className="text-xs text-[var(--text-secondary)] mt-1">
+            {isAccepted
+              ? "You are now connected. Start building something great together 🚀"
+              : "Sent you a collaboration request. Tap to review in Invites."}
+          </p>
+
+          <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
+            {timeAgo(n.createdAt)}
+          </span>
+        </div>
+      );
+    })
+  ))}
       </div>
 
       {/* VIEW ALL */}
