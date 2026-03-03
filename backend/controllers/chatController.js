@@ -39,7 +39,7 @@ const formatChat = (chat, currentUserId) => {
         messages: [], // Messages will be fetched separately or populated if needed
         lastMessagePreview: chat.lastMessage?.text || (chat.isTeam ? "Team created" : "Start chatting"),
         lastMessageTimestamp: chat.lastMessage?.timestamp || chat.createdAt,
-        unreadCount: 0, // Logic can be added later
+        unreadCount: chat.unreadCounts?.get(currentUserId.toString()) || 0,
         isTeam: chat.isTeam,
         description: chat.description,
         adminId: chat.admin ? chat.admin.toString() : null,
@@ -184,13 +184,28 @@ const sendMessage = async (req, res) => {
         var message = await Message.create(newMessage);
 
         // Update Last Message in Conversation
-        await Conversation.findByIdAndUpdate(chatId, {
-            lastMessage: {
-                text: text || (type === 'image' ? 'Sent an image' : 'Sent a file'),
-                sender: req.user._id,
-                timestamp: new Date()
-            }
-        });
+        const conversation = await Conversation.findById(chatId);
+
+if (!conversation) {
+  return res.status(404).json({ message: "Chat not found" });
+}
+
+// Update last message
+conversation.lastMessage = {
+  text: text || (type === 'image' ? 'Sent an image' : 'Sent a file'),
+  sender: req.user._id,
+  timestamp: new Date()
+};
+
+// 🔥 INCREMENT UNREAD FOR OTHER USERS
+conversation.users.forEach(userId => {
+  if (userId.toString() !== req.user._id.toString()) {
+    const current = conversation.unreadCounts.get(userId.toString()) || 0;
+    conversation.unreadCounts.set(userId.toString(), current + 1);
+  }
+});
+
+await conversation.save();
 
         // Populate sender details for frontend
         message = await message.populate("sender", "name profilePictureUrl");
@@ -257,17 +272,16 @@ const deleteConversation = async (req, res) => {
 exports.markChatAsRead = async (req, res) => {
   try {
     const { chatId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
-    const chat = await Chat.findById(chatId);
-    if (!chat) {
+    const conversation = await Conversation.findById(chatId);
+    if (!conversation) {
       return res.status(404).json({ success: false, message: 'Chat not found' });
     }
 
-    // 🔥 SIMPLE VERSION (if single unreadCount field)
-    chat.unreadCount = 0;
+    conversation.unreadCounts.set(userId.toString(), 0);
 
-    await chat.save();
+    await conversation.save();
 
     res.json({ success: true });
   } catch (error) {
@@ -275,7 +289,6 @@ exports.markChatAsRead = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
-
 module.exports = {
   fetchConversations,
   createDirectChat,
