@@ -32,6 +32,7 @@ const sendRequest = async (req, res) => {
             receiver: targetUser._id,
             sender: currentUser._id,
             type: "CONNECTION"
+            status: "PENDING"
         });
 
         res.json({ success: true, message: 'Request sent' });
@@ -69,6 +70,13 @@ const acceptRequest = async (req, res) => {
 
         await currentUser.save();
         await requesterUser.save();
+
+await Notification.create({
+    receiver: requesterUser._id, // jisne request bheja tha
+    sender: currentUser._id,     // jisne accept kiya
+    type: "CONNECTION",
+    status: "ACCEPTED"
+});
 
         res.json({ success: true, message: 'Request accepted' });
     } catch (error) {
