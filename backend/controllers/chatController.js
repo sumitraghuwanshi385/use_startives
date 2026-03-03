@@ -253,6 +253,28 @@ const deleteConversation = async (req, res) => {
   }
 };
 
+exports.markChatAsRead = async (req, res) => {
+  try {
+    const { chatId } = req.params;
+    const userId = req.user.id;
+
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      return res.status(404).json({ success: false, message: 'Chat not found' });
+    }
+
+    // 🔥 SIMPLE VERSION (if single unreadCount field)
+    chat.unreadCount = 0;
+
+    await chat.save();
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('markChatAsRead error:', error);
+    res.status(500).json({ success: false });
+  }
+};
+
 module.exports = {
   fetchConversations,
   createDirectChat,
