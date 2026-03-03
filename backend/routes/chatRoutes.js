@@ -29,6 +29,9 @@ router.post('/:chatId/messages', protect, sendMessage);
 
 router.delete('/:chatId/messages', protect, clearMessages);
 
+// 🔥 ADD THIS ROUTE HERE
+router.patch('/:chatId/read', protect, require('../controllers/chatController').markChatAsRead);
+
 router.delete('/:chatId', protect, deleteConversation);
 
 module.exports = router;
