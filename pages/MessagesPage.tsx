@@ -542,12 +542,12 @@ const confirmDeleteChat = async () => {
       <div className="p-6 shrink-0">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">
   Messenger
-</h2>
+</h1>
 
-<p className="text-sm font-medium text-[var(--text-muted)] mt-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
-  your command center
+<p className="text-lg text-[var(--text-secondary)] font-medium mt-1">
+  Your command center for conversations
 </p>
 </div>
 
