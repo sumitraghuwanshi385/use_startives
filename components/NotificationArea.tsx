@@ -81,9 +81,17 @@ useEffect(() => {
   }
 }, [storageKey]);
 
+useEffect(() => {
+  console.log("Updated connectionRequests:", currentUser?.connectionRequests);
+}, [currentUser?.connectionRequests]);
 
-const pendingRequests = (currentUser?.connectionRequests || [])
-  .filter(id => !dismissedRequests.includes(id));
+const connectionIds = currentUser?.connectionRequests 
+  ? [...currentUser.connectionRequests] 
+  : [];
+
+const pendingRequests = connectionIds.filter(
+  id => !dismissedRequests.includes(id)
+);
 
 if (pendingRequests.length === 0 && notifications.length === 0) {
   return null;
