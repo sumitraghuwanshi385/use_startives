@@ -672,10 +672,10 @@ const confirmDeleteChat = async () => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0 relative">
+    <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0 relative bg-white dark:bg-black">
 
   {/* DOTTED BG */}
-  <div className="absolute inset-0 pointer-events-none opacity-20 dot-pattern-bg"></div>
+  <div className="absolute inset-0 pointer-events-none opacity-50 dot-pattern-bg"></div>
 
   <div className="relative z-10">
       {selectedChat.messages?.length ? (
