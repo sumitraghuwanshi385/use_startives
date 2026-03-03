@@ -822,13 +822,30 @@ useEffect(() => {
 }, [token, currentUser]);
 
 useEffect(() => {
-  if (!token || !currentUser) return;
+  if (!token) return;
 
-  fetchAllUsers();      // 👈 ADD THIS
-  fetchConnections();   // 👈 ADD THIS
+  const loadUser = async () => {
+    try {
+      const res = await axios.get('/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data?.success) {
+        setCurrentUser(res.data.user);
+      }
+    } catch (err) {
+      console.error("User refresh failed");
+    }
+  };
+
+  loadUser();
+
+  fetchAllUsers();
+  fetchConnections();
   fetchApplications();
+  fetchNotifications();
 
-}, [token, currentUser]);
+}, [token]);
 
 useEffect(() => {
   if (!token || !currentUser) return;
