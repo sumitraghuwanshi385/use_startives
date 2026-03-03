@@ -2,7 +2,6 @@ const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const User = require('../models/User');
 const mongoose = require('mongoose');
-const Conversation = require('../models/Conversation');
 
 // --- Helper: Format Chat for Frontend ---
 const formatChat = (chat, currentUserId) => {
@@ -299,4 +298,5 @@ module.exports = {
   sendMessage,
   clearMessages,
   deleteConversation,
+markChatAsRead
 };
