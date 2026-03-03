@@ -2,7 +2,7 @@ const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const User = require('../models/User');
 const mongoose = require('mongoose');
-const Chat = require('../models/chatModel');
+const Conversation = require('../models/Conversation');
 
 // --- Helper: Format Chat for Frontend ---
 const formatChat = (chat, currentUserId) => {
@@ -274,14 +274,15 @@ exports.markChatAsRead = async (req, res) => {
     const { chatId } = req.params;
     const userId = req.user._id;
 
-    const conversation = await Conversation.findById(chatId);
-    if (!conversation) {
+    const chat = await Conversation.findById(chatId);
+    if (!chat) {
       return res.status(404).json({ success: false, message: 'Chat not found' });
     }
 
-    conversation.unreadCounts.set(userId.toString(), 0);
-
-    await conversation.save();
+    if (chat.unreadCounts) {
+      chat.unreadCounts.set(userId.toString(), 0);
+      await chat.save();
+    }
 
     res.json({ success: true });
   } catch (error) {
@@ -289,6 +290,7 @@ exports.markChatAsRead = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
+
 module.exports = {
   fetchConversations,
   createDirectChat,
