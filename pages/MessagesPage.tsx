@@ -683,13 +683,13 @@ const confirmDeleteChat = async () => {
           const isMe = msg.senderId === currentUser.id;
 
           return (
-            <div key={i} className={`flex mb-3 ${isMe ? 'justify-end' : 'justify-start'}`}>
+            <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
 
               <div
-                className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm backdrop-blur-lg border shadow-lg transition-all duration-300 ${
+                className={`max-w-[75%] rounded-2xl overflow-hidden ${
   isMe
-    ? 'bg-gradient-to-br from-purple-500/80 to-fuchsia-600/80 text-white border-white/10 rounded-br-none'
-    : 'bg-white/10 text-white border-white/10 rounded-bl-none'
+    ? 'bg-purple-600 text-white rounded-br-none'
+    : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
 }`}
               >
 
