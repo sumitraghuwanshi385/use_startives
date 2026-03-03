@@ -244,16 +244,9 @@ const connections = sorted.filter(
           </p>
 
           <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/user/${userId}`);
-                onClose?.();
-              }}
-              className="text-green-600 hover:underline cursor-pointer"
-            >
-              {userName}
-            </span>
+            <span className="text-[var(--text-primary)] font-semibold">
+  {userName}
+</span>
           </p>
 
           <p
