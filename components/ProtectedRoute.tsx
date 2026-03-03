@@ -18,8 +18,8 @@ return null;
 }
 
 // Check token first, then currentUser to ensure persistence check is complete
-if (!token && !currentUser) {
-return <Navigate to="/login" state={{ from: location }} replace />;
+if (!currentUser) {
+  return <Navigate to="/login" replace />;
 }
 
 return children;
