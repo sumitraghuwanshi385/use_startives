@@ -150,6 +150,26 @@ const fetchNotifications = async () => {
   }
 }, [token]);
 
+
+const fetchCurrentUser = async () => {
+  const t = getAuthToken();
+  if (!t) return;
+
+  try {
+    const res = await axios.get('/api/auth/me', {
+      headers: { Authorization: `Bearer ${t}` }
+    });
+
+    if (res.data?.success) {
+      const updatedUser = res.data.user;
+      setCurrentUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  } catch (err) {
+    console.error("Fetch current user failed", err);
+  }
+};
+
 const fetchAllUsers = async () => {
   const t = getAuthToken();
   if (!t) return;
@@ -836,7 +856,7 @@ useEffect(() => {
     toggleSaveProject, isProjectSaved, getUserById, removeConnection,
 declineConnectionRequest,
     fetchUserProfile,
-    markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, 
+    markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, fetchCurrentUser,
     sentConnectionRequests, connectedUserIds, sendConnectionRequest,
     acceptConnectionRequest,
     isRequestPending, isUserConnected,
