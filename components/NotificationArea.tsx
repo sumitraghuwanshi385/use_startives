@@ -62,100 +62,44 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, currentUser } = useAppContext();
+  const { notifications, removeNotification, currentUser } = useAppContext();
 
-const storageKey = currentUser?.id
-  ? `dismissedConnectionToasts_${currentUser.id}`
-  : null;
+  const pendingRequests = currentUser?.connectionRequests || [];
 
-const [dismissedRequests, setDismissedRequests] = useState<string[]>([]);
-
-useEffect(() => {
-  if (!storageKey) return;
-
-  try {
-    const stored = localStorage.getItem(storageKey);
-    setDismissedRequests(stored ? JSON.parse(stored) : []);
-  } catch {
-    setDismissedRequests([]);
+  if (pendingRequests.length === 0 && notifications.length === 0) {
+    return null;
   }
-}, [storageKey]);
 
-useEffect(() => {
-  console.log("Updated connectionRequests:", currentUser?.connectionRequests);
-}, [currentUser?.connectionRequests]);
+  return (
+    <div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
 
-const connectionIds = currentUser?.connectionRequests 
-  ? [...currentUser.connectionRequests] 
-  : [];
+      {pendingRequests.map((requestId: string) => (
+        <ConnectionRequestToast
+          key={requestId}
+          requesterId={requestId}
+          onDismiss={() => {}}
+        />
+      ))}
 
-const pendingRequests = connectionIds.filter(
-  id => !dismissedRequests.includes(id)
-);
+      {notifications.map((notification) => (
+        <div
+          key={notification.id}
+          className="pointer-events-auto flex items-center gap-2 px-5 py-2 rounded-full shadow-lg"
+        >
+          <p className="text-[10px] font-black uppercase tracking-widest">
+            {notification.message}
+          </p>
 
-const debugText = `
-User: ${currentUser?.name}
-Requests: ${JSON.stringify(currentUser?.connectionRequests)}
-Pending: ${JSON.stringify(pendingRequests)}
-`;
+          <button
+            onClick={() => removeNotification(notification.id)}
+            className="ml-1 w-4 h-4 flex items-center justify-center"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
 
-if (pendingRequests.length === 0 && notifications.length === 0) {
-  return null;
-}
-
-return (
-<div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
-
-<div className="bg-black text-white text-[10px] p-2 rounded mb-2 max-w-[320px] break-words">
-  {debugText}
-</div>
-
-  {pendingRequests.map((requestId: string) => (  
-  <ConnectionRequestToast
-    key={requestId}
-    requesterId={requestId}
-    onDismiss={(id) => {
-      const updated = [...dismissedRequests, id];
-      setDismissedRequests(updated);
-
-      if (storageKey) {
-        localStorage.setItem(storageKey, JSON.stringify(updated));
-      }
-    }}
-  />
-))}
-
-  {notifications.map((notification) => (  
-    <div  
-      key={notification.id}  
-      role="alert"  
-      aria-live="assertive"  
-      className={`pointer-events-auto flex items-center gap-2 px-5 py-2 rounded-full shadow-lg animate-in slide-in-from-right-full duration-300
-        ${notification.type === 'error' 
-          ? 'bg-red-500 text-white' 
-          : notification.type === 'success' 
-          ? 'button-gradient text-white'
-          : 'bg-white dark:bg-neutral-900 text-[var(--text-primary)] border border-gray-200 dark:border-neutral-700'
-        }`}  
-    >  
-
-      <p className="text-[10px] font-black uppercase tracking-widest">
-        {notification.message}
-      </p>  
-        
-      <button  
-        onClick={() => removeNotification(notification.id)}  
-        className="ml-1 w-4 h-4 flex items-center justify-center rounded-full hover:bg-black/20 transition text-[11px]"  
-        aria-label="Close notification"  
-      >  
-        ✕  
-      </button>  
-
-    </div>  
-  ))}  
-
-</div>
-);
+    </div>
+  );
 };
-
 export default NotificationArea;
