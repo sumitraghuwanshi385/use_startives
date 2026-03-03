@@ -256,11 +256,17 @@ const connections = sorted.filter(
             </span>
           </p>
 
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
-            {isAccepted
-              ? "You are now connected. Start building something great together 🚀"
-              : "Sent you a collaboration request. Tap to review in Invites."}
-          </p>
+          <p
+  className={`text-xs mt-1 ${
+    isAccepted
+      ? "text-purple-600 font-medium"
+      : "text-[var(--text-secondary)]"
+  }`}
+>
+  {isAccepted
+    ? "You are now connected. Start building something great together."
+    : "Sent you a collaboration request. Tap to review in Invites."}
+</p>
 
           <span className="absolute bottom-3 right-4 text-[10px] text-[var(--text-muted)]">
             {timeAgo(n.createdAt)}
