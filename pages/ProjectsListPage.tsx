@@ -382,33 +382,39 @@ const displayIdeas =
     
             </div>
 
-            <div className="flex items-center gap-6 
-  bg-[var(--background-tertiary)] 
-  border border-[var(--border-primary)] 
-  px-8 py-3 
-  rounded-full 
-  shadow-sm"
+          <div className="bg-white dark:bg-neutral-900 
+  border-2 border-[var(--border-primary)] 
+  rounded-[2.5rem] 
+  px-10 py-5 
+  relative overflow-hidden 
+  mt-4"
 >
-  <div className="flex flex-col items-center min-w-[100px]">
-    <p className="text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-      Total Projects
-    </p>
-    <p className="text-lg font-black text-[var(--text-primary)]">
-      {totalProjects}
-    </p>
-  </div>
+  {/* Subtle Gradient Glow (Same Asset Page Style) */}
+  <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full -mr-24 -mt-24 pointer-events-none"></div>
 
-  <div className="w-px h-6 bg-[var(--border-primary)]"></div>
+  <div className="flex items-center justify-center gap-10 relative z-10">
 
-  <div className="flex flex-col items-center min-w-[100px]">
-    <p className="text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-      New This Week
-    </p>
-    <p className="text-lg font-black text-[var(--text-primary)]">
-      {newThisWeek}
-    </p>
+    <div className="flex flex-col items-center min-w-[120px]">
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] mb-2">
+        Total Projects
+      </p>
+      <p className="text-3xl font-black tracking-tighter italic text-[var(--text-primary)]">
+        {totalProjects}
+      </p>
+    </div>
+
+    <div className="w-px h-12 bg-[var(--border-primary)]"></div>
+
+    <div className="flex flex-col items-center min-w-[120px]">
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] mb-2">
+        New This Week
+      </p>
+      <p className="text-3xl font-black tracking-tighter italic text-[var(--text-primary)]">
+        {newThisWeek}
+      </p>
+    </div>
+
   </div>
-</div>
           </div>
         </div>
 
