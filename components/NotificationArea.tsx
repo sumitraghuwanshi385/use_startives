@@ -62,7 +62,7 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, currentUser, fetchConnections } = useAppContext();
+const { notifications, removeNotification, appNotifications } = useAppContext();
 
 const storageKey = currentUser?.id
   ? `dismissedConnectionToasts_${currentUser.id}`
@@ -92,13 +92,16 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, [currentUser, fetchConnections]);
 
-const pendingRequests = Array.isArray(currentUser?.connectionRequests)
-  ? currentUser.connectionRequests.filter(
-      id => !dismissedRequests.includes(id)
-    )
-  : [];
+const pendingRequests = (appNotifications || [])
+  .filter((n: any) => n.type === "CONNECTION")
+  .filter((n: any) =>
+    !dismissedRequests.includes(n.sender?._id || n.sender)
+  )
+  .map((n: any) => n.sender?._id || n.sender);
 
-if (!currentUser) return null;
+if (pendingRequests.length === 0 && notifications.length === 0) {
+  return null;
+}
 
 return (
 <div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
