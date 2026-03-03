@@ -62,7 +62,8 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, appNotifications } = useAppContext();
+const { notifications, removeNotification, appNotifications, currentUser,
+  fetchConnections } = useAppContext();
 
 const storageKey = currentUser?.id
   ? `dismissedConnectionToasts_${currentUser.id}`
