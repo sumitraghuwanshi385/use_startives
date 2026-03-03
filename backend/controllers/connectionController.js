@@ -29,11 +29,12 @@ const sendRequest = async (req, res) => {
 
         // ✅ NOTIFICATION HERE (INSIDE TRY BLOCK)
         await Notification.create({
-            receiver: targetUser._id,
-            sender: currentUser._id,
-            type: "CONNECTION"
-            status: "PENDING"
-        });
+    receiver: targetUser._id,
+    sender: currentUser._id,
+    type: "CONNECTION",
+    status: "PENDING",
+    message: `${currentUser.name} sent you a connection request`
+});
 
         res.json({ success: true, message: 'Request sent' });
 
@@ -69,13 +70,22 @@ const acceptRequest = async (req, res) => {
         }
 
         await currentUser.save();
-        await requesterUser.save();
+        await requesterUser.save()
+
+// 🔥 1️⃣ Remove old pending notification
+await Notification.deleteMany({
+    receiver: currentUser._id,
+    sender: requesterUser._id,
+    type: "CONNECTION",
+    status: "PENDING"
+});
 
 await Notification.create({
-    receiver: requesterUser._id, // jisne request bheja tha
-    sender: currentUser._id,     // jisne accept kiya
+    receiver: requesterUser._id, 
+    sender: currentUser._id,
     type: "CONNECTION",
-    status: "ACCEPTED"
+    status: "ACCEPTED",
+    message: `${currentUser.name} accepted your connection request`
 });
 
         res.json({ success: true, message: 'Request accepted' });
