@@ -374,37 +374,48 @@ const displayIdeas =
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
       <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
-        <div className="text-left mb-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">Discover Projects</h1>
-              <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
-              
+        
+<div className="text-left mb-6">
+  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
 
-            <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none relative">
-              <div className="flex items-center justify-center gap-8 relative z-10 text-center">
+    {/* LEFT SIDE */}
+    <div>
+      <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">
+        Discover Projects
+      </h1>
+      <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">
+        Find your next challenge and build something incredible.
+      </p>
+    </div>
 
-  <div className="flex flex-col items-center justify-center min-w-[100px]">
-    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-      Total Projects
-    </p>
-    <p className="text-sm font-black">
-      {totalProjects}
-    </p>
+    {/* RIGHT SIDE PILL */}
+    <div className="flex items-center gap-6 button-gradient text-white px-6 py-2.5 rounded-full border border-white/10 inline-flex shadow-none relative">
+      <div className="flex items-center justify-center gap-8 relative z-10 text-center">
+
+        <div className="flex flex-col items-center justify-center min-w-[100px]">
+          <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+            Total Projects
+          </p>
+          <p className="text-sm font-black">
+            {totalProjects}
+          </p>
+        </div>
+
+        <div className="w-px h-5 bg-white/20"></div>
+
+        <div className="flex flex-col items-center justify-center min-w-[100px]">
+          <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+            New This Week
+          </p>
+          <p className="text-sm font-black">
+            {newThisWeek}
+          </p>
+        </div>
+
+      </div>
+    </div>
+
   </div>
-
-  <div className="w-px h-5 bg-white/20"></div>
-
-  <div className="flex flex-col items-center justify-center min-w-[100px]">
-    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-      New This Week
-    </p>
-    <p className="text-sm font-black">
-      {newThisWeek}
-    </p>
-  </div>
-</div>
-</div>
 </div>
 
         {/* Search */}
