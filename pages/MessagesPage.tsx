@@ -590,24 +590,24 @@ const confirmDeleteChat = async () => {
       </div>
 
       {/* Chat List */}
-      <div className="flex-1 overflow-y-auto px-3 pb-4">
-        {filteredChats.map(chat => (
-          <div
+      <div
   key={chat.id}
   onClick={() => setSelectedChatId(chat.id)}
-  className={`relative p-4 mb-3 cursor-pointer rounded-2xl transition-all duration-200 border
+  className={`group relative p-5 mb-4 cursor-pointer rounded-3xl transition-all duration-300 border shadow-sm
+  
   ${
     chat.isTeam
-      ? 'bg-purple-50 border-purple-200'
-      : 'bg-white border-neutral-200'
+      ? 'bg-gradient-to-br from-purple-100 to-purple-50 border-purple-200 dark:from-purple-900/40 dark:to-purple-800/30 dark:border-purple-700'
+      : 'bg-white border-neutral-200 dark:bg-neutral-900 dark:border-neutral-700'
   }
+
   ${
     selectedChatId === chat.id
-      ? 'border-purple-400 shadow-md'
-      : 'hover:shadow-sm'
-  }
-  dark:bg-neutral-900 dark:border-neutral-700`}'}
+      ? 'ring-2 ring-purple-400 shadow-md scale-[1.02]'
+      : 'hover:shadow-lg hover:scale-[1.02]'
+  }`}
 >
+
              
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
