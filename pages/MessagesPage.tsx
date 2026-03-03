@@ -515,7 +515,7 @@ const confirmDeleteChat = async () => {
   }
 
   return (
-  <div className="flex h-[calc(100vh-72px)] w-full bg-[var(--component-background)] overflow-hidden">
+  <div className="flex h-screen w-full bg-[var(--component-background)] overflow-hidden">
 
     {/* ================= SIDEBAR ================= */}
     <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] bg-white dark:bg-black/20 flex flex-col ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
@@ -672,10 +672,10 @@ const confirmDeleteChat = async () => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0 relative bg-white dark:bg-black">
+    <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0 relative bg-white dark:bg-black pb-24">
 
   {/* DOTTED BG */}
-  <div className="absolute inset-0 pointer-events-none opacity-50 dot-pattern-bg"></div>
+  <div className="absolute inset-0 pointer-events-none opacity-70 dot-pattern-bg"></div>
 
   <div className="relative z-10">
       {selectedChat.messages?.length ? (
@@ -714,7 +714,6 @@ const confirmDeleteChat = async () => {
           hour: '2-digit',
           minute: '2-digit',
         })}
-      ✓
     </div>
 
   </div>
