@@ -121,6 +121,22 @@ useEffect(() => {
   };
 }, []);
 
+useEffect(() => {
+  const handleClickOutsideBell = (event: MouseEvent) => {
+    if (
+      bellRef.current &&
+      !bellRef.current.contains(event.target as Node)
+    ) {
+      setShowNotifications(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutsideBell);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutsideBell);
+  };
+}, []);
 
   useEffect(() => {
     setProfileDropdownOpen(false);
@@ -133,10 +149,14 @@ useEffect(() => {
   };
   
   const handleMenuClick = () => {
-    setIsMenuAnimating(true);
-    setTimeout(() => setIsMenuAnimating(false), 300);
-    setProfileDropdownOpen(prev => !prev);
-  };
+  setIsMenuAnimating(true);
+  setTimeout(() => setIsMenuAnimating(false), 300);
+
+  // 🔔 Close notification when menu opens
+  setShowNotifications(false);
+
+  setProfileDropdownOpen(prev => !prev);
+};
   
 const handleBellClick = async () => {
   const nextState = !showNotifications;
