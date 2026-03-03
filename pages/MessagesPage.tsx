@@ -258,7 +258,25 @@ const [isAttachOpen, setIsAttachOpen] = useState(false);
   const location = useLocation();
 
   const selectedChat = useMemo(() => chats.find(c => c.id === selectedChatId), [chats, selectedChatId]);
+
   const filteredChats = useMemo(() => chats.filter(c => (activeType === 'teams' ? c.isTeam : !c.isTeam)), [chats, activeType]);
+
+// ===== DATE FORMATTER =====
+const formatDateLabel = (dateString: string) => {
+  const msgDate = new Date(dateString);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  if (msgDate.toDateString() === today.toDateString()) return "Today";
+  if (msgDate.toDateString() === yesterday.toDateString()) return "Yesterday";
+
+  return msgDate.toLocaleDateString([], {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
 
   const authHeaders = useMemo(() => {
     const t = token || localStorage.getItem('authToken');
@@ -679,8 +697,32 @@ const confirmDeleteChat = async () => {
 
   <div className="relative z-10">
       {selectedChat.messages?.length ? (
-        selectedChat.messages.map((msg: any, i: number) => {
-          const isMe = msg.senderId === currentUser.id;
+       selectedChat.messages.map((msg: any, i: number) => {
+  const isMe = msg.senderId === currentUser.id;
+
+  const currentDate = msg.timestamp
+    ? new Date(msg.timestamp).toDateString()
+    : null;
+
+  const prevDate =
+    i > 0 && selectedChat.messages[i - 1].timestamp
+      ? new Date(selectedChat.messages[i - 1].timestamp).toDateString()
+      : null;
+
+  const showDateSeparator = currentDate !== prevDate;
+
+  return (
+    <>
+      {/* DATE SEPARATOR */}
+      {showDateSeparator && msg.timestamp && (
+        <div className="flex justify-center my-4">
+          <div className="px-3 py-1 text-[11px] rounded-full bg-neutral-800/70 text-white backdrop-blur-md border border-white/10">
+            {formatDateLabel(msg.timestamp)}
+          </div>
+        </div>
+      )}
+
+      <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
 
           return (
             <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
