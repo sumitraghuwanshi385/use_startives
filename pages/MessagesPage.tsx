@@ -791,6 +791,7 @@ const confirmDeleteChat = async () => {
       <div ref={messagesEndRef} />
     </div>
 
+</div>
 
     {/* ===== INPUT SECTION ===== */}
     <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black shrink-0 sticky bottom-0">
