@@ -595,17 +595,18 @@ const confirmDeleteChat = async () => {
           <div
   key={chat.id}
   onClick={() => setSelectedChatId(chat.id)}
-  className={`group relative p-5 mb-4 cursor-pointer rounded-3xl transition-all duration-300 border backdrop-blur-xl shadow-sm
+  className={`relative p-4 mb-3 cursor-pointer rounded-2xl transition-all duration-200 border
   ${
     chat.isTeam
-      ? 'bg-gradient-to-br from-purple-100 to-purple-50 border-purple-200'
-      : 'bg-white/80 border-neutral-200'
+      ? 'bg-purple-50 border-purple-200'
+      : 'bg-white border-neutral-200'
   }
   ${
     selectedChatId === chat.id
-      ? 'ring-2 ring-purple-400 shadow-md scale-[1.02]'
-      : 'hover:shadow-lg hover:scale-[1.02]'
-  }`}
+      ? 'border-purple-400 shadow-md'
+      : 'hover:shadow-sm'
+  }
+  dark:bg-neutral-900 dark:border-neutral-700`}
 >
              
             <div className="flex items-center gap-3">
