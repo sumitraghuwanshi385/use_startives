@@ -31,8 +31,9 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
   const [authLoadingState, setAuthLoadingState] = useState({ isLoading: false, messages: [] as string[] });
   
   const [showOnboardingModal, setShowOnboardingModal] = useState(false);
-  const [pendingVerificationUser, setPendingVerificationUser] = useState<{email: string; code: string} | null>(null);
-  
+  const [pendingVerificationUser, setPendingVerificationUser] =
+  useState<{email: string; code: string; password: string} | null>(null);
+
   const [sentConnectionRequests, setSentConnectionRequests] = useState<string[]>([]);
   const [connectedUserIds, setConnectedUserIds] = useState<string[]>([]);
 
@@ -235,39 +236,62 @@ await fetchAllUsers();
   };
 
   const signup = async (email: string, password?: string): Promise<boolean> => {
-    setAuthLoadingState({ isLoading: true, messages: ["Creating account..."]});
-    try {
-      const response = await axios.post('/api/auth/signup', { email, password });
-      if (response.data.success) {
-        setPendingVerificationUser({ email, code: response.data.verificationCode });
-        addNotificationCallBack(`Verification code sent to ${email}.`, 'info');
-        return true;
-      }
-      addNotificationCallBack(response.data.message || 'Signup failed.', 'error');
+  setAuthLoadingState({ isLoading: true, messages: ["Creating account..."] });
+
+  try {
+    const response = await axios.post('/api/auth/signup', { email, password });
+
+    if (!response.data?.success) {
+      addNotificationCallBack(response.data?.message || 'Signup failed.', 'error');
       return false;
-    } catch (error: any) {
-      console.error("Signup API Error:", error);
-      addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
-      return false;
-    } finally {
-      setAuthLoadingState({ isLoading: false, messages: [] });
     }
-  };
-  
+
+    // ✅ store email + code + password
+    setPendingVerificationUser({
+      email,
+      code: response.data.verificationCode,
+      password: password || ""
+    });
+
+    addNotificationCallBack(`Verification code sent to ${email}.`, 'info');
+    return true;
+
+  } catch (error: any) {
+    addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
+    return false;
+  } finally {
+    setAuthLoadingState({ isLoading: false, messages: [] });
+  }
+};
+
   const verifyAndLogin = async (code: string): Promise<boolean> => {
-    setAuthLoadingState({ isLoading: true, messages: ["Verifying..."]});
-    try {
-        if (pendingVerificationUser && pendingVerificationUser.code === code) {
-            await login(pendingVerificationUser.email, 'password123', true); 
-            setPendingVerificationUser(null);
-            return true;
-        }
-        addNotificationCallBack("Invalid verification code.", "error");
-        return false;
-    } finally {
-        setAuthLoadingState({ isLoading: false, messages: [] });
+  setAuthLoadingState({ isLoading: true, messages: ["Verifying..."] });
+
+  try {
+    if (!pendingVerificationUser) return false;
+
+    if (pendingVerificationUser.code !== code) {
+      addNotificationCallBack("Invalid verification code.", "error");
+      return false;
     }
-  };
+
+    // ✅ use REAL password
+    const success = await login(
+      pendingVerificationUser.email,
+      pendingVerificationUser.password,
+      true
+    );
+
+    if (success) {
+      setPendingVerificationUser(null);
+    }
+
+    return success;
+
+  } finally {
+    setAuthLoadingState({ isLoading: false, messages: [] });
+  }
+};
 
   const logout = () => {
     localStorage.removeItem('authToken');
