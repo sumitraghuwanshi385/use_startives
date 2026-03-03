@@ -590,7 +590,9 @@ const confirmDeleteChat = async () => {
       </div>
 
       {/* Chat List */}
-      <div
+      <div className="flex-1 overflow-y-auto px-3 pb-4">
+        {filteredChats.map(chat => (
+          <div
   key={chat.id}
   onClick={() => setSelectedChatId(chat.id)}
   className={`group relative p-5 mb-4 cursor-pointer rounded-3xl transition-all duration-300 border shadow-sm
@@ -607,7 +609,6 @@ const confirmDeleteChat = async () => {
       : 'hover:shadow-lg hover:scale-[1.02]'
   }`}
 >
-
              
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
