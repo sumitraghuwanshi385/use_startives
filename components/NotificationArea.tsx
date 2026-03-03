@@ -93,9 +93,11 @@ const pendingRequests = connectionIds.filter(
   id => !dismissedRequests.includes(id)
 );
 
-console.log("CURRENT USER:", currentUser);
-console.log("CONNECTION REQUESTS:", currentUser?.connectionRequests);
-console.log("PENDING:", pendingRequests);
+const debugText = `
+User: ${currentUser?.name}
+Requests: ${JSON.stringify(currentUser?.connectionRequests)}
+Pending: ${JSON.stringify(pendingRequests)}
+`;
 
 if (pendingRequests.length === 0 && notifications.length === 0) {
   return null;
@@ -103,6 +105,10 @@ if (pendingRequests.length === 0 && notifications.length === 0) {
 
 return (
 <div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
+
+<div className="bg-black text-white text-[10px] p-2 rounded mb-2 max-w-[320px] break-words">
+  {debugText}
+</div>
 
   {pendingRequests.map((requestId: string) => (  
   <ConnectionRequestToast
