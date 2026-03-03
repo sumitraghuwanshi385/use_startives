@@ -606,7 +606,7 @@ const confirmDeleteChat = async () => {
       ? 'border-purple-400 shadow-md'
       : 'hover:shadow-sm'
   }
-  dark:bg-neutral-900 dark:border-neutral-700`}
+  dark:bg-neutral-900 dark:border-neutral-700`}'}
 >
              
             <div className="flex items-center gap-3">
