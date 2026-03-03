@@ -62,7 +62,7 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, currentUser } = useAppContext();
+const { notifications, removeNotification, currentUser, fetchConnections } = useAppContext();
 
 const storageKey = currentUser?.id
   ? `dismissedConnectionToasts_${currentUser.id}`
@@ -80,6 +80,17 @@ useEffect(() => {
     setDismissedRequests([]);
   }
 }, [storageKey]);
+
+// 🔥 Refresh connectionRequests every 5 seconds (safe, won't break invites)
+useEffect(() => {
+  if (!currentUser) return;
+
+  const interval = setInterval(() => {
+    fetchConnections();
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, [currentUser, fetchConnections]);
 
 const pendingRequests = (currentUser?.connectionRequests || [])
   .filter(id => !dismissedRequests.includes(id));
