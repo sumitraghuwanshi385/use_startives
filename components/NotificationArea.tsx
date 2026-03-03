@@ -62,17 +62,9 @@ return (
 // ================= MAIN NOTIFICATION AREA =================
 
 const NotificationArea: React.FC = () => {
-const { notifications, removeNotification, currentUser, fetchCurrentUser } = useAppContext();
+const { notifications, removeNotification, appNotifications } = useAppContext();
 
-useEffect(() => {
-  if (!currentUser) return;
-
-  const interval = setInterval(() => {
-    fetchCurrentUser();
-  }, 5000); // every 5 sec
-
-  return () => clearInterval(interval);
-}, [currentUser]);
+const { currentUser } = useAppContext();
 
 const storageKey = currentUser?.id
   ? `dismissedConnectionToasts_${currentUser.id}`
@@ -95,13 +87,14 @@ useEffect(() => {
   console.log("Updated connectionRequests:", currentUser?.connectionRequests);
 }, [currentUser?.connectionRequests]);
 
-const connectionIds = currentUser?.connectionRequests 
-  ? [...currentUser.connectionRequests] 
-  : [];
-
-const pendingRequests = connectionIds.filter(
-  id => !dismissedRequests.includes(id)
-);
+const pendingRequests = (appNotifications || [])
+  .filter((n: any) =>
+    String(n.type).toUpperCase() === "CONNECTION"
+  )
+  .filter((n: any) =>
+    !dismissedRequests.includes(n.sender?._id || n.sender)
+  )
+  .map((n: any) => n.sender?._id || n.sender);
 
 if (pendingRequests.length === 0 && notifications.length === 0) {
   return null;
