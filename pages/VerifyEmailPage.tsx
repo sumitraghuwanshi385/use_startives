@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { ChevronLeftIcon } from '../constants';
 
 const VerifyEmailPage: React.FC = () => {
-  const { verifyAndLogin, addNotification } = useAppContext();
+  const { verifyAndLogin, addNotification, currentUser } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [code, setCode] = useState<string[]>(new Array(6).fill(''));
@@ -17,8 +17,12 @@ const VerifyEmailPage: React.FC = () => {
   const isResetFlow = location.state?.fromReset === true;
 
   useEffect(() => {
+  if (currentUser) {
+    navigate('/dashboard', { replace: true });
+  } else {
     inputsRef.current[0]?.focus();
-  }, []);
+  }
+}, [currentUser, navigate]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     const value = e.target.value;
