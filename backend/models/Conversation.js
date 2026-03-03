@@ -9,6 +9,13 @@ const conversationSchema = mongoose.Schema({
     admin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Who created the team
     
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // All members
+
+
+unreadCounts: {
+    type: Map,
+    of: Number,
+    default: {}
+},
     
     lastMessage: {
         text: String,
