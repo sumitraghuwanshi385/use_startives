@@ -672,8 +672,12 @@ const confirmDeleteChat = async () => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)] min-h-0">
+    <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-[var(--background-tertiary)] min-h-0 relative">
 
+  {/* DOTTED BG */}
+  <div className="absolute inset-0 pointer-events-none opacity-10 dot-pattern-bg"></div>
+
+  <div className="relative z-10">
       {selectedChat.messages?.length ? (
         selectedChat.messages.map((msg: any, i: number) => {
           const isMe = msg.senderId === currentUser.id;
