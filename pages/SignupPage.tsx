@@ -24,20 +24,29 @@ const SignupPage: React.FC = () => {
   const from = location.state?.from?.pathname || '/dashboard';
   
   useEffect(() => {
-    if (currentUser) {
-      navigate('/dashboard', { replace: true });
-    }
-  }, [currentUser, navigate]);
+  if (currentUser && location.pathname === "/signup") {
+    navigate('/dashboard', { replace: true });
+  }
+}, [currentUser, navigate, location.pathname]);
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsFormLoading(true);
-    const success = await signup(email, password);
-    setIsFormLoading(false);
-    if (success) {
-      navigate('/verify-email');
-    }
-  };
+  e.preventDefault();
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  setIsFormLoading(true);
+
+  const success = await signup(email, password);
+
+  setIsFormLoading(false);
+
+  if (success) {
+    navigate('/verify-email');
+  }
+};
   
   const handleGoogleLogin = async () => {
     setIsFormLoading(true);
