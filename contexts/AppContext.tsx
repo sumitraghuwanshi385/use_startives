@@ -822,7 +822,10 @@ useEffect(() => {
 }, [token, currentUser]);
 
 useEffect(() => {
-  if (!token) return;
+  if (!token) {
+    setCurrentUser(null);
+    return;
+  }
 
   const loadUser = async () => {
     try {
@@ -835,6 +838,7 @@ useEffect(() => {
       }
     } catch (err) {
       console.error("User refresh failed");
+      setCurrentUser(null);
     }
   };
 
