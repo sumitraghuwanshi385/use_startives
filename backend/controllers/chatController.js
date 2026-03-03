@@ -268,7 +268,7 @@ const deleteConversation = async (req, res) => {
   }
 };
 
-exports.markChatAsRead = async (req, res) => {
+const markChatAsRead = async (req, res) => {
   try {
     const { chatId } = req.params;
     const userId = req.user._id;
@@ -298,5 +298,5 @@ module.exports = {
   sendMessage,
   clearMessages,
   deleteConversation,
-markChatAsRead
+  markChatAsRead
 };
