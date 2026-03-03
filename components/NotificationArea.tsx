@@ -93,6 +93,10 @@ const pendingRequests = connectionIds.filter(
   id => !dismissedRequests.includes(id)
 );
 
+console.log("CURRENT USER:", currentUser);
+console.log("CONNECTION REQUESTS:", currentUser?.connectionRequests);
+console.log("PENDING:", pendingRequests);
+
 if (pendingRequests.length === 0 && notifications.length === 0) {
   return null;
 }
