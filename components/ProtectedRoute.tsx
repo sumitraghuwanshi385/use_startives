@@ -13,13 +13,17 @@ const { currentUser, isLoading, token } = useAppContext();
 const location = useLocation();
 
 if (isLoading) {
-// Return null to allow the FullScreenLoader in App.tsx to be the single source of truth for loading state.
-return null;
+  return null;
 }
 
-// Check token first, then currentUser to ensure persistence check is complete
-if (!currentUser) {
+// 🔥 Immediately block if no token
+if (!token) {
   return <Navigate to="/login" replace />;
+}
+
+// 🔥 Double safety
+if (!currentUser) {
+  return null;
 }
 
 return children;
