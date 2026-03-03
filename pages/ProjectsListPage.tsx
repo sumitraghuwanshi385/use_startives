@@ -383,7 +383,7 @@ const displayIdeas =
             </div>
 
             <div className="flex items-center gap-6 
-  bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(139,92,246)_50%,_rgb(59,130,246)_100%)]
+  bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
   text-white px-6 py-2.5 rounded-full shadow-lg">
               <div className="flex items-center justify-center gap-3 relative z-10 min-w-[140px]">
                 <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
