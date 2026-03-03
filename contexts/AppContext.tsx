@@ -851,12 +851,6 @@ useEffect(() => {
 
 }, [token]);
 
-useEffect(() => {
-  if (!token || !currentUser) return;
-
-  fetchNotifications();
-  fetchConnections();   // 👈 ADD THIS
-}, [token, currentUser]);
 
 useEffect(() => {
   const handleNotificationRead = () => {
