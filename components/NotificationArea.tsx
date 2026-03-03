@@ -92,15 +92,13 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, [currentUser, fetchConnections]);
 
-const pendingRequests = (currentUser?.connectionRequests || [])
-  .filter(id => !dismissedRequests.includes(id));
+const pendingRequests = Array.isArray(currentUser?.connectionRequests)
+  ? currentUser.connectionRequests.filter(
+      id => !dismissedRequests.includes(id)
+    )
+  : [];
 
-console.log("connectionRequests:", currentUser?.connectionRequests);
-console.log("dismissed:", dismissedRequests);
-
-if (notifications.length === 0 && pendingRequests.length === 0) {
-return null;
-}
+if (!currentUser) return null;
 
 return (
 <div className="fixed top-20 right-6 space-y-2 z-[2000] flex flex-col items-end">
