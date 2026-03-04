@@ -33,6 +33,8 @@ const upload = multer({
       'image/png',
       'image/gif',
       'image/webp',
+      'image/heic',
+      'image/heif',
 
       'application/pdf',
       'application/msword',
@@ -41,9 +43,17 @@ const upload = multer({
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 
-      'text/plain',
-      'application/zip'
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 
+      'text/plain',
+      'text/csv',
+
+      'application/zip',
+      'application/x-zip-compressed',
+      'application/x-rar-compressed',
+
+      'application/json'
     ];
 
     if (allowedMimeTypes.includes(file.mimetype)) {
