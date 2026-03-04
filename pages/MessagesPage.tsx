@@ -506,19 +506,9 @@ markAsRead();
 
     addNotification('Chat cleared', 'success');
   } catch (err) {
-
-  let errorMsg = "Upload failed";
-
-  if (err?.response?.data?.message) {
-    errorMsg = err.response.data.message;
-  } else if (err?.message) {
-    errorMsg = err.message;
-  }
-
-  addNotification(`Upload failed: ${errorMsg}`, "error");
-
+  console.error(err);
+  addNotification('Upload failed', 'error');
 }
-
   setIsConfirmClearOpen(false);
 };
 
@@ -838,7 +828,7 @@ onClick={(e) => {
       ? msg.file.url
       : `${API_BASE}${msg.file.url}`
   }
-      className="rounded-xl max-h-72 object-cover"
+      className="rounded-xl max-h-72 object-cover border border-purple-500/40"
       alt="sent"
     />
 
