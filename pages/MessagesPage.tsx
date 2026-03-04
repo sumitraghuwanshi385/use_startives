@@ -559,7 +559,7 @@ const confirmDeleteChat = async () => {
   }
 
   return (
-  <div className="flex h-[calc(100vh-72px)] w-full bg-[var(--component-background)] overflow-hidden">
+  <div className="flex h-[calc(100dvh-72px)] w-full bg-[var(--component-background)] overflow-hidden">
 
     {/* ================= SIDEBAR ================= */}
     <aside className={`w-full md:w-80 border-r border-[var(--border-primary)] bg-white dark:bg-black/20 flex flex-col ${selectedChatId ? 'hidden md:flex' : 'flex'}`}>
@@ -677,7 +677,7 @@ const confirmDeleteChat = async () => {
 {selectedChat ? (
   <>
     {/* ===== HEADER SECTION ===== */}
-    <div className="sticky top-0 z-30 bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0 transform-gpu">
+    <div className="sticky top-0 z-50 bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0">
 
       {/* USER BAR */}
       <div className="flex items-center justify-between px-4 py-3">
@@ -751,7 +751,7 @@ onClick={(e) => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 overflow-y-auto px-3 py-5 space-y-4 relative bg-white dark:bg-black no-scrollbar">
+    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 relative bg-white dark:bg-black no-scrollbar">
 
   {/* DOTTED BG */}
   <div className="absolute inset-0 pointer-events-none opacity-65 dot-pattern-bg"></div>
