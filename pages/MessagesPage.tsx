@@ -551,13 +551,19 @@ const confirmDeleteChat = async () => {
 };
 
   const handleHeaderClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!selectedChat) return;
+  e.stopPropagation();
+  e.preventDefault();
 
-    if (selectedChat.isTeam) navigate(`/team/${selectedChat.id}`);
-    else if (selectedChat.contact?.id) navigate(`/user/${selectedChat.contact.id}`);
-  };
+  if (!selectedChat) return;
+
+  if (selectedChat.isTeam) {
+    navigate(`/team/${selectedChat.id}`, {
+      state: { team: selectedChat }
+    });
+  } else if (selectedChat.contact?.id) {
+    navigate(`/user/${selectedChat.contact.id}`);
+  }
+};
 
   // --- prevent white screen if not logged in ---
   if (!token || !currentUser) {
