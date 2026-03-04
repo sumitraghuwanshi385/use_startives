@@ -756,7 +756,6 @@ onClick={(e) => {
   {/* DOTTED BG */}
   <div className="absolute inset-0 pointer-events-none opacity-65 dot-pattern-bg"></div>
 
-  <div className="flex-1 overflow-y-auto h-full relative z-10">
       {selectedChat.messages?.length ? (
        selectedChat.messages.map((msg: any, i: number) => {
   const isMe = msg.senderId === currentUser.id;
@@ -894,8 +893,6 @@ msg.file.url?.startsWith('http')
 
       <div ref={messagesEndRef} />
     </div>
-
-</div>
 
     {/* ===== INPUT SECTION ===== */}
     <div className="sticky bottom-0 z-20 p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black">
