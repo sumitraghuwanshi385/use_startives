@@ -754,12 +754,12 @@ onClick={(e) => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 flex flex-col relative bg-white dark:bg-black">
+    <div className="flex-1 flex flex-col min-h-0 relative bg-white dark:bg-black">
 
   {/* DOTTED BG */}
   <div className="absolute inset-0 pointer-events-none opacity-65 dot-pattern-bg"></div>
 
-  <div className="flex-1 overflow-y-auto relative z-10">
+  <div className="flex-1 overflow-y-auto h-full relative z-10">
       {selectedChat.messages?.length ? (
        selectedChat.messages.map((msg: any, i: number) => {
   const isMe = msg.senderId === currentUser.id;
