@@ -506,9 +506,18 @@ markAsRead();
 
     addNotification('Chat cleared', 'success');
   } catch (err) {
-    console.error(err);
-    addNotification('Clear failed', 'error');
+
+  let errorMsg = "Upload failed";
+
+  if (err?.response?.data?.message) {
+    errorMsg = err.response.data.message;
+  } else if (err?.message) {
+    errorMsg = err.message;
   }
+
+  addNotification(`Upload failed: ${errorMsg}`, "error");
+
+}
 
   setIsConfirmClearOpen(false);
 };
