@@ -378,12 +378,9 @@ markAsRead();
 // Always mark notifications when chat opens
   markAllNotificationsAsRead('messages');
 
-  const isNearBottom =
-    container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-
-  if (isNearBottom) {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
-  }
+  if (selectedChat?.messages?.length) {
+  messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+}
 }, [selectedChat?.messages?.length]);
 
   useEffect(() => {
@@ -754,7 +751,7 @@ onClick={(e) => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4 relative bg-white dark:bg-black">
+    <div className="flex-1 overflow-y-auto px-3 py-5 space-y-4 relative bg-white dark:bg-black no-scrollbar">
 
   {/* DOTTED BG */}
   <div className="absolute inset-0 pointer-events-none opacity-65 dot-pattern-bg"></div>
