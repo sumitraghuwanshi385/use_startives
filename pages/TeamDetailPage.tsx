@@ -73,6 +73,7 @@ export const TeamDetailPage: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const { currentUser, getUserById, addNotification, users: allUsersFromContext } = useAppContext(); 
   const navigate = useNavigate();
+const location = useLocation();
   const [activeMediaTab, setActiveMediaTab] = useState<'media' | 'links'>('media');
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
@@ -81,49 +82,47 @@ export const TeamDetailPage: React.FC = () => {
   const [memberToRemove, setMemberToRemove] = useState<User | null>(null);
   
   // ✅ Changed initial state to null to indicate loading
-  const [teamDetails, setTeamDetails] = useState<(ChatConversation & { members: User[] }) | null>(null);
+  const [teamDetails, setTeamDetails] = useState<(ChatConversation & { members: User[] }) | null>(
+  location.state?.team || null
+);
 
   const [editingTeamName, setEditingTeamName] = useState('');
   const [editingTeamDescription, setEditingTeamDescription] = useState('');
   const [editingTeamImagePreview, setEditingTeamImagePreview] = useState<string | null>(null);
   const teamImageInputRef = useRef<HTMLInputElement>(null);
 
-   // ✅ New useEffect to fetch chat data from API
-   useEffect(() => {
-    if (!teamId) return;
-    
-    const fetchTeamData = async () => {
-        // Here, we would ideally fetch the team chat from the server
-        // This logic will be added to AppContext later if not already present
-        // For now, we simulate finding the chat from a locally available chat list
-        //
-        // In a real app, you would:
-        // const teamChat = await fetchChatById(teamId); 
-        // setTeamDetails(teamChat);
-        
-        // Simulating the find logic with a placeholder. The real `chats` array is in AppContext or MessagesPage.
-        // This component doesn't have `chats`, so it's a structural problem.
-        // For a quick fix, let's assume `getUserById` and a global chat store exist.
-        // A better fix would involve a global chat store or passing the chat object via state.
-        
-        // This component won't work as-is without a source for the team data.
-        // I'll proceed with a mock setup that mirrors how it should work with real data.
-        // Let's assume you'll pass chat data or fetch it.
-        // For now, let's keep the component from crashing by not using `initialChatsData`.
-        
-        // This is a placeholder. You need to get the real chat data.
-        // Let's say we have a function in context `getChatById`
-        // const team = context.getChatById(teamId);
-        // setTeamDetails(team);
+   // ✅ Fetch team data when page opens
+useEffect(() => {
 
-        // Since we don't have that, we'll leave it as null to show the "Not Found" message.
-        // This prevents the crash.
-    };
+  if (!teamId) return;
 
-    fetchTeamData();
-    // No interval needed if data is fetched once.
+  const fetchTeamData = async () => {
 
-  }, [teamId, getUserById, currentUser]);
+    // agar MessagesPage se team object navigate hua hai
+    if (location.state?.team) {
+
+      const team = location.state.team;
+
+      const members =
+        team.memberIds?.map((id: string) => getUserById(id)).filter(Boolean) || [];
+
+      setTeamDetails({
+        ...team,
+        members
+      });
+
+      return;
+    }
+
+    // fallback (agar direct URL se open hua ho)
+    // yaha future me API call kar sakte ho
+    setTeamDetails(null);
+
+  };
+
+  fetchTeamData();
+
+}, [teamId, getUserById, currentUser, location.state]);
 
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
