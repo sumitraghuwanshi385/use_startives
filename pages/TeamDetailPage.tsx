@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ChatConversation, User, DetailedMessage } from '../types';
 import { ChevronLeftIcon } from '../constants';
