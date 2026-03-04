@@ -19,6 +19,12 @@ const PaperAirplaneIcon: React.FC<{ className?: string }> = ({ className = 'w-5 
   </svg>
 );
 
+const PaperClipIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 11-6.364-6.364l8.486-8.486a3 3 0 114.243 4.243l-8.486 8.486a1.5 1.5 0 11-2.121-2.121l7.071-7.071" />
+</svg>
+);
+
 const EllipsisVerticalIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
@@ -857,7 +863,11 @@ const confirmDeleteChat = async () => {
     </div>
 
     <a
-      href={msg.file.url}
+      href={
+msg.file.url?.startsWith('http')
+? msg.file.url
+: `${API_BASE}${msg.file.url}`
+}
       download
       className="px-3 py-1 text-[10px] font-bold rounded-full bg-purple-600 text-white"
     >
@@ -901,7 +911,7 @@ const confirmDeleteChat = async () => {
     onClick={() => setIsAttachOpen(prev => !prev)}
     className="p-3 rounded-full bg-[var(--background-tertiary)]"
   >
-    📎
+    <PaperClipIcon className="w-5 h-5 text-[var(--text-primary)]" />
   </button>
 
   {isAttachOpen && (
@@ -961,12 +971,12 @@ const confirmDeleteChat = async () => {
 
         {/* Send Button */}
         <button
-          type="submit"
-          disabled={!messageText.trim()}
-          className="px-5 py-3 rounded-full bg-purple-600 text-white text-sm font-bold disabled:opacity-50"
-        >
-          Send
-        </button>
+type="submit"
+disabled={!messageText.trim()}
+className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md disabled:opacity-40"
+>
+<PaperAirplaneIcon className="w-4 h-4" />
+</button>
 
       </form>
     </div>
