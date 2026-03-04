@@ -595,26 +595,26 @@ const confirmDeleteChat = async () => {
         {/* Pill Toggle */}
         <div className="mt-5 bg-[var(--background-tertiary)] p-1 rounded-full flex">
           <button
-            onClick={() => setActiveType('direct')}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-full transition ${
-              activeType === 'direct'
-                ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md'
-                : 'text-[var(--text-muted)]'
-            }`}
-          >
-            Chats
-          </button>
+  onClick={() => setActiveType('direct')}
+  className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full transition ${
+    activeType === 'direct'
+      ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md'
+      : 'text-[var(--text-muted)]'
+  }`}
+>
+  CHAT
+</button>
 
           <button
-            onClick={() => setActiveType('teams')}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-full transition ${
-              activeType === 'teams'
-               ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md'
-                : 'text-[var(--text-muted)]'
-            }`}
-          >
-            Teams
-          </button>
+  onClick={() => setActiveType('teams')}
+  className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full transition ${
+    activeType === 'teams'
+      ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-md'
+      : 'text-[var(--text-muted)]'
+  }`}
+>
+  TEAMS
+</button>
         </div>
       </div>
 
@@ -684,10 +684,16 @@ const confirmDeleteChat = async () => {
 
       {/* USER BAR */}
       <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-3">
+        <div
+  onClick={handleHeaderClick}
+  className="flex items-center gap-3 cursor-pointer"
+>
 
           <button
-            onClick={() => setSelectedChatId(null)}
+onClick={(e) => {
+  e.stopPropagation();
+  setSelectedChatId(null);
+}}
             className="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
           >
             <ArrowLeftIcon />
