@@ -675,12 +675,12 @@ const confirmDeleteChat = async () => {
     </aside>
 
     {/* ================= CHAT AREA ================= */}
-    <main className={`flex-1 flex flex-col min-h-0 relative ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
+    <main className={`flex-1 flex flex-col relative overflow-hidden ${selectedChatId ? 'flex' : 'hidden md:flex'}`}>
 
 {selectedChat ? (
   <>
     {/* ===== HEADER SECTION ===== */}
-    <div className="bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0">
+    <div className="sticky top-0 z-20 bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0">
 
       {/* USER BAR */}
       <div className="flex items-center justify-between px-4 py-3">
@@ -754,7 +754,7 @@ onClick={(e) => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0 relative bg-white dark:bg-black">
+    <div className="flex-1 overflow-y-auto p-5 space-y-4 relative bg-white dark:bg-black">
 
   {/* DOTTED BG */}
   <div className="absolute inset-0 pointer-events-none opacity-65 dot-pattern-bg"></div>
@@ -901,7 +901,8 @@ msg.file.url?.startsWith('http')
 </div>
 
     {/* ===== INPUT SECTION ===== */}
-    <div className="p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black shrink-0 sticky bottom-0">
+    <div className="sticky bottom-0 z-20 p-4 border-t border-[var(--border-primary)] bg-white dark:bg-black">
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
