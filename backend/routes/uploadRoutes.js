@@ -63,7 +63,7 @@ const upload = multer({
     }
 
   }
-}).single('image');
+}).single('file');
 
 router.post('/', (req, res) => {
 
