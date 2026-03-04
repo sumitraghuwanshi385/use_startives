@@ -680,7 +680,7 @@ const confirmDeleteChat = async () => {
 {selectedChat ? (
   <>
     {/* ===== HEADER SECTION ===== */}
-    <div className="sticky top-0 z-20 bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0">
+    <div className="sticky top-0 z-30 bg-white dark:bg-black border-b border-[var(--border-primary)] shrink-0 transform-gpu">
 
       {/* USER BAR */}
       <div className="flex items-center justify-between px-4 py-3">
@@ -754,7 +754,7 @@ onClick={(e) => {
 </div>
 
     {/* ===== MESSAGES SCROLL AREA ===== */}
-    <div className="flex-1 flex flex-col min-h-0 relative bg-white dark:bg-black">
+    <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4 relative bg-white dark:bg-black">
 
   {/* DOTTED BG */}
   <div className="absolute inset-0 pointer-events-none opacity-65 dot-pattern-bg"></div>
