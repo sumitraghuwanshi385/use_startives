@@ -784,7 +784,7 @@ onClick={(e) => {
       <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
 
               <div
-                className={`max-w-[75%] rounded-2xl overflow-hidden ${
+                className={`max-w-[75%] rounded-2xl ${
   isMe
     ? 'bg-purple-600 text-white rounded-br-none'
     : 'bg-white dark:bg-neutral-800 border border-[var(--border-primary)] rounded-bl-none'
