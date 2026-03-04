@@ -517,22 +517,34 @@ const confirmDeleteChat = async () => {
   if (!chatToAction || !token) return;
 
   try {
-    await axios.delete(`${API_BASE}/api/chat/${chatToAction}`, {
-      headers: authHeaders,
-    });
 
-    // Remove chat from list
-    setChats(prev => prev.filter(c => c.id !== chatToAction));
-
-    // If current chat deleted → go back safely
-    if (selectedChatId === chatToAction) {
-      setSelectedChatId(null);
+    // animation before delete
+    const el = document.getElementById(`chat-${chatToAction}`);
+    if (el) {
+      el.style.transition = "all 0.35s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateX(40px)";
     }
 
-    addNotification('Chat deleted permanently', 'success');
+    setTimeout(async () => {
+
+      await axios.delete(`${API_BASE}/api/chat/${chatToAction}`, {
+        headers: authHeaders,
+      });
+
+      setChats(prev => prev.filter(c => c.id !== chatToAction));
+
+      if (selectedChatId === chatToAction) {
+        setSelectedChatId(null);
+      }
+
+      addNotification("Chat deleted successfully", "success");
+
+    }, 300);
+
   } catch (err) {
     console.error(err);
-    addNotification('Delete failed', 'error');
+    addNotification("Delete failed", "error");
   }
 
   setIsConfirmDeleteOpen(false);
@@ -622,6 +634,7 @@ const confirmDeleteChat = async () => {
         {filteredChats.map(chat => (
           <div
   key={chat.id}
+  id={`chat-${chat.id}`}
   onClick={() => setSelectedChatId(chat.id)}
   className={`group relative p-4 mb-3 cursor-pointer rounded-2xl transition-all duration-300 border shadow-sm
   
@@ -722,17 +735,6 @@ onClick={(e) => {
 
   {isChatMenuOpen && (
     <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg z-50 overflow-hidden">
-
-      <button
-        onClick={() => {
-          setIsConfirmClearOpen(true);
-          setIsChatMenuOpen(false);
-        }}
-        className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
-      >
-        <NoSymbolIcon className="w-4 h-4" />
-        Clear Chat
-      </button>
 
       <button
         onClick={() => {
@@ -994,6 +996,13 @@ className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-t
       onClose={() => setIsCreateTeamOpen(false)}
       onCreated={handleTeamCreated}
     />
+<ConfirmDialog
+  isOpen={isConfirmDeleteOpen}
+  onClose={() => setIsConfirmDeleteOpen(false)}
+  onConfirm={confirmDeleteChat}
+  title="Delete Chat"
+  message="Are you sure you want to delete this conversation? This action cannot be undone."
+/>
   </div>
 );
 };
