@@ -849,7 +849,7 @@ onClick={(e) => {
 
                 {/* DOCUMENT */}
                 {msg.type === 'document' && msg.file?.url && (
-  className="p-3 bg-neutral-100 dark:bg-neutral-900 text-black dark:text-white rounded-xl flex items-center gap-3 relative z-10 border border-purple-500/40 dark:border-purple-400/50"
+  <div className="p-3 bg-neutral-100 dark:bg-neutral-900 text-black dark:text-white rounded-xl flex items-center gap-3 relative z-10 border border-purple-500/40 dark:border-purple-400/50">
 
     <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
       DOC
