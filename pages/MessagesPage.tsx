@@ -425,7 +425,7 @@ markAsRead();
 
   const uploadFile = async (file: File): Promise<FileAttachment | null> => {
   const formData = new FormData();
-  formData.append('image', file); // CHANGE HERE
+  formData.append('file', file); // CHANGE HERE
 
   const { data } = await axios.post(`${API_BASE}/api/upload`, formData, {
     headers: {
