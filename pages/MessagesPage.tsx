@@ -639,7 +639,10 @@ const confirmDeleteChat = async () => {
   }`}
 >
              
-            <div className="flex items-center gap-3">
+            <div 
+onClick={handleHeaderClick}
+className="flex items-center gap-3 cursor-pointer"
+>
               <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
                 {chat.contact?.name?.[0] || 'U'}
               </div>
@@ -915,28 +918,29 @@ msg.file.url?.startsWith('http')
   </button>
 
   {isAttachOpen && (
-    <div className="absolute bottom-14 left-0 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
-
+    <div className="absolute bottom-14 left-0 z-50 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
       <button
-        type="button"
-        onClick={() => {
-          imageInputRef.current?.click();
-          setIsAttachOpen(false);
-        }}
-        className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-      >
+type="button"
+onClick={(e) => {
+  e.stopPropagation();
+  imageInputRef.current?.click();
+  setIsAttachOpen(false);
+}}
+className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+>
         <PhotoIcon className="w-4 h-4" />
         Image
       </button>
 
       <button
-        type="button"
-        onClick={() => {
-          docInputRef.current?.click();
-          setIsAttachOpen(false);
-        }}
-        className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-      >
+type="button"
+onClick={(e) => {
+  e.stopPropagation();
+  docInputRef.current?.click();
+  setIsAttachOpen(false);
+}}
+className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+>
         <DocumentIcon className="w-4 h-4" />
         Document
       </button>
