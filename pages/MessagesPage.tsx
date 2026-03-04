@@ -915,34 +915,35 @@ msg.file.url?.startsWith('http')
   <button
     type="button"
     onClick={() => setIsAttachOpen(prev => !prev)}
-    className="p-3 rounded-full bg-[var(--background-tertiary)]"
-  >
+   className="p-3 rounded-full bg-[var(--background-tertiary)] hover:bg-neutral-200 dark:hover:bg-neutral-800 transition">
     <PaperClipIcon className="w-5 h-5 text-[var(--text-primary)]" />
   </button>
 
   {isAttachOpen && (
-    <div className="absolute bottom-14 left-0 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
+    <div className="absolute bottom-14 left-0 z-50 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg p-2 space-y-1">
 
       <button
-        type="button"
-        onClick={() => {
-          imageInputRef.current?.click();
-          setIsAttachOpen(false);
-        }}
-        className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-      >
-        <PhotoIcon className="w-4 h-4" />
+type="button"
+onClick={(e) => {
+  e.stopPropagation();
+  imageInputRef.current?.click();
+  setIsAttachOpen(false);
+}}
+className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+>
+<PhotoIcon className="w-4 h-4" />
         Image
       </button>
 
       <button
-        type="button"
-        onClick={() => {
-          docInputRef.current?.click();
-          setIsAttachOpen(false);
-        }}
-        className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
-      >
+type="button"
+onClick={(e) => {
+  e.stopPropagation();
+  docInputRef.current?.click();
+  setIsAttachOpen(false);
+}}
+className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md w-full"
+>
         <DocumentIcon className="w-4 h-4" />
         Document
       </button>
