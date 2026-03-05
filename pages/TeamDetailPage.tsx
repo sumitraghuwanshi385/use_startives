@@ -96,39 +96,41 @@ const DESCRIPTION_LIMIT = 150;
    // ✅ Fetch team data when page opens
 useEffect(() => {
 
-  if (!teamId) return;
+if (!teamId) return;
 
-  const fetchTeamData = async () => {
+const fetchTeam = async () => {
 
-  if (location.state?.team) {
+try{
 
-    const rawTeam = location.state.team;
+const res = await fetch("/api/chat");
 
-    const members =
-      rawTeam.memberIds?.map((id: string) => getUserById(id)).filter(Boolean) || [];
+const data = await res.json();
 
-    // 🔥 detect admin properly
-    let adminId =
-  rawTeam.adminId ||
-  rawTeam.createdBy ||
-  rawTeam.contact?.id ||
-  members[0]?.id;
+const team = data.chats.find((c:any)=> c.id === teamId);
 
-    setTeamDetails({
-      ...rawTeam,
-      adminId,
-      members
-    });
+if(team){
 
-    return;
-  }
+const members =
+team.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
 
-  setTeamDetails(null);
+setTeamDetails({
+...team,
+members
+});
+
+}
+
+}catch(err){
+
+console.log("TEAM FETCH ERROR",err);
+
+}
+
 };
 
-  fetchTeamData();
+fetchTeam();
 
-}, [teamId, getUserById, currentUser, location.state]);
+},[teamId]);
 
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
