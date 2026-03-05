@@ -223,23 +223,29 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col flex-grow bg-[var(--background-secondary)] h-full overflow-hidden">
-       <header className="flex items-center justify-between p-4 bg-[var(--background-primary)] border-b border-[var(--border-primary)] shadow-sm shrink-0">
-        <button onClick={() => navigate(`/messages?chatWith=${teamDetails.id}`)} className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)] focus:outline-none" aria-label="Back to messages">
-            <ChevronLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            <span className="font-bold uppercase tracking-wide">Back</span>
-        </button>
-        <div className="flex-grow text-center px-4">
-            <h1 className="text-lg font-bold text-[var(--text-primary)] truncate uppercase tracking-tight">{teamDetails.contact.name}</h1>
-        </div>
-        <div>
-            {isAdmin && (
-                <button onClick={() => setIsEditModalOpen(true)} className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracking-widest text-white button-gradient hover:opacity-90 py-2 px-3 rounded-full shadow-md transition-all border-transparent">
-                    <PencilIcon className="w-3.5 h-3.5" />
-                    <span>Edits</span>
-                </button>
-            )}
-        </div>
-      </header>
+  <header className="flex items-center justify-between p-4 bg-[var(--background-primary)] border-b border-[var(--border-primary)] shadow-sm shrink-0">
+
+  {/* BACK BUTTON */}
+  <button
+    onClick={() => navigate("/messages")
+    className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
+  >
+    <ChevronLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+    <span className="font-bold uppercase tracking-wide">Back</span>
+  </button>
+
+  {/* EDIT BUTTON */}
+  {isAdmin && (
+    <button
+      onClick={() => setIsEditModalOpen(true)}
+      className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracking-widest text-white button-gradient hover:opacity-90 py-2 px-3 rounded-full shadow-md transition-all"
+    >
+      <PencilIcon className="w-3.5 h-3.5" />
+      <span>Edit Team</span>
+    </button>
+  )}
+
+</header>
 
       <main className="flex-grow overflow-y-auto p-4 sm:p-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -253,6 +259,14 @@ useEffect(() => {
               )}
               <div className="flex-grow">
                   <h2 className="text-3xl font-bold text-[var(--text-primary)]">{teamDetails.contact.name}</h2>
+
+<p className="text-sm text-[var(--text-muted)] mt-1 font-semibold">
+  {(teamDetails.members || []).length} Members • 
+  {teamDetails.adminId === currentUser?.id
+    ? " Created by You"
+    : ` Created by ${getUserById(teamDetails.adminId)?.name || "Admin"}`}
+</p>
+
                   {teamDetails.description && <p className="text-sm text-[var(--text-muted)] mt-2 font-medium">{teamDetails.description}</p>}
               </div>
           </div>
