@@ -308,6 +308,11 @@ chat.description = description || chat.description;
 chat.chatImage = image || chat.chatImage;
 
 await chat.save();
+await Message.create({
+conversationId: chatId,
+text:`${req.user.name} updated team details`,
+type:"system"
+});
 
 res.json({success:true,chat});
 
@@ -334,6 +339,11 @@ chat.users.push(userId);
 });
 
 await chat.save();
+await Message.create({
+conversationId: chatId,
+text: `${req.user.name} added new members`,
+type:"system"
+});
 
 res.json({success:true});
 
@@ -358,6 +368,11 @@ u => u.toString() !== userId
 );
 
 await chat.save();
+await Message.create({
+conversationId: chatId,
+text:`${req.user.name} removed a member`,
+type:"system"
+});
 
 res.json({success:true});
 
@@ -365,6 +380,40 @@ res.json({success:true});
 res.status(500).json({success:false});
 }
 
+};
+
+const leaveTeam = async(req,res)=>{
+try{
+
+const { chatId } = req.params;
+
+const chat = await Conversation.findById(chatId);
+
+chat.users = chat.users.filter(
+u => u.toString() !== req.user._id.toString()
+);
+
+await chat.save();
+
+res.json({success:true});
+
+}catch(err){
+res.status(500).json({success:false});
+}
+};
+
+const deleteTeam = async(req,res)=>{
+try{
+
+const { chatId } = req.params;
+
+await Conversation.findByIdAndDelete(chatId);
+
+res.json({success:true});
+
+}catch(err){
+res.status(500).json({success:false});
+}
 };
 
 module.exports = {
