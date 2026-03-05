@@ -174,7 +174,8 @@ useEffect(() => {
     );
   }
   
-  const isAdmin = teamDetails.adminId === currentUser?.id;
+  const isAdmin =
+  String(teamDetails.adminId) === String(currentUser?.id);
 
   const handleTeamImageChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
     const file = event.target.files?.[0];
@@ -264,10 +265,10 @@ useEffect(() => {
                   <h2 className="text-3xl font-bold text-[var(--text-primary)]">{teamDetails.contact.name}</h2>
 
 <p className="text-sm text-[var(--text-muted)] mt-1 font-semibold">
-  {(teamDetails.members || []).length} Members • 
-  {teamDetails.adminId === currentUser?.id
-    ? " Created by You"
-    : ` Created by ${getUserById(teamDetails.adminId)?.name || "Admin"}`}
+  {(teamDetails.members || []).length} Members • Created by{" "}
+  {String(teamDetails.adminId) === String(currentUser?.id)
+    ? "You"
+    : getUserById(teamDetails.adminId)?.name || "Admin"}
 </p>
 
                   {teamDetails.description && <p className="text-sm text-[var(--text-muted)] mt-2 font-medium">{teamDetails.description}</p>}
