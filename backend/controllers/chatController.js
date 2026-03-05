@@ -144,16 +144,16 @@ const fetchMessages = async (req, res) => {
             .populate("readBy");
 
         const formattedMessages = messages.map(msg => ({
-            id: msg._id.toString(),
-            senderId: msg.sender._id.toString(),
-            senderName: msg.sender.name,
-            senderAvatar: msg.sender.profilePictureUrl,
-            text: msg.text,
-            type: msg.type,
-            file: msg.file,
-            timestamp: msg.createdAt,
-            isRead: msg.readBy.some(u => u._id.toString() === req.user._id.toString())
-        }));
+    id: msg._id.toString(),
+    senderId: msg.sender ? msg.sender._id.toString() : "system",
+    senderName: msg.sender ? msg.sender.name : "system",
+    senderAvatar: msg.sender ? msg.sender.profilePictureUrl : "",
+    text: msg.text,
+    type: msg.type,
+    file: msg.file,
+    timestamp: msg.createdAt,
+    isRead: msg.readBy?.some(u => u._id.toString() === req.user._id.toString())
+}));
 
         res.json({ success: true, messages: formattedMessages });
     } catch (error) {
@@ -310,6 +310,7 @@ chat.chatImage = image || chat.chatImage;
 await chat.save();
 await Message.create({
 conversationId: chatId,
+sender: req.user._id,
 text:`${req.user.name} updated team details`,
 type:"system"
 });
@@ -341,6 +342,7 @@ chat.users.push(userId);
 await chat.save();
 await Message.create({
 conversationId: chatId,
+sender: req.user._id,
 text: `${req.user.name} added new members`,
 type:"system"
 });
@@ -370,6 +372,7 @@ u => u.toString() !== userId
 await chat.save();
 await Message.create({
 conversationId: chatId,
+sender: req.user._id,
 text:`${req.user.name} removed a member`,
 type:"system"
 });
@@ -394,6 +397,12 @@ u => u.toString() !== req.user._id.toString()
 );
 
 await chat.save();
+await Message.create({
+conversationId: chatId,
+sender: req.user._id,
+text:`${req.user.name} left the team`,
+type:"system"
+});
 
 res.json({success:true});
 
