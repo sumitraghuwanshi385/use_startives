@@ -206,55 +206,58 @@ setEditingTeamImagePreview(teamDetails.contact.avatarUrl || null);
 }
 },[teamDetails]);
 
-  const handleSaveChanges = ()=>{
+  const handleSaveChanges = async ()=>{
 
-setTeamDetails(prev=>{
-if(!prev) return prev;
+try{
 
-return{
-...prev,
-contact:{
-...prev.contact,
-name: editingTeamName,
-avatarUrl: editingTeamImagePreview
+await fetch(`/api/chat/team/${teamId}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json"
 },
-description: editingTeamDescription
-};
+body:JSON.stringify({
+name:editingTeamName,
+description:editingTeamDescription,
+image:editingTeamImagePreview
+})
 });
 
-addNotification(
-"Team updated successfully",
-"success"
-);
+addNotification("Team updated successfully","success");
 
-setIsEditModalOpen(false);
+window.location.reload();
+
+}catch(err){
+addNotification("Update failed","error");
+}
+
 };
 
-  const handleAddMembers = ()=>{
+  const handleAddMembers = async ()=>{
 
-if(!teamDetails) return;
+try{
 
-const newMembers = selectedUsersToAdd.map(id=>getUserById(id)).filter(Boolean);
-
-setTeamDetails(prev=>{
-if(!prev) return prev;
-
-return{
-...prev,
-members:[...prev.members,...newMembers],
-memberIds:[...prev.memberIds,...selectedUsersToAdd]
-};
+await fetch(`/api/chat/team/${teamId}/add`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+users:selectedUsersToAdd
+})
 });
 
-addNotification(
-`${selectedUsersToAdd.length} member(s) added`,
-"success"
-);
+addNotification("Members added","success");
 
-setSelectedUsersToAdd([]);
-setIsAddMemberModalOpen(false);
+window.location.reload();
+
+}catch(err){
+
+addNotification("Add member failed","error");
+
+}
+
 };
-  
+
   const confirmRemoveMember = (memberIdToRemove: string) => {
     const member = getUserById(memberIdToRemove);
     if (!member || !isAdmin || memberIdToRemove === currentUser?.id || memberIdToRemove === teamDetails.adminId) {
@@ -265,27 +268,24 @@ setIsAddMemberModalOpen(false);
     setIsConfirmRemoveModalOpen(true);
   };
   
-  const executeRemoveMember = ()=>{
+  const executeRemoveMember = async ()=>{
 
-if(!memberToRemove || !teamDetails) return;
+try{
 
-setTeamDetails(prev=>{
-if(!prev) return prev;
-
-return{
-...prev,
-members: prev.members.filter(m=>m.id!==memberToRemove.id),
-memberIds: prev.memberIds.filter(id=>id!==memberToRemove.id)
-};
+await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
+method:"DELETE"
 });
 
-addNotification(
-`${memberToRemove.name} removed`,
-"success"
-);
+addNotification("Member removed","success");
 
-setIsConfirmRemoveModalOpen(false);
-setMemberToRemove(null);
+window.location.reload();
+
+}catch(err){
+
+addNotification("Remove failed","error");
+
+}
+
 };
 
   return (
