@@ -222,12 +222,28 @@ image:editingTeamImagePreview
 })
 });
 
-addNotification("Team updated successfully","success");
+setTeamDetails(prev=>{
+if(!prev) return prev;
 
-window.location.reload();
+return{
+...prev,
+contact:{
+...prev.contact,
+name:editingTeamName,
+avatarUrl:editingTeamImagePreview
+},
+description:editingTeamDescription
+};
+});
+
+addNotification("Team updated","success");
+
+setIsEditModalOpen(false);
 
 }catch(err){
+
 addNotification("Update failed","error");
+
 }
 
 };
@@ -241,14 +257,27 @@ method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
-body:JSON.stringify({
-users:selectedUsersToAdd
-})
+body:JSON.stringify({users:selectedUsersToAdd})
+});
+
+const newMembers = selectedUsersToAdd
+.map(id=>getUserById(id))
+.filter(Boolean);
+
+setTeamDetails(prev=>{
+if(!prev) return prev;
+
+return{
+...prev,
+members:[...prev.members,...newMembers],
+memberIds:[...prev.memberIds,...selectedUsersToAdd]
+};
 });
 
 addNotification("Members added","success");
 
-window.location.reload();
+setIsAddMemberModalOpen(false);
+setSelectedUsersToAdd([]);
 
 }catch(err){
 
@@ -276,9 +305,19 @@ await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
 method:"DELETE"
 });
 
+setTeamDetails(prev=>{
+if(!prev) return prev;
+
+return{
+...prev,
+members: prev.members.filter(m=>m.id !== memberToRemove.id),
+memberIds: prev.memberIds.filter(id=>id !== memberToRemove.id)
+};
+});
+
 addNotification("Member removed","success");
 
-window.location.reload();
+setIsConfirmRemoveModalOpen(false);
 
 }catch(err){
 
