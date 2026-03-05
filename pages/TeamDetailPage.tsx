@@ -81,6 +81,8 @@ const location = useLocation();
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
   const [selectedUsersToAdd, setSelectedUsersToAdd] = useState<string[]>([]);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
+const [showLeaveConfirm,setShowLeaveConfirm] = useState(false);
+const [showDeleteConfirm,setShowDeleteConfirm] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState<User | null>(null);
   
   // ✅ Changed initial state to null to indicate loading
@@ -362,16 +364,7 @@ setIsConfirmRemoveModalOpen(false);
 <div className="flex gap-2">
 
 <button
-onClick={async()=>{
-
-const confirmDelete = window.confirm("Delete this team permanently?");
-
-if(!confirmDelete) return;
-
-await fetch(`/api/chat/team/${teamId}/delete`,{
-method:"DELETE",
-headers:{Authorization:`Bearer ${token}`}
-});
+onClick={()=>setShowDeleteConfirm(true)}
 
 addNotification("Team deleted","success");
 
@@ -383,18 +376,20 @@ className="flex items-center text-[10px] font-black uppercase tracking-widest te
 Delete Team
 </button>
 
+<button
+onClick={() => setIsEditModalOpen(true)}
+className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracking-widest text-white button-gradient py-2 px-3 rounded-full"
+>
+<PencilIcon className="w-3.5 h-3.5"/>
+<span>Edit Team</span>
+</button>
+
+</div>
+)}
+
 {!isAdmin && (
 <button
-onClick={async()=>{
-
-const confirmLeave = window.confirm("Leave this team?");
-
-if(!confirmLeave) return;
-
-await fetch(`/api/chat/team/${teamId}/leave`,{
-method:"DELETE",
-headers:{Authorization:`Bearer ${token}`}
-});
+onClick={()=>setShowLeaveConfirm(true)}
 
 addNotification("You left the team","success");
 
@@ -405,17 +400,6 @@ className="flex items-center text-[10px] font-black uppercase tracking-widest te
 >
 Leave Team
 </button>
-)}
-
-<button
-onClick={() => setIsEditModalOpen(true)}
-className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracking-widest text-white button-gradient py-2 px-3 rounded-full"
->
-<PencilIcon className="w-3.5 h-3.5"/>
-<span>Edit Team</span>
-</button>
-
-</div>
 )}
 
 </header>
@@ -459,11 +443,43 @@ className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracki
                             {member.profilePictureUrl ? ( <img src={member.profilePictureUrl} alt={member.name} className="w-10 h-10 rounded-full object-cover border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors" /> ) : ( <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors">{getInitials(member.name)}</div> )}
                             <div>
                                 <p className="text-sm font-bold text-[var(--text-primary)] group-hover:text-purple-500 dark:group-hover:text-purple-300 transition-colors">{member.name}</p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-purple-500">
-{member.id === teamDetails.adminId
-? "ADMIN"
-: `MEMBER ${memberRoles[member.id] ? "• " + memberRoles[member.id].toUpperCase() : ""}`}
-</p>
+                                
+
+<div className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+
+{member.id === teamDetails.adminId ? (
+
+<span className="text-black dark:text-white">
+ADMIN
+</span>
+
+) : (
+
+<>
+<span className="text-[var(--text-muted)]">
+MEMBER
+</span>
+
+<input
+type="text"
+placeholder="role"
+value={memberRoles[member.id] || ""}
+onChange={(e)=>{
+
+setMemberRoles(prev=>({
+...prev,
+[member.id]:e.target.value
+}))
+
+}}
+className="bg-transparent border-none outline-none text-purple-500 uppercase text-[10px] font-bold w-20"
+/>
+
+</>
+
+)}
+
+</div>
                             </div>
                         </Link>
                         {isAdmin && member.id !== currentUser?.id && member.id !== teamDetails.adminId && (
@@ -559,25 +575,6 @@ rows={3} className="w-full bg-[var(--background-tertiary)] border-[var(--border-
 {editingTeamDescription.length}/{DESCRIPTION_LIMIT}
 </p>
             </div>
-<div>
-<label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">
-Member Role
-</label>
-
-<input
-type="text"
-placeholder="Role (Developer / Designer)"
-value={memberRoles[memberToRemove?.id] || ""}
-onChange={(e)=>{
-if(memberToRemove){
-setMemberRoles(prev=>({
-...prev,
-[memberToRemove.id]:e.target.value
-}))
-}
-}}
-/>
-</div>
             <div className="mt-6 pt-4 border-t border-[var(--border-primary)] flex justify-end space-x-3">
                 <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-secondary-background)] hover:bg-[var(--component-background-hover)] rounded-full transition-colors border border-[var(--border-primary)]">Cancel</button>
                 <button type="button" onClick={handleSaveChanges} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-white bg-purple-600 hover:bg-purple-700 rounded-full transition-colors shadow-md">Save Changes</button>
@@ -617,7 +614,95 @@ setMemberRoles(prev=>({
             <button type="button" onClick={() => setIsConfirmRemoveModalOpen(false)} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-secondary-background)] hover:bg-[var(--component-background-hover)] rounded-full transition-colors border border-[var(--border-primary)] w-full sm:w-auto">Cancel</button>
             <button type="button" onClick={executeRemoveMember} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 rounded-full transition-colors w-full sm:w-auto shadow-md">Confirm Removal</button>
         </div>
-      </Modal>
+</Modal>
+
+<Modal
+isOpen={showLeaveConfirm}
+onClose={()=>setShowLeaveConfirm(false)}
+title="Leave Team"
+size="sm"
+>
+
+<p className="text-sm text-center">
+Are you sure you want to leave this team?
+</p>
+
+<div className="flex gap-3 mt-5">
+
+<button
+onClick={()=>setShowLeaveConfirm(false)}
+className="flex-1 py-2 rounded-full bg-gray-200"
+>
+Cancel
+</button>
+
+<button
+onClick={async()=>{
+
+setShowLeaveConfirm(false);
+
+await fetch(`/api/chat/team/${teamId}/leave`,{
+method:"DELETE",
+headers:{Authorization:`Bearer ${token}`}
+});
+
+addNotification("You left the team","success");
+
+navigate("/messages");
+
+}}
+className="flex-1 py-2 rounded-full bg-red-600 text-white"
+>
+Leave
+</button>
+</div>
+
+</Modal>
+
+<Modal
+isOpen={showDeleteConfirm}
+onClose={()=>setShowDeleteConfirm(false)}
+title="Delete Team"
+size="sm"
+>
+
+<p className="text-sm text-center">
+Delete this team permanently?
+</p>
+
+<div className="flex gap-3 mt-5">
+
+<button
+onClick={()=>setShowDeleteConfirm(false)}
+className="flex-1 py-2 rounded-full bg-gray-200"
+>
+Cancel
+</button>
+
+<button
+onClick={async()=>{
+
+setShowDeleteConfirm(false);
+
+await fetch(`/api/chat/team/${teamId}/delete`,{
+method:"DELETE",
+headers:{Authorization:`Bearer ${token}`}
+});
+
+addNotification("Team deleted","success");
+
+navigate("/messages");
+
+}}
+className="flex-1 py-2 rounded-full bg-red-600 text-white"
+>
+Delete
+</button>
+
+</div>
+
+</Modal>
+      
 
     </div>
   );
