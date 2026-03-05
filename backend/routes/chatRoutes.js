@@ -10,9 +10,10 @@ clearMessages,
 deleteConversation,
 updateTeam,
 addMembers,
-removeMember
+removeMember,
+leaveTeam,
+deleteTeam
 } = require('../controllers/chatController');
-
 const router = express.Router();
 
 // Get list of all chats (Direct & Teams)
