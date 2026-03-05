@@ -330,6 +330,9 @@ memberIds:prev.memberIds.filter(id=>id!==memberToRemove.id),
 members:prev.members.filter(m=>m.id!==memberToRemove.id)
 }:prev);
 
+setIsConfirmRemoveModalOpen(false);   // 🔥 modal close
+setMemberToRemove(null);
+
 }catch(err){
 
 addNotification("Remove failed","error");
@@ -360,16 +363,49 @@ setIsConfirmRemoveModalOpen(false);
 
 <button
 onClick={async()=>{
+
+const confirmDelete = window.confirm("Delete this team permanently?");
+
+if(!confirmDelete) return;
+
 await fetch(`/api/chat/team/${teamId}/delete`,{
 method:"DELETE",
 headers:{Authorization:`Bearer ${token}`}
 });
+
+addNotification("Team deleted","success");
+
 navigate("/messages");
+
 }}
 className="flex items-center text-[10px] font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 py-2 px-3 rounded-full"
 >
 Delete Team
 </button>
+
+{!isAdmin && (
+<button
+onClick={async()=>{
+
+const confirmLeave = window.confirm("Leave this team?");
+
+if(!confirmLeave) return;
+
+await fetch(`/api/chat/team/${teamId}/leave`,{
+method:"DELETE",
+headers:{Authorization:`Bearer ${token}`}
+});
+
+addNotification("You left the team","success");
+
+navigate("/messages");
+
+}}
+className="flex items-center text-[10px] font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 py-2 px-3 rounded-full"
+>
+Leave Team
+</button>
+)}
 
 <button
 onClick={() => setIsEditModalOpen(true)}
@@ -402,21 +438,6 @@ className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracki
   {getUserById(teamDetails.adminId)?.name || "Unknown"}
 </p>
 
-{!isAdmin && (
-<button
-onClick={async()=>{
-await fetch(`/api/chat/team/${teamId}/leave`,{
-method:"DELETE",
-headers:{Authorization:`Bearer ${token}`}
-});
-navigate("/messages");
-}}
-className="mt-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-full"
->
-Leave Team
-</button>
-)}
-
 
                   {teamDetails.description && <p className="text-sm text-purple-500 mt-2 font-medium">{teamDetails.description}</p>}
               </div>
@@ -438,10 +459,10 @@ Leave Team
                             {member.profilePictureUrl ? ( <img src={member.profilePictureUrl} alt={member.name} className="w-10 h-10 rounded-full object-cover border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors" /> ) : ( <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors">{getInitials(member.name)}</div> )}
                             <div>
                                 <p className="text-sm font-bold text-[var(--text-primary)] group-hover:text-purple-500 dark:group-hover:text-purple-300 transition-colors">{member.name}</p>
-                                <p className="text-[10px] font-medium text-purple-500 uppercase tracking-wide">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-purple-500">
 {member.id === teamDetails.adminId
-? "Admin"
-: `Member ${memberRoles[member.id] ? "• " + memberRoles[member.id] : ""}`}
+? "ADMIN"
+: `MEMBER ${memberRoles[member.id] ? "• " + memberRoles[member.id].toUpperCase() : ""}`}
 </p>
                             </div>
                         </Link>
