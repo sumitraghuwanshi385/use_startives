@@ -72,6 +72,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
 export const TeamDetailPage: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const { currentUser, getUserById, addNotification, users: allUsersFromContext } = useAppContext(); 
+const [memberRoles,setMemberRoles] = useState<{[key:string]:string}>({});
   const navigate = useNavigate();
 const location = useLocation();
   const [activeMediaTab, setActiveMediaTab] = useState<'media' | 'links'>('media');
@@ -88,6 +89,7 @@ const location = useLocation();
 
   const [editingTeamName, setEditingTeamName] = useState('');
   const [editingTeamDescription, setEditingTeamDescription] = useState('');
+const DESCRIPTION_LIMIT = 150;
   const [editingTeamImagePreview, setEditingTeamImagePreview] = useState<string | null>(null);
   const teamImageInputRef = useRef<HTMLInputElement>(null);
 
@@ -196,18 +198,62 @@ useEffect(() => {
     // ... This is complex with local state, API call should be made instead
   };
 
-  const handleSaveChanges = () => {
-    // This should call an API: axios.put(`/api/chat/team/${teamId}`, ...);
-    addNotification("Team details updated (locally)!", "success");
-    setIsEditModalOpen(false);
-  };
+useEffect(()=>{
+if(teamDetails){
+setEditingTeamName(teamDetails.contact.name || "");
+setEditingTeamDescription(teamDetails.description || "");
+setEditingTeamImagePreview(teamDetails.contact.avatarUrl || null);
+}
+},[teamDetails]);
 
-  const handleAddMembers = () => {
-    // This should call an API: axios.post(`/api/chat/team/${teamId}/members`, ...);
-    addNotification(`${selectedUsersToAdd.length} member(s) added (locally).`, "success");
-    setIsAddMemberModalOpen(false);
-    setSelectedUsersToAdd([]);
-  };
+  const handleSaveChanges = ()=>{
+
+setTeamDetails(prev=>{
+if(!prev) return prev;
+
+return{
+...prev,
+contact:{
+...prev.contact,
+name: editingTeamName,
+avatarUrl: editingTeamImagePreview
+},
+description: editingTeamDescription
+};
+});
+
+addNotification(
+"Team updated successfully",
+"success"
+);
+
+setIsEditModalOpen(false);
+};
+
+  const handleAddMembers = ()=>{
+
+if(!teamDetails) return;
+
+const newMembers = selectedUsersToAdd.map(id=>getUserById(id)).filter(Boolean);
+
+setTeamDetails(prev=>{
+if(!prev) return prev;
+
+return{
+...prev,
+members:[...prev.members,...newMembers],
+memberIds:[...prev.memberIds,...selectedUsersToAdd]
+};
+});
+
+addNotification(
+`${selectedUsersToAdd.length} member(s) added`,
+"success"
+);
+
+setSelectedUsersToAdd([]);
+setIsAddMemberModalOpen(false);
+};
   
   const confirmRemoveMember = (memberIdToRemove: string) => {
     const member = getUserById(memberIdToRemove);
@@ -219,12 +265,28 @@ useEffect(() => {
     setIsConfirmRemoveModalOpen(true);
   };
   
-  const executeRemoveMember = () => {
-    // This should call an API: axios.delete(`/api/chat/team/${teamId}/members/${memberToRemove.id}`, ...);
-    addNotification(`${memberToRemove?.name} removed (locally).`, "success");
-    setIsConfirmRemoveModalOpen(false);
-    setMemberToRemove(null);
-  };
+  const executeRemoveMember = ()=>{
+
+if(!memberToRemove || !teamDetails) return;
+
+setTeamDetails(prev=>{
+if(!prev) return prev;
+
+return{
+...prev,
+members: prev.members.filter(m=>m.id!==memberToRemove.id),
+memberIds: prev.memberIds.filter(id=>id!==memberToRemove.id)
+};
+});
+
+addNotification(
+`${memberToRemove.name} removed`,
+"success"
+);
+
+setIsConfirmRemoveModalOpen(false);
+setMemberToRemove(null);
+};
 
   return (
     <div className="flex flex-col flex-grow bg-[var(--background-secondary)] h-full overflow-hidden">
@@ -272,7 +334,7 @@ useEffect(() => {
   {getUserById(teamDetails.adminId)?.name || "Unknown"}
 </p>
 
-                  {teamDetails.description && <p className="text-sm text-[var(--text-muted)] mt-2 font-medium">{teamDetails.description}</p>}
+                  {teamDetails.description && <p className="text-sm text-purple-500 mt-2 font-medium">{teamDetails.description}</p>}
               </div>
           </div>
           
@@ -292,7 +354,11 @@ useEffect(() => {
                             {member.profilePictureUrl ? ( <img src={member.profilePictureUrl} alt={member.name} className="w-10 h-10 rounded-full object-cover border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors" /> ) : ( <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors">{getInitials(member.name)}</div> )}
                             <div>
                                 <p className="text-sm font-bold text-[var(--text-primary)] group-hover:text-purple-500 dark:group-hover:text-purple-300 transition-colors">{member.name}</p>
-                                <p className="text-[10px] font-medium text-[var(--text-muted)] uppercase tracking-wide">{member.id === teamDetails.adminId ? "Admin" : "Member"}</p>
+                                <p className="text-[10px] font-medium text-purple-500 uppercase tracking-wide">
+{member.id === teamDetails.adminId
+? "Admin"
+: `Member ${memberRoles[member.id] ? "• " + memberRoles[member.id] : ""}`}
+</p>
                             </div>
                         </Link>
                         {isAdmin && member.id !== currentUser?.id && member.id !== teamDetails.adminId && (
@@ -375,8 +441,38 @@ useEffect(() => {
             </div>
              <div>
                 <label htmlFor="teamDescriptionEdit" className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Description</label>
-                <textarea id="teamDescriptionEdit" value={editingTeamDescription} onChange={e => setEditingTeamDescription(e.target.value)} rows={3} className="w-full bg-[var(--background-tertiary)] border-[var(--border-primary)] rounded-xl p-3 text-sm focus:ring-purple-500 focus:border-purple-500 resize-none"></textarea>
+                <textarea
+id="teamDescriptionEdit"
+value={editingTeamDescription}
+onChange={(e)=>{
+if(e.target.value.length <= DESCRIPTION_LIMIT){
+setEditingTeamDescription(e.target.value);
+}
+}}
+rows={3} className="w-full bg-[var(--background-tertiary)] border-[var(--border-primary)] rounded-xl p-3 text-sm focus:ring-purple-500 focus:border-purple-500 resize-none"></textarea>
+<p className="text-[10px] text-[var(--text-muted)] mt-1 text-right">
+{editingTeamDescription.length}/{DESCRIPTION_LIMIT}
+</p>
             </div>
+<div>
+<label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">
+Member Role
+</label>
+
+<input
+type="text"
+placeholder="Developer / Designer"
+className="w-full bg-[var(--background-tertiary)] border-[var(--border-primary)] rounded-xl p-3 text-sm"
+onChange={(e)=>{
+if(memberToRemove){
+setMemberRoles(prev=>({
+...prev,
+[memberToRemove.id]:e.target.value
+}))
+}
+}}
+/>
+</div>
             <div className="mt-6 pt-4 border-t border-[var(--border-primary)] flex justify-end space-x-3">
                 <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-secondary-background)] hover:bg-[var(--component-background-hover)] rounded-full transition-colors border border-[var(--border-primary)]">Cancel</button>
                 <button type="button" onClick={handleSaveChanges} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-white bg-purple-600 hover:bg-purple-700 rounded-full transition-colors shadow-md">Save Changes</button>
