@@ -268,7 +268,7 @@ useEffect(() => {
                   <h2 className="text-3xl font-bold text-[var(--text-primary)]">{teamDetails.contact.name}</h2>
 
 <p className="text-sm text-[var(--text-muted)] mt-1 font-semibold">
-  {teamDetails.members?.length || 0} Members • Created by{" "}
+  {teamDetails?.members?.length || 0} Members • Created by{" "}
   {teamDetails.adminId === currentUser?.id
   ? "You"
   : getUserById(teamDetails.adminId)?.name || "Unknown"}
