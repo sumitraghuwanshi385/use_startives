@@ -1,6 +1,7 @@
 const express = require('express');
 const { protect } = require('../middleware/authMiddleware');
-const { 
+
+const {
 fetchConversations,
 fetchMessages,
 sendMessage,
@@ -11,44 +12,50 @@ deleteConversation,
 updateTeam,
 addMembers,
 removeMember,
+markChatAsRead,
 leaveTeam,
 deleteTeam
 } = require('../controllers/chatController');
+
 const router = express.Router();
 
-// Get list of all chats (Direct & Teams)
+// Get list of all chats
 router.get('/', protect, fetchConversations);
 
-// Start a direct chat (or get existing)
+// Start a direct chat
 router.post('/', protect, createDirectChat);
 
-// Create a new Team
+// Create team
 router.post('/team', protect, createTeamChat);
 
-// Get messages of a specific chat
+// Get messages
 router.get('/:chatId/messages', protect, fetchMessages);
 
-// Send a message
+// Send message
 router.post('/:chatId/messages', protect, sendMessage);
 
+// Clear messages
 router.delete('/:chatId/messages', protect, clearMessages);
 
-// 🔥 ADD THIS ROUTE HERE
-router.patch('/:chatId/read', protect, require('../controllers/chatController').markChatAsRead);
+// Mark read
+router.patch('/:chatId/read', protect, markChatAsRead);
 
+// Delete chat
 router.delete('/:chatId', protect, deleteConversation);
 
-// UPDATE TEAM
+// Update team
 router.put('/team/:chatId', protect, updateTeam);
 
-// ADD MEMBER
+// Add member
 router.put('/team/:chatId/add', protect, addMembers);
 
-// REMOVE MEMBER
+// Remove member
 router.delete('/team/:chatId/member/:userId', protect, removeMember);
 
+// Leave team
 router.delete('/team/:chatId/leave', protect, leaveTeam);
 
+// Delete team
 router.delete('/team/:chatId/delete', protect, deleteTeam);
 
 module.exports = router;
