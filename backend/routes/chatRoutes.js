@@ -1,13 +1,16 @@
 const express = require('express');
 const { protect } = require('../middleware/authMiddleware');
 const { 
-    fetchConversations, 
-    fetchMessages, 
-    sendMessage, 
-    createTeamChat,
-    createDirectChat,
+fetchConversations,
+fetchMessages,
+sendMessage,
+createTeamChat,
+createDirectChat,
 clearMessages,
-  deleteConversation
+deleteConversation,
+updateTeam,
+addMembers,
+removeMember
 } = require('../controllers/chatController');
 
 const router = express.Router();
@@ -33,5 +36,14 @@ router.delete('/:chatId/messages', protect, clearMessages);
 router.patch('/:chatId/read', protect, require('../controllers/chatController').markChatAsRead);
 
 router.delete('/:chatId', protect, deleteConversation);
+
+// UPDATE TEAM
+router.put('/team/:chatId', protect, updateTeam);
+
+// ADD MEMBER
+router.put('/team/:chatId/add', protect, addMembers);
+
+// REMOVE MEMBER
+router.delete('/team/:chatId/member/:userId', protect, removeMember);
 
 module.exports = router;
