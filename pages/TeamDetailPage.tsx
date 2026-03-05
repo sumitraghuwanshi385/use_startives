@@ -70,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
 
 
 export const TeamDetailPage: React.FC = () => {
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("authToken");
   const { teamId } = useParams<{ teamId: string }>();
   const { currentUser, getUserById, addNotification, users: allUsersFromContext } = useAppContext(); 
 const [memberRoles,setMemberRoles] = useState<{[key:string]:string}>({});
@@ -103,6 +103,8 @@ const fetchTeamData = async () => {
 
 try{
 
+const token = localStorage.getItem("authToken");
+
 const res = await fetch("/api/chat",{
 headers:{
 Authorization:`Bearer ${token}`
@@ -126,7 +128,9 @@ members
 }
 
 }catch(err){
+
 console.log("TEAM FETCH ERROR",err);
+
 }
 
 };
@@ -134,6 +138,8 @@ console.log("TEAM FETCH ERROR",err);
 fetchTeamData();
 
 },[teamId]);
+
+
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
     return allUsersFromContext.filter(
