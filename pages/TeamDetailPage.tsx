@@ -69,6 +69,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
 };
 
 
+const authFetch = async (url:string, options:any = {}) => {
+
+const token = localStorage.getItem("token");
+
+return fetch(url,{
+...options,
+headers:{
+"Content-Type":"application/json",
+"Authorization": `Bearer ${token}`,
+...(options.headers || {})
+}
+});
+
+};
+
 export const TeamDetailPage: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const { currentUser, getUserById, addNotification, users: allUsersFromContext } = useAppContext(); 
@@ -102,7 +117,7 @@ const fetchTeam = async () => {
 
 try{
 
-const res = await fetch("/api/chat");
+const res = await authFetch("/api/chat");
 
 const data = await res.json();
 
@@ -130,7 +145,6 @@ console.log("TEAM FETCH ERROR",err);
 fetchTeam();
 
 },[teamId]);
-
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
     return allUsersFromContext.filter(
@@ -211,7 +225,7 @@ setEditingTeamImagePreview(teamDetails.contact.avatarUrl || null);
 
 try{
 
-const res = await fetch(`/api/chat/team/${teamId}`,{
+const res = await authFetch(`/api/chat/team/${teamId}`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
@@ -245,7 +259,7 @@ addNotification("Server error while updating team","error");
 
 try{
 
-const res = await fetch(`/api/chat/team/${teamId}/add`,{
+const res = await authFetch(`/api/chat/team/${teamId}/add`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
@@ -284,7 +298,7 @@ addNotification("Server error while adding member","error");
 
 try{
 
-const res = await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
+const res = await authFetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
 method:"DELETE"
 });
 
