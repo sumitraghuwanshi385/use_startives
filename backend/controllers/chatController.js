@@ -327,7 +327,11 @@ const { users } = req.body;
 
 const chat = await Conversation.findById(chatId);
 
-chat.users.push(...users);
+users.forEach(userId=>{
+if(!chat.users.includes(userId)){
+chat.users.push(userId);
+}
+});
 
 await chat.save();
 
