@@ -41,9 +41,9 @@ const formatChat = (chat, currentUserId) => {
         unreadCount: chat.unreadCounts?.get(currentUserId.toString()) || 0,
         isTeam: chat.isTeam,
         description: chat.description,
-        adminId: chat.admin ? chat.admin.toString() : null,
-        memberIds: chat.users.map(u => u._id.toString()),
-        members: chat.users // Full user objects
+        adminId: chat.admin ? chat.admin._id.toString() : null,
+memberIds: chat.users.map(u => u._id ? u._id.toString() : u.toString()),
+members: chat.users
     };
 };
 
