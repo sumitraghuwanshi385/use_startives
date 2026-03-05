@@ -110,8 +110,7 @@ const team = data.chats.find((c:any)=> c.id === teamId);
 
 if(team){
 
-const members =
-team.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
+const members = team.members || [];
 
 setTeamDetails({
 ...team,
@@ -226,29 +225,21 @@ image:editingTeamImagePreview
 
 const data = await res.json();
 
-if(data.chat){
-
-const members =
-data.chat.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
-
-setTeamDetails({
-...data.chat,
-members
-});
-
+if(!data.success){
+addNotification(data.message || "Failed to update team","error");
+return;
 }
 
-addNotification("Team updated","success");
-
-setIsEditModalOpen(false);
+addNotification("Team updated successfully","success");
 
 }catch(err){
 
-addNotification("Update failed","error");
+addNotification("Server error while updating team","error");
 
 }
 
 };
+
 
   const handleAddMembers = async ()=>{
 
@@ -264,26 +255,16 @@ body:JSON.stringify({users:selectedUsersToAdd})
 
 const data = await res.json();
 
-if(data.chat){
-
-const members =
-data.chat.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
-
-setTeamDetails({
-...data.chat,
-members
-});
-
+if(!data.success){
+addNotification(data.message || "Failed to add member","error");
+return;
 }
 
-addNotification("Members added","success");
-
-setIsAddMemberModalOpen(false);
-setSelectedUsersToAdd([]);
+addNotification("Member added successfully","success");
 
 }catch(err){
 
-addNotification("Add member failed","error");
+addNotification("Server error while adding member","error");
 
 }
 
@@ -309,24 +290,16 @@ method:"DELETE"
 
 const data = await res.json();
 
-if(data.chat){
-
-const members =
-data.chat.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
-
-setTeamDetails({
-...data.chat,
-members
-});
-
+if(!data.success){
+addNotification(data.message || "Failed to remove member","error");
+return;
 }
-addNotification("Member removed","success");
 
-setIsConfirmRemoveModalOpen(false);
+addNotification("Member removed successfully","success");
 
 }catch(err){
 
-addNotification("Remove failed","error");
+addNotification("Server error while removing member","error");
 
 }
 
