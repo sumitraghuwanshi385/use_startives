@@ -303,31 +303,22 @@ if(!chat){
 return res.status(404).json({success:false});
 }
 
-if(name) chat.chatName = name;
-if(description) chat.description = description;
-if(image) chat.chatImage = image;
+chat.chatName = name || chat.chatName;
+chat.description = description || chat.description;
+chat.chatImage = image || chat.chatImage;
 
 await chat.save();
 
-const updatedChat = await Conversation.findById(chatId)
-.populate("users","name profilePictureUrl")
-.populate("admin","name");
-
-res.json({
-success:true,
-chat: formatChat(updatedChat, req.user._id)
-});
+res.json({success:true,chat});
 
 }catch(error){
-console.log(error);
-res.status(500).json({success:false});
+res.status(500).json({success:false,message:error.message});
 }
 };
 
+
 // ================= ADD MEMBERS =================
 const addMembers = async (req,res)=>{
-
-console.log("ADD MEMBERS BODY:", req.body);
 
 try{
 
@@ -336,61 +327,40 @@ const { users } = req.body;
 
 const chat = await Conversation.findById(chatId);
 
-if(!chat){
-return res.status(404).json({success:false});
-}
-
-console.log("CHAT USERS BEFORE:", chat.users);
-
-// avoid duplicate members
-users.forEach(user=>{
-if(!chat.users.some(u=>u.toString() === user)){
-chat.users.push(user);
-}
-});
+chat.users.push(...users);
 
 await chat.save();
-
-console.log("CHAT USERS AFTER:", chat.users);
 
 res.json({success:true});
 
 }catch(error){
-console.log(error);
 res.status(500).json({success:false});
 }
 
 };
+
+
 // ================= REMOVE MEMBER =================
 const removeMember = async (req,res)=>{
+
 try{
 
 const { chatId,userId } = req.params;
 
 const chat = await Conversation.findById(chatId);
 
-if(!chat){
-return res.status(404).json({success:false});
-}
-
-// remove user
-chat.users.pull(userId);
+chat.users = chat.users.filter(
+u => u.toString() !== userId
+);
 
 await chat.save();
 
-const updatedChat = await Conversation.findById(chatId)
-.populate("users","name profilePictureUrl")
-.populate("admin","name");
-
-res.json({
-success:true,
-chat: formatChat(updatedChat, req.user._id)
-});
+res.json({success:true});
 
 }catch(error){
-console.log(error);
 res.status(500).json({success:false});
 }
+
 };
 
 module.exports = {
