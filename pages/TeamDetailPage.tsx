@@ -235,7 +235,15 @@ image:editingTeamImagePreview
 
 addNotification("Team updated successfully","success");
 
-window.location.reload();
+setTeamDetails(prev => prev ? {
+...prev,
+contact:{
+...prev.contact,
+name:editingTeamName,
+avatarUrl:editingTeamImagePreview
+},
+description:editingTeamDescription
+}:prev);
 
 }catch(err){
 addNotification("Update failed","error");
@@ -260,7 +268,17 @@ users:selectedUsersToAdd
 
 addNotification("Members added","success");
 
-window.location.reload();
+setTeamDetails(prev => prev ? {
+...prev,
+memberIds:[...prev.memberIds,...selectedUsersToAdd],
+members:[
+...prev.members,
+...selectedUsersToAdd.map(id=>getUserById(id)).filter(Boolean)
+]
+}:prev);
+
+setSelectedUsersToAdd([]);
+setIsAddMemberModalOpen(false);
 
 }catch(err){
 
@@ -293,7 +311,11 @@ Authorization:`Bearer ${token}`
 
 addNotification("Member removed","success");
 
-window.location.reload();
+setTeamDetails(prev => prev ? {
+...prev,
+memberIds:prev.memberIds.filter(id=>id!==memberToRemove.id),
+members:prev.members.filter(m=>m.id!==memberToRemove.id)
+}:prev);
 
 }catch(err){
 
