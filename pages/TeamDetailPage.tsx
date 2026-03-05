@@ -70,6 +70,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
 
 
 export const TeamDetailPage: React.FC = () => {
+const token = localStorage.getItem("token");
   const { teamId } = useParams<{ teamId: string }>();
   const { currentUser, getUserById, addNotification, users: allUsersFromContext } = useAppContext(); 
 const [memberRoles,setMemberRoles] = useState<{[key:string]:string}>({});
@@ -213,7 +214,8 @@ try{
 await fetch(`/api/chat/team/${teamId}`,{
 method:"PUT",
 headers:{
-"Content-Type":"application/json"
+"Content-Type":"application/json",
+Authorization:`Bearer ${token}`
 },
 body:JSON.stringify({
 name:editingTeamName,
@@ -239,7 +241,8 @@ try{
 await fetch(`/api/chat/team/${teamId}/add`,{
 method:"PUT",
 headers:{
-"Content-Type":"application/json"
+"Content-Type":"application/json",
+Authorization:`Bearer ${token}`
 },
 body:JSON.stringify({
 users:selectedUsersToAdd
@@ -273,7 +276,10 @@ addNotification("Add member failed","error");
 try{
 
 await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
-method:"DELETE"
+method:"DELETE",
+headers:{
+Authorization:`Bearer ${token}`
+}
 });
 
 addNotification("Member removed","success");
