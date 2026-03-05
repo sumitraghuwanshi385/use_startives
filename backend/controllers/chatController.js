@@ -309,7 +309,14 @@ if(image) chat.chatImage = image;
 
 await chat.save();
 
-res.json({success:true});
+const updatedChat = await Conversation.findById(chatId)
+.populate("users","name profilePictureUrl")
+.populate("admin","name");
+
+res.json({
+success:true,
+chat: formatChat(updatedChat, req.user._id)
+});
 
 }catch(error){
 console.log(error);
@@ -341,7 +348,14 @@ chat.users.push(user);
 
 await chat.save();
 
-res.json({success:true});
+const updatedChat = await Conversation.findById(chatId)
+.populate("users","name profilePictureUrl")
+.populate("admin","name");
+
+res.json({
+success:true,
+chat: formatChat(updatedChat, req.user._id)
+});
 
 }catch(error){
 console.log(error);
@@ -367,7 +381,14 @@ chat.users.pull(userId);
 
 await chat.save();
 
-res.json({success:true});
+const updatedChat = await Conversation.findById(chatId)
+.populate("users","name profilePictureUrl")
+.populate("admin","name");
+
+res.json({
+success:true,
+chat: formatChat(updatedChat, req.user._id)
+});
 
 }catch(error){
 console.log(error);
