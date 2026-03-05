@@ -365,12 +365,6 @@ setIsConfirmRemoveModalOpen(false);
 
 <button
 onClick={()=>setShowDeleteConfirm(true)}
-
-addNotification("Team deleted","success");
-
-navigate("/messages");
-
-}}
 className="flex items-center text-[10px] font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 py-2 px-3 rounded-full"
 >
 Delete Team
@@ -390,18 +384,11 @@ className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracki
 {!isAdmin && (
 <button
 onClick={()=>setShowLeaveConfirm(true)}
-
-addNotification("You left the team","success");
-
-navigate("/messages");
-
-}}
 className="flex items-center text-[10px] font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 py-2 px-3 rounded-full"
 >
 Leave Team
 </button>
 )}
-
 </header>
 
       <main className="flex-grow overflow-y-auto p-4 sm:p-6">
