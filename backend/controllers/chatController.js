@@ -417,15 +417,17 @@ res.status(500).json({success:false});
 };
 
 module.exports = {
-  fetchConversations,
-  createDirectChat,
-  createTeamChat,
-  fetchMessages,
-  sendMessage,
-  clearMessages,
-  deleteConversation,
-  markChatAsRead,
-  updateTeam,
-  addMembers,
-  removeMember
+fetchConversations,
+fetchMessages,
+sendMessage,
+createTeamChat,
+createDirectChat,
+clearMessages,
+deleteConversation,
+updateTeam,
+addMembers,
+removeMember,
+markChatAsRead,
+leaveTeam,
+deleteTeam
 };
