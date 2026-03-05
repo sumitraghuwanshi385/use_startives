@@ -224,10 +224,15 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col flex-grow bg-[var(--background-secondary)] h-full overflow-hidden">
+
+<header className="flex items-center justify-between p-4 bg-[var(--background-primary)] border-b border-[var(--border-primary)] shadow-sm shrink-0">  
+
+{/* BACK BUTTON */}
   <button
   onClick={() => navigate("/messages")}
   className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
 >
+
   <ChevronLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
   <span className="font-bold uppercase tracking-wide">Back</span>
 </button>
