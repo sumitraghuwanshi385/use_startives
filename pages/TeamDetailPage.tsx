@@ -455,23 +455,29 @@ rows={3} className="w-full bg-[var(--background-tertiary)] border-[var(--border-
 </p>
             </div>
 <div>
+
 <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">
 Member Role
 </label>
 
-<input
-type="text"
-placeholder="Developer / Designer"
+<select
 className="w-full bg-[var(--background-tertiary)] border-[var(--border-primary)] rounded-xl p-3 text-sm"
 onChange={(e)=>{
-if(memberToRemove){
 setMemberRoles(prev=>({
 ...prev,
-[memberToRemove.id]:e.target.value
+[selectedUserId]:e.target.value
 }))
-}
 }}
-/>
+>
+
+<option value="">Select Role</option>
+<option value="Developer">Developer</option>
+<option value="Designer">Designer</option>
+<option value="Manager">Manager</option>
+<option value="Tester">Tester</option>
+
+</select>
+
 </div>
             <div className="mt-6 pt-4 border-t border-[var(--border-primary)] flex justify-end space-x-3">
                 <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-secondary-background)] hover:bg-[var(--component-background-hover)] rounded-full transition-colors border border-[var(--border-primary)]">Cancel</button>
