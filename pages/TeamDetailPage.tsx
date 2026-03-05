@@ -69,21 +69,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
 };
 
 
-const authFetch = async (url:string, options:any = {}) => {
-
-const token = localStorage.getItem("token");
-
-return fetch(url,{
-...options,
-headers:{
-"Content-Type":"application/json",
-"Authorization": `Bearer ${token}`,
-...(options.headers || {})
-}
-});
-
-};
-
 export const TeamDetailPage: React.FC = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const { currentUser, getUserById, addNotification, users: allUsersFromContext } = useAppContext(); 
@@ -111,40 +96,40 @@ const DESCRIPTION_LIMIT = 150;
    // ✅ Fetch team data when page opens
 useEffect(() => {
 
-if (!teamId) return;
+  if (!teamId) return;
 
-const fetchTeam = async () => {
+  const fetchTeamData = async () => {
 
-try{
+  if (location.state?.team) {
 
-const res = await authFetch("/api/chat");
+    const rawTeam = location.state.team;
 
-const data = await res.json();
+    const members =
+      rawTeam.memberIds?.map((id: string) => getUserById(id)).filter(Boolean) || [];
 
-const team = data.chats.find((c:any)=> c.id === teamId);
+    // 🔥 detect admin properly
+    let adminId =
+  rawTeam.adminId ||
+  rawTeam.createdBy ||
+  rawTeam.contact?.id ||
+  members[0]?.id;
 
-if(team){
+    setTeamDetails({
+      ...rawTeam,
+      adminId,
+      members
+    });
 
-const members = team.members || [];
+    return;
+  }
 
-setTeamDetails({
-...team,
-members
-});
-
-}
-
-}catch(err){
-
-console.log("TEAM FETCH ERROR",err);
-
-}
-
+  setTeamDetails(null);
 };
 
-fetchTeam();
+  fetchTeamData();
 
-},[teamId]);
+}, [teamId, getUserById, currentUser, location.state]);
+
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
     return allUsersFromContext.filter(
@@ -225,7 +210,7 @@ setEditingTeamImagePreview(teamDetails.contact.avatarUrl || null);
 
 try{
 
-const res = await authFetch(`/api/chat/team/${teamId}`,{
+await fetch(`/api/chat/team/${teamId}`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
@@ -237,48 +222,37 @@ image:editingTeamImagePreview
 })
 });
 
-const data = await res.json();
-
-if(!data.success){
-addNotification(data.message || "Failed to update team","error");
-return;
-}
-
 addNotification("Team updated successfully","success");
 
+window.location.reload();
+
 }catch(err){
-
-addNotification("Server error while updating team","error");
-
+addNotification("Update failed","error");
 }
 
 };
-
 
   const handleAddMembers = async ()=>{
 
 try{
 
-const res = await authFetch(`/api/chat/team/${teamId}/add`,{
+await fetch(`/api/chat/team/${teamId}/add`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
-body:JSON.stringify({users:selectedUsersToAdd})
+body:JSON.stringify({
+users:selectedUsersToAdd
+})
 });
 
-const data = await res.json();
+addNotification("Members added","success");
 
-if(!data.success){
-addNotification(data.message || "Failed to add member","error");
-return;
-}
-
-addNotification("Member added successfully","success");
+window.location.reload();
 
 }catch(err){
 
-addNotification("Server error while adding member","error");
+addNotification("Add member failed","error");
 
 }
 
@@ -298,22 +272,17 @@ addNotification("Server error while adding member","error");
 
 try{
 
-const res = await authFetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
+await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
 method:"DELETE"
 });
 
-const data = await res.json();
+addNotification("Member removed","success");
 
-if(!data.success){
-addNotification(data.message || "Failed to remove member","error");
-return;
-}
-
-addNotification("Member removed successfully","success");
+window.location.reload();
 
 }catch(err){
 
-addNotification("Server error while removing member","error");
+addNotification("Remove failed","error");
 
 }
 
@@ -486,29 +455,23 @@ rows={3} className="w-full bg-[var(--background-tertiary)] border-[var(--border-
 </p>
             </div>
 <div>
-
 <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">
 Member Role
 </label>
 
-<select
+<input
+type="text"
+placeholder="Developer / Designer"
 className="w-full bg-[var(--background-tertiary)] border-[var(--border-primary)] rounded-xl p-3 text-sm"
 onChange={(e)=>{
+if(memberToRemove){
 setMemberRoles(prev=>({
 ...prev,
-[selectedUserId]:e.target.value
+[memberToRemove.id]:e.target.value
 }))
+}
 }}
->
-
-<option value="">Select Role</option>
-<option value="Developer">Developer</option>
-<option value="Designer">Designer</option>
-<option value="Manager">Manager</option>
-<option value="Tester">Tester</option>
-
-</select>
-
+/>
 </div>
             <div className="mt-6 pt-4 border-t border-[var(--border-primary)] flex justify-end space-x-3">
                 <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-secondary-background)] hover:bg-[var(--component-background-hover)] rounded-full transition-colors border border-[var(--border-primary)]">Cancel</button>
