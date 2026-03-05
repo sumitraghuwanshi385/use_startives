@@ -118,7 +118,18 @@ const team = data.chats.find((c:any)=>c.id===teamId);
 if(team){
 
 const members =
-team.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean)||[];
+team.memberIds?.map((id:string)=>{
+const user = getUserById(id);
+
+if(user) return user;
+
+return {
+id,
+name:"Unknown User",
+profilePictureUrl:""
+};
+
+}) || [];
 
 setTeamDetails({
 ...team,
@@ -272,7 +283,7 @@ addNotification("Members added","success");
 
 setTeamDetails(prev => prev ? {
 ...prev,
-memberIds:[...prev.memberIds,...selectedUsersToAdd],
+memberIds:[...new Set([...prev.memberIds,...selectedUsersToAdd])],
 members:[
 ...prev.members,
 ...selectedUsersToAdd.map(id=>getUserById(id)).filter(Boolean)
@@ -322,6 +333,7 @@ members:prev.members.filter(m=>m.id!==memberToRemove.id)
 }catch(err){
 
 addNotification("Remove failed","error");
+setIsConfirmRemoveModalOpen(false);
 
 }
 
@@ -344,14 +356,31 @@ addNotification("Remove failed","error");
 
   {/* EDIT BUTTON */}
   {isAdmin && (
-    <button
-      onClick={() => setIsEditModalOpen(true)}
-      className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracking-widest text-white button-gradient hover:opacity-90 py-2 px-3 rounded-full shadow-md transition-all"
-    >
-      <PencilIcon className="w-3.5 h-3.5" />
-      <span>Edit Team</span>
-    </button>
-  )}
+<div className="flex gap-2">
+
+<button
+onClick={async()=>{
+await fetch(`/api/chat/team/${teamId}/delete`,{
+method:"DELETE",
+headers:{Authorization:`Bearer ${token}`}
+});
+navigate("/messages");
+}}
+className="flex items-center text-[10px] font-black uppercase tracking-widest text-white bg-red-600 hover:bg-red-700 py-2 px-3 rounded-full"
+>
+Delete Team
+</button>
+
+<button
+onClick={() => setIsEditModalOpen(true)}
+className="flex items-center space-x-1.5 text-[10px] font-black uppercase tracking-widest text-white button-gradient py-2 px-3 rounded-full"
+>
+<PencilIcon className="w-3.5 h-3.5"/>
+<span>Edit Team</span>
+</button>
+
+</div>
+)}
 
 </header>
 
@@ -372,6 +401,22 @@ addNotification("Remove failed","error");
   {teamDetails.memberIds?.length || 0} Members • Created by{" "}
   {getUserById(teamDetails.adminId)?.name || "Unknown"}
 </p>
+
+{!isAdmin && (
+<button
+onClick={async()=>{
+await fetch(`/api/chat/team/${teamId}/leave`,{
+method:"DELETE",
+headers:{Authorization:`Bearer ${token}`}
+});
+navigate("/messages");
+}}
+className="mt-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-full"
+>
+Leave Team
+</button>
+)}
+
 
                   {teamDetails.description && <p className="text-sm text-purple-500 mt-2 font-medium">{teamDetails.description}</p>}
               </div>
