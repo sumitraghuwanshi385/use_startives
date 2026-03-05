@@ -307,13 +307,21 @@ chat.chatName = name || chat.chatName;
 chat.description = description || chat.description;
 chat.chatImage = image || chat.chatImage;
 
+chat.lastMessage = {
+text:`${req.user.name} changed team name to "${name}"`,
+sender:req.user._id,
+timestamp:new Date()
+};
+
+
 await chat.save();
 await Message.create({
 conversationId: chatId,
 sender: req.user._id,
-text:`${req.user.name} updated team details`,
+text:`${req.user.name} changed team name to "${name}"`,
 type:"system"
 });
+
 
 res.json({success:true,chat});
 
@@ -325,7 +333,6 @@ res.status(500).json({success:false,message:error.message});
 
 // ================= ADD MEMBERS =================
 const addMembers = async (req,res)=>{
-
 try{
 
 const { chatId } = req.params;
@@ -333,17 +340,34 @@ const { users } = req.body;
 
 const chat = await Conversation.findById(chatId);
 
-users.forEach(userId=>{
+let addedNames = [];
+
+for(const userId of users){
+
+const user = await User.findById(userId);
+
 if(!chat.users.includes(userId)){
 chat.users.push(userId);
 }
-});
+
+if(user){
+addedNames.push(user.name);
+}
+
+}
+
+chat.lastMessage = {
+text:`${req.user.name} added ${addedNames.join(", ")}`,
+sender:req.user._id,
+timestamp:new Date()
+};
 
 await chat.save();
+
 await Message.create({
 conversationId: chatId,
 sender: req.user._id,
-text: `${req.user.name} added new members`,
+text:`${req.user.name} added ${addedNames.join(", ")}`,
 type:"system"
 });
 
@@ -352,28 +376,33 @@ res.json({success:true});
 }catch(error){
 res.status(500).json({success:false});
 }
-
 };
-
-
 // ================= REMOVE MEMBER =================
 const removeMember = async (req,res)=>{
-
 try{
 
 const { chatId,userId } = req.params;
 
 const chat = await Conversation.findById(chatId);
+const removedUser = await User.findById(userId);
 
+// remove user
 chat.users = chat.users.filter(
 u => u.toString() !== userId
 );
 
+chat.lastMessage = {
+text:`${req.user.name} removed ${removedUser?.name || "a user"}`,
+sender:req.user._id,
+timestamp:new Date()
+};
+
 await chat.save();
+
 await Message.create({
 conversationId: chatId,
 sender: req.user._id,
-text:`${req.user.name} removed a member`,
+text:`${req.user.name} removed ${removedUser?.name || "a user"}`,
 type:"system"
 });
 
@@ -382,7 +411,6 @@ res.json({success:true});
 }catch(error){
 res.status(500).json({success:false});
 }
-
 };
 
 const leaveTeam = async(req,res)=>{
@@ -396,7 +424,14 @@ chat.users = chat.users.filter(
 u => u.toString() !== req.user._id.toString()
 );
 
+chat.lastMessage = {
+text:`${req.user.name} left the team`,
+sender:req.user._id,
+timestamp:new Date()
+};
+
 await chat.save();
+
 await Message.create({
 conversationId: chatId,
 sender: req.user._id,
