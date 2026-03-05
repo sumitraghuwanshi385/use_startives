@@ -46,4 +46,8 @@ router.put('/team/:chatId/add', protect, addMembers);
 // REMOVE MEMBER
 router.delete('/team/:chatId/member/:userId', protect, removeMember);
 
+router.delete('/team/:chatId/leave', protect, leaveTeam);
+
+router.delete('/team/:chatId/delete', protect, deleteTeam);
+
 module.exports = router;
