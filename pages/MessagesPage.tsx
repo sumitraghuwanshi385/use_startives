@@ -764,6 +764,16 @@ onClick={(e) => {
 
       {selectedChat.messages?.length ? (
        selectedChat.messages.map((msg: any, i: number) => {
+
+if (msg.type === "system") {
+  return (
+    <div key={i} className="flex justify-center my-3">
+      <div className="px-3 py-1 text-[11px] rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+        {msg.text}
+      </div>
+    </div>
+  );
+}
   const isMe = msg.senderId === currentUser.id;
 
   const currentDate = msg.timestamp
