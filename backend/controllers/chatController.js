@@ -340,6 +340,10 @@ const { users } = req.body;
 
 const chat = await Conversation.findById(chatId);
 
+if(chat.admin.toString() !== req.user._id.toString()){
+return res.status(403).json({success:false,message:"Only admin can add members"});
+}
+
 let addedNames = [];
 
 for(const userId of users){
@@ -384,7 +388,20 @@ try{
 const { chatId,userId } = req.params;
 
 const chat = await Conversation.findById(chatId);
+
+if(chat.admin.toString() !== req.user._id.toString()){
+return res.status(403).json({success:false,message:"Only admin can remove members"});
+}
+
 const removedUser = await User.findById(userId);
+
+if(!chat){
+return res.status(404).json({success:false,message:"Chat not found"});
+}
+
+if(!removedUser){
+return res.status(404).json({success:false,message:"User not found"});
+}
 
 // remove user
 chat.users = chat.users.filter(
@@ -420,9 +437,18 @@ const { chatId } = req.params;
 
 const chat = await Conversation.findById(chatId);
 
+if(!chat){
+return res.status(404).json({success:false,message:"Team not found"});
+}
+
 chat.users = chat.users.filter(
 u => u.toString() !== req.user._id.toString()
 );
+
+if(chat.users.length === 0){
+await Conversation.findByIdAndDelete(chatId);
+return res.json({success:true});
+}
 
 chat.lastMessage = {
 text:`${req.user.name} left the team`,
@@ -451,8 +477,17 @@ try{
 
 const { chatId } = req.params;
 
-await Conversation.findByIdAndDelete(chatId);
+const chat = await Conversation.findById(chatId);
 
+if(!chat){
+return res.status(404).json({success:false});
+}
+
+await Message.deleteMany({
+conversationId: chatId
+});
+
+await Conversation.findByIdAndDelete(chatId);
 res.json({success:true});
 
 }catch(err){
