@@ -303,22 +303,23 @@ if(!chat){
 return res.status(404).json({success:false});
 }
 
-chat.chatName = name || chat.chatName;
-chat.description = description || chat.description;
-chat.chatImage = image || chat.chatImage;
+if(name) chat.chatName = name;
+if(description) chat.description = description;
+if(image) chat.chatImage = image;
 
 await chat.save();
 
-res.json({success:true,chat});
+res.json({success:true});
 
 }catch(error){
-res.status(500).json({success:false,message:error.message});
+console.log(error);
+res.status(500).json({success:false});
 }
 };
 
 
 // ================= ADD MEMBERS =================
-const addMembers = async (req,res)=>{
+to const addMembers = async (req,res)=>{
 
 try{
 
@@ -327,40 +328,51 @@ const { users } = req.body;
 
 const chat = await Conversation.findById(chatId);
 
-chat.users.push(...users);
+if(!chat){
+return res.status(404).json({success:false});
+}
+
+// avoid duplicate members
+users.forEach(user=>{
+if(!chat.users.includes(user)){
+chat.users.push(user);
+}
+});
 
 await chat.save();
 
 res.json({success:true});
 
 }catch(error){
+console.log(error);
 res.status(500).json({success:false});
 }
 
 };
 
-
 // ================= REMOVE MEMBER =================
 const removeMember = async (req,res)=>{
-
 try{
 
 const { chatId,userId } = req.params;
 
 const chat = await Conversation.findById(chatId);
 
-chat.users = chat.users.filter(
-u => u.toString() !== userId
-);
+if(!chat){
+return res.status(404).json({success:false});
+}
+
+// remove user
+chat.users.pull(userId);
 
 await chat.save();
 
 res.json({success:true});
 
 }catch(error){
+console.log(error);
 res.status(500).json({success:false});
 }
-
 };
 
 module.exports = {
