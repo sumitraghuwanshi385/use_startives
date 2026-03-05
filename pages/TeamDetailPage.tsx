@@ -233,6 +233,8 @@ image:editingTeamImagePreview
 })
 });
 
+setIsEditModalOpen(false);
+
 addNotification("Team updated successfully","success");
 
 setTeamDetails(prev => prev ? {
@@ -498,8 +500,8 @@ Member Role
 
 <input
 type="text"
-placeholder="Developer / Designer"
-className="w-full bg-[var(--background-tertiary)] border-[var(--border-primary)] rounded-xl p-3 text-sm"
+placeholder="Role (Developer / Designer)"
+value={memberRoles[memberToRemove?.id] || ""}
 onChange={(e)=>{
 if(memberToRemove){
 setMemberRoles(prev=>({
