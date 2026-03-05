@@ -319,7 +319,7 @@ res.status(500).json({success:false});
 
 
 // ================= ADD MEMBERS =================
-to const addMembers = async (req,res)=>{
+const addMembers = async (req,res)=>{
 
 try{
 
