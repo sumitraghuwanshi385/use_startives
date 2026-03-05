@@ -101,8 +101,10 @@ useEffect(() => {
     // agar MessagesPage se team object navigate hua hai
     if (location.state?.team) {
 
-      const team = location.state.team;
-
+      const team = {
+  ...location.state.team,
+  adminId: location.state.team.adminId || currentUser?.id
+};
       const members =
         team.memberIds?.map((id: string) => getUserById(id)).filter(Boolean) || [];
 
@@ -175,6 +177,7 @@ useEffect(() => {
   }
   
   const isAdmin =
+  teamDetails?.adminId &&
   String(teamDetails.adminId) === String(currentUser?.id);
 
   const handleTeamImageChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
@@ -266,9 +269,11 @@ useEffect(() => {
 
 <p className="text-sm text-[var(--text-muted)] mt-1 font-semibold">
   {(teamDetails.members || []).length} Members • Created by{" "}
-  {String(teamDetails.adminId) === String(currentUser?.id)
-    ? "You"
-    : getUserById(teamDetails.adminId)?.name || "Admin"}
+  {teamDetails.adminId
+  ? (String(teamDetails.adminId) === String(currentUser?.id)
+      ? "You"
+      : getUserById(teamDetails.adminId)?.name)
+  : "Unknown"}
 </p>
 
                   {teamDetails.description && <p className="text-sm text-[var(--text-muted)] mt-2 font-medium">{teamDetails.description}</p>}
@@ -291,7 +296,9 @@ useEffect(() => {
                             {member.profilePictureUrl ? ( <img src={member.profilePictureUrl} alt={member.name} className="w-10 h-10 rounded-full object-cover border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors" /> ) : ( <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm border border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors">{getInitials(member.name)}</div> )}
                             <div>
                                 <p className="text-sm font-bold text-[var(--text-primary)] group-hover:text-purple-500 dark:group-hover:text-purple-300 transition-colors">{member.name}</p>
-                                <p className="text-[10px] font-medium text-[var(--text-muted)] uppercase tracking-wide">{member.id === teamDetails.adminId ? 'Admin' : 'Member'}</p>
+                                <p className="text-[10px] font-medium text-[var(--text-muted)] uppercase tracking-wide">{String(member.id) === String(teamDetails.adminId)
+  ? "Admin"
+  : "Member"}</p>
                             </div>
                         </Link>
                         {isAdmin && member.id !== currentUser?.id && member.id !== teamDetails.adminId && (
