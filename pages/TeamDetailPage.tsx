@@ -212,7 +212,7 @@ setEditingTeamImagePreview(teamDetails.contact.avatarUrl || null);
 
 try{
 
-await fetch(`/api/chat/team/${teamId}`,{
+const res = await fetch(`/api/chat/team/${teamId}`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
@@ -224,19 +224,19 @@ image:editingTeamImagePreview
 })
 });
 
-setTeamDetails(prev=>{
-if(!prev) return prev;
+const data = await res.json();
 
-return{
-...prev,
-contact:{
-...prev.contact,
-name:editingTeamName,
-avatarUrl:editingTeamImagePreview
-},
-description:editingTeamDescription
-};
+if(data.chat){
+
+const members =
+data.chat.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
+
+setTeamDetails({
+...data.chat,
+members
 });
+
+}
 
 addNotification("Team updated","success");
 
@@ -254,7 +254,7 @@ addNotification("Update failed","error");
 
 try{
 
-await fetch(`/api/chat/team/${teamId}/add`,{
+const res = await fetch(`/api/chat/team/${teamId}/add`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
@@ -262,19 +262,19 @@ headers:{
 body:JSON.stringify({users:selectedUsersToAdd})
 });
 
-const newMembers = selectedUsersToAdd
-.map(id=>getUserById(id))
-.filter(Boolean);
+const data = await res.json();
 
-setTeamDetails(prev=>{
-if(!prev) return prev;
+if(data.chat){
 
-return{
-...prev,
-members:[...prev.members,...newMembers],
-memberIds:[...prev.memberIds,...selectedUsersToAdd]
-};
+const members =
+data.chat.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
+
+setTeamDetails({
+...data.chat,
+members
 });
+
+}
 
 addNotification("Members added","success");
 
@@ -303,20 +303,23 @@ addNotification("Add member failed","error");
 
 try{
 
-await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
+const res = await fetch(`/api/chat/team/${teamId}/member/${memberToRemove.id}`,{
 method:"DELETE"
 });
 
-setTeamDetails(prev=>{
-if(!prev) return prev;
+const data = await res.json();
 
-return{
-...prev,
-members: prev.members.filter(m=>m.id !== memberToRemove.id),
-memberIds: prev.memberIds.filter(id=>id !== memberToRemove.id)
-};
+if(data.chat){
+
+const members =
+data.chat.memberIds?.map((id:string)=>getUserById(id)).filter(Boolean) || [];
+
+setTeamDetails({
+...data.chat,
+members
 });
 
+}
 addNotification("Member removed","success");
 
 setIsConfirmRemoveModalOpen(false);
