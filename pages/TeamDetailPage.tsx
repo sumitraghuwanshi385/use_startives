@@ -106,11 +106,11 @@ useEffect(() => {
       rawTeam.memberIds?.map((id: string) => getUserById(id)).filter(Boolean) || [];
 
     // 🔥 detect admin properly
-    let adminId = rawTeam.adminId;
-
-    if (!adminId && members.length > 0) {
-      adminId = members[0].id;
-    }
+    let adminId =
+  rawTeam.adminId ||
+  rawTeam.createdBy ||
+  rawTeam.contact?.id ||
+  members[0]?.id;
 
     setTeamDetails({
       ...rawTeam,
@@ -178,7 +178,7 @@ useEffect(() => {
     );
   }
   
-  const isAdmin = teamDetails.adminId === currentUser?.id;
+  const isAdmin = String(teamDetails.adminId) === String(currentUser?.id);
 
   const handleTeamImageChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
     const file = event.target.files?.[0];
@@ -269,9 +269,7 @@ useEffect(() => {
 
 <p className="text-sm text-[var(--text-muted)] mt-1 font-semibold">
   {teamDetails.memberIds?.length || 0} Members • Created by{" "}
-  {teamDetails.adminId === currentUser?.id
-    ? "You"
-    : getUserById(teamDetails.adminId)?.name}
+  {getUserById(teamDetails.adminId)?.name || "Unknown"}
 </p>
 
                   {teamDetails.description && <p className="text-sm text-[var(--text-muted)] mt-2 font-medium">{teamDetails.description}</p>}
