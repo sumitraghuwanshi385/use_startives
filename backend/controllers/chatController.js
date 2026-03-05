@@ -324,9 +324,10 @@ res.status(500).json({success:false});
 }
 };
 
-
 // ================= ADD MEMBERS =================
 const addMembers = async (req,res)=>{
+
+console.log("ADD MEMBERS BODY:", req.body);
 
 try{
 
@@ -339,23 +340,20 @@ if(!chat){
 return res.status(404).json({success:false});
 }
 
+console.log("CHAT USERS BEFORE:", chat.users);
+
 // avoid duplicate members
 users.forEach(user=>{
-if(!chat.users.includes(user)){
+if(!chat.users.some(u=>u.toString() === user)){
 chat.users.push(user);
 }
 });
 
 await chat.save();
 
-const updatedChat = await Conversation.findById(chatId)
-.populate("users","name profilePictureUrl")
-.populate("admin","name");
+console.log("CHAT USERS AFTER:", chat.users);
 
-res.json({
-success:true,
-chat: formatChat(updatedChat, req.user._id)
-});
+res.json({success:true});
 
 }catch(error){
 console.log(error);
@@ -363,7 +361,6 @@ res.status(500).json({success:false});
 }
 
 };
-
 // ================= REMOVE MEMBER =================
 const removeMember = async (req,res)=>{
 try{
