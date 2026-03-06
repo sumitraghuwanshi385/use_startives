@@ -1,33 +1,24 @@
 const express = require("express");
 const router = express.Router();
 
-let assets = []; // temporary storage
+const {
+createAsset,
+getAssets,
+getAsset,
+deleteAsset
+} = require("../controllers/assetController");
 
-// CREATE ASSET
-router.post("/assets", (req,res)=>{
 
-const asset = {
-id: Date.now().toString(),
-...req.body,
-postedDate: new Date()
-};
+// CREATE
+router.post("/",createAsset);
 
-assets.push(asset);
+// GET ALL
+router.get("/",getAssets);
 
-res.json({
-success:true,
-asset
-});
+// GET SINGLE
+router.get("/:id",getAsset);
 
-});
-
-// GET ALL ASSETS
-router.get("/assets",(req,res)=>{
-
-res.json({
-assets
-});
-
-});
+// DELETE
+router.delete("/:id",deleteAsset);
 
 module.exports = router;
