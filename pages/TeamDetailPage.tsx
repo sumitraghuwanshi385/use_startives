@@ -376,7 +376,7 @@ setIsConfirmRemoveModalOpen(false);
 
 {/* BACK BUTTON */}
   <button
-  onClick={() => navigate(`/messages/${teamId}`)}
+  onClick={() => navigate(-1)}
   className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
 >
 
