@@ -430,6 +430,53 @@ res.status(500).json({success:false});
 }
 };
 
+// ================= SET ROLE =================
+const setRole = async (req,res)=>{
+try{
+
+const { chatId,userId } = req.params;
+const { role } = req.body;
+
+const chat = await Conversation.findById(chatId);
+
+if(!chat){
+return res.status(404).json({success:false});
+}
+
+if(chat.admin.toString() !== req.user._id.toString()){
+return res.status(403).json({success:false,message:"Only admin can set role"});
+}
+
+const targetUser = await User.findById(userId);
+
+if(!targetUser){
+return res.status(404).json({success:false});
+}
+
+// 🔥 system message
+chat.lastMessage = {
+text:`${req.user.name} set ${targetUser.name} role to ${role}`,
+sender:req.user._id,
+timestamp:new Date()
+};
+
+await chat.save();
+
+await Message.create({
+conversationId: chatId,
+sender: req.user._id,
+text:`${req.user.name} set ${targetUser.name} role to ${role}`,
+type:"system"
+});
+
+res.json({success:true});
+
+}catch(err){
+res.status(500).json({success:false});
+}
+};
+
+
 const leaveTeam = async(req,res)=>{
 try{
 
