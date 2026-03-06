@@ -133,20 +133,41 @@ const team = data.chats.find((c:any)=>c.id===teamId);
 
 if(team){
 
-const members =
-team.memberIds?.map((id: string) => {
+const members = await Promise.all(
+  (team.memberIds || []).map(async (id: string) => {
 
-const user = getUserById(id) || allUsersFromContext.find(u => String(u.id) === String(id));
+    const existingUser =
+      getUserById(id) ||
+      allUsersFromContext.find(u => String(u.id) === String(id));
 
-if (user) return user;
+    if (existingUser) return existingUser;
 
-return {
-id,
-name: id === team.adminId ? "Admin" : "User",
-profilePictureUrl: ""
-};
+    try {
 
-}) || [];
+      const res = await fetch(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) throw new Error("User fetch failed");
+
+      const user = await res.json();
+
+      return user;
+
+    } catch {
+
+      return {
+        id,
+        name: "Unknown",
+        profilePictureUrl: ""
+      };
+
+    }
+
+  })
+);
 
 setTeamDetails(prev => {
 
