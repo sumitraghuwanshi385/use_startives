@@ -12,6 +12,7 @@ deleteConversation,
 updateTeam,
 addMembers,
 removeMember,
+setRole,
 markChatAsRead,
 leaveTeam,
 deleteTeam
@@ -51,6 +52,9 @@ router.put('/team/:chatId/add', protect, addMembers);
 
 // Remove member
 router.delete('/team/:chatId/member/:userId', protect, removeMember);
+
+// Set member role
+router.put('/team/:chatId/role/:userId', protect, setRole);
 
 // Leave team
 router.delete('/team/:chatId/leave', protect, leaveTeam);
