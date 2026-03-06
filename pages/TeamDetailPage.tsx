@@ -117,6 +117,8 @@ if (!teamId) return;
 
 const fetchTeamData = async () => {
 
+if(teamDetails) return;
+
 try{
 
 const token = localStorage.getItem("authToken");
@@ -170,7 +172,7 @@ console.log("TEAM FETCH ERROR",err);
 
 fetchTeamData();
 
-},[teamId, allUsersFromContext]);
+},[teamId]);
 
 
   const availableUsersForAdding = useMemo(() => {
@@ -801,7 +803,7 @@ Cancel
 </button>
 
 <button
-onClick={()=>{
+onClick={async ()=>{
 
 if(roleUser && roleInput.trim()){
 
