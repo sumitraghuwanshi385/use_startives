@@ -192,11 +192,38 @@ const SubmitAssetPage: React.FC = () => {
             return;
         }
 
-        await new Promise(r => setTimeout(r, 1000));
-        addIdea({ ...formData, imageDataUrl: formData.brandLogo, stage: 'Launched' } as any);
-        addNotification("Asset successfully enrolled!", "success");
-        navigate('/my-projects');
-    };
+        try {
+
+const res = await fetch("/api/assets", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+...formData,
+founderId: currentUser?.id,
+founderEmail: currentUser?.email,
+imageUrl: formData.brandLogo
+})
+});
+
+if(!res.ok){
+throw new Error("Failed to create asset");
+}
+
+addNotification("Asset successfully enrolled!", "success");
+
+navigate("/assets");
+
+} catch(err){
+
+addNotification("Asset creation failed", "error");
+
+} finally {
+
+setIsLoading(false);
+
+}
 
     const inputClasses = "block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg shadow-sm placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-[var(--text-primary)] text-sm font-poppins font-medium";
     const subBoxClasses = "block w-full px-3 py-2 mt-2 bg-neutral-50 dark:bg-neutral-900 border border-dashed border-[var(--border-secondary)] rounded-lg text-xs text-[var(--text-secondary)] font-poppins focus:outline-none";
