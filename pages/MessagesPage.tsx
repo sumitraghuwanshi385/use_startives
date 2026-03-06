@@ -857,14 +857,14 @@ onClick={(e) => {
       {selectedChat?.isTeam ? (
 
 <button
-  onClick={() => {
-    navigate(`/team/${selectedChat.id}`);
-    setIsChatMenuOpen(false);
-  }}
-  className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
+onClick={() => {
+navigate(`/team/${selectedChatId}`);
+setIsChatMenuOpen(false);
+}}
+className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
 >
 
-<UserGroupIcon className="w-4 h-4" />
+<UsersIcon className="w-4 h-4" />
 View Team
 
 </button>
@@ -872,12 +872,12 @@ View Team
 ) : (
 
 <button
-  onClick={() => {
-    setChatToAction(selectedChatId);
-    setIsConfirmDeleteOpen(true);
-    setIsChatMenuOpen(false);
-  }}
-  className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+onClick={() => {
+setChatToAction(selectedChatId);
+setIsConfirmDeleteOpen(true);
+setIsChatMenuOpen(false);
+}}
+className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
 >
 
 <TrashIcon className="w-4 h-4" />
