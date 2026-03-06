@@ -757,9 +757,9 @@ filteredChats.map(chat => (
 
 )}
           </div>
-)
-}
-        ))}
+))
+
+)}
       </div>
     </aside>
 
