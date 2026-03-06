@@ -858,17 +858,15 @@ onClick={(e) => {
 
 <button
   onClick={() => {
+    if (!selectedChat) return;
     navigate(`/team/${selectedChat.id}`);
     setIsChatMenuOpen(false);
   }}
   className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
 >
-
-<UsersIcon className="w-4 h-4" />
-View Team
-
+  <UserGroupIcon className="w-4 h-4" />
+  View Team
 </button>
-
 ) : (
 
 <button
