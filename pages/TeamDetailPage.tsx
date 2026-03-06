@@ -134,15 +134,16 @@ const team = data.chats.find((c:any)=>c.id===teamId);
 if(team){
 
 const members =
-team.memberIds?.map((id:string)=>{
-const user = getUserById(id);
+team.memberIds?.map((id: string) => {
 
-if(user) return user;
+const user = getUserById(id) || allUsersFromContext.find(u => String(u.id) === String(id));
+
+if (user) return user;
 
 return {
 id,
-name:"Unknown User",
-profilePictureUrl:""
+name: id === team.adminId ? "Admin" : "User",
+profilePictureUrl: ""
 };
 
 }) || [];
@@ -170,8 +171,7 @@ console.log("TEAM FETCH ERROR",err);
 
 fetchTeamData();
 
-},[teamId, allUsersFromContext]);
-
+},[teamId, allUsersFromContext.length]);
 
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
