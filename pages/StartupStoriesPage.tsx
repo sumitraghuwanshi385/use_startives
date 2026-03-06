@@ -96,7 +96,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   return (
     <div className="bg-[var(--component-background)] rounded-3xl border border-[var(--border-primary)] overflow-hidden group flex flex-col h-full hover:border-emerald-500/50 transition-all duration-300 shadow-none font-poppins">
       <div className="relative h-44 overflow-hidden bg-neutral-950">
-        <img src={idea.imageUrl} alt={idea.title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+        <img src={idea.brandLogo} alt={idea.title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
         <div className="absolute top-4 left-4 flex gap-2"><span className="bg-emerald-600/30 backdrop-blur-xl border border-emerald-500/30 text-emerald-100 text-[9px] font-black uppercase tracking-[0.1em] px-3 py-1.5 rounded-full flex items-center gap-1.5">{idea.category || 'SaaS'}</span></div>
         <button onClick={handleSave} className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}><BookmarkIcon className="w-4 h-4" solid={isSaved} /></button>
