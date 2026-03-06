@@ -409,7 +409,7 @@ u => u.toString() !== userId
 );
 
 chat.lastMessage = {
-text:`${req.user.name} removed ${removedUser?.name || "a user"}`,
+text:`${req.user.name} removed ${removedUser.name}`
 sender:req.user._id,
 timestamp:new Date()
 };
