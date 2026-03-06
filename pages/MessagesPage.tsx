@@ -854,17 +854,38 @@ onClick={(e) => {
   {isChatMenuOpen && (
     <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-xl shadow-lg z-50 overflow-hidden">
 
-      <button
-        onClick={() => {
-          setChatToAction(selectedChatId);
-          setIsConfirmDeleteOpen(true);
-          setIsChatMenuOpen(false);
-        }}
-        className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-      >
-        <TrashIcon className="w-4 h-4" />
-        Delete Chat
-      </button>
+      {selectedChat?.isTeam ? (
+
+<button
+  onClick={() => {
+    navigate(`/team/${selectedChat.id}`);
+    setIsChatMenuOpen(false);
+  }}
+  className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
+>
+
+<UserGroupIcon className="w-4 h-4" />
+View Team
+
+</button>
+
+) : (
+
+<button
+  onClick={() => {
+    setChatToAction(selectedChatId);
+    setIsConfirmDeleteOpen(true);
+    setIsChatMenuOpen(false);
+  }}
+  className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+>
+
+<TrashIcon className="w-4 h-4" />
+Delete Chat
+
+</button>
+
+)}
 </div>
       )}
     </div>
