@@ -130,7 +130,7 @@ const fetchAssets = async ()=>{
 
 try{
 
-const res = await fetch("/api/assets");
+const res = await fetch("https://startives.onrender.com/api/assets");
 
 const data = await res.json();
 
