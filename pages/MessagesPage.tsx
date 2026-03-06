@@ -667,43 +667,39 @@ const confirmDeleteChat = async () => {
       {/* Chat List */}
       <div className="flex-1 overflow-y-auto px-3 pb-4">
 
-{filteredChats.length === 0 ? (
+{{filteredChats.length === 0 ? (
 
-<div className="py-20 bg-[var(--component-background)] rounded-[2rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins text-center">
+<div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins text-center relative overflow-hidden">
 
-{/* ICON */}
+{/* BACKGROUND CREATIVE SHAPES */}
+
+<div className="absolute w-40 h-40 bg-gradient-to-r from-red-500/20 to-blue-500/20 rounded-full blur-2xl -top-10 -left-10 animate-pulse"></div>
+
+<div className="absolute w-32 h-32 bg-gradient-to-r from-blue-500/20 to-red-500/20 rounded-full blur-2xl -bottom-10 -right-10 animate-pulse"></div>
+
+
+{/* ICON SECTION */}
+
 <div className="relative mb-6">
 
+<div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
+
+<div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
+
 {activeType === "direct" ? (
-
-<>
-<div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-ping"></div>
-
-<div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center shadow-lg animate-bounce">
-
-<ChatBubbleIcon className="w-9 h-9 text-white" />
-
-</div>
-</>
-
+<ChatBubbleIcon className="w-8 h-8 text-white" />
 ) : (
-
-<>
-<div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-pulse"></div>
-
-<div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center shadow-lg">
-
-<UsersIcon className="w-9 h-9 text-white" />
-
-</div>
-</>
-
+<UsersIcon className="w-8 h-8 text-white" />
 )}
 
 </div>
 
+</div>
+
+
 {/* HEADLINE */}
-<h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
+
+<h3 className="text-xl font-bold text-[var(--text-primary)] mt-3 tracking-tight uppercase">
 
 {activeType === "direct"
 ? "No conversations yet"
@@ -711,14 +707,29 @@ const confirmDeleteChat = async () => {
 
 </h3>
 
+
 {/* SUBTEXT */}
-<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-[240px] italic">
+
+<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-xs mx-auto italic">
 
 {activeType === "direct"
 ? "Start chatting with collaborators and build amazing things together."
-: "Create your first team and collaborate with your startup crew."}
+: "Create a team and start collaborating with your members."}
 
 </p>
+
+
+{/* WAVE ANIMATION */}
+
+<div className="flex gap-2 mt-6">
+
+<span className="w-2 h-2 rounded-full bg-gradient-to-r from-red-500 to-blue-500 animate-bounce"></span>
+
+<span className="w-2 h-2 rounded-full bg-gradient-to-r from-red-500 to-blue-500 animate-bounce delay-150"></span>
+
+<span className="w-2 h-2 rounded-full bg-gradient-to-r from-red-500 to-blue-500 animate-bounce delay-300"></span>
+
+</div>
 
 </div>
 
