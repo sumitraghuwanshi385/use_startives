@@ -192,7 +192,7 @@ if (!asset) {
                             {/* Refined Glow Effect */}
                             <div className="absolute -inset-6 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                             <div className="w-24 h-24 rounded-[2rem] overflow-hidden border-4 border-white dark:border-neutral-800 shadow-2xl flex-shrink-0 relative z-10">
-                                <img src={asset.imageUrl} alt={asset.title} className="w-full h-full object-cover" />
+                                <img src={asset.brandLogo} alt={asset.title} className="w-full h-full object-cover" />
                             </div>
                         </div>
 
@@ -295,10 +295,15 @@ if (!asset) {
                             <section>
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Built With</h3>
                                 <div className="flex flex-wrap gap-1.5">
-                                    (asset.techStack ? asset.techStack.split(",") : ['React','Node','AWS']).map(t => (
-                                        <span key={t} className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-black uppercase border border-[var(--border-primary)] shadow-sm">{t}</span>
-                                    ))}
-                                </div>
+{(asset.techStack ? asset.techStack.split(",") : ['React','Node','AWS']).map((t) => (
+<span
+key={t}
+className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-black uppercase border border-[var(--border-primary)] shadow-sm"
+>
+{t}
+</span>
+))}
+</div>
                             </section>
 
                             <section>
@@ -330,7 +335,7 @@ if (!asset) {
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] px-2">Gallery</h3>
                                 <div className="relative group overflow-hidden rounded-xl border-2 border-[var(--border-primary)] shadow-none">
                                     <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing">
-                                        {[asset.imageUrl, `https://picsum.photos/seed/${asset.id}-1/1600/900`, `https://picsum.photos/seed/${asset.id}-2/1600/900`].map((imgUrl, idx) => (
+                                        {[asset.cardCover || asset.brandLogo, `https://picsum.photos/seed/${asset.id}-1/1600/900`, `https://picsum.photos/seed/${asset.id}-2/1600/900`].map((imgUrl, idx) => (
                                             <div key={idx} className="flex-shrink-0 w-full aspect-[16/9] snap-center">
                                                 <img 
                                                     src={imgUrl} 
