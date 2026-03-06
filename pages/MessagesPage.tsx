@@ -667,7 +667,7 @@ const confirmDeleteChat = async () => {
       {/* Chat List */}
       <div className="flex-1 overflow-y-auto px-3 pb-4">
 
-{{filteredChats.length === 0 ? (
+{filteredChats.length === 0 ? (
 
 <div className="py-24 bg-[var(--component-background)] rounded-[3rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins text-center relative overflow-hidden">
 
