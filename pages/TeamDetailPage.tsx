@@ -83,6 +83,9 @@ const location = useLocation();
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState(false);
 const [showLeaveConfirm,setShowLeaveConfirm] = useState(false);
 const [showDeleteConfirm,setShowDeleteConfirm] = useState(false);
+const [roleModalOpen,setRoleModalOpen] = useState(false);
+const [roleUser,setRoleUser] = useState<User | null>(null);
+const [roleInput,setRoleInput] = useState("");
   const [memberToRemove, setMemberToRemove] = useState<User | null>(null);
   
   // ✅ Changed initial state to null to indicate loading
@@ -181,8 +184,15 @@ fetchTeamData();
   };
 
   const teamMedia = useMemo(() => {
-    if (!teamDetails) return [];
-    return teamDetails.messages.filter(msg => msg.type === 'image' || msg.type === 'document')
+
+if(!teamDetails || !teamDetails.messages) return [];
+
+return teamDetails.messages.filter(
+msg => msg.type === "image" || msg.type === "document"
+).sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+
+},[teamDetails]);
+
                                 .sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }, [teamDetails]);
 
@@ -457,17 +467,12 @@ MEMBER
 
 {isAdmin && (
 <button
-onClick={()=>{
-
-const role = prompt("Enter role");
-
-if(role){
-setMemberRoles(prev=>({
-...prev,
-[member.id]:role.toUpperCase()
-}))
-}
-
+onClick={(e)=>{
+e.preventDefault();
+e.stopPropagation();
+setRoleUser(member);
+setRoleInput(memberRoles[member.id] || "");
+setRoleModalOpen(true);
 }}
 className="ml-2 px-2 py-[2px] rounded-full bg-purple-600 text-white text-[9px] font-bold uppercase"
 >
@@ -539,8 +544,35 @@ className="ml-2 px-2 py-[2px] rounded-full bg-purple-600 text-white text-[9px] f
                                       <div className="flex items-center space-x-2 text-[10px] font-bold text-[var(--text-muted)] mb-1 uppercase tracking-wider">
                                           <span>{sender?.name}</span><span className="text-[var(--border-secondary)]">•</span><span>{new Date(link.timestamp).toLocaleDateString()}</span>
                                       </div>
-                                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sky-600 dark:text-sky-400 hover:underline text-xs font-bold truncate block" title={link.url}>{link.url}</a>
-                                  </li>
+                                      <li
+key={`${link.url}-${index}`}
+className="flex items-center gap-3 bg-[var(--component-secondary-background)] p-3 rounded-xl border border-[var(--border-primary)]"
+>
+
+<img
+src={`https://www.google.com/s2/favicons?domain=${link.url}&sz=64`}
+className="w-8 h-8 rounded-full"
+/>
+
+<div className="flex-1 overflow-hidden">
+
+<a
+href={link.url}
+target="_blank"
+rel="noopener noreferrer"
+className="text-sky-600 dark:text-sky-400 text-xs font-bold truncate block"
+>
+{link.url}
+</a>
+
+<p className="text-[10px] text-[var(--text-muted)]">
+{getUserById(link.senderId)?.name}
+</p>
+
+</div>
+
+</li>
+                                  
                                   )}
                               )}
                           </ul>
@@ -724,6 +756,58 @@ className="flex-1 py-2 rounded-full bg-red-600 text-white"
 >
 Delete
 </button>
+
+</div>
+
+</Modal>
+
+<Modal
+isOpen={roleModalOpen}
+onClose={()=>setRoleModalOpen(false)}
+title="Add Role"
+size="sm"
+>
+
+<div className="space-y-4">
+
+<input
+type="text"
+placeholder="Enter role (Developer, Designer...)"
+value={roleInput}
+onChange={(e)=>setRoleInput(e.target.value)}
+className="w-full p-3 rounded-xl border border-[var(--border-primary)] bg-[var(--background-tertiary)]"
+/>
+
+<div className="flex gap-3">
+
+<button
+onClick={()=>setRoleModalOpen(false)}
+className="flex-1 py-2 rounded-full bg-gray-200"
+>
+Cancel
+</button>
+
+<button
+onClick={()=>{
+
+if(roleUser && roleInput.trim()){
+
+setMemberRoles(prev=>({
+...prev,
+[roleUser.id]:roleInput.toUpperCase()
+}));
+
+}
+
+setRoleModalOpen(false);
+
+}}
+className="flex-1 py-2 rounded-full bg-purple-600 text-white"
+>
+Done
+</button>
+
+</div>
 
 </div>
 
