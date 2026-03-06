@@ -857,11 +857,11 @@ onClick={(e) => {
       {selectedChat?.isTeam ? (
 
 <button
-onClick={() => {
-navigate(`/team/${selectedChatId}`);
-setIsChatMenuOpen(false);
-}}
-className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
+  onClick={() => {
+    navigate(`/team/${selectedChat.id}`);
+    setIsChatMenuOpen(false);
+  }}
+  className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
 >
 
 <UsersIcon className="w-4 h-4" />
@@ -872,12 +872,12 @@ View Team
 ) : (
 
 <button
-onClick={() => {
-setChatToAction(selectedChatId);
-setIsConfirmDeleteOpen(true);
-setIsChatMenuOpen(false);
-}}
-className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+  onClick={() => {
+    setChatToAction(selectedChatId);
+    setIsConfirmDeleteOpen(true);
+    setIsChatMenuOpen(false);
+  }}
+  className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
 >
 
 <TrashIcon className="w-4 h-4" />
@@ -922,15 +922,15 @@ if (msg.type === "system") {
   const showDateSeparator = currentDate !== prevDate;
 
   return (
-<React.Fragment key={msg.id || i}>
+    <>
 {/* SYSTEM MESSAGE */}
   {msg.type === "system" && (
-<div className="flex justify-center my-2">
-<div className="px-3 py-1 text-[11px] rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-{msg.text}
-</div>
-</div>
-)}
+    <div className="flex justify-center my-2">
+      <div className="px-3 py-1 text-[11px] rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+        {msg.text}
+      </div>
+    </div>
+  )}
       {/* DATE SEPARATOR */}
       {showDateSeparator && msg.timestamp && (
         <div className="flex justify-center my-4">
@@ -1039,7 +1039,7 @@ msg.file.url?.startsWith('http')
 
               </div>
             </div>
-</React.Fragment>
+</>
           );
         })
       ) : (
