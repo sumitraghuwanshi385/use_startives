@@ -86,6 +86,8 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
   const isSaved = isProjectSaved(idea.id);
   const navigate = useNavigate();
+const [assets,setAssets] = useState<StartupIdea[]>([]);
+const [loading,setLoading] = useState(true);
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -116,15 +118,43 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 };
 
 const StartupStoriesPage: React.FC = () => {
-  const { startupIdeas } = useAppContext();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activePricing, setActivePricing] = useState<string>('All');
   const [activeLocation, setActiveLocation] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState('');
+
+useEffect(()=>{
+
+const fetchAssets = async ()=>{
+
+try{
+
+const res = await fetch("/api/assets");
+
+const data = await res.json();
+
+setAssets(data.assets || []);
+
+}catch(err){
+
+console.log("ASSET FETCH ERROR",err);
+
+}finally{
+
+setLoading(false);
+
+}
+
+};
+
+fetchAssets();
+
+},[]);
+
   const pricingOptions = ['All', 'Under $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
   const filteredIdeas = useMemo(() => {
-    let list = startupIdeas.filter(idea => idea.askingPrice);
+    let list = assets.filter(idea => idea.askingPrice);
     if (searchTerm) {
         const lowerSearch = searchTerm.toLowerCase();
         list = list.filter(idea => idea.title.toLowerCase().includes(lowerSearch) || idea.description.toLowerCase().includes(lowerSearch));
