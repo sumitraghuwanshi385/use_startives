@@ -859,7 +859,9 @@ onClick={(e) => {
 <button
   onClick={() => {
     if (!selectedChat) return;
-    navigate(`/team/${selectedChat.id}`);
+    navigate(`/team/${selectedChat.id}`, {
+  state: { team: selectedChat }
+});
     setIsChatMenuOpen(false);
   }}
   className="flex items-center gap-2 w-full px-4 py-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
@@ -921,14 +923,7 @@ if (msg.type === "system") {
 
   return (
     <>
-{/* SYSTEM MESSAGE */}
-  {msg.type === "system" && (
-    <div className="flex justify-center my-2">
-      <div className="px-3 py-1 text-[11px] rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-        {msg.text}
-      </div>
-    </div>
-  )}
+
       {/* DATE SEPARATOR */}
       {showDateSeparator && msg.timestamp && (
         <div className="flex justify-center my-4">
