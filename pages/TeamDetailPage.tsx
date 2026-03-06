@@ -376,7 +376,7 @@ setIsConfirmRemoveModalOpen(false);
 
 {/* BACK BUTTON */}
   <button
-  onClick={() => navigate(`/chat/${teamId}`)}
+  onClick={() => navigate(`/messages/${teamId}`)}
   className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
 >
 
@@ -805,11 +805,24 @@ onClick={()=>{
 
 if(roleUser && roleInput.trim()){
 
+const roleValue = roleInput.toUpperCase();
+
+await fetch(`/api/chat/team/${teamId}/role/${roleUser.id}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json",
+Authorization:`Bearer ${token}`
+},
+body:JSON.stringify({
+role:roleValue
+})
+});
+
 setMemberRoles(prev => {
 
 const updated = {
 ...prev,
-[roleUser.id]:roleInput.toUpperCase()
+[roleUser.id]:roleValue
 };
 
 localStorage.setItem(`teamRoles-${teamId}`, JSON.stringify(updated));
@@ -822,8 +835,8 @@ addNotification(
 return updated;
 
 });
-}
 
+}
 setRoleModalOpen(false);
 
 }}
