@@ -192,9 +192,7 @@ msg => msg.type === "image" || msg.type === "document"
 ).sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
 
 },[teamDetails]);
-
-                                .sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  }, [teamDetails]);
+                               
 
   const teamLinks = useMemo(() => {
     if (!teamDetails) return [];
@@ -535,54 +533,60 @@ className="ml-2 px-2 py-[2px] rounded-full bg-purple-600 text-white text-[9px] f
                       ) : <div className="text-center text-[var(--text-muted)] py-10 flex flex-col items-center"><UsersIcon className="w-10 h-10 mb-2 opacity-30" /><p className="text-xs font-medium">No media shared yet.</p></div>
                   )}
                   {activeMediaTab === 'links' && (
-                      teamLinks.length > 0 ? (
-                          <ul className="space-y-3">
-                              {teamLinks.map((link, index) => {
-                                  const sender = getUserById(link.senderId);
-                                  return (
-                                  <li key={`${link.url}-${index}`} className="bg-[var(--component-secondary-background)] p-3 rounded-xl hover:bg-[var(--component-background-hover)] transition-colors border border-[var(--border-primary)]">
-                                      <div className="flex items-center space-x-2 text-[10px] font-bold text-[var(--text-muted)] mb-1 uppercase tracking-wider">
-                                          <span>{sender?.name}</span><span className="text-[var(--border-secondary)]">•</span><span>{new Date(link.timestamp).toLocaleDateString()}</span>
-                                      </div>
-                                      <li
-key={`${link.url}-${index}`}
-className="flex items-center gap-3 bg-[var(--component-secondary-background)] p-3 rounded-xl border border-[var(--border-primary)]"
->
+  teamLinks.length > 0 ? (
+    <ul className="space-y-3">
 
-<img
-src={`https://www.google.com/s2/favicons?domain=${link.url}&sz=64`}
-className="w-8 h-8 rounded-full"
-/>
+      {teamLinks.map((link, index) => {
 
-<div className="flex-1 overflow-hidden">
+        const sender = getUserById(link.senderId);
 
-<a
-href={link.url}
-target="_blank"
-rel="noopener noreferrer"
-className="text-sky-600 dark:text-sky-400 text-xs font-bold truncate block"
->
-{link.url}
-</a>
+        return (
 
-<p className="text-[10px] text-[var(--text-muted)]">
-{getUserById(link.senderId)?.name}
-</p>
+          <li
+            key={`${link.url}-${index}`}
+            className="flex items-center gap-3 bg-[var(--component-secondary-background)] p-3 rounded-xl border border-[var(--border-primary)]"
+          >
 
-</div>
+            <img
+              src={`https://www.google.com/s2/favicons?domain=${link.url}&sz=64`}
+              className="w-8 h-8 rounded-full"
+            />
 
-</li>
-                                  
-                                  )}
-                              )}
-                          </ul>
-                      ) : <div className="text-center text-[var(--text-muted)] py-10 flex flex-col items-center"><LinkIconSVG className="w-10 h-10 mb-2 opacity-30" /><p className="text-xs font-medium">No links shared yet.</p></div>
-                  )}
+            <div className="flex-1 overflow-hidden">
+
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sky-600 dark:text-sky-400 text-xs font-bold truncate block"
+              >
+                {link.url}
+              </a>
+
+              <p className="text-[10px] text-[var(--text-muted)]">
+                {sender?.name} • {new Date(link.timestamp).toLocaleDateString()}
+              </p>
+
+            </div>
+
+          </li>
+
+        );
+
+      })}
+
+    </ul>
+  ) : (
+    <div className="text-center text-[var(--text-muted)] py-10 flex flex-col items-center">
+      <LinkIconSVG className="w-10 h-10 mb-2 opacity-30" />
+      <p className="text-xs font-medium">No links shared yet.</p>
+    </div>
+  )
+)}
               </div>
           </div>
         </div>
       </main>
-
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} title="Edit Team Details">
         <div className="space-y-4">
             <div className="flex flex-col items-center">
