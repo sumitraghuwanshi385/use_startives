@@ -133,41 +133,22 @@ const team = data.chats.find((c:any)=>c.id===teamId);
 
 if(team){
 
-const members = await Promise.all(
-  (team.memberIds || []).map(async (id: string) => {
+const members =
+(team.memberIds || []).map((id: string) => {
 
-    const existingUser =
-      getUserById(id) ||
-      allUsersFromContext.find(u => String(u.id) === String(id));
-
-    if (existingUser) return existingUser;
-
-    try {
-
-      const res = await fetch(`/api/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (!res.ok) throw new Error("User fetch failed");
-
-      const user = await res.json();
-
-      return user;
-
-    } catch {
-
-      return {
-        id,
-        name: "Unknown",
-        profilePictureUrl: ""
-      };
-
-    }
-
-  })
+const user = allUsersFromContext.find(
+u => String(u.id) === String(id)
 );
+
+if (user) return user;
+
+return {
+id,
+name: "Unknown User",
+profilePictureUrl: ""
+};
+
+});
 
 setTeamDetails(prev => {
 
@@ -192,7 +173,7 @@ console.log("TEAM FETCH ERROR",err);
 
 fetchTeamData();
 
-},[teamId, allUsersFromContext.length]);
+},[teamId, allUsersFromContext]);
 
   const availableUsersForAdding = useMemo(() => {
     if (!currentUser || !teamDetails) return [];
