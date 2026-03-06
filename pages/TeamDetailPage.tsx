@@ -136,9 +136,9 @@ if(team){
 const members =
 (team.memberIds || []).map((id: string) => {
 
-const user = allUsersFromContext.find(
-u => String(u.id) === String(id)
-);
+const user =
+getUserById(id) ||
+allUsersFromContext.find(u => String(u.id) === String(id));
 
 if (user) return user;
 
