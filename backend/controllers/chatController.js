@@ -553,6 +553,7 @@ deleteConversation,
 updateTeam,
 addMembers,
 removeMember,
+setRole,
 markChatAsRead,
 leaveTeam,
 deleteTeam
