@@ -99,6 +99,17 @@ const DESCRIPTION_LIMIT = 150;
   const [editingTeamImagePreview, setEditingTeamImagePreview] = useState<string | null>(null);
   const teamImageInputRef = useRef<HTMLInputElement>(null);
 
+useEffect(()=>{
+
+const saved = localStorage.getItem(`teamRoles-${teamId}`);
+
+if(saved){
+setMemberRoles(JSON.parse(saved));
+}
+
+},[teamId]);
+
+
    // ✅ Fetch team data when page opens
 useEffect(() => {
 
@@ -136,10 +147,12 @@ profilePictureUrl:""
 
 }) || [];
 
-setTeamDetails({
+setTeamDetails(prev => ({
+...(prev || {}),
 ...team,
-members
-});
+members,
+messages: team.messages || prev?.messages || []
+}));
 
 }
 
@@ -153,7 +166,7 @@ console.log("TEAM FETCH ERROR",err);
 
 fetchTeamData();
 
-},[teamId]);
+},[teamId, allUsersFromContext]);
 
 
   const availableUsersForAdding = useMemo(() => {
@@ -359,15 +372,7 @@ setIsConfirmRemoveModalOpen(false);
 
 {/* BACK BUTTON */}
   <button
-  onClick={() => {
-
-if(location.state?.fromChat){
-navigate(`/chat/${teamId}`)
-}else{
-navigate("/messages")
-}
-
-}}
+  onClick={() => navigate(-1)}
   className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
 >
 
@@ -796,11 +801,18 @@ onClick={()=>{
 
 if(roleUser && roleInput.trim()){
 
-setMemberRoles(prev=>({
+setMemberRoles(prev => {
+
+const updated = {
 ...prev,
 [roleUser.id]:roleInput.toUpperCase()
-}));
+};
 
+localStorage.setItem(`teamRoles-${teamId}`, JSON.stringify(updated));
+
+return updated;
+
+});
 }
 
 setRoleModalOpen(false);
