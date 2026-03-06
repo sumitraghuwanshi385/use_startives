@@ -284,6 +284,36 @@ const formatDateLabel = (dateString: string) => {
   });
 };
 
+const formatChatTime = (dateString: string) => {
+
+const msgDate = new Date(dateString);
+const now = new Date();
+
+const today = new Date();
+today.setHours(0,0,0,0);
+
+const yesterday = new Date();
+yesterday.setDate(today.getDate()-1);
+yesterday.setHours(0,0,0,0);
+
+if(msgDate >= today){
+return msgDate.toLocaleTimeString([],{
+hour:'2-digit',
+minute:'2-digit'
+});
+}
+
+if(msgDate >= yesterday){
+return "Yesterday";
+}
+
+return msgDate.toLocaleDateString([],{
+day:'numeric',
+month:'short'
+});
+
+};
+
   const authHeaders = useMemo(() => {
     const t = token || localStorage.getItem('authToken');
     return { Authorization: `Bearer ${t}` };
@@ -679,12 +709,11 @@ const confirmDeleteChat = async () => {
 )}
 
 {chat.lastMessageTimestamp && (
-  <div className="absolute bottom-3 right-4 text-[11px] text-[var(--text-muted)] font-medium">
-    {new Date(chat.lastMessageTimestamp).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    })}
-  </div>
+
+<div className="absolute bottom-2 right-4 text-[11px] text-[var(--text-muted)] font-medium">  
+  {formatChatTime(chat.lastMessageTimestamp)}  
+</div>
+
 )}
           </div>
         ))}
