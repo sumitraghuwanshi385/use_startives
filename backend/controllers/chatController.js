@@ -419,8 +419,8 @@ await chat.save();
 await Message.create({
 conversationId: chatId,
 sender: req.user._id,
-text:`${req.user.name} removed ${removedUser?.name || "a user"}`,
-type:"system"
+text: `${req.user.name} removed ${removedUser.name}`,
+type: "system"
 });
 
 res.json({success:true});
