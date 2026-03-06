@@ -351,7 +351,15 @@ setIsConfirmRemoveModalOpen(false);
 
 {/* BACK BUTTON */}
   <button
-  onClick={() => navigate("/messages")}
+  onClick={() => {
+
+if(location.state?.fromChat){
+navigate(`/chat/${teamId}`)
+}else{
+navigate("/messages")
+}
+
+}}
   className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
 >
 
@@ -447,20 +455,31 @@ ADMIN
 MEMBER
 </span>
 
-<input
-type="text"
-placeholder="role"
-value={memberRoles[member.id] || ""}
-onChange={(e)=>{
+{isAdmin && (
+<button
+onClick={()=>{
 
+const role = prompt("Enter role");
+
+if(role){
 setMemberRoles(prev=>({
 ...prev,
-[member.id]:e.target.value
+[member.id]:role.toUpperCase()
 }))
+}
 
 }}
-className="bg-transparent border-none outline-none text-purple-500 uppercase text-[10px] font-bold w-20"
-/>
+className="ml-2 px-2 py-[2px] rounded-full bg-purple-600 text-white text-[9px] font-bold uppercase"
+>
+{memberRoles[member.id] || "ADD ROLE"}
+</button>
+)}
+
+{memberRoles[member.id] && (
+<span className="text-purple-500 font-bold text-[10px]">
+• {memberRoles[member.id]}
+</span>
+)}
 
 </>
 
@@ -610,9 +629,19 @@ title="Leave Team"
 size="sm"
 >
 
-<p className="text-sm text-center">
+<div className="text-center">
+
+<ExclamationTriangleIcon className="w-12 h-12 text-red-500 mx-auto mb-4"/>
+
+<p className="text-sm text-[var(--text-primary)] mb-2 font-medium">
 Are you sure you want to leave this team?
 </p>
+
+<p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
+This action cannot be undone.
+</p>
+
+</div>
 
 <div className="flex gap-3 mt-5">
 
@@ -653,9 +682,19 @@ title="Delete Team"
 size="sm"
 >
 
-<p className="text-sm text-center">
+<div className="text-center">
+
+<ExclamationTriangleIcon className="w-12 h-12 text-red-500 mx-auto mb-4"/>
+
+<p className="text-sm text-[var(--text-primary)] mb-2 font-medium">
 Delete this team permanently?
 </p>
+
+<p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
+This action cannot be undone.
+</p>
+
+</div>
 
 <div className="flex gap-3 mt-5">
 
