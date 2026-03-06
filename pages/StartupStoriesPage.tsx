@@ -86,8 +86,6 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
   const isSaved = isProjectSaved(idea.id);
   const navigate = useNavigate();
-const [assets,setAssets] = useState<StartupIdea[]>([]);
-const [loading,setLoading] = useState(true);
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -118,6 +116,8 @@ const [loading,setLoading] = useState(true);
 };
 
 const StartupStoriesPage: React.FC = () => {
+const [assets,setAssets] = useState<any[]>([]);
+const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activePricing, setActivePricing] = useState<string>('All');
@@ -171,8 +171,7 @@ fetchAssets();
         });
     }
     return list.sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime());
-  }, [startupIdeas, activeCategory, activePricing, activeLocation, searchTerm]);
-
+ }, [assets, activeCategory, activePricing, activeLocation, searchTerm]);
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
         <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
@@ -191,7 +190,11 @@ fetchAssets();
             </div>
         </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex justify-center"><div className="relative group max-w-2xl w-full"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><SearchIcon className="h-5 w-5 text-[var(--text-muted)]" /></div><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search digital assets..." className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-emerald-500 outline-none transition-all text-base font-medium font-poppins" /></div></div>
+
+
         <div className="bg-[var(--background-secondary)] border-b border-[var(--border-primary)] font-poppins"><div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-center gap-3"><CustomDropdown label="All categories" value={activeCategory} options={['All', ...STARTUP_CATEGORIES].map(c => ({value: c, label: c}))} onChange={setActiveCategory} icon={<TagIcon className="w-4 h-4" />} /><CustomDropdown label="All pricing" value={activePricing} options={pricingOptions.map(p => ({value: p, label: p}))} onChange={setActivePricing} icon={<GrowthIcon className="w-4 h-4" />} /><CustomDropdown label="All locations" value={activeLocation} options={['All', ...COUNTRIES.map(c => c.name)].map(l => ({value: l, label: l}))} onChange={setActiveLocation} icon={<MapPinIcon className="w-4 h-4" />} /></div></div>
+
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">{filteredIdeas.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{filteredIdeas.map(idea => <ExchangeCard key={idea.id} idea={idea} />)}</div> : <div className="text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-[var(--text-muted)] font-black uppercase tracking-widest text-sm font-poppins">No assets found matching filters</p><button onClick={() => { setActiveCategory('All'); setActivePricing('All'); setActiveLocation('All'); setSearchTerm(''); }} className="mt-4 text-purple-600 font-bold uppercase text-[10px] hover:underline font-poppins">Clear all filters</button></div>}</div>
     </div>
   );
