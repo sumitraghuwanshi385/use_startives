@@ -830,7 +830,9 @@ onClick={(e) => {
           </button>
 
           <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-            {selectedChat.contact?.name?.[0] || 'U'}
+            {selectedChat.isTeam
+ ? selectedChat.name?.[0] || 'T'
+ : selectedChat.contact?.name?.[0] || 'U'}
           </div>
 
           <div>
@@ -922,7 +924,7 @@ if (msg.type === "system") {
   const showDateSeparator = currentDate !== prevDate;
 
   return (
-    <>
+  <React.Fragment key={i}>
 
       {/* DATE SEPARATOR */}
       {showDateSeparator && msg.timestamp && (
@@ -933,7 +935,7 @@ if (msg.type === "system") {
         </div>
       )}
 
-      <div key={i} className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
+      <div className={`flex mb-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
 
               <div
                 className={`max-w-[75%] rounded-2xl ${
@@ -1032,7 +1034,7 @@ msg.file.url?.startsWith('http')
 
               </div>
             </div>
-</>
+</React.Fragment>
           );
         })
       ) : (
