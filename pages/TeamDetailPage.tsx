@@ -147,12 +147,16 @@ profilePictureUrl:""
 
 }) || [];
 
-setTeamDetails(prev => ({
+setTeamDetails(prev => {
+
+return {
 ...(prev || {}),
 ...team,
 members,
-messages: team.messages || prev?.messages || []
-}));
+messages: prev?.messages || []
+};
+
+});
 
 }
 
@@ -372,7 +376,7 @@ setIsConfirmRemoveModalOpen(false);
 
 {/* BACK BUTTON */}
   <button
-  onClick={() => navigate(-1)}
+  onClick={() => navigate(`/chat/${teamId}`)}
   className="inline-flex items-center space-x-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-3 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] border border-[var(--border-primary)]"
 >
 
@@ -809,6 +813,11 @@ const updated = {
 };
 
 localStorage.setItem(`teamRoles-${teamId}`, JSON.stringify(updated));
+
+addNotification(
+`${currentUser?.name} set ${roleUser?.name} role to ${roleInput.toUpperCase()}`,
+"info"
+);
 
 return updated;
 
