@@ -680,16 +680,29 @@ const confirmDeleteChat = async () => {
 
 {/* ICON SECTION */}
 
-<div className="relative mb-6">
+<div className="relative mb-8 flex items-center justify-center">
 
-<div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
+{/* NEW RADAR EFFECT */}
 
-<div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
+<div className="absolute w-32 h-32 border border-red-500/20 rounded-3xl animate-pulse"></div>
+
+<div className="absolute w-40 h-40 border border-blue-500/20 rounded-3xl animate-[ping_3s_linear_infinite]"></div>
+
+<div className="absolute w-52 h-52 border border-red-500/10 rounded-3xl animate-[ping_4s_linear_infinite]"></div>
+
+
+{/* MAIN ICON CONTAINER */}
+
+<div className="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-red-500 to-blue-500 flex items-center justify-center shadow-xl">
 
 {activeType === "direct" ? (
-<ChatBubbleIcon className="w-8 h-8 text-white" />
+
+<ChatBubbleIcon className="w-9 h-9 text-white" />
+
 ) : (
-<UsersIcon className="w-8 h-8 text-white" />
+
+<UsersIcon className="w-9 h-9 text-white" />
+
 )}
 
 </div>
