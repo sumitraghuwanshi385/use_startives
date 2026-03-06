@@ -922,15 +922,15 @@ if (msg.type === "system") {
   const showDateSeparator = currentDate !== prevDate;
 
   return (
-    <>
+<React.Fragment key={msg.id || i}>
 {/* SYSTEM MESSAGE */}
   {msg.type === "system" && (
-    <div className="flex justify-center my-2">
-      <div className="px-3 py-1 text-[11px] rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-        {msg.text}
-      </div>
-    </div>
-  )}
+<div className="flex justify-center my-2">
+<div className="px-3 py-1 text-[11px] rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+{msg.text}
+</div>
+</div>
+)}
       {/* DATE SEPARATOR */}
       {showDateSeparator && msg.timestamp && (
         <div className="flex justify-center my-4">
@@ -1039,7 +1039,7 @@ msg.file.url?.startsWith('http')
 
               </div>
             </div>
-</>
+</React.Fragment>
           );
         })
       ) : (
