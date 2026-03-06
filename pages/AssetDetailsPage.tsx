@@ -69,7 +69,36 @@ const AssetDetailsPage: React.FC = () => {
         }
     }, [location.hash]);
 
-    const asset = assetId ? getIdeaById(assetId) : undefined;
+    const [asset,setAsset] = useState<any>(null);
+const [loading,setLoading] = useState(true);
+
+useEffect(()=>{
+
+const loadAsset = async()=>{
+
+try{
+
+const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`);
+
+const data = await res.json();
+
+setAsset(data.asset);
+
+}catch(err){
+
+console.error("Asset load failed");
+
+}finally{
+
+setLoading(false);
+
+}
+
+};
+
+if(assetId) loadAsset();
+
+},[assetId]);
 
     // NOTE: New Logic to Load Founder from API if not found locally
     useEffect(() => {
@@ -100,7 +129,17 @@ const AssetDetailsPage: React.FC = () => {
     }, [asset, assetId, getUserById, fetchUserProfile]);
 
 
-    if (!asset) {
+    if (loading) {
+
+return(
+<div className="flex justify-center items-center min-h-[60vh]">
+<p className="text-sm font-bold">Loading asset...</p>
+</div>
+)
+
+}
+
+if (!asset) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
                 <h1 className="text-2xl font-black uppercase text-[var(--text-primary)]">Asset Not Found</h1>
@@ -256,7 +295,7 @@ const AssetDetailsPage: React.FC = () => {
                             <section>
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Built With</h3>
                                 <div className="flex flex-wrap gap-1.5">
-                                    {(asset.techStack || ['React', 'Node', 'AWS']).map(t => (
+                                    (asset.techStack ? asset.techStack.split(",") : ['React','Node','AWS']).map(t => (
                                         <span key={t} className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-black uppercase border border-[var(--border-primary)] shadow-sm">{t}</span>
                                     ))}
                                 </div>
