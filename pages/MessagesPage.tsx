@@ -671,22 +671,38 @@ const confirmDeleteChat = async () => {
 
 <div className="py-20 bg-[var(--component-background)] rounded-[2rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins text-center">
 
-<div className="relative mb-5">
-
-<div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
-
-<div className="relative w-16 h-16 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
+{/* ICON */}
+<div className="relative mb-6">
 
 {activeType === "direct" ? (
-<ChatBubbleIcon className="w-7 h-7 text-white" />
+
+<>
+<div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-ping"></div>
+
+<div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center shadow-lg animate-bounce">
+
+<ChatBubbleIcon className="w-9 h-9 text-white" />
+
+</div>
+</>
+
 ) : (
-<UserGroupIcon className="w-7 h-7 text-white" />
+
+<>
+<div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-pulse"></div>
+
+<div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center shadow-lg">
+
+<UsersIcon className="w-9 h-9 text-white" />
+
+</div>
+</>
+
 )}
 
 </div>
 
-</div>
-
+{/* HEADLINE */}
 <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
 
 {activeType === "direct"
@@ -695,11 +711,12 @@ const confirmDeleteChat = async () => {
 
 </h3>
 
-<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-[220px] italic">
+{/* SUBTEXT */}
+<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-[240px] italic">
 
 {activeType === "direct"
-? "Start a conversation with collaborators and build together."
-: "Create a team to collaborate and chat with your members."}
+? "Start chatting with collaborators and build amazing things together."
+: "Create your first team and collaborate with your startup crew."}
 
 </p>
 
