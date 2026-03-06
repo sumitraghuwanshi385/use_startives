@@ -666,8 +666,49 @@ const confirmDeleteChat = async () => {
 
       {/* Chat List */}
       <div className="flex-1 overflow-y-auto px-3 pb-4">
-        {filteredChats.map(chat => (
-          <div
+
+{filteredChats.length === 0 ? (
+
+<div className="py-20 bg-[var(--component-background)] rounded-[2rem] border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center font-poppins text-center">
+
+<div className="relative mb-5">
+
+<div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-ping"></div>
+
+<div className="relative w-16 h-16 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center shadow-lg">
+
+{activeType === "direct" ? (
+<ChatBubbleIcon className="w-7 h-7 text-white" />
+) : (
+<UserGroupIcon className="w-7 h-7 text-white" />
+)}
+
+</div>
+
+</div>
+
+<h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
+
+{activeType === "direct"
+? "No conversations yet"
+: "No teams yet"}
+
+</h3>
+
+<p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-[220px] italic">
+
+{activeType === "direct"
+? "Start a conversation with collaborators and build together."
+: "Create a team to collaborate and chat with your members."}
+
+</p>
+
+</div>
+
+) : (
+
+filteredChats.map(chat => (
+     <div
   key={chat.id}
   id={`chat-${chat.id}`}
   onClick={() => setSelectedChatId(chat.id)}
@@ -716,6 +757,8 @@ const confirmDeleteChat = async () => {
 
 )}
           </div>
+)
+}
         ))}
       </div>
     </aside>
