@@ -95,12 +95,19 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
   return (
     <div className="bg-[var(--component-background)] rounded-3xl border border-[var(--border-primary)] overflow-hidden group flex flex-col h-full hover:border-emerald-500/50 transition-all duration-300 shadow-none font-poppins">
+
       <div className="relative h-44 overflow-hidden bg-neutral-950">
-        <img src={idea.brandLogo} alt={idea.title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+
+        <img src={idea.brandLogo} alt={idea.name} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
         <div className="absolute top-4 left-4 flex gap-2"><span className="bg-emerald-600/30 backdrop-blur-xl border border-emerald-500/30 text-emerald-100 text-[9px] font-black uppercase tracking-[0.1em] px-3 py-1.5 rounded-full flex items-center gap-1.5">{idea.category || 'SaaS'}</span></div>
+
         <button onClick={handleSave} className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}><BookmarkIcon className="w-4 h-4" solid={isSaved} /></button>
+
         <div className="absolute bottom-4 left-6 right-6 text-white text-left"><h2 className="text-2xl font-bold tracking-tight leading-none uppercase">{idea.title}</h2><p className="text-[10px] font-bold opacity-80 mt-1 uppercase tracking-widest">{idea.businessModel} • {idea.location}</p></div>
+
       </div>
       <div className="p-6 flex flex-col flex-grow space-y-5">
         <div className="grid grid-cols-2 gap-3">
@@ -109,7 +116,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </div>
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
         <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow italic opacity-80">{idea.description}</p>
-        <div className="pt-2 flex gap-3 mt-auto"><button onClick={() => navigate(`/asset/${idea.id}`)} className="flex-1 py-3 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[10px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none">View asset</button><button onClick={() => navigate(`/asset/${idea.id}#contact`)} className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest shadow-none hover:scale-105 transition-all">Contact</button></div>
+        <div className="pt-2 flex gap-3 mt-auto"><button onClick={() => navigate(`/asset/${idea._id}`)} className="flex-1 py-3 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[10px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none">View asset</button><button onClick={() => navigate(`/asset/${idea._id}#contact`)} className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest shadow-none hover:scale-105 transition-all">Contact</button></div>
       </div>
     </div>
   );
@@ -134,7 +141,7 @@ const res = await fetch("https://startives.onrender.com/api/assets");
 
 const data = await res.json();
 
-setAssets(data.assets || []);
+setAssets(Array.isArray(data) ? data : data.assets || []);
 
 }catch(err){
 
@@ -216,7 +223,7 @@ return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdA
         <div className="bg-[var(--background-secondary)] border-b border-[var(--border-primary)] font-poppins"><div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-center gap-3"><CustomDropdown label="All categories" value={activeCategory} options={['All', ...STARTUP_CATEGORIES].map(c => ({value: c, label: c}))} onChange={setActiveCategory} icon={<TagIcon className="w-4 h-4" />} /><CustomDropdown label="All pricing" value={activePricing} options={pricingOptions.map(p => ({value: p, label: p}))} onChange={setActivePricing} icon={<GrowthIcon className="w-4 h-4" />} /><CustomDropdown label="All locations" value={activeLocation} options={['All', ...COUNTRIES.map(c => c.name)].map(l => ({value: l, label: l}))} onChange={setActiveLocation} icon={<MapPinIcon className="w-4 h-4" />} /></div></div>
 
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">{filteredIdeas.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{filteredIdeas.map(idea => <ExchangeCard key={idea.id} idea={idea} />)}</div> : <div className="text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-[var(--text-muted)] font-black uppercase tracking-widest text-sm font-poppins">No assets found matching filters</p><button onClick={() => { setActiveCategory('All'); setActivePricing('All'); setActiveLocation('All'); setSearchTerm(''); }} className="mt-4 text-purple-600 font-bold uppercase text-[10px] hover:underline font-poppins">Clear all filters</button></div>}</div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">{filteredIdeas.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{filteredIdeas.map(idea => <ExchangeCard key={idea._id} idea={idea} />)}</div> : <div className="text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-[var(--text-muted)] font-black uppercase tracking-widest text-sm font-poppins">No assets found matching filters</p><button onClick={() => { setActiveCategory('All'); setActivePricing('All'); setActiveLocation('All'); setSearchTerm(''); }} className="mt-4 text-purple-600 font-bold uppercase text-[10px] hover:underline font-poppins">Clear all filters</button></div>}</div>
     </div>
   );
 };
