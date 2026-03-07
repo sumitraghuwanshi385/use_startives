@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { ChevronLeftIcon, AppContextLinkIcon } from '../constants';
+import { ChevronLeftIcon, AppContextLinkIcon, BookmarkIcon} from '../constants';
 import { User } from '../types'; 
 
 // --- Icons Components ---
@@ -11,27 +11,6 @@ const ChartBarIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" 
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
     </svg>
-);
-
-export const BookmarkIcon: React.FC<{ className?: string; solid?: boolean }> = ({ className, solid }) => (
-
-<svg
-xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 24 24"
-fill={solid ? "currentColor" : "none"}
-stroke="currentColor"
-strokeWidth="1.5"
-className={className}
->
-
-<path
-strokeLinecap="round"
-strokeLinejoin="round"
-d="M17.25 21l-5.25-3-5.25 3V3.75A2.25 2.25 0 019 1.5h6a2.25 2.25 0 012.25 2.25V21z"
-/>
-
-</svg>
-
 );
 
 const UsersIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
