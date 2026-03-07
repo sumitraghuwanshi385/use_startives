@@ -224,7 +224,10 @@ if (!asset) {
                         {/* LEFT PANEL */}
                         <div className="lg:col-span-1 border-r border-[var(--border-primary)] bg-neutral-50/50 dark:bg-neutral-900/30 p-8 space-y-8">
                             <div className="lg:col-span-1 space-y-8 sticky top-24">
-             <DetailSection title="Founder & Seller" icon={<UserCircleIcon />}>
+             <section>
+<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">
+Founder & Seller
+</h3>
                 {founder && (
   <div className="space-y-4">
     <Link
