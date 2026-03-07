@@ -160,44 +160,44 @@ try{
 const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`);
 
 const data = await res.json();
+const asset = data.asset || data;
 
 setFormData({
-title: data.title || '',
-tagline: data.tagline || '',
-description: data.description || '',
-spark: data.spark || '',
-askingPrice: data.askingPrice || '',
-ttmRevenue: data.ttmRevenue || '',
-mrr: data.mrr || '',
-multiplier: data.multiplier || '',
-netProfit: data.netProfit || '',
-churnRate: data.churnRate || '',
-category: data.category || 'SaaS',
-businessModel: data.businessModel || 'B2B',
-location: data.location || '',
-websiteUrl: data.websiteUrl || '',
-brandLogo: data.brandLogo || '',
-cardCover: data.cardCover || '',
-gallery: data.gallery || [],
-teamSize: data.teamSize || '',
-revenueModel: data.revenueModel || '',
-paymentMethods: data.paymentMethods || '',
-contactEmail: data.contactEmail || '',
-techStack: data.techStack || '',
-users: data.users || '',
-retention: data.retention || '',
-siteAge: data.siteAge || '',
-directTraffic: data.directTraffic || '',
-trafficDetails: data.trafficDetails || '',
-sellerInsightsDetails: data.sellerInsightsDetails || '',
-additionalContactDetails: data.additionalContactDetails || '',
-growthPulse: data.growthPulse || '',
-teamDetails: data.teamDetails || '',
-competitorInfo: data.competitorInfo || '',
-reasonForSale: data.reasonForSale || '',
-handoverNotes: data.handoverNotes || ''
+title: asset.title || '',
+tagline: asset.tagline || '',
+description: asset.description || '',
+spark: asset.spark || '',
+askingPrice: asset.askingPrice || '',
+ttmRevenue: asset.ttmRevenue || '',
+mrr: asset.mrr || '',
+multiplier: asset.multiplier || '',
+netProfit: asset.netProfit || '',
+churnRate: asset.churnRate || '',
+category: asset.category || 'SaaS',
+businessModel: asset.businessModel || 'B2B',
+location: asset.location || '',
+websiteUrl: asset.websiteUrl || '',
+brandLogo: asset.brandLogo || '',
+cardCover: asset.cardCover || '',
+gallery: asset.gallery || [],
+teamSize: asset.teamSize || '',
+revenueModel: asset.revenueModel || '',
+paymentMethods: asset.paymentMethods || '',
+contactEmail: asset.contactEmail || '',
+techStack: asset.techStack || '',
+users: asset.users || '',
+retention: asset.retention || '',
+siteAge: asset.siteAge || '',
+directTraffic: asset.directTraffic || '',
+trafficDetails: asset.trafficDetails || '',
+sellerInsightsDetails: asset.sellerInsightsDetails || '',
+additionalContactDetails: asset.additionalContactDetails || '',
+growthPulse: asset.growthPulse || '',
+teamDetails: asset.teamDetails || '',
+competitorInfo: asset.competitorInfo || '',
+reasonForSale: asset.reasonForSale || '',
+handoverNotes: asset.handoverNotes || ''
 });
-
 }catch(err){
 
 console.log("ASSET LOAD ERROR",err);
@@ -296,7 +296,7 @@ addNotification("Update failed","error");
                 <span>Back</span>
             </button>
 
-            <PageTitle title="Update Asset" description={`Refining "${formData.title}"`} />
+            <PageTitle title="Update Asset" description={`Refine Your Asset. "${formData.title}"`} />
 
             <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-none space-y-12">
                 <FormSection title="The Narrative" icon={<BoltIcon />} subtext="Story and vision details.">
