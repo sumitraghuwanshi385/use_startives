@@ -236,7 +236,6 @@ Date.now() - new Date(a.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
 ).length
 }
 </p>
-
 </div>
 
 </div>
