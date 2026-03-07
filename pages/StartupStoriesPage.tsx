@@ -152,6 +152,7 @@ window.location.href =
 }}
 className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all"
 >
+<UserCircleIcon className="w-4 h-4" />
 Contact
 </button>
 
