@@ -13,6 +13,26 @@ const ChartBarIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" 
     </svg>
 );
 
+export const BookmarkIcon: React.FC<{ className?: string; solid?: boolean }> = ({ className, solid }) => (
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill={solid ? "currentColor" : "none"}
+stroke="currentColor"
+strokeWidth="1.5"
+className={className}
+>
+
+<path
+strokeLinecap="round"
+strokeLinejoin="round"
+d="M17.25 21l-5.25-3-5.25 3V3.75A2.25 2.25 0 019 1.5h6a2.25 2.25 0 012.25 2.25V21z"
+/>
+
+</svg>
+
+);
 
 const UsersIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
@@ -236,21 +256,19 @@ saveProject(asset._id);
 <div className="flex justify-center md:justify-start mt-5">
 
 <button
-  onClick={handleSaveToggle}
-  className={`flex items-center justify-center space-x-2 font-bold py-2 px-6 rounded-full text-[10px] uppercase tracking-widest transition-colors border ${
-    isSaved
-      ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30'
-      : 'bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]'
-  }`}
+onClick={handleSaveToggle}
+className={`flex items-center justify-center space-x-2 font-bold py-2 px-5 rounded-full text-[10px] uppercase tracking-widest transition-colors border ${
+isSaved
+? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30'
+: 'bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]'
+}`}
 >
 
-<BookmarkIcon className="w-4 h-4" />
+<BookmarkIcon className="w-4 h-4" solid={isSaved} />
 
 <span>{isSaved ? 'Saved' : 'Save'}</span>
 
 </button>
-
-</div>
                         </div>
                     </div>
 
