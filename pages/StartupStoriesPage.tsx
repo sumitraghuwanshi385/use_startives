@@ -98,7 +98,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
       <div className="relative h-44 overflow-hidden bg-neutral-950">
 
-        <img src={idea.brandLogo} alt={idea.name} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+        <img src={idea.brandLogo} alt={idea.title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
@@ -203,12 +203,18 @@ return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdA
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
         <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div className="text-left">
-                    <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">Asset Shop</h1>
-                    <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Founders selling to founders.</p>
-                </div>
-                
-                    <div className="flex items-center gap-6 
+
+<div className="text-left">
+<h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">
+Asset Shop
+</h1>
+
+<p className="text-lg text-[var(--text-secondary)] font-medium mt-1">
+Founders selling to founders.
+</p>
+</div>
+
+<div className="flex items-center gap-6 
 bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
 text-white px-6 py-2.5 rounded-full shadow-lg">
 
@@ -236,6 +242,8 @@ Date.now() - new Date(a.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
 ).length
 }
 </p>
+</div>
+
 </div>
 
 </div>
