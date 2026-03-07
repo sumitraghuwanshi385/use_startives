@@ -156,6 +156,10 @@ if (!asset) {
 
     const isOwner = String(currentUser?.id) === String(asset.founderId);
 
+const { saveProject, unsaveProject, isProjectSaved } = useAppContext();
+
+const isSaved = isProjectSaved(asset._id);
+
 const handleSaveToggle = () => {
 
 if(!currentUser){
