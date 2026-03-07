@@ -222,7 +222,7 @@ loadAssets();
 
   const savedAssets = assets.filter(
  (asset) =>
-  currentUser.savedProjectIds?.includes(asset._id)
+  currentUser.savedProjectIds?.includes(asset.id)
 );
 
   return (
