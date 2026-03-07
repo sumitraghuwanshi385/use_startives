@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { StartupIdea, StartupCategory } from '../types';
-import { BookmarkIcon, STARTUP_CATEGORIES, MagnifyingGlassIcon as SearchIcon, COUNTRIES } from '../constants';
+import { BookmarkIcon, STARTUP_CATEGORIES, MagnifyingGlassIcon as SearchIcon, COUNTRIES, UserCircleIcon } from '../constants';
 
 // --- Icons ---
 const CurrencyDollarIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -88,18 +88,15 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!currentUser) return;
-    const handleSave = (e: React.MouseEvent) => {
- e.stopPropagation();
+  e.stopPropagation();
 
- if (!currentUser) return;
+  if (!currentUser) return;
 
- if(isSaved){
-   unsaveProject(idea.id);
- }else{
-   saveProject(idea.id);
- }
+  if (isSaved) {
+    unsaveProject(idea.id);
+  } else {
+    saveProject(idea.id);
+  }
 };
 
   return (
@@ -125,7 +122,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </div>
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
         <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow font-poppins">{idea.description}</p>
-        <div className="pt-2 flex gap-3 mt-auto"><<button
+        <div className="pt-2 flex gap-3 mt-auto"><button
 onClick={() => {
 
 const email = asset.contactEmail || asset.founderEmail;
