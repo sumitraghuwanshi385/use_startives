@@ -252,33 +252,30 @@ Founder & Seller
       </div>
     </Link>
 
-{String(currentUser?.id) !== String(asset.founderId) && (
+{currentUser && founder && currentUser.id !== founder.id && (
+  <div className="mt-3">
 
-<div className="mt-3">
+    {isUserConnected(founder.id) ? (
+      <button className="w-full bg-green-100 text-green-700 text-xs font-bold py-2 rounded-full border border-green-200">
+        Connected
+      </button>
 
-{currentUser && currentUser.id !== founder.id && (
-      <div className="pt-3">
-        {isUserConnected(founder.id) ? (
-          <button className="w-full bg-green-100 text-green-700 text-xs font-bold py-2 rounded-full border border-green-200">
-            Connected
-          </button>
-        ) : isRequestPending(founder.id) ? (
-          <button className="w-full bg-yellow-100 text-yellow-700 text-xs font-bold py-2 rounded-full border border-yellow-200">
-            Request Sent
-          </button>
-        ) : (
-          <button
-            onClick={() => sendConnectionRequest(founder.id)}
-            className="w-full button-gradient text-white text-xs font-bold py-2 rounded-full hover:scale-105 transition-all"
-          >
-            Connect
-          </button>
+    ) : isRequestPending(founder.id) ? (
+      <button className="w-full bg-yellow-100 text-yellow-700 text-xs font-bold py-2 rounded-full border border-yellow-200">
+        Request Sent
+      </button>
+
+    ) : (
+      <button
+        onClick={() => sendConnectionRequest(founder.id)}
+        className="w-full button-gradient text-white text-xs font-bold py-2 rounded-full hover:scale-105 transition-all"
+      >
+        Connect
+      </button>
+    )}
+
+  </div>
 )}
-
-</div>
-
-)}
-
 </div>
 
 )}
