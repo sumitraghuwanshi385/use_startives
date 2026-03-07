@@ -154,24 +154,45 @@ fetchAssets();
 
   const pricingOptions = ['All', 'Under $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
   const filteredIdeas = useMemo(() => {
-    let list = assets.filter(idea => idea.askingPrice);
-    if (searchTerm) {
-        const lowerSearch = searchTerm.toLowerCase();
-        list = list.filter(idea => idea.title.toLowerCase().includes(lowerSearch) || idea.description.toLowerCase().includes(lowerSearch));
-    }
-    if (activeCategory !== 'All') list = list.filter(idea => idea.category === activeCategory);
-    if (activeLocation !== 'All') list = list.filter(idea => idea.location?.includes(activeLocation));
-    if (activePricing !== 'All') {
-        list = list.filter(idea => {
-            const price = parseInt(idea.askingPrice?.replace(/[^0-9]/g, '') || '0');
-            if (activePricing === 'Under $10k') return price < 10000;
-            if (activePricing === '$10k - $50k') return price >= 10000 && price <= 50000;
-            if (activePricing === '$50k - $100k') return price > 50000 && price <= 100000;
-            return price > 100000;
-        });
-    }
-    return list.sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime());
- }, [assets, activeCategory, activePricing, activeLocation, searchTerm]);
+
+let list = assets.filter(idea => idea.askingPrice);
+
+if (searchTerm) {
+
+const lowerSearch = searchTerm.toLowerCase();
+
+list = list.filter(idea =>
+idea.title.toLowerCase().includes(lowerSearch) ||
+idea.description.toLowerCase().includes(lowerSearch)
+);
+
+}
+
+if (activeCategory !== 'All')
+list = list.filter(idea => idea.category === activeCategory);
+
+if (activeLocation !== 'All')
+list = list.filter(idea => idea.location?.includes(activeLocation));
+
+if (activePricing !== 'All') {
+
+list = list.filter(idea => {
+
+const price = parseInt(idea.askingPrice?.replace(/[^0-9]/g, '') || '0');
+
+if (activePricing === 'Under $10k') return price < 10000;
+if (activePricing === '$10k - $50k') return price >= 10000 && price <= 50000;
+if (activePricing === '$50k - $100k') return price > 50000 && price <= 100000;
+
+return price > 100000;
+
+});
+
+}
+
+return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+}, [assets, activeCategory, activePricing, activeLocation, searchTerm]);
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
         <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
