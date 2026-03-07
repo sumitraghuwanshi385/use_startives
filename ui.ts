@@ -14,3 +14,6 @@ export const labelClasses =
 
 export const buttonPrimaryClasses =
 "px-6 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all";
+
+export const subBoxClasses =
+"bg-[var(--background-secondary)] border border-[var(--border-primary)] p-5 rounded-2xl space-y-4";
