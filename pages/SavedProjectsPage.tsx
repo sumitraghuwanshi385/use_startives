@@ -188,7 +188,29 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
 
 const SavedProjectsPage: React.FC = () => {
   const { startupIdeas, currentUser } = useAppContext();
+const [assets,setAssets] = useState([]);
   const [activeTab, setActiveTab] = useState<'ventures' | 'assets'>('ventures');
+
+useEffect(()=>{
+
+const loadAssets = async()=>{
+
+try{
+
+const res = await fetch("https://startives.onrender.com/api/assets");
+const data = await res.json();
+
+setAssets(data.assets || data);
+
+}catch(err){
+console.error("Assets load failed");
+}
+
+};
+
+loadAssets();
+
+},[]);
 
   if (!currentUser) return null;
 
@@ -198,11 +220,10 @@ const SavedProjectsPage: React.FC = () => {
       !idea.askingPrice
   );
 
-  const savedAssets = startupIdeas.filter(
-    (idea) =>
-      currentUser.savedProjectIds?.includes(idea.id) &&
-      idea.askingPrice
-  );
+  const savedAssets = assets.filter(
+ (asset) =>
+  currentUser.savedProjectIds?.includes(asset._id)
+);
 
   return (
     <div className="max-w-6xl mx-auto pb-20 font-poppins">
