@@ -359,7 +359,6 @@ placeholder="Navigate the world, sustainably."
 <FormRow label="Monthly Users" subtext="Total active users">
 <input
 type="number"
-inputMode="numeric"
 name="users"
 value={formData.users}
 onChange={handleInputChange}
@@ -369,6 +368,7 @@ placeholder="1200"
 </FormRow>
 
 <FormRow label="Active Growth (%)" subtext="Monthly growth rate">
+<div className="relative">
 <input
 type="number"
 inputMode="numeric"
@@ -378,6 +378,9 @@ onChange={handleInputChange}
 className={inputClasses}
 placeholder="15"
 />
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
 </FormRow>
 
 </div>
@@ -385,6 +388,7 @@ placeholder="15"
 <div className="grid md:grid-cols-2 gap-4">
 
 <FormRow label="Direct Traffic (%)" subtext="Visitors coming directly">
+<div className="relative">
 <input
 type="number"
 inputMode="numeric"
@@ -394,9 +398,13 @@ onChange={handleInputChange}
 className={inputClasses}
 placeholder="45"
 />
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
 </FormRow>
 
 <FormRow label="Retention (%)" subtext="Returning users">
+<div className="relative">
 <input
 type="number"
 inputMode="numeric"
@@ -406,6 +414,9 @@ onChange={handleInputChange}
 className={inputClasses}
 placeholder="62"
 />
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
 </FormRow>
 
 </div>
@@ -435,7 +446,7 @@ placeholder="Organic search traffic accounts for 85% of acquisition..."
                 <FormSection title="Financial Identity" icon={<CurrencyDollarIcon />} subtext="Valuation, revenue, and churn metrics.">
                     <FormRow label="Asking Price" isRequired subtext="Total cost to acquire the asset.">
                         
-<input type="number" inputMode="numeric" name="askingPrice" value={formData.askingPrice} onChange={handleInputChange} required className={inputClasses} placeholder="$45,000" />
+<input type="number" name="askingPrice" value={formData.askingPrice} onChange={handleInputChange} required className={inputClasses} placeholder="$45,000" />
                     </FormRow>
                     <div className="grid md:grid-cols-2 gap-4">
                         <FormRow label="TTM Revenue" isRequired subtext="Last 12 months income.">
@@ -455,10 +466,34 @@ placeholder="Organic search traffic accounts for 85% of acquisition..."
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
                         <FormRow label="Net Profit (%)" isRequired subtext="Average profit margin.">
-                            <input name="netProfit" value={formData.netProfit} onChange={handleInputChange} className={inputClasses} placeholder="85%" />
+                            <div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="netProfit"
+value={formData.netProfit}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="85"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
                         </FormRow>
                         <FormRow label="Churn Rate" isRequired subtext="Monthly subscriber loss.">
-                            <input name="churnRate" value={formData.churnRate} onChange={handleInputChange} className={inputClasses} placeholder="2.4%" />
+                            <div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="churnRate"
+value={formData.churnRate}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="2"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
                         </FormRow>
                     </div>
                 </FormSection>
