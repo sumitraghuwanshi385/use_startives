@@ -358,12 +358,11 @@ placeholder="Navigate the world, sustainably."
 
 <FormRow label="Monthly Users" subtext="Total active users">
 <input
-type="number"
 name="users"
 value={formData.users}
 onChange={handleInputChange}
 className={inputClasses}
-placeholder="1200"
+placeholder="1.2k"
 />
 </FormRow>
 
@@ -446,7 +445,14 @@ placeholder="Organic search traffic accounts for 85% of acquisition..."
                 <FormSection title="Financial Identity" icon={<CurrencyDollarIcon />} subtext="Valuation, revenue, and churn metrics.">
                     <FormRow label="Asking Price" isRequired subtext="Total cost to acquire the asset.">
                         
-<input type="number" name="askingPrice" value={formData.askingPrice} onChange={handleInputChange} required className={inputClasses} placeholder="$45,000" />
+<input
+name="askingPrice"
+value={formData.askingPrice}
+onChange={handleInputChange}
+required
+className={inputClasses}
+placeholder="$45,000"
+/>
                     </FormRow>
                     <div className="grid md:grid-cols-2 gap-4">
                         <FormRow label="TTM Revenue" isRequired subtext="Last 12 months income.">
