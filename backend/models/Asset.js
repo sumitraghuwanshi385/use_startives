@@ -24,6 +24,10 @@ businessModel:{
 type:String
 },
 
+revenueModel:{
+type:String
+},
+
 location:{
 type:String
 },
@@ -44,31 +48,11 @@ gallery:[
 String
 ],
 
-askingPrice:{
+techStack:{
 type:String
 },
 
-ttmRevenue:{
-type:String
-},
-
-mrr:{
-type:String
-},
-
-multiplier:{
-type:String
-},
-
-netProfit:{
-type:String
-},
-
-churnRate:{
-type:String
-},
-
-growthPulse:{
+siteAge:{
 type:String
 },
 
@@ -76,7 +60,27 @@ teamSize:{
 type:String
 },
 
-techStack:{
+teamDetails:{
+type:String
+},
+
+users:{
+type:String
+},
+
+growth:{
+type:String
+},
+
+directTraffic:{
+type:String
+},
+
+retention:{
+type:String
+},
+
+trafficDetails:{
 type:String
 },
 
@@ -89,6 +93,38 @@ type:String
 },
 
 handoverNotes:{
+type:String
+},
+
+sellerInsightsDetails:{
+type:String
+},
+
+askingPrice:{
+type:String
+},
+
+multiplier:{
+type:String
+},
+
+ttmRevenue:{
+type:String
+},
+
+mrr:{
+type:String
+},
+
+growthPulse:{
+type:String
+},
+
+netProfit:{
+type:String
+},
+
+churnRate:{
 type:String
 },
 
@@ -108,11 +144,44 @@ founderId:{
 type:String
 },
 
+founderName:{
+type:String
+},
+
 founderEmail:{
 type:String
 },
 
+usersCount:{
+type:Number
+},
+
+views:{
+type:Number,
+default:0
+},
+
+likes:{
+type:Number,
+default:0
+},
+
+status:{
+type:String,
+default:"active"
+},
+
+verified:{
+type:Boolean,
+default:false
+},
+
 createdAt:{
+type:Date,
+default:Date.now
+},
+
+updatedAt:{
 type:Date,
 default:Date.now
 }
