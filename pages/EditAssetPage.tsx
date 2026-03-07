@@ -296,7 +296,7 @@ addNotification("Update failed","error");
                 <span>Back</span>
             </button>
 
-            <PageTitle title="Update Asset" description={`Refine Your Asset.${formData.title}"`} />
+            <PageTitle title="Update Asset" description={`Refine Your Asset.${formData.title}`} />
 
             <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-none space-y-12">
                 <FormSection title="The Narrative" icon={<BoltIcon />} subtext="Story and vision details.">
@@ -400,8 +400,8 @@ placeholder="15"
 <input
 type="number"
 inputMode="numeric"
-name="retention"
-value={formData.retention}
+name="directTraffic"
+value={formData.directTraffic}
 onChange={handleInputChange}
 className={inputClasses}
 placeholder="62"
