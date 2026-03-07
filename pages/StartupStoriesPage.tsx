@@ -131,23 +131,26 @@ const [loading,setLoading] = useState(true);
   const [activeLocation, setActiveLocation] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState('');
 
-useEffect(()=>{
+useEffect(() => {
 
-const fetchAssets = async ()=>{
+const fetchAssets = async () => {
 
-try{
+try {
 
-const res = await fetch("https://startives.onrender.com/api/assets");
+const res = await fetch(
+"https://startives.onrender.com/api/assets",
+{ cache: "force-cache" }
+);
 
 const data = await res.json();
 
-setAssets(data.assets);
+setAssets(data);
 
-}catch(err){
+} catch (err) {
 
-console.log("ASSET FETCH ERROR",err);
+console.log("ASSET FETCH ERROR", err);
 
-}finally{
+} finally {
 
 setLoading(false);
 
@@ -157,7 +160,7 @@ setLoading(false);
 
 fetchAssets();
 
-},[]);
+}, []);
 
   const pricingOptions = ['All', 'Under $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
   const filteredIdeas = useMemo(() => {
