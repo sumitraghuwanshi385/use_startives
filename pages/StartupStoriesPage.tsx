@@ -207,9 +207,7 @@ return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdA
                     <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">Asset Shop</h1>
                     <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Founders selling to founders.</p>
                 </div>
-                <div className="flex items-center gap-6 
-  bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
-  text-white px-6 py-2.5 rounded-full shadow-lg">
+                
                     <div className="flex items-center gap-6 
 bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
 text-white px-6 py-2.5 rounded-full shadow-lg">
