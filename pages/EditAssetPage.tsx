@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useRef, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { inputClasses, textareaClasses, selectClasses, labelClasses } from "../constants/ui";
+import { inputClasses, textareaClasses, selectClasses, labelClasses } from "./ui";
 import { StartupCategory, BusinessModel, StartupIdea } from '../types';
 import { PageTitle } from '../App';
 import { 
