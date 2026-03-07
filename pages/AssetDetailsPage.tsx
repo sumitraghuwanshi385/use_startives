@@ -192,13 +192,13 @@ if (!asset) {
                             {/* Refined Glow Effect */}
                             <div className="absolute -inset-6 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                             <div className="w-24 h-24 rounded-[2rem] overflow-hidden border-4 border-white dark:border-neutral-800 shadow-2xl flex-shrink-0 relative z-10">
-                                <img src={asset.logo} alt={asset.name} className="w-full h-full object-cover" />
+                                <img src={asset.logo} alt={asset.title} className="w-full h-full object-cover" />
                             </div>
                         </div>
 
                         <div className="text-center md:text-left flex-grow relative z-10">
                             <div className="flex flex-col sm:flex-row items-center gap-3">
-                                <h1 className="text-3xl sm:text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-none">{asset.name}</h1>
+                                <h1 className="text-3xl sm:text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-none">{asset.title}</h1>
                                 {isOwner && (
                                     <Link to={`/asset/${asset._id}/edit`} className="px-4 py-1.5 rounded-full bg-[var(--background-tertiary)] text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-orange-500 border border-[var(--border-primary)] transition-all">
                                         Edit Asset
