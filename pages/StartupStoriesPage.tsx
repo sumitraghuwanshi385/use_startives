@@ -122,16 +122,17 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </div>
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
         <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow font-poppins">{idea.description}</p>
-        <div className="pt-2 flex gap-3 mt-auto"><button
+        <div className="pt-2 flex gap-3 mt-auto">
+<button
 onClick={() => {
 
-const email = asset.contactEmail || asset.founderEmail;
+const email = idea.contactEmail || idea.founderEmail;
 
-const subject = `Startives Inquiry — ${asset.title}`;
+const subject = `Startives Inquiry — ${idea.title}`;
 
-const body = `Hi ${founder?.name || "Founder"},
+const body = `Hi Founder,
 
-I discovered your asset "${asset.title}" on Startives and would love to learn more.
+I discovered your asset "${idea.title}" on Startives and would love to learn more.
 
 Looking forward to connecting.
 
@@ -144,11 +145,8 @@ window.location.href =
 
 className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all flex items-center gap-2"
 >
-
 <UserCircleIcon className="w-4 h-4" />
-
 Contact
-
 </button>
 </div>
 </div>
