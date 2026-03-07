@@ -157,7 +157,7 @@ Contact
 </div>
 </div>
       </div>
-    </div>
+    
   );
 };
 
