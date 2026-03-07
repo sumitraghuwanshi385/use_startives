@@ -82,7 +82,7 @@ const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`);
 
 const data = await res.json();
 
-setAsset(data.asset);
+setAsset(data);
 
 }catch(err){
 
