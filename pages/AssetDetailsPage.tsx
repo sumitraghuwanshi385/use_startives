@@ -603,7 +603,7 @@ className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to
 
 <UserCircleIcon className="w-4 h-4" />
 
-Connect +
+Contact
 
 </button>            {/* --- CONNECT BUTTON LOGIC END --- */}
 
