@@ -514,12 +514,11 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
             {/* --- EMAIL CONNECT BUTTON --- */}
 
 <button
-
 onClick={() => {
 
 const email = asset.contactEmail || asset.founderEmail;
 
-const subject = "Startives Inquiry — ${asset.title}";
+const subject = `Startives Inquiry — ${asset.title}`;
 
 const body = `Hi ${founder?.name || "Founder"},
 
@@ -530,19 +529,18 @@ Looking forward to connecting.
 Best regards`;
 
 window.location.href =
-"mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}";
+`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
 }}
 
 className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+>
 
-«»
+<UserCircleIcon className="w-4 h-4" />
 
-<UserCircleIcon className="w-4 h-4" />Connect +
+Connect +
 
-</button>
-            )}
-            {/* --- CONNECT BUTTON LOGIC END --- */}
+</button>            {/* --- CONNECT BUTTON LOGIC END --- */}
 
         </div>
         <p className="text-[10px] text-[var(--text-muted)] mt-4 italic font-medium">
