@@ -116,7 +116,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
         <div className="absolute top-4 left-4 flex gap-2"><span className="bg-emerald-600/30 backdrop-blur-xl border border-emerald-500/30 text-emerald-100 text-[9px] font-black uppercase tracking-[0.1em] px-3 py-1.5 rounded-full flex items-center gap-1.5">{idea.category || 'SaaS'}</span></div>
 
-        <button onClick={handleSave} className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}><BookmarkIcon className="w-4 h-4" solid={isSaved} /></button>
+        <button onClick={handleSave} className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}><BookmarkIcon className="w-4 h-4" /></button>
 
         <div className="absolute bottom-4 left-6 right-6 text-white text-left"><h2 className="text-2xl font-semibold tracking-tight leading-none font-poppins">{idea.title}</h2><p className="text-[10px] font-bold opacity-80 mt-1 uppercase tracking-widest">{idea.businessModel} • {idea.location}</p></div>
 
@@ -129,6 +129,14 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
         <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow font-poppins">{idea.description}</p>
         <div className="pt-2 flex gap-3 mt-auto">
+
+<button
+onClick={() => navigate(`/asset/${idea.id}`)}
+className="flex-1 py-3 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[10px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none"
+>
+View Asset
+</button>
+
 <button
 onClick={() => {
 
@@ -136,24 +144,18 @@ const email = (idea as any).contactEmail || (idea as any).founderEmail;
 
 const subject = `Startives Inquiry — ${idea.title}`;
 
-const body = `Hi Founder,
-
-I discovered your asset "${idea.title}" on Startives and would love to learn more.
-
-Looking forward to connecting.
-
-Best regards`;
+const body = `Hi Founder, I discovered your asset "${idea.title}" on Startives and would love to learn more. Looking forward to connecting. Best regards`;
 
 window.location.href =
 `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
 }}
-
-className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all"
 >
-<UserCircleIcon className="w-4 h-4" />
 Contact
 </button>
+
+</div>
 </div>
 </div>
       </div>
