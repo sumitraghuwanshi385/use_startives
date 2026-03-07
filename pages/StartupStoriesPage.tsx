@@ -94,15 +94,16 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
-  e.stopPropagation();
+e.stopPropagation();
 
-  if (!currentUser) return;
+if (!currentUser) return;
 
-  if (isSaved) {
-    unsaveProject(idea.id);
-  } else {
-    saveProject(idea.id);
-  }
+if (isSaved && typeof unsaveProject === "function") {
+  unsaveProject(idea.id);
+} 
+else if (typeof saveProject === "function") {
+  saveProject(idea.id);
+}
 };
 
   return (
@@ -128,13 +129,14 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </div>
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
         <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow font-poppins">{idea.description}</p>
-        <div className="pt-2 flex gap-3 mt-auto">
+        <div className="pt-2 flex gap-2 mt-auto">
 
 <button
 onClick={() => navigate(`/asset/${idea.id}`)}
-className="flex-1 py-3 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[10px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none"
+className="flex-1 py-2 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[9px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none flex items-center justify-center gap-1"
 >
-View Asset
+<ChartBarIcon className="w-3 h-3"/>
+View
 </button>
 
 <button
@@ -144,15 +146,15 @@ const email = (idea as any).contactEmail || (idea as any).founderEmail;
 
 const subject = `Startives Inquiry — ${idea.title}`;
 
-const body = `Hi Founder, I discovered your asset "${idea.title}" on Startives and would love to learn more. Looking forward to connecting. Best regards`;
+const body = `Hi Founder, I discovered your asset "${idea.title}" on Startives and would love to learn more. Looking forward to connecting.`;
 
 window.location.href =
 `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
 }}
-className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all"
+className="flex-1 py-2 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-[9px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center justify-center gap-1"
 >
-<UserCircleIcon className="w-4 h-4" />
+<UserCircleIcon className="w-3 h-3"/>
 Contact
 </button>
 
@@ -178,7 +180,9 @@ const fetchAssets = async ()=>{
 
 try{
 
-const res = await fetch("https://startives.onrender.com/api/assets");
+const res = await fetch("https://startives.onrender.com/api/assets", {
+cache: "force-cache"
+});
 
 const data = await res.json();
 
