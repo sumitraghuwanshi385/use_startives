@@ -84,14 +84,23 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 
 const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
-  const isSaved = isProjectSaved(idea._id);
+  const isSaved = isProjectSaved(idea.id);
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!currentUser) return;
-    isSaved ? unsaveProject(idea.id) : saveProject(idea.id);
-  };
+    const handleSave = (e: React.MouseEvent) => {
+ e.stopPropagation();
+
+ if (!currentUser) return;
+
+ if(isSaved){
+   unsaveProject(idea.id);
+ }else{
+   saveProject(idea.id);
+ }
+};
 
   return (
     <div className="bg-[var(--component-background)] rounded-3xl border border-[var(--border-primary)] overflow-hidden group flex flex-col h-full hover:border-emerald-500/50 transition-all duration-300 shadow-none font-poppins">
@@ -116,7 +125,36 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
         </div>
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
         <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow font-poppins">{idea.description}</p>
-        <div className="pt-2 flex gap-3 mt-auto"><button onClick={() => navigate(`/asset/${idea._id}`)} className="flex-1 py-3 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[10px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none">View asset</button><button onClick={() => navigate(`/asset/${idea._id}#contact`)} className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest shadow-none hover:scale-105 transition-all">Contact</button></div>
+        <div className="pt-2 flex gap-3 mt-auto"><<button
+onClick={() => {
+
+const email = asset.contactEmail || asset.founderEmail;
+
+const subject = `Startives Inquiry — ${asset.title}`;
+
+const body = `Hi ${founder?.name || "Founder"},
+
+I discovered your asset "${asset.title}" on Startives and would love to learn more.
+
+Looking forward to connecting.
+
+Best regards`;
+
+window.location.href =
+`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+}}
+
+className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+>
+
+<UserCircleIcon className="w-4 h-4" />
+
+Contact
+
+</button>
+</div>
+</div>
       </div>
     </div>
   );
@@ -141,7 +179,12 @@ const res = await fetch("https://startives.onrender.com/api/assets");
 
 const data = await res.json();
 
-setAssets(data.assets);
+const normalized = data.assets.map((a:any)=>({
+ ...a,
+ id: a._id || a.id
+}));
+
+setAssets(normalized);
 
 }catch(err){
 
@@ -214,11 +257,11 @@ Founders selling to founders.
 </p>
 </div>
 
-<div className="flex items-center gap-6 
+<div className="flex items-center gap-8 px-7 py-2.5 
 bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
 text-white px-6 py-2.5 rounded-full shadow-lg">
 
-<div className="flex items-center gap-2">
+<div className="flex items-center gap-3">
 <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
 Total Assets
 </p>
@@ -230,7 +273,7 @@ Total Assets
 
 <div className="w-px h-4 bg-white/20"></div>
 
-<div className="flex items-center gap-2">
+<div className="flex items-center gap-3">
 <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
 Assets This Week
 </p>
