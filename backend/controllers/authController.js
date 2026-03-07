@@ -219,39 +219,27 @@ const toggleSavedProject = async (req, res) => {
             return res.status(400).json({ success: false, message: "Project ID required" });
         }
 
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user._id).lean();
 
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        const alreadySaved = user.savedProjectIds.includes(projectId);
+        const alreadySaved = user.savedProjectIds?.includes(projectId);
 
-        if (alreadySaved) {
-            user.savedProjectIds = user.savedProjectIds.filter(
-                id => id !== projectId
-            );
-        } else {
-            user.savedProjectIds.push(projectId);
-        }
+        const update = alreadySaved
+            ? { $pull: { savedProjectIds: projectId } }
+            : { $addToSet: { savedProjectIds: projectId } };
 
-        await user.save();
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            update,
+            { new: true }
+        );
 
         return res.json({
             success: true,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                headline: user.headline,
-                country: user.country,
-                profilePictureUrl: user.profilePictureUrl,
-                savedProjectIds: user.savedProjectIds,
-                connections: user.connections,
-                connectionRequests: user.connectionRequests,
-                sentRequests: user.sentRequests,
-                createdAt: user.createdAt,
-            }
+            savedProjectIds: updatedUser.savedProjectIds
         });
 
     } catch (error) {
