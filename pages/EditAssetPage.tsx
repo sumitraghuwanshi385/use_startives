@@ -130,7 +130,7 @@ const FormSection: React.FC<FormSectionProps> = ({ title, icon, subtext, childre
 
 const EditAssetPage: React.FC = () => {
     const { assetId } = useParams<{ assetId: string }>();
-    const { getIdeaById, updateIdea, addNotification } = useAppContext();
+    const { addNotification } = useAppContext();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const logoInputRef = useRef<HTMLInputElement>(null);
@@ -149,24 +149,86 @@ const EditAssetPage: React.FC = () => {
     });
 
     useEffect(() => {
-        if (!assetId) return;
-        const idea = getIdeaById(assetId);
-        if (!idea) return;
-        setFormData({
-            title: idea.title || '', tagline: idea.tagline || '', description: idea.description || '', spark: idea.spark || '',
-            askingPrice: idea.askingPrice || '', ttmRevenue: idea.ttmRevenue || '', mrr: idea.mrr || '', growthRate: idea.growth || '', multiplier: idea.multiplier || '', netProfit: idea.netProfit || '', churnRate: idea.churnRate || '',
-            category: idea.category || 'SaaS', businessModel: idea.businessModel || 'B2B', location: idea.location || '',
-            websiteUrl: idea.websiteUrl || '', brandLogo: idea.imageUrl || '', cardCover: idea.imageUrl || '', gallery: [],
-            sellerNotes: '', handoverNotes: idea.handoverNotes || '', reasonForSale: idea.reasonForSale || '', teamSize: idea.teamSize?.toString() || '', revenueModel: idea.revenueModel || '',
-            paymentMethods: idea.paymentMethods || '', contactEmail: idea.contactEmail || '', techStack: idea.techStack?.join(', ') || '', users: idea.users || '', retention: idea.retention || '',
-            siteAge: idea.siteAge || '', directTraffic: idea.directTraffic || '', trafficDetails: idea.trafficDetails || '', sellerInsightsDetails: idea.sellerInsightsDetails || '', additionalContactDetails: idea.additionalContactDetails || '',
-            growthPulse: idea.growthPulse || '', teamDetails: idea.teamDetails || '', competitorInfo: idea.competitorInfo || ''
-        });
-    }, [assetId, getIdeaById]);
+
+if(!assetId) return;
+
+const fetchAsset = async () => {
+
+try{
+
+const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`);
+
+const data = await res.json();
+
+setFormData({
+title: data.title || '',
+tagline: data.tagline || '',
+description: data.description || '',
+spark: data.spark || '',
+askingPrice: data.askingPrice || '',
+ttmRevenue: data.ttmRevenue || '',
+mrr: data.mrr || '',
+multiplier: data.multiplier || '',
+netProfit: data.netProfit || '',
+churnRate: data.churnRate || '',
+category: data.category || 'SaaS',
+businessModel: data.businessModel || 'B2B',
+location: data.location || '',
+websiteUrl: data.websiteUrl || '',
+brandLogo: data.brandLogo || '',
+cardCover: data.cardCover || '',
+gallery: data.gallery || [],
+teamSize: data.teamSize || '',
+revenueModel: data.revenueModel || '',
+paymentMethods: data.paymentMethods || '',
+contactEmail: data.contactEmail || '',
+techStack: data.techStack || '',
+users: data.users || '',
+retention: data.retention || '',
+siteAge: data.siteAge || '',
+directTraffic: data.directTraffic || '',
+trafficDetails: data.trafficDetails || '',
+sellerInsightsDetails: data.sellerInsightsDetails || '',
+additionalContactDetails: data.additionalContactDetails || '',
+growthPulse: data.growthPulse || '',
+teamDetails: data.teamDetails || '',
+competitorInfo: data.competitorInfo || '',
+reasonForSale: data.reasonForSale || '',
+handoverNotes: data.handoverNotes || ''
+});
+
+}catch(err){
+
+console.log("ASSET LOAD ERROR",err);
+
+}
+
+};
+
+fetchAsset();
+
+},[assetId]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    };
+
+let {name,value} = e.target;
+
+if(name==="netProfit" || name==="churnRate" || name==="retention" || name==="directTraffic"){
+
+value = value.replace("%","");
+
+if(value){
+value = value + "%";
+}
+
+}
+
+setFormData(prev => ({
+...prev,
+[name]: value
+}));
+
+};
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, field: 'brandLogo' | 'cardCover' | 'gallery') => {
         const files = e.target.files;
@@ -202,11 +264,29 @@ const EditAssetPage: React.FC = () => {
             setIsLoading(false); return;
         }
 
-        await new Promise(r => setTimeout(r, 1000));
-        updateIdea(assetId!, { ...formData, imageUrl: formData.brandLogo } as any);
-        addNotification("Asset updated!", "success");
-        navigate(`/asset/${assetId}`);
-    };
+        try{
+
+const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(formData)
+});
+
+if(!res.ok){
+throw new Error("Update failed");
+}
+
+addNotification("Asset updated successfully","success");
+
+navigate(`/asset/${assetId}`);
+
+}catch(err){
+
+addNotification("Update failed","error");
+
+}
 
     return (
         <div className="max-w-3xl mx-auto pb-24 font-poppins">
@@ -220,7 +300,14 @@ const EditAssetPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-none space-y-12">
                 <FormSection title="The Narrative" icon={<BoltIcon />} subtext="Story and vision details.">
                     <FormRow label="Project Name" isRequired><input name="title" value={formData.title} onChange={handleInputChange} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
-                    <FormRow label="Tagline" isRequired><input name="tagline" value={formData.tagline} onChange={handleInputChange} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
+                    <FormRow label="Tagline" isRequired><input
+name="tagline"
+maxLength={30}
+value={formData.tagline}
+onChange={handleInputChange}
+<p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
+{formData.tagline.length}/30 characters
+</p></FormRow>
                     <FormRow label="Official Summary" isRequired><textarea name="description" value={formData.description} onChange={handleInputChange} rows={5} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm resize-none" /></FormRow>
                     <FormRow label="Founder's Spark" isRequired><textarea name="spark" value={formData.spark} onChange={handleInputChange} rows={3} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm resize-none" /></FormRow>
                 </FormSection>
