@@ -209,8 +209,7 @@ if (!asset) {
                             <p className="text-lg font-poppins font-semibold text-purple-600 mt-2 tracking-tight">
 {asset.tagline}
 </p>
-                                {asset.tagline}
-                            </p>
+                               
                             
                             <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-5">
                                 <MetaBadge label="Category" value={asset.category || 'Venture'} />
