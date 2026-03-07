@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useRef, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { StartupCategory, BusinessModel, StartupIdea } from '../types'; 
+import { StartupCategory, BusinessModel, StartupIdea } from '../types';
 import { PageTitle } from '../App';
 import { 
     STARTUP_CATEGORIES, 
@@ -300,14 +300,26 @@ addNotification("Update failed","error");
             <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-none space-y-12">
                 <FormSection title="The Narrative" icon={<BoltIcon />} subtext="Story and vision details.">
                     <FormRow label="Project Name" isRequired><input name="title" value={formData.title} onChange={handleInputChange} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
-                    <FormRow label="Tagline" isRequired><input
+                    <FormRow label="Tagline" isRequired>
+
+<div>
+
+<input
 name="tagline"
 maxLength={30}
 value={formData.tagline}
 onChange={handleInputChange}
+required
+className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm"
+/>
+
 <p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
 {formData.tagline.length}/30 characters
-</p></FormRow>
+</p>
+
+</div>
+
+</FormRow>
                     <FormRow label="Official Summary" isRequired><textarea name="description" value={formData.description} onChange={handleInputChange} rows={5} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm resize-none" /></FormRow>
                     <FormRow label="Founder's Spark" isRequired><textarea name="spark" value={formData.spark} onChange={handleInputChange} rows={3} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm resize-none" /></FormRow>
                 </FormSection>
@@ -346,6 +358,89 @@ onChange={handleInputChange}
                     <FormRow label="Competitors"><textarea name="competitorInfo" value={formData.competitorInfo} onChange={handleInputChange} rows={3} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm resize-none" /></FormRow>
                 </FormSection>
 
+<FormSection title="Performance Metrics" icon={<ChartBarIcon />} subtext="User traffic and growth indicators.">
+
+<div className="grid md:grid-cols-2 gap-4">
+
+<FormRow label="Monthly Users" subtext="Total active users">
+<input
+type="number"
+inputMode="numeric"
+name="users"
+value={formData.users}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="1200"
+/>
+</FormRow>
+
+<FormRow label="Active Growth (%)" subtext="Monthly growth rate">
+<div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="growth"
+value={formData.growth}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="15"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
+</FormRow>
+
+</div>
+
+<div className="grid md:grid-cols-2 gap-4">
+
+<FormRow label="Direct Traffic (%)" subtext="Visitors coming directly">
+<div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="retention"
+value={formData.retention}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="62"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
+</FormRow>
+
+<FormRow label="Retention (%)" subtext="Returning users">
+<div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="retention"
+value={formData.retention}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="62"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div>
+</FormRow>
+
+</div>
+
+<FormRow label="Traffic Details" subtext="Explain traffic sources">
+<textarea
+name="trafficDetails"
+value={formData.trafficDetails}
+onChange={handleInputChange}
+rows={3}
+className={subBoxClasses}
+placeholder="Organic search traffic accounts for 85% of acquisition..."
+/>
+</FormRow>
+
+</FormSection>
+
                 <FormSection title="Financial Identity" icon={<CurrencyDollarIcon />} subtext="Valuation and revenue.">
                     <FormRow label="Asking Price" isRequired><input name="askingPrice" value={formData.askingPrice} onChange={handleInputChange} required className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -357,8 +452,32 @@ onChange={handleInputChange}
                         <FormRow label="Growth Pulse" isRequired><input name="growthPulse" value={formData.growthPulse} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
-                        <FormRow label="Net Profit (%)" isRequired><input name="netProfit" value={formData.netProfit} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
-                        <FormRow label="Churn Rate" isRequired><input name="churnRate" value={formData.churnRate} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
+                        <FormRow label="Net Profit (%)" isRequired><div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="netProfit"
+value={formData.netProfit}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="85"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div></FormRow>
+                        <FormRow label="Churn Rate" isRequired><div className="relative">
+<input
+type="number"
+inputMode="numeric"
+name="churnRate"
+value={formData.churnRate}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="2"
+/>
+
+<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
+</div></FormRow>
                     </div>
                 </FormSection>
 
