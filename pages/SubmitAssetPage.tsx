@@ -246,7 +246,18 @@ setIsLoading(false);
                         <input name="title" value={formData.title} onChange={handleInputChange} required className={inputClasses} placeholder="e.g. EcoRoute SaaS" />
                     </FormRow>
                     <FormRow label="Tagline" isRequired subtext="Catchy summary for the marketplace.">
-                        <input name="tagline" value={formData.tagline} onChange={handleInputChange} required className={inputClasses} placeholder="Navigate the world, sustainably." />
+                        <input
+name="tagline"
+value={formData.tagline}
+maxLength={30}
+onChange={handleInputChange}
+required
+className={inputClasses}
+placeholder="Navigate the world, sustainably."
+/>
+<p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
+{formData.tagline.length}/30 characters
+</p>
                     </FormRow>
                     <FormRow label="Official Summary" isRequired subtext="Full breakdown of the value proposition.">
                         <textarea name="description" value={formData.description} onChange={handleInputChange} rows={5} required className={`${inputClasses} resize-none`} placeholder="Comprehensive breakdown of what you've built..." />
@@ -339,6 +350,78 @@ setIsLoading(false);
                             <input type="file" ref={galleryInputRef} className="hidden" onChange={e => handleImageUpload(e, 'gallery')} multiple accept="image/*" />
                          </div>
                     </FormRow>
+
+
+<FormSection title="Performance Metrics" icon={<ChartBarIcon />} subtext="User traffic and growth indicators.">
+
+<div className="grid md:grid-cols-2 gap-4">
+
+<FormRow label="Monthly Users" subtext="Total active users">
+<input
+type="number"
+inputMode="numeric"
+name="users"
+value={formData.users}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="1200"
+/>
+</FormRow>
+
+<FormRow label="Active Growth (%)" subtext="Monthly growth rate">
+<input
+type="number"
+inputMode="numeric"
+name="growth"
+value={formData.growth}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="15"
+/>
+</FormRow>
+
+</div>
+
+<div className="grid md:grid-cols-2 gap-4">
+
+<FormRow label="Direct Traffic (%)" subtext="Visitors coming directly">
+<input
+type="number"
+inputMode="numeric"
+name="directTraffic"
+value={formData.directTraffic}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="45"
+/>
+</FormRow>
+
+<FormRow label="Retention (%)" subtext="Returning users">
+<input
+type="number"
+inputMode="numeric"
+name="retention"
+value={formData.retention}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="62"
+/>
+</FormRow>
+
+</div>
+
+<FormRow label="Traffic Details" subtext="Explain traffic sources">
+<textarea
+name="trafficDetails"
+value={formData.trafficDetails}
+onChange={handleInputChange}
+rows={3}
+className={subBoxClasses}
+placeholder="Organic search traffic accounts for 85% of acquisition..."
+/>
+</FormRow>
+
+</FormSection>
                 </FormSection>
 
                 {/* Section 5: Competitor Info */}
@@ -351,7 +434,8 @@ setIsLoading(false);
                 {/* Section 6: Financial Pulse */}
                 <FormSection title="Financial Identity" icon={<CurrencyDollarIcon />} subtext="Valuation, revenue, and churn metrics.">
                     <FormRow label="Asking Price" isRequired subtext="Total cost to acquire the asset.">
-                        <input name="askingPrice" value={formData.askingPrice} onChange={handleInputChange} required className={inputClasses} placeholder="$45,000" />
+                        
+<input type="number" inputMode="numeric" name="askingPrice" value={formData.askingPrice} onChange={handleInputChange} required className={inputClasses} placeholder="$45,000" />
                     </FormRow>
                     <div className="grid md:grid-cols-2 gap-4">
                         <FormRow label="TTM Revenue" isRequired subtext="Last 12 months income.">
