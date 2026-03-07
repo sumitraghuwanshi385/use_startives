@@ -638,16 +638,16 @@ const toggleSaveProject = async (projectId: string) => {
   try {
     const res = await axios.put(
       "/api/auth/save-project",
-      { projectId },
+      { projectId: String(projectId) },
       { headers: { Authorization: `Bearer ${t}` } }
     );
 
     if (res.data?.success) {
-      const updatedIds = res.data.savedProjectIds;
+      const updatedIds = res.data.savedProjectIds || [];
 
       const updatedUser = {
         ...currentUser,
-        savedProjectIds: updatedIds
+        savedProjectIds: updatedIds.map((id: any) => String(id))
       };
 
       setCurrentUser(updatedUser);
@@ -660,7 +660,11 @@ const toggleSaveProject = async (projectId: string) => {
 };
 
 const isProjectSaved = (projectId: string) => {
-  return !!currentUser?.savedProjectIds?.includes(projectId);
+  if (!currentUser?.savedProjectIds) return false;
+
+  return currentUser.savedProjectIds.some(
+    (id: any) => String(id) === String(projectId)
+  );
 };
 
 const addApplication = async (applicationData: any) => {
