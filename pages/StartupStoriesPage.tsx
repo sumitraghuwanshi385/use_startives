@@ -84,7 +84,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 
 const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
-  const isSaved = isProjectSaved(idea.id);
+  const isSaved = isProjectSaved(idea._id);
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
@@ -246,6 +246,7 @@ Date.now() - new Date(a.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
 
 </div>
 
+</div>
 </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex justify-center"><div className="relative group max-w-2xl w-full"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><SearchIcon className="h-5 w-5 text-[var(--text-muted)]" /></div><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search digital assets..." className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-emerald-500 outline-none transition-all text-base font-medium font-poppins" /></div></div>
 
