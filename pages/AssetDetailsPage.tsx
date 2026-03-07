@@ -224,22 +224,45 @@ if (!asset) {
                         {/* LEFT PANEL */}
                         <div className="lg:col-span-1 border-r border-[var(--border-primary)] bg-neutral-50/50 dark:bg-neutral-900/30 p-8 space-y-8">
                             <section>
-                                <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Authority</h3>
-                                <div className="space-y-4">
-                                    {/* UPDATED FOUNDER UI HANDLER */}
-                                    {isLoadingFounder ? (
-                                        <div className="flex items-center gap-3 animate-pulse">
-                                            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                                            <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                                        </div>
-                                    ) : (
-                                        <Link to={`/user/${asset.founderId}`} className="flex items-center gap-3 group bg-white dark:bg-neutral-800 p-3 rounded-2xl border border-[var(--border-primary)] shadow-sm">
-                                            <img src={founder?.profilePictureUrl || "https://www.gravatar.com/avatar/?d=mp"} className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/10" />
-                                            <div>
-                                                <p className="text-sm font-black text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">{founder?.name || asset.founderName || "Unknown Innovator"}</p>
-                                                <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase">Founder & Seller</p>
-                                            </div>
-                                        </Link>
+<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">
+Authority
+</h3>
+
+<div className="space-y-4">
+
+{isLoadingFounder ? (
+
+<div className="flex items-center gap-3 animate-pulse">
+<div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+<div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
+</div>
+
+) : (
+
+<div>
+
+<Link
+to={`/user/${asset.founderId}`}
+className="flex items-center gap-3 group bg-white dark:bg-neutral-800 p-3 rounded-2xl border border-[var(--border-primary)] shadow-sm"
+>
+
+<img
+src={founder?.profilePictureUrl || "https://www.gravatar.com/avatar/?d=mp"}
+className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/10"
+/>
+
+<div>
+<p className="text-sm font-black text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">
+{founder?.name || asset.founderName || "Unknown Innovator"}
+</p>
+
+<p className="text-[9px] font-bold text-[var(--text-muted)] uppercase">
+Founder & Seller
+</p>
+</div>
+
+</Link>
+
 {String(currentUser?.id) !== String(asset.founderId) && (
 
 <div className="mt-3">
@@ -270,17 +293,24 @@ Add Connection
 </div>
 
 )}
-                                                                     
-                                    {founder?.bio && (
-                                        <div className="relative">
-                                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
-                                            <p className="text-xs text-[var(--text-secondary)] italic pl-3 leading-relaxed line-clamp-4">
-                                                {founder.bio}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            </section>
+
+</div>
+
+)}
+
+{founder?.bio && (
+<div className="relative">
+<div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
+
+<p className="text-xs font-poppins text-purple-600 pl-3 leading-relaxed line-clamp-4">
+{founder.bio}
+</p>
+
+</div>
+)}
+
+</div>
+</section>
 
                             <section>
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Team Profile</h3>
