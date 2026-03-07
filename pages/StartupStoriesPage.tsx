@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { StartupIdea, StartupCategory } from '../types';
-import { BookmarkIcon, STARTUP_CATEGORIES, MagnifyingGlassIcon as SearchIcon, COUNTRIES, UserCircleIcon } from '../constants';
+import { BookmarkIcon, STARTUP_CATEGORIES, MagnifyingGlassIcon as SearchIcon, COUNTRIES } from '../constants';
 
 // --- Icons ---
 const CurrencyDollarIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -27,6 +27,12 @@ const CheckIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) 
 
 const GrowthIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+);
+
+const UserCircleIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+    </svg>
 );
 
 const TagIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
