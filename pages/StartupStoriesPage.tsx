@@ -141,7 +141,7 @@ const res = await fetch("https://startives.onrender.com/api/assets");
 
 const data = await res.json();
 
-setAssets(Array.isArray(data) ? data : data.assets || []);
+setAssets(data.assets);
 
 }catch(err){
 
