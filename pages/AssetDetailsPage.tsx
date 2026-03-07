@@ -59,7 +59,7 @@ const AssetDetailsPage: React.FC = () => {
     const { assetId } = useParams<{ assetId: string }>();
     
     // NOTE: Added fetchUserProfile from context
-    const { getIdeaById, getUserById, currentUser, fetchUserProfile , sendConnectionRequest, isRequestPending,isUserConnected  } = useAppContext();
+    const { getIdeaById, getUserById, currentUser, fetchUserProfile , sendConnectionRequest, isRequestPending,isUserConnected, saveProject, unsaveProject, isProjectSaved } = useAppContext();
     
     const navigate = useNavigate();
     const location = useLocation();
@@ -156,8 +156,6 @@ if (!asset) {
 
     const isOwner = String(currentUser?.id) === String(asset.founderId);
 
-const { saveProject, unsaveProject, isProjectSaved } = useAppContext();
-
 const isSaved = isProjectSaved(asset._id);
 
 const handleSaveToggle = () => {
@@ -167,7 +165,11 @@ alert("Login required");
 return;
 }
 
-console.log("Save asset:", asset._id);
+if(isSaved){
+unsaveProject(asset._id);
+}else{
+saveProject(asset._id);
+}
 
 };
 
@@ -236,17 +238,24 @@ console.log("Save asset:", asset._id);
                                 <MetaBadge label="Category" value={asset.category || 'Venture'} />
                                 <MetaBadge label="Model" value={asset.businessModel || "SaaS"} />                                
                             </div>
+<div className="flex justify-center md:justify-start mt-5">
+
 <button
   onClick={handleSaveToggle}
-  className={`mt-4 flex items-center justify-center space-x-2 font-bold py-2 px-5 rounded-full text-[10px] uppercase tracking-widest transition-colors border ${
+  className={`flex items-center justify-center space-x-2 font-bold py-2 px-6 rounded-full text-[10px] uppercase tracking-widest transition-colors border ${
     isSaved
       ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30'
       : 'bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]'
   }`}
 >
-  <BookmarkIcon className="w-4 h-4" solid={isSaved} />
-  <span>{isSaved ? 'Saved' : 'Save'}</span>
+
+<BookmarkIcon className="w-4 h-4" />
+
+<span>{isSaved ? 'Saved' : 'Save'}</span>
+
 </button>
+
+</div>
                         </div>
                     </div>
 
