@@ -82,15 +82,15 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
   );
 };
 
- const ExchangeCard: React.FC<{ idea: any }> = ({ idea }) => {
+const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
-  const isSaved = isProjectSaved(idea._id);
+  const isSaved = isProjectSaved(idea.id);
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!currentUser) return;
-    isSaved ? unsaveProject(idea._id) : saveProject(idea._id);
+    isSaved ? unsaveProject(idea.id) : saveProject(idea.id);
   };
 
   return (
@@ -98,7 +98,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 
       <div className="relative h-44 overflow-hidden bg-neutral-950">
 
-        <img src={idea.brandLogo || "/placeholder.png"} alt={idea.title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+        <img src={idea.brandLogo} alt={idea.name} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
@@ -131,26 +131,23 @@ const [loading,setLoading] = useState(true);
   const [activeLocation, setActiveLocation] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState('');
 
-useEffect(() => {
+useEffect(()=>{
 
-const fetchAssets = async () => {
+const fetchAssets = async ()=>{
 
-try {
+try{
 
-const res = await fetch(
-"https://startives.onrender.com/api/assets",
-{ cache: "force-cache" }
-);
+const res = await fetch("https://startives.onrender.com/api/assets");
 
 const data = await res.json();
 
-setAssets(Array.isArray(data) ? data : []);
+setAssets(data.assets);
 
-} catch (err) {
+}catch(err){
 
-console.log("ASSET FETCH ERROR", err);
+console.log("ASSET FETCH ERROR",err);
 
-} finally {
+}finally{
 
 setLoading(false);
 
@@ -160,31 +157,20 @@ setLoading(false);
 
 fetchAssets();
 
-}, []);
+},[]);
 
   const pricingOptions = ['All', 'Under $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
-
-if (loading) {
-  return (
-    <div className="flex justify-center items-center h-[60vh]">
-      <p className="text-sm font-bold text-[var(--text-muted)] animate-pulse">
-        Loading assets...
-      </p>
-    </div>
-  );
-}
-
   const filteredIdeas = useMemo(() => {
 
-let list = Array.isArray(assets) ? assets : [];
+let list = assets.filter(idea => idea.askingPrice);
 
 if (searchTerm) {
 
 const lowerSearch = searchTerm.toLowerCase();
 
 list = list.filter(idea =>
-(idea.title || "").toLowerCase().includes(lowerSearch) ||
-(idea.description || "").toLowerCase().includes(lowerSearch)
+idea.title.toLowerCase().includes(lowerSearch) ||
+idea.description.toLowerCase().includes(lowerSearch)
 );
 
 }
