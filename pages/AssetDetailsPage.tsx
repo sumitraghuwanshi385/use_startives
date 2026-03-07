@@ -207,12 +207,12 @@ if (!asset) {
                             </div>
 
                             <p className="text-lg text-[var(--text-secondary)] font-medium mt-1.5 italic opacity-80">
-                                {asset._tagline}
+                                {asset.tagline}
                             </p>
                             
                             <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-5">
-                                <MetaBadge label="Category" value={asset._category || 'Venture'} />
-                                <MetaBadge label="Model" value={asset._businessModel || "SaaS"} />
+                                <MetaBadge label="Category" value={asset.category || 'Venture'} />
+                                <MetaBadge label="Model" value={asset.businessModel || "SaaS"} />
                                 <MetaBadge label="Monetization" value={asset._revenueModel || "Subscription"} />
                             </div>
                         </div>
@@ -232,7 +232,7 @@ if (!asset) {
                                             <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
                                         </div>
                                     ) : (
-                                        <Link to={`/user/${asset._founderId}`} className="flex items-center gap-3 group bg-white dark:bg-neutral-800 p-3 rounded-2xl border border-[var(--border-primary)] shadow-sm">
+                                        <Link to={`/user/${asset.founderId}`} className="flex items-center gap-3 group bg-white dark:bg-neutral-800 p-3 rounded-2xl border border-[var(--border-primary)] shadow-sm">
                                             <img src={founder?.profilePictureUrl || "https://www.gravatar.com/avatar/?d=mp"} className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/10" />
                                             <div>
                                                 <p className="text-sm font-black text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">{founder?.name || asset.founderName || "Unknown Innovator"}</p>
@@ -245,7 +245,7 @@ if (!asset) {
                                         <div className="relative">
                                             <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
                                             <p className="text-xs text-[var(--text-secondary)] italic pl-3 leading-relaxed line-clamp-4">
-                                                {founder._bio}
+                                                {founder.bio}
                                             </p>
                                         </div>
                                     )}
@@ -260,13 +260,13 @@ if (!asset) {
                                             <UserGroupIcon className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <p className="text-xs font-black text-[var(--text-primary)]">{asset.teamSize ? `${asset._teamSize} Core Members` : '1-5 Core Members'}</p>
+                                            <p className="text-xs font-black text-[var(--text-primary)]">{asset.teamSize ? `${asset.teamSize} Core Members` : '1-5 Core Members'}</p>
                                             <p className="text-[8px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Active Team Size</p>
                                         </div>
                                     </div>
                                     <div className="bg-white/50 dark:bg-neutral-900/50 p-4 rounded-2xl border border-[var(--border-primary)]">
                                         <p className="text-[10px] text-[var(--text-secondary)] leading-relaxed italic font-medium">
-                                            {asset._teamDetails || "The team consists of the original founders who have managed all aspects from development to initial growth. They are prepared to facilitate a smooth transition."}
+                                            {asset.teamDetails || "The team consists of the original founders who have managed all aspects from development to initial growth. They are prepared to facilitate a smooth transition."}
                                         </p>
                                     </div>
                                 </div>
@@ -279,7 +279,7 @@ if (!asset) {
                                         <CalendarIcon className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-black text-[var(--text-primary)] uppercase">{asset._siteAge || "2 Years, 4 Months"}</p>
+                                        <p className="text-xs font-black text-[var(--text-primary)] uppercase">{asset.siteAge || "2 Years, 4 Months"}</p>
                                         <p className="text-[8px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Since Domain Registry</p>
                                     </div>
                                 </div>
@@ -288,7 +288,7 @@ if (!asset) {
                             <section>
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Official Asset Summary</h3>
                                 <div className="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-[var(--border-primary)] shadow-sm">
-                                    <p className="text-xs font-medium leading-relaxed text-[var(--text-secondary)] whitespace-pre-wrap">{asset._description}</p>
+                                    <p className="text-xs font-medium leading-relaxed text-[var(--text-secondary)] whitespace-pre-wrap">{asset.description}</p>
                                 </div>
                             </section>
 
@@ -308,9 +308,9 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
 
                             <section>
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Product Link</h3>
-                                {asset._websiteUrl ? (
+                                {asset.websiteUrl ? (
                                     <a 
-                                        href={asset._websiteUrl.startsWith('http') ? asset.websiteUrl : `https://${asset._websiteUrl}`} 
+                                        href={asset.websiteUrl.startsWith('http') ? asset.websiteUrl : `https://${asset.websiteUrl}`} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="flex items-center justify-between w-full p-3 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl shadow-lg transition-all group"
