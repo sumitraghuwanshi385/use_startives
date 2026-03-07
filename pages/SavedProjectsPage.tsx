@@ -284,7 +284,7 @@ loadAssets();
     savedAssets.map((asset) => (
  <SavedProjectCard key={asset._id} idea={asset} />
 ))
-  ))
+  
 ) : (
   <WhitelistEmptyGraphic type="assets" />
 )}
