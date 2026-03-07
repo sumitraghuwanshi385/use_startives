@@ -82,7 +82,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
   );
 };
 
-const ExchangeCard: React.FC<{ idea: any }> {
+ const ExchangeCard: React.FC<{ idea: any }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
   const isSaved = isProjectSaved(idea._id);
   const navigate = useNavigate();
