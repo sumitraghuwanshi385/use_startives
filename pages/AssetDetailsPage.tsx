@@ -156,6 +156,17 @@ if (!asset) {
 
     const isOwner = String(currentUser?.id) === String(asset.founderId);
 
+const handleSaveToggle = () => {
+
+if(!currentUser){
+alert("Login required");
+return;
+}
+
+console.log("Save asset:", asset._id);
+
+};
+
     const MetaBadge: React.FC<{ label: string; value: string }> = ({ label, value }) => (
         <div className="flex flex-col bg-neutral-100 dark:bg-neutral-800/50 px-3 py-1.5 rounded-xl border border-[var(--border-primary)] shadow-sm">
             <span className="text-[7px] font-black text-[var(--text-muted)] uppercase tracking-widest leading-none mb-1">{label}</span>
