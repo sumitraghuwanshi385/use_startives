@@ -144,8 +144,7 @@ const res = await fetch(
 
 const data = await res.json();
 
-setAssets(data);
-
+setAssets(data.assets || []);
 } catch (err) {
 
 console.log("ASSET FETCH ERROR", err);
