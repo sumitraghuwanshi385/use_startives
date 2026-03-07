@@ -109,8 +109,8 @@ if (isSaved) {
   if (typeof saveProject === "function") {
     saveProject(idea.id);
   }
-}
 };
+
   return (
     <div className="bg-[var(--component-background)] rounded-3xl border border-[var(--border-primary)] overflow-hidden group flex flex-col h-full hover:border-emerald-500/50 transition-all duration-300 shadow-none font-poppins">
 
