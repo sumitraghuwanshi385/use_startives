@@ -106,7 +106,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
         <button onClick={handleSave} className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}><BookmarkIcon className="w-4 h-4" solid={isSaved} /></button>
 
-        <div className="absolute bottom-4 left-6 right-6 text-white text-left"><h2 className="text-2xl font-bold tracking-tight leading-none uppercase">{idea.title}</h2><p className="text-[10px] font-bold opacity-80 mt-1 uppercase tracking-widest">{idea.businessModel} • {idea.location}</p></div>
+        <div className="absolute bottom-4 left-6 right-6 text-white text-left"><h2 className="text-2xl font-semibold tracking-tight leading-none font-poppins">{idea.title}</h2><p className="text-[10px] font-bold opacity-80 mt-1 uppercase tracking-widest">{idea.businessModel} • {idea.location}</p></div>
 
       </div>
       <div className="p-6 flex flex-col flex-grow space-y-5">
@@ -115,7 +115,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
             <div className="bg-[var(--background-secondary)] p-3 rounded-2xl border border-[var(--border-primary)] flex flex-col justify-center text-center shadow-none"><span className="text-[8px] font-black uppercase text-[var(--text-muted)] tracking-widest mb-1 text-center">Multiplier</span><span className="text-lg font-black text-purple-500">{idea.multiplier || "N/A"}</span></div>
         </div>
         <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[var(--text-secondary)] border-b border-[var(--border-primary)] pb-3"><div className="flex items-center gap-1.5"><CurrencyDollarIcon className="w-3.5 h-3.5 text-emerald-500" /><span>TTM Revenue: <span className="text-[var(--text-primary)]">{idea.ttmRevenue || "N/A"}</span></span></div><div className="flex items-center gap-1.5"><ChartBarIcon className="w-3.5 h-3.5 text-blue-500" /><span>Monthly: <span className="text-[var(--text-primary)]">{idea.mrr || "TBD"}</span></span></div></div>
-        <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow italic opacity-80">{idea.description}</p>
+        <p className="text-xs text-[var(--text-secondary)] text-left leading-relaxed line-clamp-4 font-medium flex-grow font-poppins">{idea.description}</p>
         <div className="pt-2 flex gap-3 mt-auto"><button onClick={() => navigate(`/asset/${idea._id}`)} className="flex-1 py-3 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[10px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none">View asset</button><button onClick={() => navigate(`/asset/${idea._id}#contact`)} className="flex-1 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-[10px] font-black uppercase tracking-widest shadow-none hover:scale-105 transition-all">Contact</button></div>
       </div>
     </div>
@@ -159,7 +159,18 @@ fetchAssets();
 
 },[]);
 
-  const pricingOptions = ['All', 'Under $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
+  const modelOptions = [
+'All',
+'B2B',
+'B2C',
+'B2B2C',
+'Marketplace',
+'SaaS',
+'Subscription',
+'Freemium',
+'Lead Generation',
+'Other'
+];
   const filteredIdeas = useMemo(() => {
 
 let list = assets.filter(idea => idea.askingPrice);
@@ -182,19 +193,7 @@ if (activeLocation !== 'All')
 list = list.filter(idea => idea.location?.includes(activeLocation));
 
 if (activePricing !== 'All') {
-
-list = list.filter(idea => {
-
-const price = parseInt(idea.askingPrice?.replace(/[^0-9]/g, '') || '0');
-
-if (activePricing === 'Under $10k') return price < 10000;
-if (activePricing === '$10k - $50k') return price >= 10000 && price <= 50000;
-if (activePricing === '$50k - $100k') return price > 50000 && price <= 100000;
-
-return price > 100000;
-
-});
-
+list = list.filter(idea => idea.businessModel === activePricing);
 }
 
 return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -211,16 +210,45 @@ return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdA
                 <div className="flex items-center gap-6 
   bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
   text-white px-6 py-2.5 rounded-full shadow-lg">
-                    <div className="flex items-center gap-2 relative z-10"><p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Market Volume</p><p className="text-sm font-black">$1.4M</p></div>
-                    <div className="w-px h-4 bg-white/20 relative z-10"></div>
-                    <div className="flex items-center gap-2 relative z-10"><p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Active Assets</p><p className="text-sm font-black">{filteredIdeas.length}</p></div>
-                </div>
-            </div>
+                    <div className="flex items-center gap-6 
+bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
+text-white px-6 py-2.5 rounded-full shadow-lg">
+
+<div className="flex items-center gap-2">
+<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+Total Assets
+</p>
+
+<p className="text-sm font-black">
+{assets.length}
+</p>
+</div>
+
+<div className="w-px h-4 bg-white/20"></div>
+
+<div className="flex items-center gap-2">
+<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+Assets This Week
+</p>
+
+<p className="text-sm font-black">
+{
+assets.filter(a =>
+Date.now() - new Date(a.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
+).length
+}
+</p>
+
+</div>
+
+</div>
         </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex justify-center"><div className="relative group max-w-2xl w-full"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><SearchIcon className="h-5 w-5 text-[var(--text-muted)]" /></div><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search digital assets..." className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-emerald-500 outline-none transition-all text-base font-medium font-poppins" /></div></div>
 
 
-        <div className="bg-[var(--background-secondary)] border-b border-[var(--border-primary)] font-poppins"><div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-center gap-3"><CustomDropdown label="All categories" value={activeCategory} options={['All', ...STARTUP_CATEGORIES].map(c => ({value: c, label: c}))} onChange={setActiveCategory} icon={<TagIcon className="w-4 h-4" />} /><CustomDropdown label="All pricing" value={activePricing} options={pricingOptions.map(p => ({value: p, label: p}))} onChange={setActivePricing} icon={<GrowthIcon className="w-4 h-4" />} /><CustomDropdown label="All locations" value={activeLocation} options={['All', ...COUNTRIES.map(c => c.name)].map(l => ({value: l, label: l}))} onChange={setActiveLocation} icon={<MapPinIcon className="w-4 h-4" />} /></div></div>
+        <div className="bg-[var(--background-secondary)] border-b border-[var(--border-primary)] font-poppins"><div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-center gap-3"><CustomDropdown label="All categories" value={activeCategory} options={['All', ...STARTUP_CATEGORIES].map(c => ({value: c, label: c}))} onChange={setActiveCategory} icon={<TagIcon className="w-4 h-4" />} /><CustomDropdown label="All models"
+value={activePricing}
+options={modelOptions.map(m => ({value: m, label: m}))} onChange={setActivePricing} icon={<GrowthIcon className="w-4 h-4" />} /><CustomDropdown label="All locations" value={activeLocation} options={['All', ...COUNTRIES.map(c => c.name)].map(l => ({value: l, label: l}))} onChange={setActiveLocation} icon={<MapPinIcon className="w-4 h-4" />} /></div></div>
 
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">{filteredIdeas.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">{filteredIdeas.map(idea => <ExchangeCard key={idea._id} idea={idea} />)}</div> : <div className="text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] shadow-none"><p className="text-[var(--text-muted)] font-black uppercase tracking-widest text-sm font-poppins">No assets found matching filters</p><button onClick={() => { setActiveCategory('All'); setActivePricing('All'); setActiveLocation('All'); setSearchTerm(''); }} className="mt-4 text-purple-600 font-bold uppercase text-[10px] hover:underline font-poppins">Clear all filters</button></div>}</div>
