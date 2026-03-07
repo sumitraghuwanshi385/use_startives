@@ -200,7 +200,7 @@ if (!asset) {
                             <div className="flex flex-col sm:flex-row items-center gap-3">
                                 <h1 className="text-3xl sm:text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-none">{asset.title}</h1>
                                 {isOwner && (
-                                    <Link to={`/asset/${asset.id}/edit`} className="px-4 py-1.5 rounded-full bg-[var(--background-tertiary)] text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-orange-500 border border-[var(--border-primary)] transition-all">
+                                    <Link to={`/asset/${asset._id}/edit`} className="px-4 py-1.5 rounded-full bg-[var(--background-tertiary)] text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-orange-500 border border-[var(--border-primary)] transition-all">
                                         Edit Asset
                                     </Link>
                                 )}
