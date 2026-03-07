@@ -200,7 +200,12 @@ try{
 const res = await fetch("https://startives.onrender.com/api/assets");
 const data = await res.json();
 
-setAssets(data.assets || data);
+const normalizedAssets = (data.assets || data).map((a:any)=>({
+ ...a,
+ id: a._id || a.id
+}));
+
+setAssets(normalizedAssets);
 
 }catch(err){
 console.error("Assets load failed");
