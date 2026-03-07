@@ -148,7 +148,7 @@ if (!asset) {
         );
     }
 
-    const isOwner = currentUser?.id === asset.founderId;
+    const isOwner = currentUser?.id === asset.ownerId;
 
     const MetaBadge: React.FC<{ label: string; value: string }> = ({ label, value }) => (
         <div className="flex flex-col bg-neutral-100 dark:bg-neutral-800/50 px-3 py-1.5 rounded-xl border border-[var(--border-primary)] shadow-sm">
@@ -192,7 +192,7 @@ if (!asset) {
                             {/* Refined Glow Effect */}
                             <div className="absolute -inset-6 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                             <div className="w-24 h-24 rounded-[2rem] overflow-hidden border-4 border-white dark:border-neutral-800 shadow-2xl flex-shrink-0 relative z-10">
-                                <img src={asset.brandLogo} alt={asset.title} className="w-full h-full object-cover" />
+                                <img src={asset.brandLogo} alt={asset.name} className="w-full h-full object-cover" />
                             </div>
                         </div>
 
