@@ -206,7 +206,9 @@ if (!asset) {
                                 )}
                             </div>
 
-                            <p className="text-lg text-[var(--text-secondary)] font-medium mt-1.5 italic opacity-80">
+                            <p className="text-lg font-poppins font-semibold text-purple-600 mt-2 tracking-tight">
+{asset.tagline}
+</p>
                                 {asset.tagline}
                             </p>
                             
@@ -239,8 +241,37 @@ if (!asset) {
                                                 <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase">Founder & Seller</p>
                                             </div>
                                         </Link>
-                                    )}
-                                    
+{String(currentUser?.id) !== String(asset.founderId) && (
+
+<div className="mt-3">
+
+{isUserConnected(asset.founderId) ? (
+
+<button className="px-4 py-1 rounded-full bg-green-500 text-white text-[9px] font-black uppercase tracking-widest">
+✓ Connected
+</button>
+
+) : isRequestPending(asset.founderId) ? (
+
+<button disabled className="px-4 py-1 rounded-full bg-amber-100 text-amber-600 text-[9px] font-black uppercase tracking-widest">
+Request Sent
+</button>
+
+) : (
+
+<button
+onClick={()=>sendConnectionRequest(asset.founderId)}
+className="px-4 py-1 rounded-full bg-purple-600 text-white text-[9px] font-black uppercase tracking-widest hover:scale-105 transition-all"
+>
+Add Connection
+</button>
+
+)}
+
+</div>
+
+)}
+                                                                     
                                     {founder?.bio && (
                                         <div className="relative">
                                             <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
@@ -480,13 +511,35 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                 </button>
             ) : (
                 // 4. Agar Connect KARNA hai (Normal State)
-                <button 
-                    onClick={() => sendConnectionRequest(asset.founderId)}
-                    className="flex-shrink-0 px-6 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-                >
-                    <UserCircleIcon className="w-4 h-4" />
-                    Connect +
-                </button>
+                <button
+
+onClick={()=>{
+
+const email = asset.contactEmail || asset.founderEmail;
+
+const subject = `Startives Inquiry — ${asset.title}`;
+
+const body = `Hi ${founder?.name || "Founder"},
+
+I discovered your asset "${asset.title}" on Startives and would love to learn more.
+
+Looking forward to connecting.
+
+Best regards`;
+
+window.location.href =
+`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+}}
+
+className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+>
+
+<UserCircleIcon className="w-4 h-4" />
+
+Connect +
+
+</button>
             )}
             {/* --- CONNECT BUTTON LOGIC END --- */}
 
