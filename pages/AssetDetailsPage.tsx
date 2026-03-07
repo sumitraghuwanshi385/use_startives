@@ -148,7 +148,7 @@ if (!asset) {
         );
     }
 
-    const isOwner = currentUser?.id === asset.founderId;
+    const isOwner = String(currentUser?.id) === String(asset.founderId);
 
     const MetaBadge: React.FC<{ label: string; value: string }> = ({ label, value }) => (
         <div className="flex flex-col bg-neutral-100 dark:bg-neutral-800/50 px-3 py-1.5 rounded-xl border border-[var(--border-primary)] shadow-sm">
