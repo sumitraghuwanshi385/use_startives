@@ -163,6 +163,17 @@ fetchAssets();
 }, []);
 
   const pricingOptions = ['All', 'Under $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
+
+if (loading) {
+  return (
+    <div className="flex justify-center items-center h-[60vh]">
+      <p className="text-sm font-bold text-[var(--text-muted)] animate-pulse">
+        Loading assets...
+      </p>
+    </div>
+  );
+}
+
   const filteredIdeas = useMemo(() => {
 
 let list = assets.filter(idea => idea.askingPrice);
