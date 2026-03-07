@@ -126,7 +126,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 <button
 onClick={() => {
 
-const email = idea.contactEmail || idea.founderEmail;
+const email = (idea as any).contactEmail || (idea as any).founderEmail;
 
 const subject = `Startives Inquiry — ${idea.title}`;
 
