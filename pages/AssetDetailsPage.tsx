@@ -511,31 +511,15 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                 <p className="text-sm font-semibold text-purple-600 mt-1">{asset.contactEmail || asset.founderEmail}</p>
             </div>
 
-            {/* --- CONNECT BUTTON LOGIC START --- */}
-            {currentUser?.id === asset.founderId ? (
-                // 1. Agar ye MERI profile hai
-                <button disabled className="flex-shrink-0 px-6 py-3 rounded-full bg-gray-200 text-gray-400 text-xs font-black uppercase tracking-widest cursor-not-allowed">
-                    You Own This
-                </button>
-            ) : isUserConnected(asset.founderId) ? (
-                // 2. Agar hum PEHLE SE Connected hain
-                <button className="flex-shrink-0 px-6 py-3 rounded-full bg-green-500 text-white text-xs font-black uppercase tracking-widest shadow-lg flex items-center gap-2">
-                    <span className="text-lg">✓</span> Connected
-                </button>
-            ) : isRequestPending(asset.founderId) ? (
-                // 3. Agar Request PENDING hai
-                <button disabled className="flex-shrink-0 px-6 py-3 rounded-full bg-amber-100 text-amber-600 border border-amber-200 text-xs font-black uppercase tracking-widest cursor-wait">
-                    Request Sent...
-                </button>
-            ) : (
-                // 4. Agar Connect KARNA hai (Normal State)
-                <button
+            {/* --- EMAIL CONNECT BUTTON --- */}
 
-onClick={()=>{
+<button
+
+onClick={() => {
 
 const email = asset.contactEmail || asset.founderEmail;
 
-const subject = `Startives Inquiry — ${asset.title}`;
+const subject = "Startives Inquiry — ${asset.title}";
 
 const body = `Hi ${founder?.name || "Founder"},
 
@@ -546,16 +530,15 @@ Looking forward to connecting.
 Best regards`;
 
 window.location.href =
-`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+"mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}";
 
 }}
 
 className="flex-shrink-0 px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-blue-500 text-white text-xs font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all flex items-center gap-2"
->
 
-<UserCircleIcon className="w-4 h-4" />
+«»
 
-Connect +
+<UserCircleIcon className="w-4 h-4" />Connect +
 
 </button>
             )}
