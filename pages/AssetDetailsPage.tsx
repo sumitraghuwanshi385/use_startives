@@ -223,45 +223,31 @@ if (!asset) {
                         
                         {/* LEFT PANEL */}
                         <div className="lg:col-span-1 border-r border-[var(--border-primary)] bg-neutral-50/50 dark:bg-neutral-900/30 p-8 space-y-8">
-                            <section>
-<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">
-Authority
-</h3>
-
-<div className="space-y-4">
-
-{isLoadingFounder ? (
-
-<div className="flex items-center gap-3 animate-pulse">
-<div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-<div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
-</div>
-
-) : (
-
-<div>
-
-<Link
-to={`/user/${asset.founderId}`}
-className="flex items-center gap-3 group bg-white dark:bg-neutral-800 p-3 rounded-2xl border border-[var(--border-primary)] shadow-sm"
->
-
-<img
-src={founder?.profilePictureUrl || "https://www.gravatar.com/avatar/?d=mp"}
-className="w-10 h-10 rounded-full object-cover ring-2 ring-purple-500/10"
-/>
-
-<div>
-<p className="text-sm font-black text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">
-{founder?.name || asset.founderName || "Unknown Innovator"}
-</p>
-
-<p className="text-[9px] font-bold text-[var(--text-muted)] uppercase">
-Founder & Seller
-</p>
-</div>
-
-</Link>
+                            <div className="lg:col-span-1 space-y-8 sticky top-24">
+             <DetailSection title="Founder & Seller" icon={<UserCircleIcon />}>
+                {founder && (
+  <div className="space-y-4">
+    <Link
+      to={`/user/${founder.id}`}
+      className="flex items-center space-x-3 group"
+    >
+      <img
+        src={
+          founder.profilePictureUrl ||
+          `https://i.pravatar.cc/150?u=${founder.id}`
+        }
+        alt={founder.name}
+        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--border-secondary)] group-hover:border-purple-500 transition-colors"
+      />
+      <div>
+        <p className="font-bold text-[var(--text-primary)] group-hover:text-purple-600 transition-colors">
+          {founder.name}
+        </p>
+        <p className="text-xs text-purple-600 dark:text-purple-400 font-medium font-poppins line-clamp-1">
+          {founder.headline}
+        </p>
+      </div>
+    </Link>
 
 {String(currentUser?.id) !== String(asset.founderId) && (
 
