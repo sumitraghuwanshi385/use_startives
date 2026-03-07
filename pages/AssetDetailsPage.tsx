@@ -171,7 +171,7 @@ if (!asset) {
 
     const isOwner = String(currentUser?.id) === String(asset.founderId);
 
-const isSaved = isProjectSaved(asset._id);
+const isSaved = isProjectSaved(asset.id || asset._id);
 
 const handleSaveToggle = () => {
 
@@ -181,9 +181,9 @@ return;
 }
 
 if(isSaved){
-unsaveProject(asset._id);
+unsaveProject(asset.id || asset._id);
 }else{
-saveProject(asset._id);
+saveProject(asset.id || asset._id);
 }
 
 };
