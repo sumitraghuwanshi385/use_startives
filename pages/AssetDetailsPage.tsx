@@ -213,12 +213,16 @@ if (!asset) {
                             
                             <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-5">
                                 <MetaBadge label="Category" value={asset.category || 'Venture'} />
-                                <MetaBadge label="Model" value={asset.businessModel || "SaaS"} />
-                                <MetaBadge label="Monetization" value={asset.revenueModel || "Subscription"} />
+                                <MetaBadge label="Model" value={asset.businessModel || "SaaS"} />                                
                             </div>
                         </div>
                     </div>
 
+<div className="mt-3 flex justify-center md:justify-start">
+<button className="px-5 py-2 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[9px] font-black uppercase tracking-widest transition-all">
+Save Asset
+</button>
+</div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 relative z-10">
                         
                         {/* LEFT PANEL */}
@@ -328,7 +332,7 @@ Founder & Seller
                             </section>
 
                             <section>
-                                <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Official Asset Summary</h3>
+                                <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Asset Summary</h3>
                                 <div className="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-[var(--border-primary)] shadow-sm">
                                     <p className="text-xs font-medium leading-relaxed text-[var(--text-secondary)] whitespace-pre-wrap">{asset.description}</p>
                                 </div>
@@ -390,7 +394,18 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                                     </div>
                                 </div>
                             </section>
+{/* MONETIZATION */}
+<section className="space-y-4">
+<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] px-2">
+Monetization
+</h3>
 
+<div className="bg-white dark:bg-neutral-900 border border-[var(--border-primary)] p-6 rounded-[2rem]">
+<p className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
+{asset.revenueModel || "Subscription / SaaS monetization through recurring plans and direct user upgrades."}
+</p>
+</div>
+</section>
                             {/* PERFORMANCE SECTION */}
                             <section className="space-y-4">
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] px-2">Performance</h3>
