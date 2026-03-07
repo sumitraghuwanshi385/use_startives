@@ -82,15 +82,15 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
   );
 };
 
-const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
+const ExchangeCard: React.FC<{ idea: any }>
   const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
-  const isSaved = isProjectSaved(idea.id);
+  const isSaved = isProjectSaved(idea._id);
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!currentUser) return;
-    isSaved ? unsaveProject(idea.id) : saveProject(idea.id);
+    isSaved ? unsaveProject(idea._id) : saveProject(idea._id);
   };
 
   return (
@@ -98,7 +98,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
       <div className="relative h-44 overflow-hidden bg-neutral-950">
 
-        <img src={idea.brandLogo} alt={idea.name} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+        <img src={idea.brandLogo || "/placeholder.png"} alt={idea.title} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
@@ -175,7 +175,7 @@ if (loading) {
 
   const filteredIdeas = useMemo(() => {
 
-let list = assets.filter(idea => idea.askingPrice);
+let list = Array.isArray(assets) ? assets.filter(i => i.askingPrice) : [];
 
 if (searchTerm) {
 
