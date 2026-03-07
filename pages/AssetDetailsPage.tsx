@@ -74,7 +74,17 @@ const AssetDetailsPage: React.FC = () => {
     const { assetId } = useParams<{ assetId: string }>();
     
     // NOTE: Added fetchUserProfile from context
-    const { getIdeaById, getUserById, currentUser, fetchUserProfile , sendConnectionRequest, isRequestPending,isUserConnected, saveProject, unsaveProject, isProjectSaved } = useAppContext();
+    const { 
+getIdeaById, 
+getUserById, 
+currentUser, 
+fetchUserProfile,
+sendConnectionRequest,
+isRequestPending,
+isUserConnected,
+toggleSaveProject,
+isProjectSaved
+} = useAppContext();
     
     const navigate = useNavigate();
     const location = useLocation();
@@ -180,11 +190,7 @@ alert("Login required");
 return;
 }
 
-if(isSaved){
-unsaveProject(asset.id || asset._id);
-}else{
-saveProject(asset.id || asset._id);
-}
+toggleSaveProject(asset.id || asset._id);
 
 };
 
