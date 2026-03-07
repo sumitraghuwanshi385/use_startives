@@ -222,7 +222,7 @@ loadAssets();
 
   const savedAssets = assets.filter(
  (asset) =>
-  currentUser.savedProjectIds?.includes(asset._id)
+  currentUser.savedProjectIds?.includes(asset.id)
 );
 
   return (
@@ -282,7 +282,7 @@ loadAssets();
   )
 ) : savedAssets.length > 0 ? (
     savedAssets.map((asset) => (
- <SavedProjectCard key={asset._id} idea={asset} />
+ <SavedProjectCard key={asset.id} idea={asset} />
 ))
   
 ) : (
