@@ -222,7 +222,7 @@ loadAssets();
 
   const savedAssets = assets.filter(
  (asset) =>
-  currentUser.savedProjectIds?.includes(asset.id)
+  currentUser.savedProjectIds?.includes(asset._id)
 );
 
   return (
@@ -281,8 +281,9 @@ loadAssets();
     <WhitelistEmptyGraphic type="ventures" />
   )
 ) : savedAssets.length > 0 ? (
-  savedAssets.map((idea) => (
-    <SavedProjectCard key={idea.id} idea={idea} />
+    savedAssets.map((asset) => (
+ <SavedProjectCard key={asset._id} idea={asset} />
+))
   ))
 ) : (
   <WhitelistEmptyGraphic type="assets" />
