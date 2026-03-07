@@ -96,18 +96,19 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
-e.preventDefault();
-e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-if (!currentUser) return;
+  if (!currentUser) return;
 
-if (isSaved) {
-  if (typeof unsaveProject === "function") {
-    unsaveProject(idea.id);
-  }
-} else {
-  if (typeof saveProject === "function") {
-    saveProject(idea.id);
+  if (isSaved) {
+    if (typeof unsaveProject === "function") {
+      unsaveProject(idea.id);
+    }
+  } else {
+    if (typeof saveProject === "function") {
+      saveProject(idea.id);
+    }
   }
 };
 
@@ -116,7 +117,7 @@ if (isSaved) {
 
       <div className="relative h-44 overflow-hidden bg-neutral-950">
 
-        <<img
+        <img
 src={idea.coverImage}
 alt={idea.title}
 loading="lazy"
