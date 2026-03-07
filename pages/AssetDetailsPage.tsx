@@ -148,7 +148,7 @@ if (!asset) {
         );
     }
 
-    const isOwner = currentUser?.id === asset.ownerId;
+    const isOwner = currentUser?.id === asset.founderId;
 
     const MetaBadge: React.FC<{ label: string; value: string }> = ({ label, value }) => (
         <div className="flex flex-col bg-neutral-100 dark:bg-neutral-800/50 px-3 py-1.5 rounded-xl border border-[var(--border-primary)] shadow-sm">
@@ -192,7 +192,7 @@ if (!asset) {
                             {/* Refined Glow Effect */}
                             <div className="absolute -inset-6 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                             <div className="w-24 h-24 rounded-[2rem] overflow-hidden border-4 border-white dark:border-neutral-800 shadow-2xl flex-shrink-0 relative z-10">
-                                <img src={asset.logo} alt={asset.title} className="w-full h-full object-cover" />
+                                <img src={asset.brandLogo} alt={asset.title} className="w-full h-full object-cover" />
                             </div>
                         </div>
 
@@ -200,7 +200,7 @@ if (!asset) {
                             <div className="flex flex-col sm:flex-row items-center gap-3">
                                 <h1 className="text-3xl sm:text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-none">{asset.title}</h1>
                                 {isOwner && (
-                                    <Link to={`/asset/${asset._id}/edit`} className="px-4 py-1.5 rounded-full bg-[var(--background-tertiary)] text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-orange-500 border border-[var(--border-primary)] transition-all">
+                                    <Link to={`/asset/${asset.id}/edit`} className="px-4 py-1.5 rounded-full bg-[var(--background-tertiary)] text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-orange-500 border border-[var(--border-primary)] transition-all">
                                         Edit Asset
                                     </Link>
                                 )}
@@ -213,7 +213,7 @@ if (!asset) {
                             <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-5">
                                 <MetaBadge label="Category" value={asset.category || 'Venture'} />
                                 <MetaBadge label="Model" value={asset.businessModel || "SaaS"} />
-                                <MetaBadge label="Monetization" value={asset._revenueModel || "Subscription"} />
+                                <MetaBadge label="Monetization" value={asset.revenueModel || "Subscription"} />
                             </div>
                         </div>
                     </div>
@@ -313,7 +313,7 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                                         href={asset.websiteUrl.startsWith('http') ? asset.websiteUrl : `https://${asset.websiteUrl}`} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="flex items-center justify-between w-full p-3 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl shadow-lg transition-all group"
+                                        className="flex items-center justify-between w-full p-3 bg-gradient-to-r from-red-500 to-blue-500 text-white rounded-2xl shadow-lg transition-all group hover:scale-[1.02]"
                                     >
                                         <div className="flex items-center gap-2">
                                             <AppContextLinkIcon className="w-4 h-4" />
@@ -335,7 +335,7 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] px-2">Gallery</h3>
                                 <div className="relative group overflow-hidden rounded-xl border-2 border-[var(--border-primary)] shadow-none">
                                     <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing">
-                                        {[asset.cardCover || asset.brandLogo, `https://picsum.photos/seed/${asset.id}-1/1600/900`, `https://picsum.photos/seed/${asset.id}-2/1600/900`].map((imgUrl, idx) => (
+                                        {[asset.cardCover || asset.brandLogo, ...(asset.gallery || [])].map((imgUrl, idx) => (
                                             <div key={idx} className="flex-shrink-0 w-full aspect-[16/9] snap-center">
                                                 <img 
                                                     src={imgUrl} 
