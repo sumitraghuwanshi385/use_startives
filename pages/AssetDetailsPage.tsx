@@ -256,27 +256,23 @@ Founder & Seller
 
 <div className="mt-3">
 
-{isUserConnected(asset.founderId) ? (
-
-<button className="px-4 py-1 rounded-full bg-green-500 text-white text-[9px] font-black uppercase tracking-widest">
-✓ Connected
-</button>
-
-) : isRequestPending(asset.founderId) ? (
-
-<button disabled className="px-4 py-1 rounded-full bg-amber-100 text-amber-600 text-[9px] font-black uppercase tracking-widest">
-Request Sent
-</button>
-
-) : (
-
-<button
-onClick={()=>sendConnectionRequest(asset.founderId)}
-className="px-4 py-1 rounded-full bg-purple-600 text-white text-[9px] font-black uppercase tracking-widest hover:scale-105 transition-all"
->
-Add Connection
-</button>
-
+{currentUser && currentUser.id !== founder.id && (
+      <div className="pt-3">
+        {isUserConnected(founder.id) ? (
+          <button className="w-full bg-green-100 text-green-700 text-xs font-bold py-2 rounded-full border border-green-200">
+            Connected
+          </button>
+        ) : isRequestPending(founder.id) ? (
+          <button className="w-full bg-yellow-100 text-yellow-700 text-xs font-bold py-2 rounded-full border border-yellow-200">
+            Request Sent
+          </button>
+        ) : (
+          <button
+            onClick={() => sendConnectionRequest(founder.id)}
+            className="w-full button-gradient text-white text-xs font-bold py-2 rounded-full hover:scale-105 transition-all"
+          >
+            Connect
+          </button>
 )}
 
 </div>
