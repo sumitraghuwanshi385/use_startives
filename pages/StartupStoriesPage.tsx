@@ -144,7 +144,8 @@ const res = await fetch(
 
 const data = await res.json();
 
-setAssets(data.assets || []);
+setAssets(Array.isArray(data) ? data : []);
+
 } catch (err) {
 
 console.log("ASSET FETCH ERROR", err);
@@ -175,15 +176,15 @@ if (loading) {
 
   const filteredIdeas = useMemo(() => {
 
-let list = Array.isArray(assets) ? assets.filter(i => i.askingPrice) : [];
+let list = Array.isArray(assets) ? assets : [];
 
 if (searchTerm) {
 
 const lowerSearch = searchTerm.toLowerCase();
 
 list = list.filter(idea =>
-idea.title.toLowerCase().includes(lowerSearch) ||
-idea.description.toLowerCase().includes(lowerSearch)
+(idea.title || "").toLowerCase().includes(lowerSearch) ||
+(idea.description || "").toLowerCase().includes(lowerSearch)
 );
 
 }
