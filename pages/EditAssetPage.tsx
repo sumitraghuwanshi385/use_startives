@@ -426,8 +426,8 @@ placeholder="1200"
 <input
 type="number"
 inputMode="numeric"
-name="growth"
-value={formData.growth}
+name="growthRate"
+value={formData.growthRate}
 onChange={handleInputChange}
 className={inputClasses}
 placeholder="15"
