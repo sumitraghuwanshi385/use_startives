@@ -1039,7 +1039,7 @@ declineConnectionRequest,
   }), [
     startupIdeas, startalks, sentApplications,
 receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, assets,deleteAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
+    addNotificationCallBack, assets,deleteAsset, updateAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
   ]);
 
   return (
