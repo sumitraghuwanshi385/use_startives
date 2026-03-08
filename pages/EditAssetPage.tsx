@@ -149,67 +149,58 @@ const EditAssetPage: React.FC = () => {
         growthPulse: '', teamDetails: '', competitorInfo: ''
     });
 
-    useEffect(() => {
+    const { assets } = useAppContext();
+
+useEffect(() => {
 
 if(!assetId) return;
 
-const fetchAsset = async () => {
+// ⚡ instant load from context
+const existingAsset = assets.find(a => a.id === assetId);
 
-try{
-
-const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`);
-
-const data = await res.json();
-const asset = data.asset || data;
+if(existingAsset){
 
 setFormData({
-title: asset.title || '',
-tagline: asset.tagline || '',
-description: asset.description || '',
-spark: asset.spark || '',
-askingPrice: asset.askingPrice || '',
-ttmRevenue: asset.ttmRevenue || '',
-mrr: asset.mrr || '',
-growth: asset.growth || '',
-multiplier: asset.multiplier || '',
-netProfit: asset.netProfit || '',
-churnRate: asset.churnRate || '',
-category: asset.category || 'SaaS',
-businessModel: asset.businessModel || 'B2B',
-location: asset.location || '',
-websiteUrl: asset.websiteUrl || '',
-brandLogo: asset.brandLogo || '',
-cardCover: asset.cardCover || '',
-gallery: asset.gallery || [],
-teamSize: asset.teamSize || '',
-revenueModel: asset.revenueModel || '',
-paymentMethods: asset.paymentMethods || '',
-contactEmail: asset.contactEmail || '',
-techStack: asset.techStack || '',
-users: asset.users || '',
-retention: asset.retention || '',
-siteAge: asset.siteAge || '',
-directTraffic: asset.directTraffic || '',
-trafficDetails: asset.trafficDetails || '',
-sellerInsightsDetails: asset.sellerInsightsDetails || '',
-additionalContactDetails: asset.additionalContactDetails || '',
-growthPulse: asset.growthPulse || '',
-teamDetails: asset.teamDetails || '',
-competitorInfo: asset.competitorInfo || '',
-reasonForSale: asset.reasonForSale || '',
-handoverNotes: asset.handoverNotes || ''
+title: existingAsset.title || '',
+tagline: existingAsset.tagline || '',
+description: existingAsset.description || '',
+spark: existingAsset.spark || '',
+askingPrice: existingAsset.askingPrice || '',
+ttmRevenue: existingAsset.ttmRevenue || '',
+mrr: existingAsset.mrr || '',
+growth: existingAsset.growth || '',
+multiplier: existingAsset.multiplier || '',
+netProfit: existingAsset.netProfit || '',
+churnRate: existingAsset.churnRate || '',
+category: existingAsset.category || 'SaaS',
+businessModel: existingAsset.businessModel || 'B2B',
+location: existingAsset.location || '',
+websiteUrl: existingAsset.websiteUrl || '',
+brandLogo: existingAsset.brandLogo || '',
+cardCover: existingAsset.cardCover || '',
+gallery: existingAsset.gallery || [],
+teamSize: existingAsset.teamSize || '',
+revenueModel: existingAsset.revenueModel || '',
+paymentMethods: existingAsset.paymentMethods || '',
+contactEmail: existingAsset.contactEmail || '',
+techStack: existingAsset.techStack || '',
+users: existingAsset.users || '',
+retention: existingAsset.retention || '',
+siteAge: existingAsset.siteAge || '',
+directTraffic: existingAsset.directTraffic || '',
+trafficDetails: existingAsset.trafficDetails || '',
+sellerInsightsDetails: existingAsset.sellerInsightsDetails || '',
+additionalContactDetails: existingAsset.additionalContactDetails || '',
+growthPulse: existingAsset.growthPulse || '',
+teamDetails: existingAsset.teamDetails || '',
+competitorInfo: existingAsset.competitorInfo || '',
+reasonForSale: existingAsset.reasonForSale || '',
+handoverNotes: existingAsset.handoverNotes || ''
 });
-}catch(err){
-
-console.log("ASSET LOAD ERROR",err);
 
 }
 
-};
-
-fetchAsset();
-
-},[assetId]);
+},[assetId, assets]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 
@@ -245,55 +236,32 @@ setFormData(prev => ({
     };
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
 
-        const mandatoryChecklist = [
-            'title', 'tagline', 'description', 'spark', 'siteAge', 
-            'category', 'businessModel', 'location', 'revenueModel', 
-            'teamSize', 'brandLogo', 'cardCover', 'askingPrice', 
-            'reasonForSale', 'paymentMethods', 'contactEmail'
-        ];
+e.preventDefault();
+setIsLoading(true);
 
-        const missing = mandatoryChecklist.filter(f => !(formData as any)[f]);
-        if (missing.length > 0) {
-            addNotification(`Missing: ${missing[0]}`, "error");
-            setIsLoading(false); return;
-        }
+try{
 
-        try{
-
-const payload = {
-...formData
-};
+const payload = { ...formData };
 
 const success = await updateAsset(assetId!, payload);
 
 if(success){
-addNotification("Asset updated successfully","success");
-navigate(`/asset/${assetId}`);
-}
-
-if(!res.ok){
-
-const errorData = await res.json();
-throw new Error(errorData.message || "Update failed");
-
-}
-
-addNotification("Asset updated successfully","success");
 
 navigate(`/asset/${assetId}`);
+
+}
 
 }catch(err:any){
 
-addNotification(err?.message || "Upload failed","error");
+addNotification(err?.message || "Update failed","error");
 
 }finally{
 
 setIsLoading(false);
 
 }
+
 };
 
     return (
