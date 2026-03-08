@@ -277,12 +277,45 @@ placeholder="Navigate the world, sustainably."
                 {/* Section 3: Technical & Team */}
                 <FormSection title="Technical & Team" icon={<IdentificationIcon />} subtext="Foundation and structural data.">
                     <div className="grid md:grid-cols-2 gap-4">
-                        <FormRow label="Category" isRequired subtext="Industry segment.">
-                            <CustomSelect value={formData.category} options={STARTUP_CATEGORIES} onChange={v => setFormData(p => ({...p, category: v as StartupCategory}))} />
-                        </FormRow>
-                        <FormRow label="Monetization" isRequired subtext="How does it generate funds?">
-                            <input name="revenueModel" value={formData.revenueModel} onChange={handleInputChange} className={inputClasses} placeholder="SaaS, Ads, Transaction" />
-                        </FormRow>
+
+<FormRow label="Category" isRequired subtext="Industry segment.">
+<CustomSelect
+value={formData.category}
+options={STARTUP_CATEGORIES}
+onChange={v => setFormData(p => ({...p, category: v as StartupCategory}))}
+/>
+</FormRow>
+
+<FormRow label="Model" isRequired subtext="Business model type.">
+<CustomSelect
+value={formData.businessModel}
+options={[
+"B2B",
+"B2C",
+"B2B2C",
+"Marketplace",
+"SaaS",
+"Subscription",
+"Freemium",
+"Lead Generation",
+"Other"
+]}
+onChange={v => setFormData(p => ({...p, businessModel: v as BusinessModel}))}
+/>
+</FormRow>
+
+</div>
+
+<FormRow label="Monetization" isRequired subtext="How does it generate funds?">
+<textarea
+name="revenueModel"
+value={formData.revenueModel}
+onChange={handleInputChange}
+rows={3}
+className={`${inputClasses} resize-none`}
+placeholder="Explain monetization model (SaaS subscription, Ads, Marketplace fee etc.)"
+/>
+</FormRow>
                     </div>
                     <FormRow label="Built With" subtext="Comma separated tech stack. (Optional)">
                         <input name="techStack" value={formData.techStack} onChange={handleInputChange} className={inputClasses} placeholder="React, AWS, Node" />
