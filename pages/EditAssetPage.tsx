@@ -265,6 +265,10 @@ setFormData(prev => ({
 
 const payload = {
 ...formData,
+
+imageUrl: formData.brandLogo,
+coverImage: formData.cardCover,
+
 users: formData.users || "0",
 growthRate: formData.growthRate || "0",
 directTraffic: formData.directTraffic || "0",
