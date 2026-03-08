@@ -16,6 +16,10 @@ type:String,
 required:true
 },
 
+spark:{
+type:String
+},
+
 category:{
 type:String
 },
@@ -68,7 +72,7 @@ users:{
 type:String
 },
 
-growth:{
+growthRate:{
 type:String
 },
 
