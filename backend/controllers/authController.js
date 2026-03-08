@@ -187,21 +187,25 @@ const getCurrentUser = async (req, res) => {
         }
 
         return res.json({
-            success: true,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                headline: user.headline,
-                country: user.country,
-                profilePictureUrl: user.profilePictureUrl,
-                savedProjectIds: user.savedProjectIds || [],
-                connections: user.connections || [],
-                connectionRequests: user.connectionRequests || [],
-                sentRequests: user.sentRequests || [],
-                createdAt: user.createdAt,
-            }
-        });
+  success: true,
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    headline: user.headline,
+    bio: user.bio,
+    country: user.country,
+    profilePictureUrl: user.profilePictureUrl,
+    skills: user.skills || [],
+    interests: user.interests || [],
+    socialLinks: user.socialLinks || {},
+    savedProjectIds: user.savedProjectIds || [],
+    connections: user.connections || [],
+    connectionRequests: user.connectionRequests || [],
+    sentRequests: user.sentRequests || [],
+    createdAt: user.createdAt,
+  }
+});
 
     } catch (error) {
         console.error("GetCurrentUser Error:", error);
