@@ -412,6 +412,7 @@ placeholder="15%"
 <p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
 Enter value in percentage (%).
 </p>
+</div>
 </FormRow>
 
 </div>
@@ -431,6 +432,7 @@ placeholder="45%"
 <p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
 Enter value in percentage (%).
 </p>
+</div>
 </FormRow>
 
 <FormRow label="Retention (%)" subtext="Returning users">
@@ -446,6 +448,7 @@ placeholder="62%"
 <p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
 Enter value in percentage (%).
 </p>
+</div>
 </FormRow>
 
 </div>
@@ -514,6 +517,8 @@ placeholder="85%"
 <p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
 Enter value in percentage (%).
 </p>
+</div>
+
                         </FormRow>
                         <FormRow label="Churn Rate" isRequired subtext="Monthly subscriber loss.">
                             <div className="relative">
@@ -528,6 +533,8 @@ placeholder="2%"
 <p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
 Enter value in percentage (%).
 </p>
+</div>
+
                         </FormRow>
                     </div>
                 </FormSection>
