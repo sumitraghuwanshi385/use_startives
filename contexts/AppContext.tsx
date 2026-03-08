@@ -471,6 +471,51 @@ console.error("Asset fetch failed",err);
 
 };
 
+// DELETE ASSET
+
+const deleteAsset = async (assetId: string) => {
+
+if(!currentUser) return false;
+
+const t = getAuthToken();
+if(!t) return false;
+
+try{
+
+const res = await axios.delete(
+`/api/assets/${assetId}`,
+{
+headers:{ Authorization:`Bearer ${t}` }
+}
+);
+
+if(res.data?.success){
+
+// remove from local state
+setAssets(prev =>
+prev.filter(asset => asset.id !== assetId)
+);
+
+addNotificationCallBack("Asset deleted successfully.","success");
+
+return true;
+
+}
+
+return false;
+
+}catch(err){
+
+console.error("Delete asset failed",err);
+
+addNotificationCallBack("Failed to delete asset.","error");
+
+return false;
+
+}
+
+};
+
   // ---------------- STARTALKS ----------------
   const addStartalk = async (content: string, imageUrl?: string) => {
       if (!currentUser) return;
@@ -929,7 +974,7 @@ useEffect(() => {
     startupIdeas, startalks, assets,
 fetchAssets, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
     toggleSaveProject, isProjectSaved, getUserById, removeConnection,
@@ -943,7 +988,7 @@ declineConnectionRequest,
   }), [
     startupIdeas, startalks, sentApplications,
 receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, assets, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
+    addNotificationCallBack, assets,deleteAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
   ]);
 
   return (
