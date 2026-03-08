@@ -208,55 +208,20 @@ Contact
 };
 
 const StartupStoriesPage: React.FC = () => {
-const [assets,setAssets] = useState<any[]>([]);
-const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [activePricing, setActivePricing] = useState<string>('All');
   const [activeLocation, setActiveLocation] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState('');
+const { assets, fetchAssets } = useAppContext();
 
-useEffect(()=>{
+useEffect(() => {
 
-const loadAssets = async()=>{
-
-const cached = localStorage.getItem("assetsCache");
-
-if(cached){
-setAssets(JSON.parse(cached));
-setLoading(false);
-return;
+if(!assets || assets.length === 0){
+fetchAssets();
 }
 
-try{
-
-const res = await fetch("https://startives.onrender.com/api/assets");
-
-const data = await res.json();
-
-const normalized = data.assets.map((a:any)=>({
-...a,
-id:a._id || a.id,
-cardCover:a.cardCover
-})).slice(0,12);
-
-setAssets(normalized);
-
-localStorage.setItem("assetsCache",JSON.stringify(normalized));
-
-}catch(err){
-
-console.log("ASSET FETCH ERROR",err);
-
-}
-
-setLoading(false);
-
-};
-
-loadAssets();
-
-},[]);
+}, []);
 
   const modelOptions = [
 'All',
@@ -298,14 +263,6 @@ list = list.filter(idea => idea.businessModel === activePricing);
 return list;
 
 }, [assets, activeCategory, activePricing, activeLocation, searchTerm]);
-
-if(loading){
-return(
-<div className="flex justify-center items-center h-[60vh]">
-<p className="text-sm font-bold">Loading assets...</p>
-</div>
-)
-}
 
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
