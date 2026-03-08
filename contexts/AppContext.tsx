@@ -320,12 +320,24 @@ await fetchAllUsers();
         });
         
         if (response.data.success) {
-            const updatedUserData = response.data.user;
-            setCurrentUser(updatedUserData);
-            localStorage.setItem('user', JSON.stringify(updatedUserData));
-            setUsers(prev => prev.map(u => u.id === currentUser.id ? updatedUserData : u));
-            return true;
-        }
+
+    const updatedUserData = response.data.user;
+
+    setCurrentUser(updatedUserData);
+
+    localStorage.setItem('user', JSON.stringify(updatedUserData));
+
+    setUsers(prev =>
+      prev.map(u =>
+        (u.id === updatedUserData.id || u.id === updatedUserData._id)
+          ? { ...u, ...updatedUserData }
+          : u
+      )
+    );
+
+    return true;
+}
+
         addNotificationCallBack("Failed to update profile.", "error");
         return false;
     } catch (error: any) {
