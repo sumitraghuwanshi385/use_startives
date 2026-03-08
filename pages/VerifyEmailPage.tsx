@@ -4,11 +4,11 @@ import { useAppContext } from '../contexts/AppContext';
 import { ChevronLeftIcon } from '../constants';
 
 const VerifyEmailPage: React.FC = () => {
-  const { verifyAndLogin, addNotification, currentUser } = useAppContext();
+  const { verifyAndLogin, addNotification, currentUser, authLoadingState } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [code, setCode] = useState<string[]>(new Array(6).fill(''));
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = authLoadingState.isLoading;
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [timer, setTimer] = useState(0);
   const [resendDisabled, setResendDisabled] = useState(false);
