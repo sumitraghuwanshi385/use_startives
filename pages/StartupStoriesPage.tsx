@@ -43,6 +43,13 @@ const MapPinIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" })
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
 );
 
+const EyeIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12S5.25 5.25 12 5.25 21.75 12 21.75 12 18.75 18.75 12 18.75 2.25 12 2.25 12z"/>
+<path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"/>
+</svg>
+);
+
 // --- Custom Dropdown Component ---
 interface CustomDropdownProps {
   label: string;
@@ -68,13 +75,17 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
   return (
     <div className="relative" ref={dropdownRef}>
       <button type="button" onClick={() => setIsOpen(!isOpen)} className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-full transition-all duration-300 border shadow-none ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'} text-[var(--text-primary)] focus:outline-none min-w-[100px] font-poppins`}>
+
         <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
         <span className="truncate max-w-[80px] font-poppins">{selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}</span>
         <ChevronDownIconUI className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
+
       {isOpen && (
         <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden slide-in-from-top animate-[slide-in-from-top_0.2s_ease-out] font-poppins">
+
           <div className="overflow-y-auto max-h-80 p-2 custom-scrollable">
+
             {options.map((option) => (
               <button key={option.value} onClick={() => { onChange(option.value); setIsOpen(false); }} className={`w-full text-left px-3.5 py-2 rounded-xl text-xs transition-all duration-200 flex items-center justify-between group ${value === option.value ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold' : 'text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]'}`}>
                 <span className="truncate">{option.label}</span>
@@ -89,20 +100,10 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 };
 
 const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
-  const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
-  
-const [isSaved,setIsSaved] = useState(false);
+  const { currentUser, toggleSaveProject, isProjectSaved } = useAppContext();
+const isSaved = isProjectSaved(idea.id || idea._id);
 
-useEffect(()=>{
-
-const savedAssets = JSON.parse(localStorage.getItem("savedAssets") || "[]");
-
-if(savedAssets.includes(idea.id)){
-setIsSaved(true);
-}
-
-},[idea.id]);
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
 
 const handleSave = (e: React.MouseEvent) => {
@@ -111,30 +112,12 @@ e.preventDefault();
 e.stopPropagation();
 
 if(!currentUser){
-addNotification?.("Login required to save asset","error");
+alert("Login required");
 return;
 }
 
-const savedAssets = JSON.parse(localStorage.getItem("savedAssets") || "[]");
+toggleSaveProject(idea.id || idea._id);
 
-if(isSaved){
-
-const updated = savedAssets.filter((id:string)=>id !== idea.id);
-
-localStorage.setItem("savedAssets",JSON.stringify(updated));
-
-setIsSaved(false);
-
-}else{
-
-savedAssets.push(idea.id);
-
-localStorage.setItem("savedAssets",JSON.stringify(savedAssets));
-
-setIsSaved(true);
-
-
-}
 };
 
   return (
@@ -177,7 +160,7 @@ className={`absolute top-4 right-4 z-20 p-2.5 rounded-full backdrop-blur-xl tran
 onClick={() => navigate(`/asset/${idea.id}`)}
 className="flex-1 py-2 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[9px] font-black uppercase tracking-widest transition-all border border-[var(--border-primary)] shadow-none flex items-center justify-center gap-1"
 >
-<ChartBarIcon className="w-3 h-3"/>
+<EyeIcon className="w-3 h-3"/>
 View
 </button>
 
