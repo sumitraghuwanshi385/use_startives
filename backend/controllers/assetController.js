@@ -110,3 +110,39 @@ message:"Delete failed"
 }
 
 };
+
+// UPDATE ASSET
+exports.updateAsset = async (req,res)=>{
+
+try{
+
+const asset = await Asset.findByIdAndUpdate(
+req.params.id,
+req.body,
+{new:true}
+);
+
+if(!asset){
+return res.status(404).json({
+success:false,
+message:"Asset not found"
+});
+}
+
+res.json({
+success:true,
+asset
+});
+
+}catch(err){
+
+console.error(err);
+
+res.status(500).json({
+success:false,
+message:"Update failed"
+});
+
+}
+
+};
