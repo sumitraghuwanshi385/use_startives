@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { ChevronLeftIcon } from '../constants';
 
 const VerifyEmailPage: React.FC = () => {
-  const { verifyAndLogin, addNotification, currentUser, authLoadingState } = useAppContext();
+. const { verifyAndLogin, addNotification: addNotificationCallBack, currentUser, authLoadingState } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [code, setCode] = useState<string[]>(new Array(6).fill(''));
@@ -60,7 +60,7 @@ const [isLoading, setIsLoading] = useState(false);
     const verificationCode = code.join('');
 
     if (verificationCode.length !== 6) {
-      addNotification("Enter full 6-digit code.", "error");
+      addNotificationCallBack("Enter full 6-digit code.", "error");
       setIsLoading(false);
       return;
     }
