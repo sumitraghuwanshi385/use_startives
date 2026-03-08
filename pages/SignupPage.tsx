@@ -56,22 +56,27 @@ const [showConfirmPassword,setShowConfirmPassword] = useState(false);
     return;
   }
 
-  setIsFormLoading(true);
+  try {
 
-  const success = await signup(email.trim(), password);
+    setIsFormLoading(true);
 
-  if (!success) {
-    setIsFormLoading(false);
-    return;
-  }
+    const success = await signup(email.trim(), password);
 
-  navigate('/verify-email');
-};
+    if (!success) {
+      setIsFormLoading(false);
+      return;
+    }
+
+    navigate('/verify-email');
 
   } catch (err) {
+
     console.error("Signup failed", err);
+
   } finally {
+
     setIsFormLoading(false);
+
   }
 };
   
