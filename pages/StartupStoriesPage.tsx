@@ -123,14 +123,19 @@ src={idea.cardCover || idea.brandLogo}
 alt={idea.title}
 loading="eager"
 decoding="async"
-className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
 />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
         <div className="absolute top-4 left-4 flex gap-2"><span className="bg-emerald-600/30 backdrop-blur-xl border border-emerald-500/30 text-emerald-100 text-[9px] font-black uppercase tracking-[0.1em] px-3 py-1.5 rounded-full flex items-center gap-1.5">{idea.category || 'SaaS'}</span></div>
 
-        <button onClick={handleSave} className={`absolute top-4 right-4 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}><BookmarkIcon className="w-4 h-4" /></button>
+        <button
+onClick={handleSave}
+className={`absolute top-4 right-4 z-20 p-2.5 rounded-full backdrop-blur-xl transition-all duration-300 border cursor-pointer ${isSaved ? 'bg-red-500 border-red-400 text-white' : 'bg-black/40 border-white/20 text-white hover:bg-black/60'}`}
+>
+<BookmarkIcon className="w-4 h-4"/>
+</button>
 
         <div className="absolute bottom-4 left-6 right-6 text-white text-left"><h2 className="text-2xl font-semibold tracking-tight leading-none font-poppins">{idea.title}</h2><p className="text-[10px] font-bold opacity-80 mt-1 uppercase tracking-widest">{idea.businessModel} • {idea.location}</p></div>
 
