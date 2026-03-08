@@ -340,7 +340,7 @@ await fetchCurrentUser();
 
 return true;
 }
-};
+
 
         addNotificationCallBack("Failed to update profile.", "error");
         return false;
