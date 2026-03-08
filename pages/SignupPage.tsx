@@ -13,10 +13,27 @@ const GoogleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" })
     </svg>
 );
 
+const EyeIcon: React.FC<{ className?: string }> = ({ className="w-5 h-5" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12S5.25 5.25 12 5.25 21.75 12 21.75 12 18.75 18.75 12 18.75 2.25 12 2.25 12z"/>
+<circle cx="12" cy="12" r="3"/>
+</svg>
+);
+
+const EyeSlashIcon: React.FC<{ className?: string }> = ({ className="w-5 h-5" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M3 3l18 18"/>
+<path strokeLinecap="round" strokeLinejoin="round" d="M10.584 10.587A2.25 2.25 0 0012 14.25"/>
+<path strokeLinecap="round" strokeLinejoin="round" d="M9.88 5.091A9.05 9.05 0 0112 5.25c6.75 0 9.75 6.75 9.75 6.75a13.52 13.52 0 01-3.266 4.291M6.53 6.53C4.48 8.05 3.25 12 3.25 12s3 6.75 8.75 6.75c1.33 0 2.56-.24 3.67-.67"/>
+</svg>
+);
+
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+const [showPassword,setShowPassword] = useState(false);
+const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false); 
   const { signup, currentUser, login } = useAppContext(); 
   const navigate = useNavigate();
@@ -32,19 +49,26 @@ const SignupPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
   e.preventDefault();
 
+  if (isFormLoading) return;
+
   if (password !== confirmPassword) {
     alert("Passwords do not match");
     return;
   }
 
-  setIsFormLoading(true);
+  try {
+    setIsFormLoading(true);
 
-  const success = await signup(email, password);
+    const success = await signup(email.trim(), password);
 
-  setIsFormLoading(false);
+    if (success) {
+      navigate('/verify-email');
+    }
 
-  if (success) {
-    navigate('/verify-email');
+  } catch (err) {
+    console.error("Signup failed", err);
+  } finally {
+    setIsFormLoading(false);
   }
 };
   
@@ -98,11 +122,47 @@ const SignupPage: React.FC = () => {
                 </div>
                 <div className="fade-in-up">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2 px-1">Password</label>
-                  <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className={inputBaseClasses} placeholder="•••••••• (min. 6 chars)" minLength={6} />
+ <div className="relative">
+<input
+type={showPassword ? "text" : "password"}
+required
+value={password}
+onChange={(e)=>setPassword(e.target.value)}
+className={`${inputBaseClasses} pr-12`}
+placeholder="•••••••• (min. 6 chars)"
+minLength={6}
+/>
+
+<button
+type="button"
+onClick={()=>setShowPassword(!showPassword)}
+className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-600 transition"
+>
+{showPassword ? <EyeSlashIcon/> : <EyeIcon/>}
+</button>
+</div>
                 </div>
                 <div className="fade-in-up">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2 px-1">Confirm Password</label>
-                  <input type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={inputBaseClasses} placeholder="Repeat password" minLength={6}/>
+                  <div className="relative">
+<input
+type={showConfirmPassword ? "text" : "password"}
+required
+value={confirmPassword}
+onChange={(e)=>setConfirmPassword(e.target.value)}
+className={`${inputBaseClasses} pr-12`}
+placeholder="Repeat password"
+minLength={6}
+/>
+
+<button
+type="button"
+onClick={()=>setShowConfirmPassword(!showConfirmPassword)}
+className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-600 transition"
+>
+{showConfirmPassword ? <EyeSlashIcon/> : <EyeIcon/>}
+</button>
+</div>
                 </div>
               </div>
 
