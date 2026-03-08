@@ -331,9 +331,45 @@ className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-
 
                 <FormSection title="Technical & Team" icon={<IdentificationIcon />} subtext="Structural data.">
                     <div className="grid md:grid-cols-2 gap-4">
-                        <FormRow label="Category" isRequired><CustomSelect value={formData.category} options={STARTUP_CATEGORIES} onChange={v => setFormData(p => ({...p, category: v as StartupCategory}))} /></FormRow>
-                        <FormRow label="Monetization" isRequired><input name="revenueModel" value={formData.revenueModel} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
-                    </div>
+
+<FormRow label="Category" isRequired subtext="Industry segment.">
+<CustomSelect
+value={formData.category}
+options={STARTUP_CATEGORIES}
+onChange={v => setFormData(p => ({...p, category: v as StartupCategory}))}
+/>
+</FormRow>
+
+<FormRow label="Model" isRequired subtext="Business model type.">
+<CustomSelect
+value={formData.businessModel}
+options={[
+"B2B",
+"B2C",
+"B2B2C",
+"Marketplace",
+"SaaS",
+"Subscription",
+"Freemium",
+"Lead Generation",
+"Other"
+]}
+onChange={v => setFormData(p => ({...p, businessModel: v as BusinessModel}))}
+/>
+</FormRow>
+
+</div>
+
+<FormRow label="Monetization" isRequired subtext="How does it generate funds?">
+<textarea
+name="revenueModel"
+value={formData.revenueModel}
+onChange={handleInputChange}
+rows={3}
+className={`${inputClasses} resize-none`}
+placeholder="Explain monetization model (SaaS subscription, Ads, Marketplace fee etc.)"
+/>
+</FormRow>
                     <FormRow label="Built With"><input name="techStack" value={formData.techStack} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
                     <FormRow label="Team Profile" isRequired><textarea name="teamDetails" value={formData.teamDetails} onChange={handleInputChange} rows={3} className="block w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-dashed border-[var(--border-secondary)] rounded-lg text-xs" /></FormRow>
                     <FormRow label="Location" isRequired><CustomSelect value={formData.location} placeholder="Select Country" options={COUNTRIES.map(c => c.name)} onChange={v => setFormData(p => ({...p, location: v}))} /></FormRow>
