@@ -10,7 +10,21 @@ const userSchema = mongoose.Schema({
     headline: { type: String },
     country: { type: String },
     profilePictureUrl: { type: String },
-    savedProjectIds: [{ type: String }],
+    
+bio: { type: String },
+
+skills: [{ type: String }],
+
+interests: [{ type: String }],
+
+socialLinks: {
+  linkedin: { type: String },
+  github: { type: String },
+  twitter: { type: String },
+  instagram: { type: String }
+},
+
+savedProjectIds: [{ type: String }],
 
     connections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     connectionRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
