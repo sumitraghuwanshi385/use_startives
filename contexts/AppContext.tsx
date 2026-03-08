@@ -15,6 +15,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [startupIdeas, setStartupIdeas] = useState<StartupIdea[]>([]);
+const [assets,setAssets] = useState<any[]>([]);
   const [startalks, setStartalks] = useState<Startalk[]>([]);
   const [sentApplications, setSentApplications] = useState<Application[]>([]);
 const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
@@ -439,6 +440,37 @@ const deleteIdea = async (ideaId: string) => {
   }
 };
 
+// ---------------- ASSETS ----------------
+
+const fetchAssets = async () => {
+
+try{
+
+// cache system (fast load)
+if(assets.length > 0) return;
+
+const res = await axios.get('/api/assets');
+
+if(res.data?.success){
+
+const normalized = res.data.assets.map((a:any)=>({
+...a,
+id: a._id || a.id,
+cardCover: a.cardCover
+}));
+
+setAssets(normalized);
+
+}
+
+}catch(err){
+
+console.error("Asset fetch failed",err);
+
+}
+
+};
+
   // ---------------- STARTALKS ----------------
   const addStartalk = async (content: string, imageUrl?: string) => {
       if (!currentUser) return;
@@ -802,6 +834,7 @@ const updateApplicationStatus = async (id: string, status: string) => {
       try {
           const res = await axios.get('/api/ideas');
           if (res.data.success) setStartupIdeas(res.data.ideas);
+await fetchAssets();
       } catch (error) { console.error("Failed to fetch ideas", error); }
 
       const storedToken = localStorage.getItem('authToken');
@@ -893,7 +926,8 @@ useEffect(() => {
 }, []);
 
   const contextValue = useMemo(() => ({
-    startupIdeas, startalks, sentApplications, fetchNotifications,
+    startupIdeas, startalks, assets,
+fetchAssets, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
     addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
@@ -909,7 +943,7 @@ declineConnectionRequest,
   }), [
     startupIdeas, startalks, sentApplications,
 receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
+    addNotificationCallBack, assets, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
   ]);
 
   return (
