@@ -516,6 +516,57 @@ return false;
 
 };
 
+const updateAsset = async (assetId: string, updatedData: any) => {
+
+if(!currentUser) return false;
+
+const t = getAuthToken();
+if(!t) return false;
+
+try{
+
+const res = await axios.put(
+`/api/assets/${assetId}`,
+updatedData,
+{
+headers:{ Authorization:`Bearer ${t}` }
+}
+);
+
+if(res.data?.success){
+
+const updatedAsset = {
+...res.data.asset,
+id: res.data.asset._id || res.data.asset.id
+};
+
+// ⚡ instant UI update
+setAssets(prev =>
+prev.map(a =>
+(a.id === assetId ? updatedAsset : a)
+)
+);
+
+addNotificationCallBack("Asset updated successfully","success");
+
+return true;
+
+}
+
+return false;
+
+}catch(err){
+
+console.error("Update asset failed",err);
+
+addNotificationCallBack("Failed to update asset","error");
+
+return false;
+
+}
+
+};
+
   // ---------------- STARTALKS ----------------
   const addStartalk = async (content: string, imageUrl?: string) => {
       if (!currentUser) return;
@@ -974,7 +1025,7 @@ useEffect(() => {
     startupIdeas, startalks, assets,
 fetchAssets, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea,, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
     toggleSaveProject, isProjectSaved, getUserById, removeConnection,
