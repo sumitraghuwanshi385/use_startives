@@ -240,25 +240,31 @@ await fetchAllUsers();
   setAuthLoadingState({ isLoading: true, messages: ["Creating account..."] });
 
   try {
-    const response = await axios.post('/api/auth/signup', { email, password });
+    const res = await axios.post('/api/auth/signup', { email, password });
 
-    if (!response.data?.success) {
-      addNotificationCallBack(response.data?.message || 'Signup failed.', 'error');
+    if (!res.data || !res.data.success) {
+      addNotificationCallBack("Signup failed.", "error");
       return false;
     }
 
-    // ✅ store email + code + password
+    const code = res.data.verificationCode;
+
+    if (!code) {
+      addNotificationCallBack("Verification code not received.", "error");
+      return false;
+    }
+
     setPendingVerificationUser({
       email,
-      code: response.data.verificationCode,
+      code,
       password: password || ""
     });
 
-    addNotificationCallBack(`Verification code sent to ${email}.`, 'info');
     return true;
 
-  } catch (error: any) {
-    addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
+  } catch (err:any) {
+    console.error("Signup error", err);
+    addNotificationCallBack(err.response?.data?.message || "Signup failed", "error");
     return false;
   } finally {
     setAuthLoadingState({ isLoading: false, messages: [] });
