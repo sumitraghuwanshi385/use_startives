@@ -280,6 +280,18 @@ isSaved
 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">
 Founder & Seller
 </h3>
+
+<section>
+<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">
+Founder Spark
+</h3>
+
+<div className="bg-white dark:bg-neutral-800 p-5 rounded-2xl border border-[var(--border-primary)] shadow-sm">
+<p className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
+{asset.spark || "The founder built this project to solve a real problem in the market. The product has proven demand and strong potential for growth with the right operator."}
+</p>
+</div>
+</section>
                 {founder && (
   <div className="space-y-4">
     <Link
