@@ -263,13 +263,6 @@ setFormData(prev => ({
 
         try{
 
-const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`,{
-method:"PUT",
-headers:{
-"Content-Type":"application/json"
-},
-keepalive:true
-});
 const payload = {
 ...formData,
 users: formData.users || "0",
@@ -278,6 +271,12 @@ directTraffic: formData.directTraffic || "0",
 retention: formData.retention || "0"
 };
 
+const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json"
+},
+keepalive:true,
 body: JSON.stringify(payload)
 });
 
@@ -446,7 +445,7 @@ placeholder="15"
 <FormRow label="Direct Traffic (%)" subtext="Visitors coming directly">
 <div className="relative">
 <input
-type="number"
+type="text"
 inputMode="numeric"
 name="directTraffic"
 value={formData.directTraffic}
@@ -462,7 +461,7 @@ placeholder="62"
 <FormRow label="Retention (%)" subtext="Returning users">
 <div className="relative">
 <input
-type="number"
+type="text"
 inputMode="numeric"
 name="retention"
 value={formData.retention}
