@@ -148,7 +148,15 @@ const ProfilePillCard: React.FC<{
 );
 
 const ProfilePage: React.FC = () => {
-  const { currentUser, startupIdeas, connectedUserIds, startalks, deleteStartalk, deleteIdea } = useAppContext();
+  const { 
+currentUser,
+startupIdeas,
+assets,
+connectedUserIds,
+startalks,
+deleteStartalk,
+deleteIdea
+} = useAppContext();
   const navigate = useNavigate();
 
 const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
@@ -159,7 +167,7 @@ const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
   }
   
   const myProjects = startupIdeas.filter(idea => idea.founderId === currentUser.id && !idea.askingPrice);
-  const myAssets = startupIdeas.filter(idea => idea.founderId === currentUser.id && idea.askingPrice);
+  const myAssets = assets.filter(asset => asset.founderId === currentUser.id);
   const myTalks = startalks.filter(talk => talk.authorId === currentUser.id);
 
   const initials = currentUser.name?.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() || 'P';
@@ -341,17 +349,17 @@ badgeColor={
                 {myAssets.length > 0 ? (
                     <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
                         {myAssets.map(asset => (
-                            <ProfilePillCard 
-                                key={asset.id}
-                                title={asset.title}
-                                subtitle={asset.askingPrice || 'Pricing TBD'}
-                                imageUrl={asset.imageUrl}
-                                link={`/asset/${asset.id}`}
-                                badge="Vetted"
-                                badgeColor="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
-                                onDelete={() => deleteIdea(asset.id)}
-                            />
-                        ))}
+  <ProfilePillCard 
+    key={asset._id || asset.id}
+    title={asset.title}
+    subtitle={asset.askingPrice || 'Pricing TBD'}
+    imageUrl={asset.brandLogo}
+    link={`/asset/${asset._id || asset.id}`}
+    badge="Vetted"
+    badgeColor="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
+    onDelete={() => deleteIdea(asset._id || asset.id)}
+  />
+))}
                     </div>
                 ) : (
                     <div className="p-8 text-center bg-neutral-50 dark:bg-neutral-900/50 rounded-[2.5rem] border-2 border-dashed border-[var(--border-primary)]">
