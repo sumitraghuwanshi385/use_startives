@@ -131,19 +131,10 @@ const ProfilePillCard: React.FC<{
                     <h4 className="font-bold text-sm text-[var(--text-primary)] truncate">{title}</h4>
                     {badge && <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>}
                 </div>
-                <p className="text-[10px] font-medium text-[var(--text-muted)] truncate">{subtitle}</p>
+                <p className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 truncate">{subtitle}</p>
             </div>
             <ChevronLeftIcon className="w-3 h-3 rotate-180 text-[var(--text-muted)] opacity-50 group-hover:translate-x-1 transition-transform" />
-        </Link>
-        {onDelete && (
-            <button 
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }}
-                className="absolute -top-1 -right-1 p-1.5 rounded-full bg-red-100 dark:bg-red-900/40 text-red-500 border border-red-200 dark:border-red-800/30 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:scale-110 active:scale-95"
-                title="Delete Listing"
-            >
-                <TrashIcon className="w-3 h-3" />
-            </button>
-        )}
+        </Link>      
     </div>
 );
 
@@ -327,7 +318,7 @@ badgeColor={
   STAGE_COLOR_MAP[idea.stage] ||
   "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"
 }
-                                onDelete={() => deleteIdea(idea.id)}
+                                
                             />
                         ))}
                     </div>
@@ -350,15 +341,14 @@ badgeColor={
                     <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
                         {myAssets.map(asset => (
   <ProfilePillCard 
-    key={asset._id || asset.id}
-    title={asset.title}
-    subtitle={asset.askingPrice || 'Pricing TBD'}
-    imageUrl={asset.brandLogo}
-    link={`/asset/${asset._id || asset.id}`}
-    badge="Vetted"
-    badgeColor="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
-    onDelete={() => deleteIdea(asset._id || asset.id)}
-  />
+key={asset._id || asset.id}
+title={asset.title}
+subtitle={asset.tagline}
+imageUrl={asset.brandLogo}
+link={`/asset/${asset._id || asset.id}`}
+badge={asset.askingPrice}
+badgeColor="bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
+/>
 ))}
                     </div>
                 ) : (
