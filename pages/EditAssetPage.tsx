@@ -215,11 +215,7 @@ fetchAsset();
 let {name,value} = e.target;
 
 if(name==="netProfit" || name==="churnRate" || name==="retention" || name==="directTraffic"){
-
-value = value.replace("%","");
-
-if(value){
-value = value + "%";
+value = value.replace(/[^0-9]/g,"");
 }
 
 }
@@ -272,10 +268,7 @@ method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
-body:JSON.stringify({
-...formData,
-imageUrl: formData.brandLogo
-})
+body: JSON.stringify(formData)
 });
 
 if(!res.ok){
@@ -411,8 +404,7 @@ placeholder="Explain monetization model (SaaS subscription, Ads, Marketplace fee
 
 <FormRow label="Monthly Users" subtext="Total active users">
 <input
-type="number"
-inputMode="numeric"
+type="text"
 name="users"
 value={formData.users}
 onChange={handleInputChange}
