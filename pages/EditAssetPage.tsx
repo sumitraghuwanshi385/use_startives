@@ -140,7 +140,7 @@ const EditAssetPage: React.FC = () => {
 
     const [formData, setFormData] = useState({
         title: '', tagline: '', description: '', spark: '',
-        askingPrice: '', ttmRevenue: '', mrr: '', growthRate: '', multiplier: '', netProfit: '', churnRate: '',
+        askingPrice: '', ttmRevenue: '', mrr: '', growth: '', multiplier: '', netProfit: '', churnRate: '',
         category: 'SaaS' as StartupCategory, businessModel: 'B2B' as BusinessModel, location: '',
         websiteUrl: '', brandLogo: '', cardCover: '', gallery: [] as string[],
         sellerNotes: '', handoverNotes: '', reasonForSale: '', teamSize: '', revenueModel: '',
@@ -170,7 +170,7 @@ spark: asset.spark || '',
 askingPrice: asset.askingPrice || '',
 ttmRevenue: asset.ttmRevenue || '',
 mrr: asset.mrr || '',
-growthRate: asset.growth || '',
+growth: asset.growth || '',
 multiplier: asset.multiplier || '',
 netProfit: asset.netProfit || '',
 churnRate: asset.churnRate || '',
