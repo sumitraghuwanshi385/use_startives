@@ -44,11 +44,9 @@ const registerUser = async (req, res) => {
     }
 
     // ✅ send email
-    try {
-      await sendEmail(email, "Verify your Startives Account", verificationCode);
-    } catch (err) {
-      console.log("Email failed:", err.message);
-    }
+    // send email in background (no delay)
+sendEmail(email, "Verify your Startives Account", verificationCode)
+  .catch(err => console.log("Email failed:", err.message));
 
     // ✅ return verification code to frontend
     return res.status(201).json({
