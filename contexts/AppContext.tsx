@@ -997,14 +997,21 @@ useEffect(() => {
   }
 
   const loadUser = async () => {
-    try {
-      const res = await axios.get('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+  try {
+    const res = await axios.get('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-      if (res.data?.success) {
-        setCurrentUser(res.data.user);
-      }
+    if (res.data?.success) {
+
+      const updatedUser = res.data.user;
+
+      setCurrentUser(updatedUser);
+
+      // 🔥 IMPORTANT
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    }
     } catch (err) {
       console.error("User refresh failed");
       setCurrentUser(null);
