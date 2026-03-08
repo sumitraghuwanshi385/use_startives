@@ -1025,7 +1025,7 @@ useEffect(() => {
     startupIdeas, startalks, assets,
 fetchAssets, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea,, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
     removeApplication,
     toggleSaveProject, isProjectSaved, getUserById, removeConnection,
