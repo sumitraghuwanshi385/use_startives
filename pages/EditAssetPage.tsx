@@ -170,6 +170,7 @@ spark: asset.spark || '',
 askingPrice: asset.askingPrice || '',
 ttmRevenue: asset.ttmRevenue || '',
 mrr: asset.mrr || '',
+growthRate: asset.growthRate || '',
 multiplier: asset.multiplier || '',
 netProfit: asset.netProfit || '',
 churnRate: asset.churnRate || '',
@@ -267,7 +268,17 @@ method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
-body: JSON.stringify(formData)
+keepalive:true
+});
+const payload = {
+...formData,
+users: formData.users || "0",
+growthRate: formData.growthRate || "0",
+directTraffic: formData.directTraffic || "0",
+retention: formData.retention || "0"
+};
+
+body: JSON.stringify(payload)
 });
 
 if(!res.ok){
