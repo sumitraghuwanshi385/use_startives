@@ -131,7 +131,7 @@ const FormSection: React.FC<FormSectionProps> = ({ title, icon, subtext, childre
 
 const EditAssetPage: React.FC = () => {
     const { assetId } = useParams<{ assetId: string }>();
-    const { addNotification } = useAppContext();
+    const { addNotification, updateAsset } = useAppContext();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const logoInputRef = useRef<HTMLInputElement>(null);
@@ -267,13 +267,12 @@ const payload = {
 ...formData
 };
 
-const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`,{
-method:"PUT",
-headers:{
-"Content-Type":"application/json"
-},
-body: JSON.stringify(payload)
-});
+const success = await updateAsset(assetId!, payload);
+
+if(success){
+addNotification("Asset updated successfully","success");
+navigate(`/asset/${assetId}`);
+}
 
 if(!res.ok){
 
@@ -519,7 +518,10 @@ placeholder="85%"
 Enter value in percentage (%).
 </p>
 </div></FormRow>
-                        <FormRow label="Churn Rate" isRequired><div className="relative">
+                        <FormRow label="Churn Rate" isRequired>
+
+<div className="relative">
+
 <input
 name="churnRate"
 value={formData.churnRate}
@@ -528,8 +530,13 @@ className={inputClasses}
 placeholder="2%"
 />
 
-<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
-</div></FormRow>
+<p className="text-[9px] text-[var(--text-muted)] mt-1 font-bold">
+Enter value in percentage (%).
+</p>
+
+</div>
+
+</FormRow>
                     </div>
                 </FormSection>
 
