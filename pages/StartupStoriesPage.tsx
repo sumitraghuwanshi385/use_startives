@@ -91,10 +91,9 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { isProjectSaved, saveProject, unsaveProject, currentUser, addNotification } = useAppContext();
   
-const isSaved = isProjectSaved?.(idea.id) || false;
+const [isSaved,setIsSaved] = useState(isProjectSaved?.(idea.id) || false);
   const navigate = useNavigate();
 
-  const [,forceUpdate] = useState(0);
 
 const handleSave = (e: React.MouseEvent) => {
 
@@ -107,14 +106,18 @@ return;
 }
 
 if(isSaved){
-unsaveProject?.(idea.id);
-addNotification?.("Removed from saved","info");
-}else{
-saveProject?.(idea.id);
-addNotification?.("Asset saved successfully","success");
-}
 
-forceUpdate(v=>v+1);
+unsaveProject?.(idea.id);
+setIsSaved(false);
+addNotification?.("Removed from saved","info");
+
+}else{
+
+saveProject?.(idea.id);
+setIsSaved(true);
+addNotification?.("Asset saved successfully","success");
+
+}
 
 };
 
