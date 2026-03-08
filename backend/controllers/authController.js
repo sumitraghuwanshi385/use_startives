@@ -21,7 +21,10 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ success: false, message: 'User already exists' });
         }
 
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        return res.status(201).json({
+  success: true,
+  verificationCode: verificationCode
+});
 
         const user = await User.create({
             email,
