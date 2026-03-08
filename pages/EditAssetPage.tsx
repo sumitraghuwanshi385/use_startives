@@ -141,7 +141,7 @@ const EditAssetPage: React.FC = () => {
     const [formData, setFormData] = useState({
         title: '', tagline: '', description: '', spark: '',
         askingPrice: '', ttmRevenue: '', mrr: '', growth: '', multiplier: '', netProfit: '', churnRate: '',
-        category: 'SaaS' as StartupCategory, businessModel: 'B2B' as BusinessModel, location: '',
+        category: '' as StartupCategory, businessModel: '' as BusinessModel, location: '',
         websiteUrl: '', brandLogo: '', cardCover: '', gallery: [] as string[],
         sellerNotes: '', handoverNotes: '', reasonForSale: '', teamSize: '', revenueModel: '',
         paymentMethods: '', contactEmail: '', techStack: '', users: '', retention: '',
@@ -206,11 +206,6 @@ handoverNotes: existingAsset.handoverNotes || ''
 
 let {name,value} = e.target;
 
-if(name==="netProfit" || name==="churnRate" || name==="retention" || name==="directTraffic"){
-value = value.replace(/[^0-9]/g,"");
-}
-
-
 setFormData(prev => ({
 ...prev,
 [name]: value
@@ -271,7 +266,7 @@ setIsLoading(false);
                 <span>Back</span>
             </button>
 
-            <PageTitle title="Update Asset" description={`Refine Your Asset.${formData.title}`} />
+            <PageTitle title="Update Asset" description="Refine your asset." />
 
             <form onSubmit={handleSubmit} className="bg-[var(--component-background)] p-6 sm:p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-none space-y-12">
                 <FormSection title="The Narrative" icon={<BoltIcon />} subtext="Story and vision details.">
@@ -486,7 +481,7 @@ placeholder="85%"
 Enter value in percentage (%).
 </p>
 </div></FormRow>
-                        <FormRow label="Churn Rate" isRequired>
+                        <FormRow label="Churn Rate (%)" isRequired>
 
 <div className="relative">
 
