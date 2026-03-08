@@ -296,13 +296,13 @@ if(!currentUser) return 0;
 
 const savedIds = currentUser.savedProjectIds || [];
 
-const validIdeas = startupIdeas.filter(i => savedIds.includes(i.id));
-
-const validAssets = savedIds.filter(id =>
-!startupIdeas.some(i => i.id === id)
+// VALID VENTURES
+const validIdeas = startupIdeas.filter(i =>
+savedIds.includes(i.id)
 );
 
-return validIdeas.length + validAssets.length;
+// ONLY COUNT EXISTING ITEMS
+return validIdeas.length;
 
 },[currentUser,startupIdeas]);
 
