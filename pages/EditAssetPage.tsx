@@ -265,38 +265,33 @@ setFormData(prev => ({
 
 const payload = {
 ...formData,
-
-imageUrl: formData.brandLogo,
-coverImage: formData.cardCover,
-
-users: formData.users || "0",
-growth: formData.growthRate || "0",
-directTraffic: formData.directTraffic || "0",
-retention: formData.retention || "0"
+growth: formData.growthRate || "0"
 };
+
+delete payload.growthRate;
 
 const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`,{
 method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
-keepalive:true,
 body: JSON.stringify(payload)
 });
 
 if(!res.ok){
-throw new Error("Update failed");
+
+const errorData = await res.json();
+throw new Error(errorData.message || "Update failed");
+
 }
 
 addNotification("Asset updated successfully","success");
 
 navigate(`/asset/${assetId}`);
 
-}catch(err){
+}catch(err:any){
 
-console.error("UPDATE ERROR",err);
-
-addNotification("Upload failed","error");
+addNotification(err?.message || "Upload failed","error");
 
 }finally{
 
