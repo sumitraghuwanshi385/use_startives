@@ -281,17 +281,6 @@ isSaved
 Founder & Seller
 </h3>
 
-<section>
-<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">
-Founder Spark
-</h3>
-
-<div className="bg-white dark:bg-neutral-800 p-5 rounded-2xl border border-[var(--border-primary)] shadow-sm">
-<p className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
-{asset.spark || "The founder built this project to solve a real problem in the market. The product has proven demand and strong potential for growth with the right operator."}
-</p>
-</div>
-</section>
                 {founder && (
   <div className="space-y-4">
     <Link
@@ -357,6 +346,18 @@ Founder Spark
 
 
 </section>
+
+{asset.spark && (
+<div className="mt-4 relative">
+
+<div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/60 to-transparent"></div>
+
+<p className="text-xs font-poppins text-purple-600 pl-3 leading-relaxed">
+{asset.spark}
+</p>
+
+</div>
+)}
 
                             <section>
                                 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-4 pb-2 border-b border-[var(--border-primary)]">Team Profile</h3>
