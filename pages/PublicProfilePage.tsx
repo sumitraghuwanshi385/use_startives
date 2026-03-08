@@ -362,14 +362,14 @@ badgeColor={
                     <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
                         {userAssets.map(asset => (
                             <ProfilePillCard 
-                                key={asset.id}
-                                title={asset.title}
-                                subtitle={asset.askingPrice || 'Pricing TBD'}
-                                imageUrl={asset.imageUrl}
-                                link={`/asset/${asset.id}`}
-                                badge="Verified"
-                                badgeColor="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
-                            />
+  key={asset.id}
+  title={asset.title}
+  subtitle={asset.tagline}
+  imageUrl={asset.imageUrl}
+  link={`/asset/${asset.id}`}
+  badge="Asking"
+  badgeColor="bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300"
+/>
                         ))}
                     </div>
                 ) : (
