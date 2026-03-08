@@ -89,9 +89,19 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 };
 
 const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
-  const { isProjectSaved, saveProject, unsaveProject, currentUser, addNotification } = useAppContext();
+  const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
   
-const [isSaved,setIsSaved] = useState(isProjectSaved?.(idea.id) || false);
+const [isSaved,setIsSaved] = useState(false);
+
+useEffect(()=>{
+
+const savedAssets = JSON.parse(localStorage.getItem("savedAssets") || "[]");
+
+if(savedAssets.includes(idea.id)){
+setIsSaved(true);
+}
+
+},[idea.id]);
   const navigate = useNavigate();
 
 
@@ -105,20 +115,26 @@ addNotification?.("Login required to save asset","error");
 return;
 }
 
+const savedAssets = JSON.parse(localStorage.getItem("savedAssets") || "[]");
+
 if(isSaved){
 
-unsaveProject?.(idea.id);
+const updated = savedAssets.filter((id:string)=>id !== idea.id);
+
+localStorage.setItem("savedAssets",JSON.stringify(updated));
+
 setIsSaved(false);
-addNotification?.("Removed from saved","info");
 
 }else{
 
-saveProject?.(idea.id);
+savedAssets.push(idea.id);
+
+localStorage.setItem("savedAssets",JSON.stringify(savedAssets));
+
 setIsSaved(true);
-addNotification?.("Asset saved successfully","success");
+
 
 }
-
 };
 
   return (
