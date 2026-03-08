@@ -81,6 +81,7 @@ isProjectSaved
 
     const [asset,setAsset] = useState<any>(null);
 const [loading,setLoading] = useState(true);
+const [currentImage,setCurrentImage] = useState(1);
 
 useEffect(()=>{
 
@@ -195,13 +196,24 @@ toggleSaveProject(asset.id || asset._id);
     return (
         <div className="bg-[var(--background-secondary)] min-h-screen py-8 px-4">
             <div className="max-w-5xl mx-auto">
-                <button 
-                    onClick={() => navigate(-1)} 
-                    className="mb-8 inline-flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] px-5 py-2.5 rounded-full border border-[var(--border-primary)] shadow-sm transition-all"
-                >
-                    <ChevronLeftIcon className="w-3 h-3" />
-                    <span>Back</span>
-                </button>
+                <div className="mb-8 flex items-center justify-between">
+
+<button 
+onClick={() => navigate(-1)} 
+className="inline-flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] px-5 py-2.5 rounded-full border border-[var(--border-primary)] shadow-sm transition-all"
+>
+<ChevronLeftIcon className="w-3 h-3" />
+<span>Back</span>
+</button>
+
+<div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)]">
+<CalendarIcon className="w-3 h-3"/>
+<span>
+Posted: {new Date(asset.createdAt).toLocaleDateString()}
+</span>
+</div>
+
+</div>
 
                 <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2.5rem] relative overflow-hidden shadow-sm">
                     
@@ -347,7 +359,7 @@ Founder & Seller
                                         </div>
                                     </div>
                                     <div className="bg-white/50 dark:bg-neutral-900/50 p-4 rounded-2xl border border-[var(--border-primary)]">
-                                        <p className="text-[10px] text-[var(--text-secondary)] leading-relaxed italic font-medium">
+                                        <p className="text-[10px] text-[var(--text-secondary)] leading-relaxed font-medium">
                                             {asset.teamDetails || "The team consists of the original founders who have managed all aspects from development to initial growth. They are prepared to facilitate a smooth transition."}
                                         </p>
                                     </div>
@@ -414,9 +426,29 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                             
                             {/* GALLERY */}
                             <section className="space-y-4">
-                                <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] px-2">Gallery</h3>
+
+<div className="flex items-center justify-between px-2">
+
+<h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+Gallery
+</h3>
+
+<div className="px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[9px] font-black tracking-widest text-[var(--text-secondary)]">
+{currentImage}/{
+[asset.cardCover || asset.brandLogo, ...(asset.gallery || [])].length
+}
+</div>
+
+</div>
                                 <div className="relative group overflow-hidden rounded-xl border-2 border-[var(--border-primary)] shadow-none">
-                                    <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing">
+                                    <div
+className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing"
+onScroll={(e)=>{
+const el = e.currentTarget;
+const index = Math.round(el.scrollLeft / el.clientWidth) + 1;
+setCurrentImage(index);
+}}
+>
                                         {[asset.cardCover || asset.brandLogo, ...(asset.gallery || [])].map((imgUrl, idx) => (
                                             <div key={idx} className="flex-shrink-0 w-full aspect-[16/9] snap-center">
                                                 <img 
