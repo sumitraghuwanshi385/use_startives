@@ -264,11 +264,8 @@ setFormData(prev => ({
         try{
 
 const payload = {
-...formData,
-growth: formData.growthRate || "0"
+...formData
 };
-
-delete payload.growthRate;
 
 const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`,{
 method:"PUT",
@@ -436,8 +433,8 @@ placeholder="1200"
 <input
 type="number"
 inputMode="numeric"
-name="growthRate"
-value={formData.growthRate}
+name="growth"
+value={formData.growth}
 onChange={handleInputChange}
 className={inputClasses}
 placeholder="15"
