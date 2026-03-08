@@ -316,7 +316,7 @@ className={`${inputClasses} resize-none`}
 placeholder="Explain monetization model (SaaS subscription, Ads, Marketplace fee etc.)"
 />
 </FormRow>
-                    </div>
+                    
                     <FormRow label="Built With" subtext="Comma separated tech stack. (Optional)">
                         <input name="techStack" value={formData.techStack} onChange={handleInputChange} className={inputClasses} placeholder="React, AWS, Node" />
                     </FormRow>
