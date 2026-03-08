@@ -96,20 +96,21 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
 
   const handleSave = (e: React.MouseEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
 
-  if (!currentUser) return;
+e.preventDefault();
+e.stopPropagation();
 
-  if (isSaved) {
-    if (typeof unsaveProject === "function") {
-      unsaveProject(idea.id);
-    }
-  } else {
-    if (typeof saveProject === "function") {
-      saveProject(idea.id);
-    }
-  }
+if(!currentUser){
+alert("Login required");
+return;
+}
+
+if(isSaved){
+unsaveProject?.(idea.id);
+}else{
+saveProject?.(idea.id);
+}
+
 };
 
   return (
@@ -118,7 +119,7 @@ const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
       <div className="relative h-44 overflow-hidden bg-neutral-950">
 
         <img
-src={idea.coverImage}
+src={idea.cardCover || idea.brandLogo}
 alt={idea.title}
 loading="lazy"
 className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
@@ -199,7 +200,8 @@ const data = await res.json();
 
 const normalized = data.assets.map((a:any)=>({
  ...a,
- id: a._id || a.id
+ id: a._id || a.id,
+ cardCover: a.cardCover,
 }));
 
 setAssets(normalized);
