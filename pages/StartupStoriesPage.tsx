@@ -89,27 +89,32 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 };
 
 const ExchangeCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
-  const { isProjectSaved, saveProject, unsaveProject, currentUser } = useAppContext();
-  const isSaved = typeof isProjectSaved === "function"
-  ? isProjectSaved(idea.id)
-  : false;
+  const { isProjectSaved, saveProject, unsaveProject, currentUser, addNotification } = useAppContext();
+  
+const isSaved = isProjectSaved?.(idea.id) || false;
   const navigate = useNavigate();
 
-  const handleSave = (e: React.MouseEvent) => {
+  const [,forceUpdate] = useState(0);
+
+const handleSave = (e: React.MouseEvent) => {
 
 e.preventDefault();
 e.stopPropagation();
 
 if(!currentUser){
-alert("Login required");
+addNotification?.("Login required to save asset","error");
 return;
 }
 
 if(isSaved){
 unsaveProject?.(idea.id);
+addNotification?.("Removed from saved","info");
 }else{
 saveProject?.(idea.id);
+addNotification?.("Asset saved successfully","success");
 }
+
+forceUpdate(v=>v+1);
 
 };
 
