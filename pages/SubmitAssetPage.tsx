@@ -402,17 +402,15 @@ placeholder="1.2k"
 <FormRow label="Active Growth (%)" subtext="Monthly growth rate">
 <div className="relative">
 <input
-type="number"
-inputMode="numeric"
+type="text"
 name="growth"
 value={formData.growth}
 onChange={handleInputChange}
 className={inputClasses}
-placeholder="15"
+placeholder="15%"
 />
 
-<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
-</div>
+?
 </FormRow>
 
 </div>
@@ -428,27 +426,22 @@ name="directTraffic"
 value={formData.directTraffic}
 onChange={handleInputChange}
 className={inputClasses}
-placeholder="45"
+placeholder="45%"
 />
 
-<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
-</div>
 </FormRow>
 
 <FormRow label="Retention (%)" subtext="Returning users">
 <div className="relative">
 <input
-type="number"
-inputMode="numeric"
+type="text"
 name="retention"
 value={formData.retention}
 onChange={handleInputChange}
 className={inputClasses}
-placeholder="62"
+placeholder="62%"
 />
 
-<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
-</div>
 </FormRow>
 
 </div>
@@ -500,39 +493,33 @@ placeholder="$45,000"
                             <input name="multiplier" value={formData.multiplier} onChange={handleInputChange} className={inputClasses} placeholder="3.5x" />
                         </FormRow>
                         <FormRow label="Growth Pulse" isRequired subtext="Recent momentum pulse.">
-                            <input name="growthPulse" value={formData.growthPulse} onChange={handleInputChange} className={inputClasses} placeholder="+12% Monthly" />
+                            <input
+type= "text"
+name="growthPulse" value={formData.growthPulse} onChange={handleInputChange} className={inputClasses} placeholder="+12% Monthly" />
                         </FormRow>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
                         <FormRow label="Net Profit (%)" isRequired subtext="Average profit margin.">
                             <div className="relative">
 <input
-type="number"
-inputMode="numeric"
+type="text"
 name="netProfit"
 value={formData.netProfit}
 onChange={handleInputChange}
 className={inputClasses}
-placeholder="85"
+placeholder="85%"
 />
-
-<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
-</div>
                         </FormRow>
                         <FormRow label="Churn Rate" isRequired subtext="Monthly subscriber loss.">
                             <div className="relative">
 <input
-type="number"
-inputMode="numeric"
+type="text"
 name="churnRate"
 value={formData.churnRate}
 onChange={handleInputChange}
 className={inputClasses}
-placeholder="2"
+placeholder="2%"
 />
-
-<span className="absolute right-3 top-3 text-sm font-bold text-[var(--text-muted)]">%</span>
-</div>
                         </FormRow>
                     </div>
                 </FormSection>
