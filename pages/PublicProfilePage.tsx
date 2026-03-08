@@ -59,7 +59,7 @@ const ProfilePillCard: React.FC<{
                 <h4 className="font-bold text-sm text-[var(--text-primary)] truncate">{title}</h4>
                 {badge && <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>}
             </div>
-            <p className="text-[10px] font-medium text-[var(--text-muted)] truncate">{subtitle}</p>
+            <p className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 truncate">{subtitle}</p>
         </div>
         <ChevronLeftIcon className="w-3 h-3 rotate-180 text-[var(--text-muted)] opacity-50 group-hover:translate-x-1 transition-transform" />
     </Link>
@@ -94,16 +94,17 @@ const STAGE_COLOR_MAP: Record<string, string> = {
 const PublicProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const { 
-    getUserById, 
-    fetchUserProfile, 
-    sendConnectionRequest, 
-    currentUser, 
-    startupIdeas, 
-    isRequestPending, 
-    isUserConnected, 
-    startalks, 
-    connectedUserIds 
-  } = useAppContext();
+  getUserById, 
+  fetchUserProfile, 
+  sendConnectionRequest, 
+  currentUser, 
+  startupIdeas,
+  assets,
+  isRequestPending, 
+  isUserConnected, 
+  startalks, 
+  connectedUserIds 
+} = useAppContext();
   const navigate = useNavigate();
 
   const [fetchedUser, setFetchedUser] = useState<User | null>(null);
@@ -150,9 +151,10 @@ const PublicProfilePage: React.FC = () => {
   idea => idea.founderId?.toString() === user.id?.toString() && !idea.askingPrice
 );
 
-const userAssets = startupIdeas.filter(
-  idea => idea.founderId?.toString() === user.id?.toString() && idea.askingPrice
+const userAssets = assets.filter(
+  asset => asset.founderId?.toString() === user.id?.toString()
 );
+
   const userTalks = startalks.filter(talk => talk.authorId === user.id);
 
   const initials = user.name?.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() || 'U';
