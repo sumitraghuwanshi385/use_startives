@@ -170,7 +170,7 @@ spark: asset.spark || '',
 askingPrice: asset.askingPrice || '',
 ttmRevenue: asset.ttmRevenue || '',
 mrr: asset.mrr || '',
-growthRate: asset.growthRate || '',
+growthRate: asset.growth || '',
 multiplier: asset.multiplier || '',
 netProfit: asset.netProfit || '',
 churnRate: asset.churnRate || '',
@@ -270,7 +270,7 @@ imageUrl: formData.brandLogo,
 coverImage: formData.cardCover,
 
 users: formData.users || "0",
-growthRate: formData.growthRate || "0",
+growth: formData.growthRate || "0",
 directTraffic: formData.directTraffic || "0",
 retention: formData.retention || "0"
 };
@@ -387,6 +387,16 @@ placeholder="Explain monetization model (SaaS subscription, Ads, Marketplace fee
 />
 </FormRow>
                     <FormRow label="Built With"><input name="techStack" value={formData.techStack} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
+
+<FormRow label="Team Size" isRequired>
+<input
+name="teamSize"
+value={formData.teamSize}
+onChange={handleInputChange}
+className={inputClasses}
+placeholder="1-5"
+/>
+</FormRow>
                     <FormRow label="Team Profile" isRequired><textarea name="teamDetails" value={formData.teamDetails} onChange={handleInputChange} rows={3} className="block w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-dashed border-[var(--border-secondary)] rounded-lg text-xs" /></FormRow>
                     <FormRow label="Location" isRequired><CustomSelect value={formData.location} placeholder="Select Country" options={COUNTRIES.map(c => c.name)} onChange={v => setFormData(p => ({...p, location: v}))} /></FormRow>
                     <FormRow label="Product Link" isRequired><input name="websiteUrl" value={formData.websiteUrl} onChange={handleInputChange} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm" /></FormRow>
