@@ -41,10 +41,10 @@ const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const from = location.state?.from?.pathname || '/dashboard';
   
   useEffect(() => {
-  if (currentUser && location.pathname === "/signup") {
+  if (currentUser) {
     navigate('/dashboard', { replace: true });
   }
-}, [currentUser, navigate, location.pathname]);
+}, []);
 
   const handleSubmit = async (e: FormEvent) => {
   e.preventDefault();
@@ -56,14 +56,17 @@ const [showConfirmPassword,setShowConfirmPassword] = useState(false);
     return;
   }
 
-  try {
-    setIsFormLoading(true);
+  setIsFormLoading(true);
 
-    const success = await signup(email.trim(), password);
+  const success = await signup(email.trim(), password);
 
-    if (success) {
-      navigate('/verify-email');
-    }
+  if (!success) {
+    setIsFormLoading(false);
+    return;
+  }
+
+  navigate('/verify-email');
+};
 
   } catch (err) {
     console.error("Signup failed", err);
