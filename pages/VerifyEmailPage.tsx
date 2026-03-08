@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { ChevronLeftIcon } from '../constants';
 
 const VerifyEmailPage: React.FC = () => {
-. const { verifyAndLogin, addNotification: addNotificationCallBack, currentUser, authLoadingState } = useAppContext();
+const { verifyAndLogin, addNotification: addNotificationCallBack, currentUser, authLoadingState } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [code, setCode] = useState<string[]>(new Array(6).fill(''));
@@ -85,7 +85,7 @@ const [isLoading, setIsLoading] = useState(false);
   };
   
   const handleResendCode = () => {
-    addNotification("Code sent to your given email.", "info");
+    addNotificationCallBack("Code sent to your given email.", "info");
     setResendDisabled(true);
     setTimer(15);
     
