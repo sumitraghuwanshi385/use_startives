@@ -13,48 +13,60 @@ const generateToken = (id) => {
 // @desc    Register new user
 // @route   POST /api/auth/signup
 const registerUser = async (req, res) => {
-    const { email, password, name } = req.body;
+  const { email, password, name } = req.body;
 
-    try {
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ success: false, message: 'User already exists' });
-        }
+  try {
 
-        return res.status(201).json({
-  success: true,
-  verificationCode: verificationCode
-});
+    const userExists = await User.findOne({ email });
 
-        const user = await User.create({
-            email,
-            password,
-            name: name || '',
-        });
-
-        if (!user) {
-            return res.status(400).json({ success: false, message: 'Invalid user data' });
-        }
-
-        // Email sending (non-blocking)
-        try {
-            await sendEmail(email, 'Verify your Startives Account', verificationCode);
-        } catch (err) {
-            console.error('Email failed:', err.message);
-        }
-
-        // ✅ FIX: Return token + user
-        return res.status(201).json({
-    success: true,
-    verificationCode: verificationCode
-});
-
-    } catch (error) {
-        console.error('Signup Error:', error);
-        return res.status(500).json({ success: false, message: error.message });
+    if (userExists) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists"
+      });
     }
-};
 
+    // ✅ generate verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // ✅ create user
+    const user = await User.create({
+      email,
+      password,
+      name: name || ""
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user data"
+      });
+    }
+
+    // ✅ send email
+    try {
+      await sendEmail(email, "Verify your Startives Account", verificationCode);
+    } catch (err) {
+      console.log("Email failed:", err.message);
+    }
+
+    // ✅ return verification code to frontend
+    return res.status(201).json({
+      success: true,
+      verificationCode: verificationCode
+    });
+
+  } catch (error) {
+
+    console.error("Signup Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 const loginUser = async (req, res) => {
