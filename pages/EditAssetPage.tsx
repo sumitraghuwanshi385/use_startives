@@ -218,7 +218,6 @@ if(name==="netProfit" || name==="churnRate" || name==="retention" || name==="dir
 value = value.replace(/[^0-9]/g,"");
 }
 
-}
 
 setFormData(prev => ({
 ...prev,
