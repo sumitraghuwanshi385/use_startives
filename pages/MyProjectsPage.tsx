@@ -195,8 +195,17 @@ const MyAssetListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: strin
                              <img src={idea.imageUrl} alt={idea.title} className="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <p className="text-[8px] font-black uppercase tracking-[0.2em] bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full inline-block mb-1">Asset</p>
-                            <h3 onClick={() => navigate(`/asset/${idea.id}`)} className="text-xl font-bold tracking-tight text-[var(--text-primary)] hover:text-orange-500 cursor-pointer leading-tight">{idea.title}</h3>
+                            
+                            <h3
+onClick={() => navigate(`/asset/${idea.id}`)}
+className="text-xl font-bold tracking-tight text-[var(--text-primary)] hover:text-orange-500 cursor-pointer leading-tight"
+>
+{idea.title}
+</h3>
+
+<p className="text-sm font-poppins text-purple-600 mt-1">
+{idea.tagline}
+</p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -204,25 +213,39 @@ const MyAssetListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: strin
                         <button onClick={(e) => { e.stopPropagation(); onDelete(idea.id); }} className="p-2.5 rounded-full text-[var(--text-muted)] hover:text-red-600 bg-[var(--background-tertiary)] border border-[var(--border-primary)] transition-all shadow-none"><TrashIcon className="w-5 h-5" /></button>
                     </div>
                 </div>
-                <p className="text-sm text-[var(--text-secondary)] line-clamp-2 my-4 font-medium italic opacity-80">{idea.tagline}</p>
+                
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-[var(--border-primary)] pt-4 gap-4">
                     <div className="grid grid-cols-3 gap-8">
                         <div>
                             <p className="font-black text-xl text-emerald-600">{idea.askingPrice}</p>
-                            <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">Asking</p>
+                            <p className="text-xs font-medium text-[var(--text-muted)]">
+Asking
+</p>
                         </div>
                         <div>
                             <p className="font-black text-xl text-purple-600">{idea.mrr || '$0'}</p>
-                            <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">Mrr</p>
+                            <p className="text-xs font-medium text-[var(--text-muted)]">
+Mrr
+</p>
                         </div>
                         <div>
                             <p className="font-black text-xl text-sky-500">{idea.multiplier || 'N/A'}</p>
-                            <p className="text-[8px] font-black tracking-widest text-[var(--text-muted)] uppercase">Multiple</p>
+                            <p className="text-xs font-medium text-[var(--text-muted)]">
+Multiple
+</p>
                         </div>
                     </div>
                     <Link to={`/asset/${idea.id}`} className="bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-300 text-[10px] font-black uppercase tracking-widest py-2 px-5 rounded-full hover:bg-orange-200 transition-all border border-orange-200 dark:border-orange-800/30">View listing</Link>
                 </div>
             </div>
+{/* Bottom Right Date */}
+<div className="flex justify-end mt-2">
+  <p className="text-[10px] font-semibold text-[var(--text-muted)]">
+    {idea.createdAt
+      ? new Date(idea.createdAt).toLocaleDateString()
+      : ""}
+  </p>
+</div>
         </div>
     );
 };
