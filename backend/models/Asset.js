@@ -72,7 +72,7 @@ users:{
 type:String
 },
 
-growthRate:{
+growth:{
 type:String
 },
 
