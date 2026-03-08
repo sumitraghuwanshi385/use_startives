@@ -228,7 +228,7 @@ const MyAssetListItem: React.FC<{ idea: StartupIdea; onDelete: (projectId: strin
 };
 
 const MyProjectsPage: React.FC = () => {
-  const { startupIdeas, currentUser, deleteIdea } = useAppContext();
+  const { startupIdeas, assets, currentUser, deleteIdea } = useAppContext();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'projects' | 'assets'>('projects');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -237,7 +237,9 @@ const MyProjectsPage: React.FC = () => {
   if (!currentUser) return null;
   
   const myProjects = useMemo(() => startupIdeas.filter(idea => idea.founderEmail === currentUser.email && !idea.askingPrice), [startupIdeas, currentUser.email]);
-  const myAssets = useMemo(() => startupIdeas.filter(idea => idea.founderEmail === currentUser.email && idea.askingPrice), [startupIdeas, currentUser.email]);
+  const myAssets = useMemo(() => 
+assets.filter(asset => asset.founderEmail === currentUser.email),
+[assets, currentUser.email]);
 
   const confirmDelete = async () => {
   if (itemToDelete) {
