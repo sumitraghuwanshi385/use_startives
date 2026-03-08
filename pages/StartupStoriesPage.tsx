@@ -218,7 +218,15 @@ const [loading,setLoading] = useState(true);
 
 useEffect(()=>{
 
-const fetchAssets = async ()=>{
+const loadAssets = async()=>{
+
+const cached = localStorage.getItem("assetsCache");
+
+if(cached){
+setAssets(JSON.parse(cached));
+setLoading(false);
+return;
+}
 
 try{
 
@@ -227,26 +235,26 @@ const res = await fetch("https://startives.onrender.com/api/assets");
 const data = await res.json();
 
 const normalized = data.assets.map((a:any)=>({
- ...a,
- id: a._id || a.id,
- cardCover: a.cardCover,
+...a,
+id:a._id || a.id,
+cardCover:a.cardCover
 })).slice(0,12);
 
 setAssets(normalized);
+
+localStorage.setItem("assetsCache",JSON.stringify(normalized));
 
 }catch(err){
 
 console.log("ASSET FETCH ERROR",err);
 
-}finally{
+}
 
 setLoading(false);
 
-}
-
 };
 
-fetchAssets();
+loadAssets();
 
 },[]);
 
