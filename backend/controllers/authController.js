@@ -93,62 +93,74 @@ const loginUser = async (req, res) => {
     }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
+// @desc Update user profile
+// @route PUT /api/auth/profile
 const updateUserProfile = async (req, res) => {
-    try {
-        const userId = req.user && req.user._id;
+  try {
+    const userId = req.user && req.user._id;
 
-        if (!userId) {
-            return res.status(401).json({ success: false, message: 'Not authorized' });
-        }
-
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
-
-        user.name = req.body.name ?? user.name;
-        user.email = req.body.email ?? user.email;
-        user.headline = req.body.headline ?? user.headline;
-        user.bio = req.body.bio ?? user.bio;
-        user.country = req.body.country ?? user.country;
-        user.skills = req.body.skills ?? user.skills;
-        user.interests = req.body.interests ?? user.interests;
-        user.socialLinks = req.body.socialLinks ?? user.socialLinks;
-
-        if (req.body.profilePictureUrl) {
-            user.profilePictureUrl = req.body.profilePictureUrl;
-        }
-
-        if (req.body.password) {
-            user.password = req.body.password;
-        }
-
-        const updatedUser = await user.save();
-
-        return res.json({
-            success: true,
-            user: {
-                id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                headline: updatedUser.headline,
-                bio: updatedUser.bio,
-                country: updatedUser.country,
-                profilePictureUrl: updatedUser.profilePictureUrl,
-                skills: updatedUser.skills,
-                interests: updatedUser.interests,
-                socialLinks: updatedUser.socialLinks,
-                savedProjectIds: updatedUser.savedProjectIds,
-            },
-            token: generateToken(updatedUser._id),
-        });
-
-    } catch (error) {
-        console.error('Profile Update Error:', error);
-        return res.status(500).json({ success: false, message: error.message });
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Not authorized" });
     }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // BASIC FIELDS
+    if (req.body.name !== undefined) user.name = req.body.name;
+    if (req.body.email !== undefined) user.email = req.body.email;
+    if (req.body.headline !== undefined) user.headline = req.body.headline;
+    if (req.body.bio !== undefined) user.bio = req.body.bio;
+    if (req.body.country !== undefined) user.country = req.body.country;
+
+    // ARRAYS
+    if (Array.isArray(req.body.skills)) user.skills = req.body.skills;
+    if (Array.isArray(req.body.interests)) user.interests = req.body.interests;
+
+    // OBJECT
+    if (req.body.socialLinks && typeof req.body.socialLinks === "object") {
+      user.socialLinks = req.body.socialLinks;
+    }
+
+    if (req.body.profilePictureUrl) {
+      user.profilePictureUrl = req.body.profilePictureUrl;
+    }
+
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+
+    return res.json({
+      success: true,
+      user: {
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        headline: updatedUser.headline,
+        bio: updatedUser.bio,
+        country: updatedUser.country,
+        profilePictureUrl: updatedUser.profilePictureUrl,
+        skills: updatedUser.skills || [],
+        interests: updatedUser.interests || [],
+        socialLinks: updatedUser.socialLinks || {},
+        savedProjectIds: updatedUser.savedProjectIds || [],
+        connections: updatedUser.connections || [],
+        connectionRequests: updatedUser.connectionRequests || [],
+        sentRequests: updatedUser.sentRequests || [],
+        createdAt: updatedUser.createdAt,
+      },
+      token: generateToken(updatedUser._id),
+    });
+
+  } catch (error) {
+    console.error("Profile Update Error:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 // @desc    Get specific user by ID (Public)
