@@ -327,15 +327,20 @@ setCurrentUser(updatedUserData);
 
 localStorage.setItem('user', JSON.stringify(updatedUserData));
 
-setUsers(prev =>
-  prev.map(u =>
-    (u.id === updatedUserData.id || u.id === updatedUserData._id)
-      ? { ...u, ...updatedUserData }
-      : u
-  )
-);
+setUsers(prev => {
+  const exists = prev.find(u => u.id === updatedUserData.id || u.id === updatedUserData._id);
 
-// ⭐ THIS LINE ADD KARO
+  if (exists) {
+    return prev.map(u =>
+      (u.id === updatedUserData.id || u.id === updatedUserData._id)
+        ? { ...u, ...updatedUserData }
+        : u
+    );
+  }
+
+  return [...prev, updatedUserData];
+});
+
 await fetchCurrentUser();
 
 return true;
