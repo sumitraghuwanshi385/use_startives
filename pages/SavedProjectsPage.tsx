@@ -90,9 +90,9 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           )}
 
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
-            <span className="opacity-30">•</span>
-            {timeAgo(idea.postedDate)}
-          </span>
+  <span className="opacity-30">•</span>
+  {timeAgo(idea.createdAt || idea.postedDate)}
+</span>
         </div>
 
         {/* RIGHT: Details (Only clickable area) */}
@@ -187,35 +187,8 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
 };
 
 const SavedProjectsPage: React.FC = () => {
-  const { startupIdeas, currentUser } = useAppContext();
-const [assets,setAssets] = useState([]);
+  const { startupIdeas, assets, currentUser } = useAppContext();
   const [activeTab, setActiveTab] = useState<'ventures' | 'assets'>('ventures');
-
-useEffect(()=>{
-
-const loadAssets = async()=>{
-
-try{
-
-const res = await fetch("https://startives.onrender.com/api/assets");
-const data = await res.json();
-
-const normalizedAssets = (data.assets || data).map((a:any)=>({
- ...a,
- id: a._id || a.id
-}));
-
-setAssets(normalizedAssets);
-
-}catch(err){
-console.error("Assets load failed");
-}
-
-};
-
-loadAssets();
-
-},[]);
 
   if (!currentUser) return null;
 
@@ -224,6 +197,9 @@ loadAssets();
       currentUser.savedProjectIds?.includes(idea.id) &&
       !idea.askingPrice
   );
+const savedAssetsCount = assets.filter(
+(asset)=> currentUser.savedProjectIds?.includes(asset.id)
+).length;
 
   const savedAssets = assets.filter(
  (asset) =>
@@ -261,7 +237,7 @@ loadAssets();
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            Ventures
+            Ventures ({savedProjects.length})
           </button>
           <button
             onClick={() => setActiveTab('assets')}
@@ -271,7 +247,7 @@ loadAssets();
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            Assets
+            Assets ({savedAssetsCount})
           </button>
         </div>
       </div>
