@@ -371,6 +371,78 @@ placeholder="1-5"
                     </FormRow>
                 </FormSection>
 
+<FormSection
+title="Gallery"
+icon={<PhotoIcon />}
+subtext="Supporting screenshots. (Optional)"
+>
+
+<FormRow label="Screenshots">
+
+<div className="space-y-3">
+
+{formData.gallery.length > 0 && (
+
+<div className="grid grid-cols-3 gap-2">
+
+{formData.gallery.map((img, idx) => (
+
+<div key={idx} className="relative group">
+
+<img
+src={img}
+className="w-full h-20 object-cover rounded-lg border border-[var(--border-primary)]"
+/>
+
+<button
+type="button"
+onClick={() =>
+setFormData(prev => ({
+...prev,
+gallery: prev.gallery.filter((_,i)=> i !== idx)
+}))
+}
+className="absolute top-1 right-1 bg-black/70 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100"
+>
+
+×
+
+</button>
+
+</div>
+
+))}
+
+</div>
+
+)}
+
+<div
+onClick={() => galleryInputRef.current?.click()}
+className="flex items-center justify-center p-6 border-2 border-dashed border-[var(--border-primary)] rounded-xl bg-[var(--background-tertiary)] cursor-pointer"
+>
+
+<p className="text-xs font-bold text-[var(--text-muted)]">
+Add Screenshots
+</p>
+
+<input
+type="file"
+multiple
+ref={galleryInputRef}
+className="hidden"
+onChange={e => handleImageUpload(e,'gallery')}
+accept="image/*"
+/>
+
+</div>
+
+</div>
+
+</FormRow>
+
+</FormSection>
+
                 <FormSection title="Competitive Analysis" icon={<GlobeAltIcon />} subtext="Market Positioning.">
                     <FormRow label="Competitors"><textarea name="competitorInfo" value={formData.competitorInfo} onChange={handleInputChange} rows={3} className="block w-full px-4 py-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl text-sm resize-none" /></FormRow>
                 </FormSection>
