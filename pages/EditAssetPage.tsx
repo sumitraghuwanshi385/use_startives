@@ -272,7 +272,10 @@ method:"PUT",
 headers:{
 "Content-Type":"application/json"
 },
-body:JSON.stringify(formData)
+body:JSON.stringify({
+...formData,
+imageUrl: formData.brandLogo
+})
 });
 
 if(!res.ok){
@@ -285,10 +288,15 @@ navigate(`/asset/${assetId}`);
 
 }catch(err){
 
-addNotification("Update failed","error");
+console.error("UPDATE ERROR",err);
+
+addNotification("Upload failed","error");
+
+}finally{
+
+setIsLoading(false);
 
 }
-};
     return (
         <div className="max-w-3xl mx-auto pb-24 font-poppins">
             <button onClick={() => navigate(-1)} className="mb-6 inline-flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all rounded-full px-5 py-2 bg-[var(--background-tertiary)] border border-[var(--border-primary)] shadow-none">
