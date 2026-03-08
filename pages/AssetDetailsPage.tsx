@@ -54,9 +54,9 @@ const AssetDetailsPage: React.FC = () => {
     
     // NOTE: Added fetchUserProfile from context
     const { 
-getIdeaById, 
-getUserById, 
-currentUser, 
+assets,
+getUserById,
+currentUser,
 fetchUserProfile,
 sendConnectionRequest,
 isRequestPending,
@@ -79,37 +79,12 @@ isProjectSaved
         }
     }, [location.hash]);
 
-    const [asset,setAsset] = useState<any>(null);
-const [loading,setLoading] = useState(true);
+    
 const [currentImage,setCurrentImage] = useState(1);
 
-useEffect(()=>{
+const asset = assets.find(a => a.id === assetId);
 
-const loadAsset = async()=>{
-
-try{
-
-const res = await fetch(`https://startives.onrender.com/api/assets/${assetId}`);
-
-const data = await res.json();
-
-setAsset(data.asset || data);
-
-}catch(err){
-
-console.error("Asset load failed");
-
-}finally{
-
-setLoading(false);
-
-}
-
-};
-
-if(assetId) loadAsset();
-
-},[assetId]);
+const loading = !asset;
 
     // NOTE: New Logic to Load Founder from API if not found locally
     useEffect(() => {
@@ -447,9 +422,7 @@ Gallery
 </h3>
 
 <div className="px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[9px] font-black tracking-widest text-[var(--text-secondary)]">
-{currentImage}/{
-[asset.cardCover || asset.brandLogo, ...(asset.gallery || [])].length
-}
+{currentImage}/{asset.gallery?.length || 1}
 </div>
 
 </div>
@@ -462,7 +435,7 @@ const index = Math.round(el.scrollLeft / el.clientWidth) + 1;
 setCurrentImage(index);
 }}
 >
-                                        {[asset.cardCover || asset.brandLogo, ...(asset.gallery || [])].map((imgUrl, idx) => (
+                                        {(asset.gallery || []).map((imgUrl, idx) => (
                                             <div key={idx} className="flex-shrink-0 w-full aspect-[16/9] snap-center">
                                                 <img 
                                                     src={imgUrl} 
