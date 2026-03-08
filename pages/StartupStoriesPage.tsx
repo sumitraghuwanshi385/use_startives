@@ -121,7 +121,8 @@ saveProject?.(idea.id);
         <img
 src={idea.cardCover || idea.brandLogo}
 alt={idea.title}
-loading="lazy"
+loading="eager"
+decoding="async"
 className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
 />
 
@@ -192,9 +193,7 @@ const fetchAssets = async ()=>{
 
 try{
 
-const res = await fetch("https://startives.onrender.com/api/assets", {
-cache: "force-cache"
-});
+const res = await fetch("https://startives.onrender.com/api/assets");
 
 const data = await res.json();
 
@@ -202,7 +201,7 @@ const normalized = data.assets.map((a:any)=>({
  ...a,
  id: a._id || a.id,
  cardCover: a.cardCover,
-}));
+})).slice(0,12);
 
 setAssets(normalized);
 
@@ -259,9 +258,18 @@ if (activePricing !== 'All') {
 list = list.filter(idea => idea.businessModel === activePricing);
 }
 
-return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+return list;
 
 }, [assets, activeCategory, activePricing, activeLocation, searchTerm]);
+
+if(loading){
+return(
+<div className="flex justify-center items-center h-[60vh]">
+<p className="text-sm font-bold">Loading assets...</p>
+</div>
+)
+}
+
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
         <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
