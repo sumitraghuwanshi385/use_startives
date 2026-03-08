@@ -8,11 +8,12 @@ const VerifyEmailPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [code, setCode] = useState<string[]>(new Array(6).fill(''));
-  const isLoading = authLoadingState.isLoading;
+const [isLoading, setIsLoading] = useState(false);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [timer, setTimer] = useState(0);
   const [resendDisabled, setResendDisabled] = useState(false);
   const timerRef = useRef<number | null>(null);
+
 
   const isResetFlow = location.state?.fromReset === true;
 
