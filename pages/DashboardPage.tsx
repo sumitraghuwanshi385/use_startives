@@ -290,11 +290,27 @@ const DashboardPage: React.FC = () => {
   currentUser,
 ]);
 
+const totalSavedCount = useMemo(() => {
+
+if(!currentUser) return 0;
+
+const savedIds = currentUser.savedProjectIds || [];
+
+const validIdeas = startupIdeas.filter(i => savedIds.includes(i.id));
+
+const validAssets = savedIds.filter(id =>
+!startupIdeas.some(i => i.id === id)
+);
+
+return validIdeas.length + validAssets.length;
+
+},[currentUser,startupIdeas]);
+
   const stats = [
     { title: 'Ventures', value: myProjects.length, icon: '🚀', subtext: 'Active ventures', isPrimary: true, linkTo: '/my-projects', animationDelay: '0.1s' },
     { title: 'Connections', value: currentUser?.connections?.length || 0, icon: '🤝', subtext: 'Your network', linkTo: '/connections', animationDelay: '0.2s' },
     { title: 'Applications', value: totalApplicationsCount, icon: '📨', subtext: 'Track opportunities', linkTo: '/my-applications', animationDelay: '0.3s' },
-    { title: 'Whitelist', value: currentUser?.savedProjectIds?.length || 0, icon: '⭐', subtext: 'Saved ventures', linkTo: '/saved-projects', animationDelay: '0.4s' },
+     { title: 'Whitelist', value: totalSavedCount,, icon: '⭐', subtext: 'Saved ventures', linkTo: '/saved-projects', animationDelay: '0.4s' },
   ];
 
   return (
