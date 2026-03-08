@@ -251,7 +251,7 @@ Multiple
 };
 
 const MyProjectsPage: React.FC = () => {
-  const { startupIdeas, assets, currentUser, deleteIdea } = useAppContext();
+  const { startupIdeas, assets, currentUser, deleteIdea, deleteAsset } = useAppContext();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'projects' | 'assets'>('projects');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -265,11 +265,18 @@ assets.filter(asset => asset.founderEmail === currentUser.email),
 [assets, currentUser.email]);
 
   const confirmDelete = async () => {
-  if (itemToDelete) {
-    await deleteIdea(itemToDelete);
-    setItemToDelete(null);
-  }
-  setIsModalOpen(false);
+
+if(!itemToDelete) return;
+
+if(activeTab === "projects"){
+await deleteIdea(itemToDelete);
+}else{
+await deleteAsset(itemToDelete);
+}
+
+setItemToDelete(null);
+setIsModalOpen(false);
+
 };
 
   return (
@@ -329,9 +336,14 @@ assets.filter(asset => asset.founderEmail === currentUser.email),
         )}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={confirmDelete} title="Permanent removal">
-        Are you sure? This action will remove all project history and associated data forever.
-      </Modal>
+      <Modal 
+isOpen={isModalOpen} 
+onClose={() => setIsModalOpen(false)} 
+onConfirm={confirmDelete} 
+title="Confirm delete listing"
+>
+Are you sure? This listing will be permanently removed and cannot be recovered.
+</Modal>
     </div>
   );
 };
