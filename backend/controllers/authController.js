@@ -42,14 +42,9 @@ const registerUser = async (req, res) => {
 
         // ✅ FIX: Return token + user
         return res.status(201).json({
-            success: true,
-            user: {
-                id: user._id,
-                email: user.email,
-                name: user.name,
-            },
-            token: generateToken(user._id),
-        });
+    success: true,
+    verificationCode: verificationCode
+});
 
     } catch (error) {
         console.error('Signup Error:', error);
