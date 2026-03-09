@@ -243,6 +243,22 @@ const DashboardPage: React.FC = () => {
   receivedApplications 
 } = useAppContext();
 
+// 🔥 DASHBOARD LOADING FIX
+  if (!currentUser || !startupIdeas) {
+    return (
+      <div className="p-8 space-y-6 animate-pulse">
+        <div className="h-10 bg-gray-200 rounded w-1/3"></div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="h-24 bg-gray-200 rounded"></div>
+          <div className="h-24 bg-gray-200 rounded"></div>
+          <div className="h-24 bg-gray-200 rounded"></div>
+          <div className="h-24 bg-gray-200 rounded"></div>
+        </div>
+        <div className="h-40 bg-gray-200 rounded"></div>
+      </div>
+    );
+  }
+
   const myProjects = startupIdeas.filter(idea => idea.founderEmail === currentUser?.email);
 
   const totalApplicationsCount = useMemo(() => {
