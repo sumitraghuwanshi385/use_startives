@@ -57,4 +57,4 @@ cb(new Error("File type not supported"));
 
 });
 
-export default upload;
+module.exports = upload;
