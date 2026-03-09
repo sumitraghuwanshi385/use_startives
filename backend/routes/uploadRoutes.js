@@ -1,7 +1,7 @@
 const express = require("express");
 const upload = require("../middleware/upload").default;
 
-const router = express.Router();
+const router = express.Router(); 
 
 router.post("/", upload.single("file"), (req, res) => {
 
