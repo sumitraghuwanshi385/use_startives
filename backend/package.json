@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
-    "@react-oauth/google": "^0.12.1"
+
   }
 }
