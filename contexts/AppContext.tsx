@@ -222,9 +222,6 @@ if (!user.savedProjectIds) {
       if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
       if (user?.connections) setConnectedUserIds(user.connections);
 
-await fetchAllUsers();  
-      await fetchConnections();
-
       setShowOnboardingModal(fromSignup || !user?.headline);
       return true;
     } catch (error: any) {
