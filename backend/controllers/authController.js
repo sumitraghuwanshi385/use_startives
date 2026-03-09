@@ -10,7 +10,73 @@ const generateToken = (id) => {
         expiresIn: '30d',
     });
 };
+/ ✅ NEW - Google Login
+const googleLogin = async (req, res) => {
+    const { access_token } = req.body;
 
+    if (!access_token) {
+        return res.status(400).json({ success: false, message: 'Access token required' });
+    }
+
+    try {
+        const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${access_token}` }
+        });
+
+        const googleUser = await googleRes.json();
+
+        if (!googleUser.email) {
+            return res.status(400).json({ success: false, message: 'Failed to get Google user info' });
+        }
+
+        let user = await User.findOne({ email: googleUser.email });
+
+        if (!user) {
+            const randomPassword = crypto.randomBytes(32).toString('hex');
+            user = await User.create({
+                email: googleUser.email,
+                name: googleUser.name || 'Google User',
+                googleId: googleUser.sub,
+                profilePictureUrl: googleUser.picture || '',
+                password: randomPassword
+            });
+        } else {
+            if (!user.googleId) {
+                user.googleId = googleUser.sub;
+                if (googleUser.picture && !user.profilePictureUrl) {
+                    user.profilePictureUrl = googleUser.picture;
+                }
+                await user.save();
+            }
+        }
+
+        return res.json({
+            success: true,
+            user: {
+                id: user._id,
+                name: user.name || '',
+                email: user.email,
+                headline: user.headline,
+                country: user.country,
+                profilePictureUrl: user.profilePictureUrl,
+                bio: user.bio,
+                skills: user.skills || [],
+                interests: user.interests || [],
+                socialLinks: user.socialLinks || {},
+                savedProjectIds: user.savedProjectIds || [],
+                connections: user.connections || [],
+                connectionRequests: user.connectionRequests || [],
+                sentRequests: user.sentRequests || [],
+                createdAt: user.createdAt,
+            },
+            token: generateToken(user._id),
+        });
+
+    } catch (error) {
+        console.error('Google Login Error:', error);
+        return res.status(500).json({ success: false, message: 'Google login failed' });
+    }
+};
 // @desc    Register new user
 // @route   POST /api/auth/signup
 const registerUser = async (req, res) => {
@@ -268,6 +334,7 @@ const toggleSavedProject = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
+    googleLogin,
     updateUserProfile,
     toggleSavedProject,
     getUserById,
