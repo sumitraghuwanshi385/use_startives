@@ -29,24 +29,16 @@ const registerUser = async (req, res) => {
     // ✅ generate verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // ✅ create user
-    const user = await User.create({
-      email,
-      password,
-      name: name || ""
-    });
-
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid user data"
-      });
-    }
+    // DO NOT create user yet
+// user will be created after verification
 
     // ✅ send email
     // send email in background (no delay)
-sendEmail(email, "Verify your Startives Account", verificationCode)
-  .catch(err => console.log("Email failed:", err.message));
+try {
+  await sendEmail(email, "Verify your Startives Account", verificationCode);
+} catch (err) {
+  console.log("Email failed:", err.message);
+}
 
     // ✅ return verification code to frontend
     return res.status(201).json({
