@@ -22,8 +22,11 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
   const [notifications, setNotifications] = useState<AppSystemNotification[]>([]);
   const [appNotifications, setAppNotifications] =
   useState<AppNotification[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+  const savedUser = localStorage.getItem("user");
+  return savedUser ? JSON.parse(savedUser) : null;
+});
+
   // Start empty; fill from backend
   const [users, setUsers] = useState<User[]>([]);
   
@@ -37,6 +40,40 @@ const [receivedApplications, setReceivedApplications] = useState<Application[]>(
 
   const [sentConnectionRequests, setSentConnectionRequests] = useState<string[]>([]);
   const [connectedUserIds, setConnectedUserIds] = useState<string[]>([]);
+
+useEffect(() => {
+
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    setIsLoading(false);
+    return;
+  }
+
+  const loadUser = async () => {
+    try {
+
+      const res = await axios.get("/api/auth/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data?.success) {
+        const user = res.data.user;
+
+        setCurrentUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
+    } catch (err) {
+      console.log("User load failed");
+    }
+
+    setIsLoading(false);
+  };
+
+  loadUser();
+
+}, []);
 
   // ---------------- NOTIFICATIONS ----------------
   const addNotificationCallBack = useCallback((message: string, type: AppSystemNotification['type']) => {
