@@ -67,6 +67,66 @@ const PrivacyPolicyContent: React.FC = () => (
             <AccordionItem title={<span className="flex items-center gap-3">Updates</span>}>
                 <p>We may update this privacy policy from time to time to reflect changes in our practices, technology, or legal requirements. When we make significant changes, we will notify you through a prominent notice on our platform or by sending an email to the address associated with your account. We encourage you to review this policy periodically to stay informed about how we are protecting your information. Your continued use of Startives after any changes constitutes your acceptance of the new terms.</p>
             </AccordionItem>
+<AccordionItem title={<span className="flex items-center gap-3">Assets marketplace rules</span>}>
+<p>
+Startives allows founders to buy and sell digital assets such as SaaS codebases,
+domains, templates, and online businesses. All asset listings must be truthful,
+accurate, and must not violate intellectual property laws. Sellers are responsible
+for ensuring they have full rights to sell the asset. We may remove listings that
+appear fraudulent or misleading.
+</p>
+</AccordionItem>
+
+<AccordionItem title={<span className="flex items-center gap-3">Startalks content policy</span>}>
+<p>
+Startalks is our social feed designed for founders and builders. Users may share
+updates, progress, and discussions related to startups. Content that includes
+harassment, spam, hate speech, scams, or misleading financial claims will be
+removed. Repeated violations may result in account suspension.
+</p>
+</AccordionItem>
+
+<AccordionItem title={<span className="flex items-center gap-3">Account deletion</span>}>
+<p>
+Users may request account deletion at any time through the platform settings or by
+contacting our support team. Once an account is deleted, your profile, projects,
+messages, and personal data will be permanently removed from our active systems
+within a reasonable timeframe.
+</p>
+</AccordionItem>
+
+<AccordionItem title={<span className="flex items-center gap-3">Project collaboration</span>}>
+<p>
+Startives enables users to collaborate on startup ideas and ventures. While we
+provide the platform to connect, we are not responsible for agreements or disputes
+between collaborators. Users are encouraged to conduct their own due diligence
+before entering partnerships.
+</p>
+</AccordionItem>
+
+<AccordionItem title={<span className="flex items-center gap-3">Fraud prevention</span>}>
+<p>
+To maintain a trusted ecosystem, we monitor suspicious behavior such as fake
+projects, impersonation, and financial scams. Accounts involved in fraudulent
+activity may be suspended or permanently banned from the platform.
+</p>
+</AccordionItem>
+
+<AccordionItem title={<span className="flex items-center gap-3">Reporting abuse</span>}>
+<p>
+Users can report inappropriate content, assets, or profiles directly through the
+platform. Our moderation team reviews all reports and may take actions including
+removing content, issuing warnings, or banning users who violate our policies.
+</p>
+</AccordionItem>
+
+<AccordionItem title={<span className="flex items-center gap-3">Platform security</span>}>
+<p>
+We use modern security practices to protect user accounts and data. However,
+users are responsible for maintaining the confidentiality of their login
+credentials and must notify us immediately if they suspect unauthorized access.
+</p>
+</AccordionItem>
         </div>
     </div>
 );
@@ -178,7 +238,7 @@ const AboutContent: React.FC = () => (
 
 const SponsorshipContent: React.FC = () => (
     <div className="bg-[var(--component-background)] p-10 rounded-[2.5rem] border border-[var(--border-primary)] text-center font-poppins shadow-sm">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-red-500 to-blue-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
             <RocketLaunchIcon className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-3xl font-extrabold text-[var(--text-primary)] mb-4 uppercase tracking-tighter">Partner with Innovation</h2>
