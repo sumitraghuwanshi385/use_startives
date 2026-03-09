@@ -147,18 +147,18 @@ const EditProfilePage: React.FC = () => {
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append('file', file);
 
       // ✅ Upload image to backend
       const res = await axios.post('/api/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (res.data?.success && res.data?.filePath) {
-        const fullPath = `${res.data.filePath}`; // Ensure full URL
-        setProfilePicturePreview(fullPath);
-        addNotification('Image uploaded!', 'success');
-      } else {
+      if (res.data?.success && res.data?.fileUrl) {
+  const fullPath = res.data.fileUrl;
+  setProfilePicturePreview(fullPath);
+  addNotification('Image uploaded!', 'success');
+} else {
         addNotification('Image upload failed.', 'error');
       }
     } catch (err: any) {
