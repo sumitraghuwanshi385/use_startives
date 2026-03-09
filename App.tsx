@@ -63,7 +63,7 @@ const App: React.FC = () => {
   const location = useLocation();
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
 
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || 712503339038-qovqc64aged7b11binnhven5apekv16o.apps.googleusercontent.com;
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ;
 
   useEffect(() => {
 
