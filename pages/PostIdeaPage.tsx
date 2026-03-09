@@ -268,13 +268,23 @@ formData.append('file', file);
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
 
-    if (res.data?.success) {
-      const imageUrl = res.data.fileUrl;
-      setImagePreviewUrl(imageUrl);
-      addNotification('Image uploaded!', 'success');
-    } else {
-      addNotification('Image upload failed.', 'error');
-    }
+    if (res.data?.success && res.data?.fileUrl) {
+
+  const imageUrl = res.data.fileUrl;
+
+  console.log("Uploaded image URL:", imageUrl); // debug
+
+  setImagePreviewUrl(imageUrl);
+
+  addNotification('Image uploaded!', 'success');
+
+} else {
+
+  console.log("Upload response:", res.data);
+
+  addNotification('Image upload failed.', 'error');
+
+}
 
   } catch (error: any) {
     console.error(error);
@@ -325,8 +335,8 @@ formData.append('file', file);
     ...rest,
   })),
       // ✅ now this is URL (not base64)
-      imageDataUrl: imagePreviewUrl,
-    };
+      imageUrl: imagePreviewUrl,
+};
 
     try {
   const success = await addIdea(ideaToSubmit);
