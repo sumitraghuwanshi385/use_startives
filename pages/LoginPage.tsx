@@ -2,6 +2,7 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME, ChevronLeftIcon } from '../constants';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const GoogleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
     <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +34,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
 const [showPassword,setShowPassword] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false); 
-  const { login, addNotification, currentUser } = useAppContext(); 
+  const { login, addNotification, currentUser , googleLogin } = useAppContext(); 
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -58,14 +59,20 @@ const [showPassword,setShowPassword] = useState(false);
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setIsFormLoading(true);
-    const success = await login('google.testuser@example.com', undefined, false); 
-    setIsFormLoading(false);
-    if (success) {
-      navigate('/dashboard', { replace: true });
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+        setIsFormLoading(true);
+        const success = await googleLogin(tokenResponse.access_token);
+        setIsFormLoading(false);
+        if (success) {
+            navigate('/dashboard', { replace: true });
+        }
+    },
+    onError: () => {
+        addNotification('Google login failed. Please try again.', 'error');
+        setIsFormLoading(false);
     }
-  };
+});
   
   const inputBaseClasses = "block w-full px-6 py-3.5 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-full placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-sm text-[var(--text-primary)] font-medium h-12";
 
@@ -159,7 +166,7 @@ className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-pu
               <div className="relative flex justify-center"><span className="bg-[var(--background-secondary)] px-4 text-[10px] uppercase font-black tracking-widest text-[var(--text-muted)]">Authorized Access</span></div>
             </div>
 
-            <button type="button" onClick={handleGoogleLogin} disabled={isFormLoading} className="w-full flex items-center justify-center py-4 px-6 border border-[var(--border-secondary)] rounded-full text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-background)] hover:bg-[var(--component-background-hover)] transition-all h-14 shadow-none">
+            <button type="button" onClick={() => handleGoogleLogin()} disabled={isFormLoading} className="w-full flex items-center justify-center py-4 px-6 border border-[var(--border-secondary)] rounded-full text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-background)] hover:bg-[var(--component-background-hover)] transition-all h-14 shadow-none">
               <GoogleIcon className="w-4 h-4 mr-3" />
               Continue with Google
             </button>
