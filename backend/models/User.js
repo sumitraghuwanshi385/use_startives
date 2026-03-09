@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: false, default: 'New User' },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    googleId: { type: String }, 
     // Extra fields jo tumhare app me use ho rhi hain
     headline: { type: String },
     country: { type: String },
