@@ -138,7 +138,7 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
                 {talk.authorName}
               </Link>
             ) : (
-              <span className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight font-poppins"> title="Profile not available">
+              <span className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight font-poppins" title="Profile not available">
                 {talk.authorName}
               </span>
             )}
