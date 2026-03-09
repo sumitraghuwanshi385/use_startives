@@ -1,6 +1,7 @@
 // backend/controllers/authController.js
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 
 // --- Generate Token ---
