@@ -388,7 +388,40 @@ if (!user.savedProjectIds) {
         setAuthLoadingState({ isLoading: false, messages: [] });
     }
   };
-
+// ✅ NEW - Google Login
+const googleLogin = async (accessToken: string): Promise<boolean> => {
+    setAuthLoadingState({ isLoading: true, messages: ["Signing in with Google..."] });
+    try {
+        const response = await axios.post('/api/auth/google', { access_token: accessToken });
+        
+        if (!response.data?.success) {
+            addNotificationCallBack(response.data?.message || 'Google login failed.', 'error');
+            return false;
+        }
+        
+        const { user, token: newToken } = response.data;
+        if (!user.savedProjectIds) user.savedProjectIds = [];
+        
+        localStorage.setItem('authToken', newToken);
+        localStorage.setItem('user', JSON.stringify(user));
+        setToken(newToken);
+        setCurrentUser(user);
+        
+        if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
+        if (user?.connections) setConnectedUserIds(user.connections);
+        
+        setShowOnboardingModal(!user?.headline);
+        addNotificationCallBack("Signed in with Google!", "success");
+        return true;
+        
+    } catch (error: any) {
+        console.error("Google Login Error:", error);
+        addNotificationCallBack(error.response?.data?.message || 'Google login failed.', 'error');
+        return false;
+    } finally {
+        setAuthLoadingState({ isLoading: false, messages: [] });
+    }
+};
   // ---------------- IDEAS ----------------
   const addIdea = async (ideaData: any) => {
   if (!currentUser) return false;
@@ -1085,7 +1118,7 @@ useEffect(() => {
 fetchAssets, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
     addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
-    login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus,
+    login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus, googleLogin,
     removeApplication,
     toggleSaveProject, isProjectSaved, getUserById, removeConnection,
 declineConnectionRequest,
