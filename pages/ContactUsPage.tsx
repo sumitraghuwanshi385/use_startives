@@ -170,8 +170,7 @@ const ContactUsPage: React.FC = () => {
 
     setIsSubmitting(false);
 };
-        setFormData({ name: currentUser?.name || '', email: currentUser?.email || '', subject: '', message: '' });
-    };
+        
 
     const inputClasses = "block w-full px-5 py-3.5 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-xl shadow-sm placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-200 text-[var(--text-primary)] text-sm font-medium";
 
