@@ -1,6 +1,7 @@
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("../config/cloudinary");
+const cloudinary = require("../config/cloudinary").default;
+
 const allowedMimeTypes = [
 
 "image/jpeg",
@@ -33,27 +34,27 @@ const allowedMimeTypes = [
 ];
 
 const storage = new CloudinaryStorage({
-cloudinary,
-params: {
-folder: "startives"
-}
+  cloudinary,
+  params: {
+    folder: "startives"
+  }
 });
 
 const upload = multer({
 
-storage: storage,
+  storage: storage,
 
-limits: { fileSize: 25 * 1024 * 1024 },
+  limits: { fileSize: 25 * 1024 * 1024 },
 
-fileFilter: function (req, file, cb) {
+  fileFilter: function (req, file, cb) {
 
-if (allowedMimeTypes.includes(file.mimetype)) {
-cb(null, true);
-} else {
-cb(new Error("File type not supported"));
-}
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("File type not supported"));
+    }
 
-}
+  }
 
 });
 
