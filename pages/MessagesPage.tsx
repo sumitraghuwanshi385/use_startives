@@ -149,12 +149,8 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({ isOpen, onClose, onCr
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (res.data?.success && res.data?.filePath) {
-  setTeamImage(
-    res.data.filePath.startsWith('http')
-      ? res.data.filePath
-      : `${API_BASE}${res.data.filePath}`
-  );
+      if (res.data?.success && res.data?.fileUrl) {
+  setTeamImage(res.data.fileUrl);
 }
     } finally {
       setIsUploading(false);
@@ -468,9 +464,7 @@ markAsRead();
 
   return {
   name: file.name,
-  url: data.filePath.startsWith('http')
-    ? data.filePath
-    : `${API_BASE}${data.filePath}`,
+  url: data.fileUrl,
   mimeType: file.type,
   size: file.size,
 };
