@@ -131,15 +131,45 @@ const ContactUsPage: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!formData.message.trim() || !formData.name.trim()) {
-            addNotification("Please fill in your name and message.", "error");
-            return;
-        }
-        setIsSubmitting(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setIsSubmitting(false);
-        addNotification("Thank you! Your message has been sent successfully. We'll be in touch soon.", "success");
+    e.preventDefault();
+
+    if (!formData.message.trim() || !formData.name.trim()) {
+        addNotification("Please fill in your name and message.", "error");
+        return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+
+        await fetch("https://formsubmit.co/ajax/usestartives@gmail.com", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                subject: formData.subject || "Contact message",
+                message: formData.message
+            })
+        });
+
+        addNotification("Message sent successfully!", "success");
+
+        setFormData({
+            name: currentUser?.name || "",
+            email: currentUser?.email || "",
+            subject: "",
+            message: ""
+        });
+
+    } catch (err) {
+        addNotification("Failed to send message.", "error");
+    }
+
+    setIsSubmitting(false);
+};
         setFormData({ name: currentUser?.name || '', email: currentUser?.email || '', subject: '', message: '' });
     };
 
