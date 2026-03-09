@@ -216,6 +216,7 @@ receivedApplications: Application[];
   getPositionById: (ideaId: string, positionId: string) => Position | undefined;
   login: (credential: string, password?: string, fromSignup?: boolean) => Promise<boolean>; 
   signup: (email: string, password?: string) => Promise<boolean>; 
+  googleLogin: (accessToken: string) => Promise<boolean>;
   verifyAndLogin: (code: string) => Promise<boolean>;
   logout: () => void;
   updateUser: (updates: UserProfileUpdate) => Promise<boolean>;
