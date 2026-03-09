@@ -260,7 +260,7 @@ const [teamSize, setTeamSize] = useState('');
     setIsImageUploading(true);
 
     const formData = new FormData();
-    formData.append('image', file);
+formData.append('file', file);
 
     const res = await axios.post(
       'https://startives.onrender.com/api/upload',
@@ -269,7 +269,7 @@ const [teamSize, setTeamSize] = useState('');
     );
 
     if (res.data?.success) {
-      const imageUrl = res.data.url || res.data.filePath;
+      const imageUrl = res.data.fileUrl;
       setImagePreviewUrl(imageUrl);
       addNotification('Image uploaded!', 'success');
     } else {
