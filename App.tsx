@@ -63,8 +63,16 @@ const App: React.FC = () => {
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+
+  const warmServer = async () => {
+    try {
+      await fetch("https://startives.onrender.com/api/ideas");
+    } catch (err) {}
+  };
+
+  warmServer();
+
+}, []);
 
   const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
   const staticPages = ['/about', '/privacy-policy', '/contact-us', '/sponsorship'];
@@ -96,11 +104,13 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
-      {authLoadingState.isLoading && <FullScreenLoader messages={authLoadingState.messages} />}
+      {authLoadingState.isLoading && location.pathname === "/login" && (
+  <FullScreenLoader messages={authLoadingState.messages} />
+)}
       {currentUser && showOnboardingModal && <OnboardingPage />}
       {showHeader && <Header />}
 <NotificationArea />
-      <main key={location.pathname} className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+      <main className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
