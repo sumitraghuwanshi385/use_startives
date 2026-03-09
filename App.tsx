@@ -66,7 +66,15 @@ const App: React.FC = () => {
 
   const warmServer = async () => {
     try {
-      await fetch("https://startives.onrender.com/api/ideas");
+
+      // Wake backend
+      fetch("https://startives.onrender.com/test123").catch(()=>{})
+
+      // Prefetch APIs
+      fetch("https://startives.onrender.com/api/ideas").catch(()=>{})
+      fetch("https://startives.onrender.com/api/assets").catch(()=>{})
+      fetch("https://startives.onrender.com/api/startalks").catch(()=>{})
+
     } catch (err) {}
   };
 
