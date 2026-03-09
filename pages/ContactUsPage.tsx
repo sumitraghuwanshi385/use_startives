@@ -190,7 +190,7 @@ const ContactUsPage: React.FC = () => {
                     <p className="max-w-2xl text-base text-[var(--text-secondary)]">
                         Have questions, ideas, or feedback? We're here to help you navigate your startup journey on {APP_NAME}.
                     </p>
-                    <button onClick={() => setIsFeedbackOpen(true)} className="text-purple-600 font-bold uppercase text-[10px] tracking-widest hover:underline decoration-2 underline-offset-4">Give feedback</button>
+                    
                 </div>
             </header>
 
@@ -219,9 +219,38 @@ const ContactUsPage: React.FC = () => {
                             </div>
                             <div>
                                 <h4 className="font-bold text-[var(--text-primary)]">Twitter support</h4>
-                                <p className="text-xs text-[var(--text-muted)]">DM us @startives for quick help.</p>
+                                <p className="text-xs text-[var(--text-muted)]">DM us @usestartives for quick help.</p>
                             </div>
                         </div>
+<div className="flex items-center space-x-4">
+  <div className="w-10 h-10 rounded-2xl bg-purple-100 dark:bg-purple-500/10 flex items-center justify-center text-purple-600">
+    <ChatBubbleLeftRightIcon className="w-5 h-5" />
+  </div>
+  <div>
+    <h4 className="font-bold text-[var(--text-primary)]">Give feedback</h4>
+    <p className="text-xs text-[var(--text-muted)]">Share ideas to improve Startives.</p>
+  </div>
+</div>
+
+<div className="flex items-center space-x-4">
+  <div className="w-10 h-10 rounded-2xl bg-yellow-100 dark:bg-yellow-500/10 flex items-center justify-center text-yellow-600">
+    <EnvelopeOpenIcon className="w-5 h-5" />
+  </div>
+  <div>
+    <h4 className="font-bold text-[var(--text-primary)]">Delete account</h4>
+    <p className="text-xs text-[var(--text-muted)]">Request permanent account removal.</p>
+  </div>
+</div>
+
+<div className="flex items-center space-x-4">
+  <div className="w-10 h-10 rounded-2xl bg-red-100 dark:bg-red-500/10 flex items-center justify-center text-red-600">
+    <PhoneIcon className="w-5 h-5" />
+  </div>
+  <div>
+    <h4 className="font-bold text-[var(--text-primary)]">Report user / project / asset</h4>
+    <p className="text-xs text-[var(--text-muted)]">Report abuse or suspicious activity.</p>
+  </div>
+</div>
                     </div>
                 </div>
 
@@ -243,7 +272,15 @@ const ContactUsPage: React.FC = () => {
                                 value={formData.subject} 
                                 onChange={handleSubjectChange} 
                                 placeholder="General inquiry"
-                                options={['General inquiry', 'Platform support', 'Partnership', 'Feedback', 'Other']}
+                                options={[
+'General inquiry',
+'Platform support',
+'Partnership',
+'Feedback',
+'Delete account',
+'Report user / project / asset',
+'Other'
+]}
                             />
                         </div>
                         <div className="text-left">
