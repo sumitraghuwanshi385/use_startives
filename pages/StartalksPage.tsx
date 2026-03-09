@@ -134,15 +134,15 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
           <div className="overflow-hidden text-left">
             {profileClickable ? (
-              <Link to={`/user/${talk.authorId}`} className="font-bold text-sm md:text-base text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight uppercase">
+              <Link to={`/user/${talk.authorId}`} className="font-semibold text-sm md:text-base text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight font-poppins">
                 {talk.authorName}
               </Link>
             ) : (
-              <span className="font-bold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight uppercase" title="Profile not available">
+              <span className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight font-poppins"> title="Profile not available">
                 {talk.authorName}
               </span>
             )}
-            <p className="text-[10px] md:text-xs text-[var(--text-muted)] truncate font-medium uppercase tracking-widest">{talk.authorHeadline || "Builder"}</p>
+            <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">{talk.authorHeadline || "Builder"}</p>
           </div>
         </div>
 
