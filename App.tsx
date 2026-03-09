@@ -38,6 +38,7 @@ import ContactUsPage from './pages/ContactUsPage';
 import SearchPage from './pages/SearchPage';
 import { useAppContext } from './contexts/AppContext';
 import FloatingActionMenu from './components/FloatingActionMenu';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 interface PageTitleProps {
   title: string;
@@ -61,6 +62,8 @@ const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: s
 const App: React.FC = () => {
   const location = useLocation();
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
+
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || 712503339038-qovqc64aged7b11binnhven5apekv16o.apps.googleusercontent.com;
 
   useEffect(() => {
 
@@ -111,6 +114,7 @@ const App: React.FC = () => {
   const isFullHeightPage = location.pathname.startsWith('/messages') || location.pathname.startsWith('/team/') || location.pathname === '/blueprint' || location.pathname.startsWith('/asset/');
 
   return (
+      <GoogleOAuthProvider clientId={googleClientId}>
     <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
       {authLoadingState.isLoading && location.pathname === "/login" && (
   <FullScreenLoader messages={authLoadingState.messages} />
@@ -166,6 +170,7 @@ const App: React.FC = () => {
       {showFooter && <Footer />}
       {showFAB && <FloatingActionMenu />}
     </div>
+        </GoogleOAuthProvider>
   );
 };
 
