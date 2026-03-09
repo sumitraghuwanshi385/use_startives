@@ -66,9 +66,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
 
 // --- Helper to fix Image URLs ---
 const getImageUrl = (url: string) => {
-  if (!url) return '';
-  if (url.startsWith('http') || url.startsWith('data:')) return url;
-  return `${url}`; // ✅ Fix for local backend uploads
+  if (!url) return "";
+  return url;
 };
 
 export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: string) => void; className?: string }> = ({
@@ -302,12 +301,12 @@ const hasShuffled = useRef(false);
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (res.data?.success && res.data?.filePath) {
-        setImagePreview(res.data.filePath); // Store path like "/uploads/img.jpg"
-        if(addNotification) addNotification('Image uploaded!', 'success');
-      } else {
-        if(addNotification) addNotification('Image upload failed.', 'error');
-      }
+      if (res.data?.success && res.data?.fileUrl) {
+  setImagePreview(res.data.fileUrl); // Cloudinary URL
+  if(addNotification) addNotification('Image uploaded!', 'success');
+} else {
+  if(addNotification) addNotification('Image upload failed.', 'error');
+}
     } catch (err: any) {
       console.error(err);
       if(addNotification) addNotification(err?.response?.data?.message || 'Image upload failed.', 'error');
