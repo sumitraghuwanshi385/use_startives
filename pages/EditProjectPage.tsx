@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, useRef, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
+import axios from "axios";
 import { useAppContext } from '../contexts/AppContext';
 import { Position, StartupIdea, StartupCategory, BusinessModel, WorkMode } from '../types'; 
 import { PageTitle } from '../App';
@@ -394,14 +395,32 @@ setTeamSize(idea.teamSize ? String(idea.teamSize) : '');
         <FormSection title="Visuals & Links" icon={<PhotoIcon />} subtext="Keep your listing visually compelling.">
             <FormRow label="Project Image" htmlFor="projectImage" isRequired subtext="Visual identity of your project.">
                 <div>
-                    <input type="file" id="projectImage" accept="image/*" ref={imageInputRef} onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => setImagePreviewUrl(reader.result as string);
-                            reader.readAsDataURL(file);
-                        }
-                    }} className="hidden" />
+                    <input type="file" id="projectImage" accept="image/*" ref={imageInputRef} onChange={async (e) => {
+
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+
+    const res = await axios.post("/api/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+
+    if (res.data?.success) {
+      setImagePreviewUrl(res.data.fileUrl);
+    }
+
+  } catch (err) {
+    console.error("Upload failed");
+  }
+
+}}
+className="hidden" />
                     <button type="button" onClick={() => imageInputRef.current?.click()} className="text-[10px] font-bold uppercase tracking-widest bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] py-2.5 px-6 rounded-full border border-[var(--border-secondary)] transition-all font-poppins">{imagePreviewUrl ? "Change Image" : "Select Image *"}</button>
                     {imagePreviewUrl && <div className="mt-4"><img src={imagePreviewUrl} alt="Preview" className="rounded-lg max-h-48 border border-[var(--border-secondary)] shadow-lg"/></div>}
                 </div>
