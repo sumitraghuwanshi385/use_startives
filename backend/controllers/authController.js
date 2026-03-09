@@ -10,7 +10,7 @@ const generateToken = (id) => {
         expiresIn: '30d',
     });
 };
-/ ✅ NEW - Google Login
+// ✅ NEW - Google Login
 const googleLogin = async (req, res) => {
     const { access_token } = req.body;
 
