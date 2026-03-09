@@ -294,7 +294,7 @@ const hasShuffled = useRef(false);
       setIsImageUploading(true);
 
       const formData = new FormData();
-      formData.append('image', file);
+formData.append('file', file);
 
       // Sending to backend
       const res = await axios.post('/api/upload', formData, {
