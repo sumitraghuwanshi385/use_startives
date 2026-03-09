@@ -88,8 +88,7 @@ removed. Repeated violations may result in account suspension.
 
 <AccordionItem title={<span className="flex items-center gap-3">Account deletion</span>}>
 <p>
-Users may request account deletion at any time through the platform settings or by
-contacting our support team. Once an account is deleted, your profile, projects,
+Users may request account deletion at any time by contacting our support team. Once an account is deleted, your profile, projects,
 messages, and personal data will be permanently removed from our active systems
 within a reasonable timeframe.
 </p>
