@@ -74,14 +74,15 @@ const [isLoading, setIsLoading] = useState(false);
     }
 
     const success = await verifyAndLogin(verificationCode);
-    setIsLoading(false);
+setIsLoading(false);
 
-    if (success) {
-      navigate('/dashboard');
-    } else {
-        setCode(new Array(6).fill(''));
-        inputsRef.current[0]?.focus();
-    }
+if (success) {
+  navigate('/dashboard');
+} else {
+  addNotificationCallBack("Invalid verification code.", "error");
+  setCode(new Array(6).fill(''));
+  inputsRef.current[0]?.focus();
+}
   };
   
   const handleResendCode = () => {
