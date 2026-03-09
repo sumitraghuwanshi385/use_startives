@@ -1,61 +1,44 @@
-import multer from "multer";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import cloudinary from "../config/cloudinary.js";
+import express from "express";
+import upload from "../middleware/upload.js";
 
-const allowedMimeTypes = [
+const router = express.Router();
 
-"image/jpeg",
-"image/jpg",
-"image/png",
-"image/gif",
-"image/webp",
-"image/heic",
-"image/heif",
+/*
+  POST /api/upload
+  Upload images or documents
+*/
 
-"application/pdf",
-"application/msword",
-"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+router.post("/", upload.single("file"), (req, res) => {
 
-"application/vnd.ms-excel",
-"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  try {
 
-"application/vnd.ms-powerpoint",
-"application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded"
+      });
+    }
 
-"text/plain",
-"text/csv",
+    const fileUrl = req.file.path;
 
-"application/zip",
-"application/x-zip-compressed",
-"application/x-rar-compressed",
+    return res.json({
+      success: true,
+      fileUrl: fileUrl,
+      fileType: req.file.mimetype,
+      originalName: req.file.originalname
+    });
 
-"application/json"
+  } catch (error) {
 
-];
+    console.error("Upload error:", error);
 
-const storage = new CloudinaryStorage({
-cloudinary,
-params: {
-folder: "startives"
-}
-});
+    return res.status(500).json({
+      success: false,
+      message: "File upload failed"
+    });
 
-const upload = multer({
-
-storage: storage,
-
-limits: { fileSize: 25 * 1024 * 1024 },
-
-fileFilter: function (req, file, cb) {
-
-if (allowedMimeTypes.includes(file.mimetype)) {
-cb(null, true);
-} else {
-cb(new Error("File type not supported"));
-}
-
-}
+  }
 
 });
 
-export default upload;
+export default router;
