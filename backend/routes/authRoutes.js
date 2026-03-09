@@ -5,6 +5,7 @@ const { protect } = require('../middleware/authMiddleware'); // ✅ Imported
 const { 
     registerUser, 
     loginUser, 
+    googleLogin,
     updateUserProfile, 
     toggleSavedProject,
     getUserById,
@@ -14,6 +15,7 @@ const {
 // --- PUBLIC ROUTES (No Login Required) ---
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
+router.post('/google', googleLogin);
 router.get('/me', protect, getCurrentUser);
 router.get('/users/:id', getUserById); // ✅ Ye public rehna chahiye taaki sab profile dekh sakein
 
