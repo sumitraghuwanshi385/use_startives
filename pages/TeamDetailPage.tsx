@@ -150,13 +150,12 @@ profilePictureUrl: ""
 
 });
 
-setTeamDetails({
+setTeamDetails(prev => ({
 ...team,
 chatImage: team.chatImage || team.image || "",
 members,
-messages: team.messages || []
-});
-
+messages: prev?.messages || []
+}));
 }
 
 }catch(err){
@@ -248,7 +247,7 @@ useEffect(()=>{
 if(teamDetails){
 setEditingTeamName(teamDetails.contact.name || "");
 setEditingTeamDescription(teamDetails.description || "");
-setEditingTeamImagePreview(teamDetails.chatImage || null);
+setEditingTeamImagePreview(teamDetails.chatImage || teamDetails.image || null);
 }
 },[teamDetails]);
 
@@ -420,7 +419,9 @@ Leave Team
               {(teamDetails.chatImage || teamDetails.image) ? (
   <img
 src={
-(teamDetails.chatImage || teamDetails.image)?.startsWith("http")
+(teamDetails.chatImage || teamDetails.image)?.startsWith("data:")
+? (teamDetails.chatImage || teamDetails.image)
+: (teamDetails.chatImage || teamDetails.image)?.startsWith("http")
 ? (teamDetails.chatImage || teamDetails.image)
 : `https://startives.onrender.com${teamDetails.chatImage || teamDetails.image}`
 }
