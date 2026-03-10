@@ -330,8 +330,15 @@ month:'short'
 
       const processed = (data.chats || []).map((c: any) => ({
   ...c,
-  chatImage: c.chatImage || c.image || c.teamImage || "",
-  image: c.chatImage || c.image || c.teamImage || "",
+
+  // TEAM NAME FIX
+  name: c.name || c.contact?.name || "Team",
+
+  // IMAGE FIX
+  chatImage: c.chatImage || c.image || c.teamImage || c.contact?.profilePictureUrl || "",
+
+  image: c.chatImage || c.image || c.teamImage || c.contact?.profilePictureUrl || "",
+
   messages: c.messages || []
 }));
 
