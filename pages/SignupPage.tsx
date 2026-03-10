@@ -2,6 +2,7 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME, ChevronLeftIcon } from '../constants';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const GoogleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
     <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +36,7 @@ const SignupPage: React.FC = () => {
 const [showPassword,setShowPassword] = useState(false);
 const [showConfirmPassword,setShowConfirmPassword] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false); 
-  const { signup, currentUser, login } = useAppContext(); 
+ const { signup, currentUser, googleLogin, addNotification } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
@@ -63,7 +64,7 @@ const [showConfirmPassword,setShowConfirmPassword] = useState(false);
     const success = await signup(email.trim(), password);
 
     if (!success) {
-      setIsFormLoading(false);
+      setIsFormLoading(true);
       return;
     }
 
@@ -78,17 +79,21 @@ const [showConfirmPassword,setShowConfirmPassword] = useState(false);
     setIsFormLoading(false);
 
   }
-};
-  
-  const handleGoogleLogin = async () => {
-    setIsFormLoading(true);
-    const success = await login('google.testuser@example.com', undefined, true);
-    setIsFormLoading(false);
+}
+
+const handleGoogleSignup = useGoogleLogin({
+  onSuccess: async (tokenResponse) => {
+    // optional: loading true karo
+    const success = await googleLogin(tokenResponse.access_token);
     if (success) {
-      navigate(from || '/dashboard', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
-  };
-  
+  },
+  onError: () => {
+    addNotification('Google signup failed. Please try again.', 'error');
+  }
+});
+    
   const inputBaseClasses = "block w-full px-6 py-3.5 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-full placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-sm text-[var(--text-primary)] font-medium h-12";
 
   return (
@@ -188,7 +193,7 @@ className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-pu
               <div className="relative flex justify-center"><span className="bg-[var(--background-secondary)] px-4 text-[10px] uppercase font-black tracking-widest text-[var(--text-muted)]">Secure Signup</span></div>
             </div>
 
-            <button type="button" onClick={handleGoogleLogin} disabled={isFormLoading} className="w-full h-14 flex items-center justify-center py-4 px-6 border border-[var(--border-secondary)] rounded-full text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-background)] hover:bg-[var(--component-background-hover)] transition-all shadow-none">
+            <button type="button" onClick={() => handleGoogleSignup()} disabled={isFormLoading} className="w-full h-14 flex items-center justify-center py-4 px-6 border border-[var(--border-secondary)] rounded-full text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] bg-[var(--component-background)] hover:bg-[var(--component-background-hover)] transition-all shadow-none">
               <GoogleIcon className="w-4 h-4 mr-3" />
               Sign up with Google
             </button>
