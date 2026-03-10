@@ -400,34 +400,42 @@ formData.append('file', file);
 
                   <div className="relative w-8 h-8">
 
-<svg className="w-8 h-8 transform -rotate-90">
+<svg
+viewBox="0 0 36 36"
+className="w-8 h-8 -rotate-90"
+>
 
+<defs>
+<linearGradient id="talkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stopColor="#ff3d5e"/>
+<stop offset="100%" stopColor="#3b82f6"/>
+</linearGradient>
+</defs>
+
+{/* background circle */}
 <circle
-cx="16"
-cy="16"
-r="14"
+cx="18"
+cy="18"
+r="15.915"
 strokeWidth="3"
-className="stroke-gray-300 dark:stroke-gray-700"
+stroke="rgba(120,120,120,0.2)"
 fill="none"
 />
 
+{/* progress circle */}
 <circle
-cx="16"
-cy="16"
-r="14"
+cx="18"
+cy="18"
+r="15.915"
 strokeWidth="3"
-strokeDasharray={88}
-strokeDashoffset={
-88 - (newTalkContent.length / 700) * 88
-}
-className={`transition-all duration-300 ${
-newTalkContent.length > 700
-? "stroke-red-500"
-: newTalkContent.length > 630
-? "stroke-yellow-500"
-: "stroke-blue-500"
-}`}
+stroke="url(#talkGradient)"
 fill="none"
+strokeDasharray="100"
+strokeDashoffset={
+100 - (newTalkContent.length / 700) * 100
+}
+strokeLinecap="round"
+className="transition-all duration-300"
 />
 
 </svg>
