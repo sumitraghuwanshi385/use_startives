@@ -150,15 +150,11 @@ profilePictureUrl: ""
 
 });
 
-setTeamDetails(prev => {
-
-return {
-...(prev || {}),
+setTeamDetails({
 ...team,
+chatImage: team.chatImage || team.image || "",
 members,
-messages: prev?.messages || []
-};
-
+messages: team.messages || []
 });
 
 }
@@ -421,12 +417,12 @@ Leave Team
       <main className="flex-grow overflow-y-auto p-4 sm:p-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <div className="lg:col-span-2 bg-[var(--component-background)] p-6 rounded-xl border border-[var(--border-primary)] flex flex-col sm:flex-row items-center text-center sm:text-left gap-6">
-              {teamDetails.chatImage ? (
+              (teamDetails.chatImage || teamDetails.image) ? (
   <img
 src={
-teamDetails.chatImage?.startsWith("http")
-? teamDetails.chatImage
-: `https://startives.onrender.com${teamDetails.chatImage}`
+(teamDetails.chatImage || teamDetails.image)?.startsWith("http")
+? (teamDetails.chatImage || teamDetails.image)
+: `https://startives.onrender.com${teamDetails.chatImage || teamDetails.image}`
 }
 alt={teamDetails.contact.name}
 className="w-28 h-28 rounded-full object-cover flex-shrink-0 border-4 border-[var(--background-tertiary)] shadow-lg"
