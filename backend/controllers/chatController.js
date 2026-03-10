@@ -11,21 +11,21 @@ const formatChat = (chat, currentUserId) => {
     
     if (chat.isTeam) {
         contact = {
-            id: chatObj._id.toString(),
-            name: chat.chatName,
-            avatarUrl: chat.chatImage,
-            isOnline: false 
-        };
+    id: chatObj._id.toString(),
+    name: chat.chatName,
+    profilePictureUrl: chat.chatImage,
+    isOnline: false 
+};
     } else {
         // Find the other user
         const otherUser = chat.users.find(u => u._id.toString() !== currentUserId.toString());
         if (otherUser) {
             contact = {
-                id: otherUser._id.toString(),
-                name: otherUser.name,
-                avatarUrl: otherUser.profilePictureUrl,
-                isOnline: false 
-            };
+    id: otherUser._id.toString(),
+    name: otherUser.name,
+    profilePictureUrl: otherUser.profilePictureUrl,
+    isOnline: false 
+};
         } else {
             // Self chat case
             contact = { id: "self", name: "Me", avatarUrl: "" };
