@@ -329,10 +329,11 @@ month:'short'
     if (data?.success) {
 
       const processed = (data.chats || []).map((c: any) => ({
-        ...c,
-        chatImage: c.chatImage || c.image || "",
-        messages: c.messages || []
-      }));
+  ...c,
+  chatImage: c.chatImage || c.image || c.teamImage || "",
+  image: c.chatImage || c.image || c.teamImage || "",
+  messages: c.messages || []
+}));
 
       setChats(processed);
     }
