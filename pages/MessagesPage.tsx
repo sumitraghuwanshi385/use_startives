@@ -764,13 +764,13 @@ filteredChats.map(chat => (
              
             <div className="flex items-center gap-3">
               {chat.isTeam ? (
-  chat.image ? (
+  chat.chatImage ? (
     <img
   src={
-    chat.image?.startsWith("http")
-      ? chat.image
-      : `${API_BASE}${chat.image}`
-  }
+  chat.chatImage?.startsWith("http")
+    ? chat.chatImage
+    : `${API_BASE}${chat.chatImage}`
+}
   className="w-12 h-12 rounded-full object-cover"
 />
   ) : (
@@ -850,13 +850,13 @@ onClick={(e) => {
           </button>
 
           {selectedChat.isTeam ? (
-  selectedChat.image ? (
+  selectedChat.chatImage ? (
     <img
   src={
-    selectedChat.image?.startsWith("http")
-      ? selectedChat.image
-      : `${API_BASE}${selectedChat.image}`
-  }
+  selectedChat.chatImage?.startsWith("http")
+    ? selectedChat.chatImage
+    : `${API_BASE}${selectedChat.chatImage}`
+}
   className="w-10 h-10 rounded-full object-cover"
 />
   ) : (
