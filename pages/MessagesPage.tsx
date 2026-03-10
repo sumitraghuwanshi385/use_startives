@@ -795,7 +795,7 @@ filteredChats.map(chat => (
 >
              
             <div className="flex items-center gap-3">
-              {chat.isTeam ? (
+              
  {chat.isTeam ? (
 (chat.chatImage || chat.image) ? (
 
