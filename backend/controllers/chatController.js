@@ -317,19 +317,33 @@ chat.chatName = name || chat.chatName;
 chat.description = description || chat.description;
 chat.chatImage = image || chat.chatImage;
 
+let systemText = "";
+
+if (name && name !== chat.chatName) {
+systemText = `${req.user.name} changed team name to "${name}"`;
+}
+
+if (description && description !== chat.description) {
+systemText = `${req.user.name} updated the team description`;
+}
+
+if (image && image !== chat.chatImage) {
+systemText = `${req.user.name} updated the team photo`;
+}
+
 chat.lastMessage = {
-text:`${req.user.name} changed team name to "${name}"`,
-sender:req.user._id,
-timestamp:new Date()
+text: systemText,
+sender: req.user._id,
+timestamp: new Date()
 };
 
-
 await chat.save();
+
 await Message.create({
 conversationId: chatId,
 sender: req.user._id,
-text:`${req.user.name} changed team name to "${name}"`,
-type:"system"
+text: systemText,
+type: "system"
 });
 
 
