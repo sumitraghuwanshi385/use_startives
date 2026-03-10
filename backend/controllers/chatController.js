@@ -34,6 +34,10 @@ const formatChat = (chat, currentUserId) => {
 
     return {
         id: chatObj._id.toString(),
+
+name: chat.chatName,       // ⭐ ADD THIS
+    image: chat.chatImage,     // ⭐ ADD THIS
+
         contact: contact,
         messages: [], // Messages will be fetched separately or populated if needed
         lastMessagePreview: chat.lastMessage?.text || (chat.isTeam ? "Team created" : "Start chatting"),
