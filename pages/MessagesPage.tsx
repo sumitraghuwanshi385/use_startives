@@ -10,15 +10,20 @@ const getImageUrl = (url?: string) => {
 
   if (!url) return "";
 
-  // Cloudinary / external
-  if (url.startsWith("http")) return url;
+  // already full url
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
 
-  // already full render url
-  if (url.includes("startives.onrender.com")) return url;
+  // uploaded file
+  if (url.startsWith("/")) {
+    return `${API_BASE}${url}`;
+  }
 
-  return `${API_BASE}${url}`;
+  return `${API_BASE}/${url}`;
 
 };
+
 // --- Icons ---
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
@@ -340,9 +345,9 @@ month:'short'
   name: c.name || c.contact?.name || "Team",
 
   // IMAGE FIX
-  chatImage: c.chatImage || c.image || c.teamImage || c.contact?.profilePictureUrl || "",
+  chatImage: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
 
-  image: c.chatImage || c.image || c.teamImage || c.contact?.profilePictureUrl || "",
+image: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
 
   messages: c.messages || []
 }));
