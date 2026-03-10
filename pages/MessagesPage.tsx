@@ -763,7 +763,18 @@ filteredChats.map(chat => (
 >
              
             <div className="flex items-center gap-3">
-              {chat.contact?.profilePictureUrl ? (
+              {chat.isTeam ? (
+  chat.image ? (
+    <img
+      src={chat.image}
+      className="w-12 h-12 rounded-full object-cover"
+    />
+  ) : (
+    <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
+      {chat.name?.[0] || 'T'}
+    </div>
+  )
+) : chat.contact?.profilePictureUrl ? (
   <img
     src={chat.contact.profilePictureUrl}
     className="w-12 h-12 rounded-full object-cover"
@@ -773,10 +784,9 @@ filteredChats.map(chat => (
     {chat.contact?.name?.[0] || 'U'}
   </div>
 )}
-
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-base truncate text-[var(--text-primary)]">
-  {chat.contact?.name}
+  {chat.isTeam ? chat.name : chat.contact?.name}
 </p>
 
 <p className="text-sm text-[var(--text-muted)] truncate">
@@ -830,7 +840,18 @@ onClick={(e) => {
             <ArrowLeftIcon />
           </button>
 
-          {selectedChat.contact?.profilePictureUrl ? (
+          {selectedChat.isTeam ? (
+  selectedChat.image ? (
+    <img
+      src={selectedChat.image}
+      className="w-10 h-10 rounded-full object-cover"
+    />
+  ) : (
+    <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+      {selectedChat.name?.[0] || 'T'}
+    </div>
+  )
+) : selectedChat.contact?.profilePictureUrl ? (
   <img
     src={selectedChat.contact.profilePictureUrl}
     className="w-10 h-10 rounded-full object-cover"
@@ -843,7 +864,7 @@ onClick={(e) => {
 
           <div>
             <p className="font-bold text-sm">
-              {selectedChat.contact?.name}
+              {selectedChat.isTeam ? selectedChat.name : selectedChat.contact?.name}
             </p>
             <p className="text-[10px] text-[var(--text-muted)]">
               {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
