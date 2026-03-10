@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ClipboardDocumentListIcon, ChevronLeftIcon, UserCircleIcon, PaperAirplaneIcon, IdentificationIcon } from '../constants';
 
-const ApplyPage: React.FC = () => {
+const ApplyPage: React.FC = () => { 
   const { ideaId, positionId } = useParams<{ ideaId: string; positionId: string }>();
   const { currentUser, addNotification, isLoading: appLoading } = useAppContext();
   const navigate = useNavigate();
