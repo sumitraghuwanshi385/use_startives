@@ -417,7 +417,7 @@ Leave Team
       <main className="flex-grow overflow-y-auto p-4 sm:p-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <div className="lg:col-span-2 bg-[var(--component-background)] p-6 rounded-xl border border-[var(--border-primary)] flex flex-col sm:flex-row items-center text-center sm:text-left gap-6">
-              (teamDetails.chatImage || teamDetails.image) ? (
+              {(teamDetails.chatImage || teamDetails.image) ? (
   <img
 src={
 (teamDetails.chatImage || teamDetails.image)?.startsWith("http")
