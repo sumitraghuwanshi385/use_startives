@@ -12,22 +12,27 @@ const ApplyPage: React.FC = () => {
 
   const [idea, setIdea] = useState<any>(null);
 const [position, setPosition] = useState<any>(null);
+const [loading, setLoading] = useState(true);
 
 useEffect(() => {
   const fetchIdea = async () => {
-    try {
-      const res = await axios.get(`/api/ideas/${ideaId}`);
-      setIdea(res.data.idea);
+  try {
+    setLoading(true);
 
-      const foundPosition = res.data.idea.positions.find(
-  (p: any) => p.id === positionId
-);
+    const res = await axios.get(`/api/ideas/${ideaId}`);
+    setIdea(res.data.idea);
 
-      setPosition(foundPosition);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    const foundPosition = res.data.idea.positions.find(
+      (p: any) => p.id === positionId
+    );
+
+    setPosition(foundPosition);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (ideaId) fetchIdea();
 }, [ideaId, positionId]);
@@ -36,7 +41,7 @@ useEffect(() => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitLoading, setSubmitLoading] = useState(false);
 
-if (appLoading) {
+if (appLoading || loading) {
   return (
     <div className="text-center py-20">
       <h2 className="text-xl font-semibold">Loading...</h2>
@@ -44,7 +49,7 @@ if (appLoading) {
   );
 }
 
-if (!idea || !position)
+if (!loading && (!idea || !position))
 {
     return (
       <div className="text-center py-20">
