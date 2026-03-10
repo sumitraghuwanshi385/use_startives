@@ -10,14 +10,18 @@ const formatChat = (chat, currentUserId) => {
     const chatObj = chat.toObject();
     
     if (chat.isTeam) {
-        contact = {
+
+const teamImage = chat.chatImage || "";
+
+contact = {
     id: chatObj._id.toString(),
-    name: chat.chatName,
-    profilePictureUrl: chat.chatImage,
-    avatarUrl: chat.chatImage,   // ⭐ ADD THIS
-    isOnline: false 
+    name: chat.chatName || "Team",
+    profilePictureUrl: teamImage,
+    avatarUrl: teamImage,
+    isOnline: false
 };
-    } else {
+
+} else {
         // Find the other user
         const otherUser = chat.users.find(u => u._id.toString() !== currentUserId.toString());
         if (otherUser) {
@@ -39,12 +43,14 @@ const formatChat = (chat, currentUserId) => {
     }
 
     return {
-        id: chatObj._id.toString(),
+    id: chatObj._id.toString(),
 
-name: chat.chatName,       // ⭐ ADD THIS
-    image: chat.chatImage,     // ⭐ ADD THIS
+    name: chat.chatName || "Team",
 
-        contact: contact,
+    image: chat.chatImage || "",
+    chatImage: chat.chatImage || "",
+
+    contact: contact,
         messages: [], // Messages will be fetched separately or populated if needed
         lastMessagePreview: chat.lastMessage?.text || (chat.isTeam ? "Team created" : "Start chatting"),
         lastMessageTimestamp: chat.lastMessage?.timestamp || chat.createdAt,
@@ -313,22 +319,25 @@ if(!chat){
 return res.status(404).json({success:false});
 }
 
-chat.chatName = name || chat.chatName;
-chat.description = description || chat.description;
-chat.chatImage = image || chat.chatImage;
+const oldName = chat.chatName;
+const oldDescription = chat.description;
+const oldImage = chat.chatImage;
 
 let systemText = "";
 
-if (name && name !== chat.chatName) {
+if (name && name !== oldName) {
 systemText = `${req.user.name} changed team name to "${name}"`;
+chat.chatName = name;
 }
 
-if (description && description !== chat.description) {
+if (description && description !== oldDescription) {
 systemText = `${req.user.name} updated the team description`;
+chat.description = description;
 }
 
-if (image && image !== chat.chatImage) {
+if (image && image !== oldImage) {
 systemText = `${req.user.name} updated the team photo`;
+chat.chatImage = image;
 }
 
 chat.lastMessage = {
