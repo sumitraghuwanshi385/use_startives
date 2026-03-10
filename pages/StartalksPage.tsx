@@ -398,12 +398,7 @@ formData.append('file', file);
 
                   <input type="file" ref={imageInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
 
-                  <span className={`text-[10px] font-black uppercase tracking-widest ${newTalkContent.length > 630 ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
-                    {newTalkContent.length} / 500
-                  </span>
-
-                  {isImageUploading && (
-                    <div className="relative w-8 h-8">
+                  <div className="relative w-8 h-8">
 
 <svg className="w-8 h-8 transform -rotate-90">
 
@@ -438,12 +433,20 @@ fill="none"
 </svg>
 
 </div>
+
+                  {isImageUploading && (
+                    <span className="text-[10px] font-black uppercase tracking-widest text-purple-500 animate-pulse">Uploading...</span>
                   )}
                 </div>
 
                 <button
                   onClick={handlePost}
-                  disabled={!newTalkContent.trim() || isPosting || isImageUploading}
+                  disabled={
+!newTalkContent.trim() ||
+newTalkContent.length > 700 ||
+isPosting ||
+isImageUploading
+}
                   className="button-gradient px-6 py-2 rounded-full text-white text-[10px] font-black uppercase tracking-widest shadow-none hover:scale-105 transition-all active:scale-95 disabled:opacity-50 font-poppins"
                 >
                   {isPosting ? "Posting..." : isImageUploading ? "Wait..." : "Share talk"}
