@@ -279,10 +279,10 @@ addNotification("Team updated successfully","success");
 
 setTeamDetails(prev => prev ? {
 ...prev,
+chatImage: editingTeamImagePreview,
 contact:{
 ...prev.contact,
-name:editingTeamName,
-avatarUrl:editingTeamImagePreview
+name:editingTeamName
 },
 description:editingTeamDescription
 }:prev);
@@ -421,8 +421,8 @@ Leave Team
       <main className="flex-grow overflow-y-auto p-4 sm:p-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <div className="lg:col-span-2 bg-[var(--component-background)] p-6 rounded-xl border border-[var(--border-primary)] flex flex-col sm:flex-row items-center text-center sm:text-left gap-6">
-              {teamDetails.contact.avatarUrl ? (
-                  <img src={teamDetails.contact.avatarUrl} alt={teamDetails.contact.name} className="w-28 h-28 rounded-full object-cover flex-shrink-0 border-4 border-[var(--background-tertiary)] shadow-lg" />
+              {teamDetails.chatImage ? (
+  <img src={teamDetails.chatImage} alt={teamDetails.contact.name} className="w-28 h-28 rounded-full object-cover flex-shrink-0 border-4 border-[var(--background-tertiary)] shadow-lg" />
               ) : (
                   <div className="w-28 h-28 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-4xl flex-shrink-0 border-4 border-[var(--background-tertiary)] shadow-lg">
                   {getInitials(teamDetails.contact.name)}
