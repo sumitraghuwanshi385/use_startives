@@ -345,9 +345,8 @@ month:'short'
   name: c.name || c.contact?.name || "Team",
 
   // IMAGE FIX
-  chatImage: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
-
-image: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
+  chatImage: getImageUrl(c.image || c.chatImage || ""),
+image: getImageUrl(c.image || c.chatImage || ""),
 
   messages: c.messages || []
 }));
