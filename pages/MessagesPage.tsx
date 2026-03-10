@@ -796,16 +796,27 @@ filteredChats.map(chat => (
              
             <div className="flex items-center gap-3">
               {chat.isTeam ? (
-  (chat.chatImage || chat.image) ? (
+ {chat.isTeam ? (
+(chat.chatImage || chat.image) ? (
+
 <img
-src={getImageUrl(chat.chatImage || chat.image)}
+src={
+(chat.chatImage || chat.image)?.startsWith("data:")
+? (chat.chatImage || chat.image)
+: (chat.chatImage || chat.image)?.startsWith("http")
+? (chat.chatImage || chat.image)
+: `${API_BASE}${chat.chatImage || chat.image}`
+}
 className="w-12 h-12 rounded-full object-cover"
 />
+
 ) : (
-    <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
-      {chat.name?.[0] || 'T'}
-    </div>
-  )
+
+<div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
+{chat.name?.[0] || 'T'}
+</div>
+
+)
 ) : chat.contact?.profilePictureUrl ? (
   <img
 src={getImageUrl(chat.contact.profilePictureUrl)}
@@ -873,12 +884,27 @@ onClick={(e) => {
             <ArrowLeftIcon />
           </button>
 
-          {selectedChat.isTeam ? (
-  (selectedChat.chatImage || selectedChat.image) ? (
+         {selectedChat.isTeam ? (
+(selectedChat.chatImage || selectedChat.image) ? (
+
 <img
-src={getImageUrl(selectedChat.chatImage || selectedChat.image)}
+src={
+(selectedChat.chatImage || selectedChat.image)?.startsWith("data:")
+? (selectedChat.chatImage || selectedChat.image)
+: (selectedChat.chatImage || selectedChat.image)?.startsWith("http")
+? (selectedChat.chatImage || selectedChat.image)
+: `${API_BASE}${selectedChat.chatImage || selectedChat.image}`
+}
 className="w-10 h-10 rounded-full object-cover"
 />
+
+) : (
+
+<div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
+{selectedChat.name?.[0] || 'T'}
+</div>
+
+)
 ) : (
     <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
       {selectedChat.name?.[0] || 'T'}
