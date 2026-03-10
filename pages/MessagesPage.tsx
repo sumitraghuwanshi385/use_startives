@@ -341,14 +341,17 @@ month:'short'
       const processed = (data.chats || []).map((c: any) => ({
   ...c,
 
+  // TEAM NAME FIX
   name: c.name || c.contact?.name || "Team",
 
-  // ❗ DO NOT modify image here
-  chatImage: c.chatImage || c.image || c.teamImage || "",
-  image: c.chatImage || c.image || c.teamImage || "",
+  // IMAGE FIX
+  chatImage: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
+
+image: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
 
   messages: c.messages || []
 }));
+
       setChats(processed);
     }
   } catch (e: any) {
@@ -797,8 +800,7 @@ filteredChats.map(chat => (
 <img
 src={getImageUrl(chat.chatImage || chat.image)}
 className="w-12 h-12 rounded-full object-cover"
-onError={(e)=>{e.currentTarget.style.display='none'}}
- />
+/>
 ) : (
     <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
       {chat.name?.[0] || 'T'}
@@ -876,7 +878,6 @@ onClick={(e) => {
 <img
 src={getImageUrl(selectedChat.chatImage || selectedChat.image)}
 className="w-10 h-10 rounded-full object-cover"
-onError={(e)=>{e.currentTarget.style.display='none'}}
 />
 ) : (
     <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
