@@ -367,7 +367,7 @@ formData.append('file', file);
                 onChange={(e) => setNewTalkContent(e.target.value)}
                 placeholder="What's happening in your venture?"
                 className="w-full bg-transparent border-none focus:ring-0 focus:outline-none text-[var(--text-primary)] font-medium text-base md:text-lg resize-none min-h-[120px] md:min-h-[150px] placeholder-[var(--text-muted)] font-poppins"
-                maxLength={500}
+                maxLength={700}
               />
 
               {imagePreview && (
@@ -398,12 +398,46 @@ formData.append('file', file);
 
                   <input type="file" ref={imageInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
 
-                  <span className={`text-[10px] font-black uppercase tracking-widest ${newTalkContent.length > 450 ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
+                  <span className={`text-[10px] font-black uppercase tracking-widest ${newTalkContent.length > 630 ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
                     {newTalkContent.length} / 500
                   </span>
 
                   {isImageUploading && (
-                    <span className="text-[10px] font-black uppercase tracking-widest text-purple-500 animate-pulse">Uploading...</span>
+                    <div className="relative w-8 h-8">
+
+<svg className="w-8 h-8 transform -rotate-90">
+
+<circle
+cx="16"
+cy="16"
+r="14"
+strokeWidth="3"
+className="stroke-gray-300 dark:stroke-gray-700"
+fill="none"
+/>
+
+<circle
+cx="16"
+cy="16"
+r="14"
+strokeWidth="3"
+strokeDasharray={88}
+strokeDashoffset={
+88 - (newTalkContent.length / 700) * 88
+}
+className={`transition-all duration-300 ${
+newTalkContent.length > 700
+? "stroke-red-500"
+: newTalkContent.length > 630
+? "stroke-yellow-500"
+: "stroke-blue-500"
+}`}
+fill="none"
+/>
+
+</svg>
+
+</div>
                   )}
                 </div>
 
