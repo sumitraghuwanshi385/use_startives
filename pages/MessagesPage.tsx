@@ -766,22 +766,30 @@ filteredChats.map(chat => (
               {chat.isTeam ? (
   chat.image ? (
     <img
-      src={chat.image}
+      src={
+        chat.image.startsWith("http")
+          ? chat.image
+          : `${API_BASE}${chat.image}`
+      }
       className="w-12 h-12 rounded-full object-cover"
     />
   ) : (
     <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
-      {chat.name?.[0] || 'T'}
+      {chat.name?.[0] || "T"}
     </div>
   )
 ) : chat.contact?.profilePictureUrl ? (
   <img
-    src={chat.contact.profilePictureUrl}
+    src={
+      chat.contact.profilePictureUrl.startsWith("http")
+        ? chat.contact.profilePictureUrl
+        : `${API_BASE}${chat.contact.profilePictureUrl}`
+    }
     className="w-12 h-12 rounded-full object-cover"
   />
 ) : (
   <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
-    {chat.contact?.name?.[0] || 'U'}
+    {chat.contact?.name?.[0] || "U"}
   </div>
 )}
               <div className="flex-1 min-w-0">
@@ -840,32 +848,41 @@ onClick={(e) => {
             <ArrowLeftIcon />
           </button>
 
-          {selectedChat.isTeam ? (
+       {selectedChat.isTeam ? (
   selectedChat.image ? (
     <img
-      src={selectedChat.image}
+      src={
+        selectedChat.image?.startsWith("http")
+          ? selectedChat.image
+          : `${API_BASE}${selectedChat.image}`
+      }
       className="w-10 h-10 rounded-full object-cover"
     />
   ) : (
     <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-      {selectedChat.name?.[0] || 'T'}
+      {selectedChat.name?.[0] || "T"}
     </div>
   )
 ) : selectedChat.contact?.profilePictureUrl ? (
   <img
-    src={selectedChat.contact.profilePictureUrl}
+    src={
+      selectedChat.contact.profilePictureUrl?.startsWith("http")
+        ? selectedChat.contact.profilePictureUrl
+        : `${API_BASE}${selectedChat.contact.profilePictureUrl}`
+    }
     className="w-10 h-10 rounded-full object-cover"
   />
 ) : (
   <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-    {selectedChat.contact?.name?.[0] || 'U'}
+    {selectedChat.contact?.name?.[0] || "U"}
   </div>
 )}
-
           <div>
             <p className="font-bold text-sm">
-              {selectedChat.isTeam ? selectedChat.name : selectedChat.contact?.name}
-            </p>
+{selectedChat.isTeam
+  ? selectedChat.name || "Team"
+  : selectedChat.contact?.name || "User"}
+</p>
             <p className="text-[10px] text-[var(--text-muted)]">
               {selectedChat.isTeam ? 'Team Chat' : 'Direct Message'}
             </p>
