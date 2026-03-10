@@ -5,88 +5,66 @@ const mongoose = require('mongoose');
 
 // --- Helper: Format Chat for Frontend ---
 const formatChat = (chat, currentUserId) => {
+    // Determine contact (Other person in Direct, or Team details in Team)
+    let contact = {};
+    const chatObj = chat.toObject();
+    
+    if (chat.isTeam) {
 
-const chatObj = chat.toObject();
-
-let contact = {};
-
-if (chat.isTeam) {
-
-const teamImage = chatObj.chatImage || "";
+const teamImage = chat.chatImage || "";
 
 contact = {
-id: chatObj._id.toString(),
-name: chatObj.chatName || "Team",
-profilePictureUrl: teamImage,
-avatarUrl: teamImage,
-isOnline: false
+    id: chatObj._id.toString(),
+    name: chat.chatName || "Team",
+    profilePictureUrl: teamImage,
+    avatarUrl: teamImage,
+    image: teamImage,
+    isOnline: false
 };
 
 } else {
-
-const otherUser = chat.users.find(
-u => u._id.toString() !== currentUserId.toString()
-);
-
-if (otherUser) {
-
-contact = {
-id: otherUser._id.toString(),
-name: otherUser.name,
-profilePictureUrl: otherUser.profilePictureUrl,
-isOnline: false
+        // Find the other user
+        const otherUser = chat.users.find(u => u._id.toString() !== currentUserId.toString());
+        if (otherUser) {
+            contact = {
+    id: otherUser._id.toString(),
+    name: otherUser.name,
+    profilePictureUrl: otherUser.profilePictureUrl,
+    isOnline: false 
 };
-
-} else {
-
-contact = {
-id: "self",
-name: "Me",
-profilePictureUrl: ""
+        } else {
+            // Self chat case
+            contact = { 
+  id: "self",
+  name: "Me",
+  profilePictureUrl: "",
+  avatarUrl: ""
 };
+        }
+    }
 
-}
-
-}
-
-return {
-
+    return {
 id: chatObj._id.toString(),
 
-name: chatObj.chatName || "Team",
+name: chat.chatName || "Team",
 
-// 🔥 ONLY ONE IMAGE SOURCE
-image: chatObj.chatImage || "",
+image: chat.chatImage || "",
+chatImage: chat.chatImage || "",
+teamImage: chat.chatImage || "",
 
 contact: contact,
-
-messages: [],
-
-lastMessagePreview:
-chatObj.lastMessage?.text ||
-(chatObj.isTeam ? "Team created" : "Start chatting"),
-
-lastMessageTimestamp:
-chatObj.lastMessage?.timestamp || chatObj.createdAt,
-
-unreadCount:
-chatObj.unreadCounts?.get(currentUserId.toString()) || 0,
-
-isTeam: chatObj.isTeam,
-
-description: chatObj.description,
-
-adminId: chatObj.admin ? chatObj.admin._id.toString() : null,
-
-memberIds: chatObj.users.map(u =>
-u._id ? u._id.toString() : u.toString()
-),
-
-members: chatObj.users
-
+        messages: [], // Messages will be fetched separately or populated if needed
+        lastMessagePreview: chat.lastMessage?.text || (chat.isTeam ? "Team created" : "Start chatting"),
+        lastMessageTimestamp: chat.lastMessage?.timestamp || chat.createdAt,
+        unreadCount: chat.unreadCounts?.get(currentUserId.toString()) || 0,
+        isTeam: chat.isTeam,
+        description: chat.description,
+        adminId: chat.admin ? chat.admin._id.toString() : null,
+memberIds: chat.users.map(u => u._id ? u._id.toString() : u.toString()),
+members: chat.users
+    };
 };
 
-};
 // @desc    Get all conversations for user
 // @route   GET /api/chat
 const fetchConversations = async (req, res) => {
