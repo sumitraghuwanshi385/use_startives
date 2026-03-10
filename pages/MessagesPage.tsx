@@ -6,6 +6,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const API_BASE = 'https://startives.onrender.com';
 
+const getImageUrl = (url?: string) => {
+  if (!url) return "";
+
+  if (url.startsWith("http")) return url;
+
+  return `${API_BASE}${url}`;
+};
+
 // --- Icons ---
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
@@ -772,11 +780,7 @@ filteredChats.map(chat => (
               {chat.isTeam ? (
   (chat.chatImage || chat.image) ? (
 <img
-src={
-(chat.chatImage || chat.image)?.startsWith("http")
-? (chat.chatImage || chat.image)
-: `${API_BASE}${chat.chatImage || chat.image}`
-}
+src={getImageUrl(chat.chatImage || chat.image)}
 className="w-12 h-12 rounded-full object-cover"
 />
 ) : (
@@ -786,12 +790,8 @@ className="w-12 h-12 rounded-full object-cover"
   )
 ) : chat.contact?.profilePictureUrl ? (
   <img
-  src={
-    chat.contact.profilePictureUrl?.startsWith("http")
-      ? chat.contact.profilePictureUrl
-      : `${API_BASE}${chat.contact.profilePictureUrl}`
-  }
-  className="w-12 h-12 rounded-full object-cover"
+src={getImageUrl(chat.contact.profilePictureUrl)}
+className="w-12 h-12 rounded-full object-cover"
 />
 ) : (
   <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
@@ -858,11 +858,7 @@ onClick={(e) => {
           {selectedChat.isTeam ? (
   (selectedChat.chatImage || selectedChat.image) ? (
 <img
-src={
-(selectedChat.chatImage || selectedChat.image)?.startsWith("http")
-? (selectedChat.chatImage || selectedChat.image)
-: `${API_BASE}${selectedChat.chatImage || selectedChat.image}`
-}
+src={getImageUrl(selectedChat.chatImage || selectedChat.image)}
 className="w-10 h-10 rounded-full object-cover"
 />
 ) : (
