@@ -340,6 +340,8 @@ systemText = `${req.user.name} updated the team photo`;
 chat.chatImage = image;
 }
 
+if(systemText){
+
 chat.lastMessage = {
 text: systemText,
 sender: req.user._id,
@@ -354,6 +356,12 @@ sender: req.user._id,
 text: systemText,
 type: "system"
 });
+
+}else{
+
+await chat.save();
+
+}
 
 
 res.json({success:true,chat});
