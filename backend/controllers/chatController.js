@@ -18,6 +18,7 @@ contact = {
     name: chat.chatName || "Team",
     profilePictureUrl: teamImage,
     avatarUrl: teamImage,
+    image: teamImage,
     isOnline: false
 };
 
@@ -43,14 +44,15 @@ contact = {
     }
 
     return {
-    id: chatObj._id.toString(),
+id: chatObj._id.toString(),
 
-    name: chat.chatName || "Team",
+name: chat.chatName || "Team",
 
-    image: chat.chatImage || "",
-    chatImage: chat.chatImage || "",
+image: chat.chatImage || "",
+chatImage: chat.chatImage || "",
+teamImage: chat.chatImage || "",
 
-    contact: contact,
+contact: contact,
         messages: [], // Messages will be fetched separately or populated if needed
         lastMessagePreview: chat.lastMessage?.text || (chat.isTeam ? "Team created" : "Start chatting"),
         lastMessageTimestamp: chat.lastMessage?.timestamp || chat.createdAt,
