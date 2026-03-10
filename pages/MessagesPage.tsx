@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { User, ChatConversation, MessageType, FileAttachment } from '../types';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const API_BASE = '';
+const API_BASE = 'https://startives.onrender.com';
 
 // --- Icons ---
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
@@ -766,9 +766,13 @@ filteredChats.map(chat => (
               {chat.isTeam ? (
   chat.image ? (
     <img
-      src={chat.image}
-      className="w-12 h-12 rounded-full object-cover"
-    />
+  src={
+    chat.image?.startsWith("http")
+      ? chat.image
+      : `${API_BASE}${chat.image}`
+  }
+  className="w-12 h-12 rounded-full object-cover"
+/>
   ) : (
     <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
       {chat.name?.[0] || 'T'}
@@ -776,9 +780,13 @@ filteredChats.map(chat => (
   )
 ) : chat.contact?.profilePictureUrl ? (
   <img
-    src={chat.contact.profilePictureUrl}
-    className="w-12 h-12 rounded-full object-cover"
-  />
+  src={
+    chat.contact.profilePictureUrl?.startsWith("http")
+      ? chat.contact.profilePictureUrl
+      : `${API_BASE}${chat.contact.profilePictureUrl}`
+  }
+  className="w-12 h-12 rounded-full object-cover"
+/>
 ) : (
   <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
     {chat.contact?.name?.[0] || 'U'}
@@ -844,9 +852,13 @@ onClick={(e) => {
           {selectedChat.isTeam ? (
   selectedChat.image ? (
     <img
-      src={selectedChat.image}
-      className="w-10 h-10 rounded-full object-cover"
-    />
+  src={
+    selectedChat.image?.startsWith("http")
+      ? selectedChat.image
+      : `${API_BASE}${selectedChat.image}`
+  }
+  className="w-10 h-10 rounded-full object-cover"
+/>
   ) : (
     <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
       {selectedChat.name?.[0] || 'T'}
@@ -854,9 +866,13 @@ onClick={(e) => {
   )
 ) : selectedChat.contact?.profilePictureUrl ? (
   <img
-    src={selectedChat.contact.profilePictureUrl}
-    className="w-10 h-10 rounded-full object-cover"
-  />
+  src={
+    selectedChat.contact.profilePictureUrl?.startsWith("http")
+      ? selectedChat.contact.profilePictureUrl
+      : `${API_BASE}${selectedChat.contact.profilePictureUrl}`
+  }
+  className="w-10 h-10 rounded-full object-cover"
+/>
 ) : (
   <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
     {selectedChat.contact?.name?.[0] || 'U'}
