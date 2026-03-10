@@ -905,10 +905,6 @@ className="w-10 h-10 rounded-full object-cover"
 </div>
 
 )
-) : (
-    <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
-      {selectedChat.name?.[0] || 'T'}
-    </div>
   )
 ) : selectedChat.contact?.profilePictureUrl ? (
   <img
