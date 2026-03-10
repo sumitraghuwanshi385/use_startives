@@ -7,13 +7,18 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const API_BASE = 'https://startives.onrender.com';
 
 const getImageUrl = (url?: string) => {
+
   if (!url) return "";
 
+  // Cloudinary / external
   if (url.startsWith("http")) return url;
 
-  return `${API_BASE}${url}`;
-};
+  // already full render url
+  if (url.includes("startives.onrender.com")) return url;
 
+  return `${API_BASE}${url}`;
+
+};
 // --- Icons ---
 const ArrowLeftIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
