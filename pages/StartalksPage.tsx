@@ -398,11 +398,11 @@ formData.append('file', file);
 
                   <input type="file" ref={imageInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
 
-                  <div className="relative w-8 h-8">
+                  <div className="relative w-9 h-9 flex items-center justify-center">
 
 <svg
 viewBox="0 0 36 36"
-className="w-8 h-8 -rotate-90"
+className="absolute w-9 h-9 -rotate-90"
 >
 
 <defs>
@@ -412,7 +412,7 @@ className="w-8 h-8 -rotate-90"
 </linearGradient>
 </defs>
 
-{/* background circle */}
+{/* background */}
 <circle
 cx="18"
 cy="18"
@@ -422,13 +422,13 @@ stroke="rgba(120,120,120,0.2)"
 fill="none"
 />
 
-{/* progress circle */}
+{/* progress */}
 <circle
 cx="18"
 cy="18"
 r="15.915"
 strokeWidth="3"
-stroke="url(#talkGradient)"
+stroke={newTalkContent.length > 700 ? "#ef4444" : "url(#talkGradient)"}
 fill="none"
 strokeDasharray="100"
 strokeDashoffset={
@@ -439,6 +439,17 @@ className="transition-all duration-300"
 />
 
 </svg>
+
+{/* number inside */}
+<span
+className={`text-[10px] font-bold ${
+newTalkContent.length > 700
+? "text-red-500"
+: "text-[var(--text-primary)]"
+}`}
+>
+{newTalkContent.length}
+</span>
 
 </div>
 
