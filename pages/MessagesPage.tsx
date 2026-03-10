@@ -341,17 +341,14 @@ month:'short'
       const processed = (data.chats || []).map((c: any) => ({
   ...c,
 
-  // TEAM NAME FIX
   name: c.name || c.contact?.name || "Team",
 
-  // IMAGE FIX
-  chatImage: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
-
-image: getImageUrl(c.chatImage || c.image || c.teamImage || ""),
+  // ❗ DO NOT modify image here
+  chatImage: c.chatImage || c.image || c.teamImage || "",
+  image: c.chatImage || c.image || c.teamImage || "",
 
   messages: c.messages || []
 }));
-
       setChats(processed);
     }
   } catch (e: any) {
