@@ -14,6 +14,7 @@ const formatChat = (chat, currentUserId) => {
     id: chatObj._id.toString(),
     name: chat.chatName,
     profilePictureUrl: chat.chatImage,
+    avatarUrl: chat.chatImage,   // ⭐ ADD THIS
     isOnline: false 
 };
     } else {
@@ -28,7 +29,12 @@ const formatChat = (chat, currentUserId) => {
 };
         } else {
             // Self chat case
-            contact = { id: "self", name: "Me", avatarUrl: "" };
+            contact = { 
+  id: "self",
+  name: "Me",
+  profilePictureUrl: "",
+  avatarUrl: ""
+};
         }
     }
 
