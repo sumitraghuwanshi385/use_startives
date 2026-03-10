@@ -800,41 +800,13 @@ filteredChats.map(chat => (
 
 <img
 src={
-(chat.chatImage || chat.image)?.startsWith("http")
+(chat.chatImage || chat.image)?.startsWith("data:")
+? (chat.chatImage || chat.image)
+: (chat.chatImage || chat.image)?.startsWith("http")
 ? (chat.chatImage || chat.image)
 : `${API_BASE}${chat.chatImage || chat.image}`
 }
 className="w-12 h-12 rounded-full object-cover"
-onError={(e)=>{
-
-e.currentTarget.style.display="none";
-
-const parent = e.currentTarget.parentElement;
-
-if(parent){
-
-parent.innerHTML = `
-<div style="
-width:48px;
-height:48px;
-border-radius:9999px;
-background:#ef4444;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:10px;
-font-weight:bold;
-text-align:center;
-padding:4px;
-">
-IMG ERR
-</div>
-`;
-
-}
-
-}}
 />
 ) : (
 
