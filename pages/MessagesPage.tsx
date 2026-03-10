@@ -766,12 +766,12 @@ filteredChats.map(chat => (
               {chat.isTeam ? (
   chat.chatImage ? (
     <img
-  src={
-  chat.chatImage?.startsWith("http")
-    ? chat.chatImage
-    : `${API_BASE}${chat.chatImage}`
+src={
+(chat.chatImage || chat.image)?.startsWith("http")
+? (chat.chatImage || chat.image)
+: `${API_BASE}${chat.chatImage || chat.image}`
 }
-  className="w-12 h-12 rounded-full object-cover"
+className="w-12 h-12 rounded-full object-cover"
 />
   ) : (
     <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
@@ -852,12 +852,12 @@ onClick={(e) => {
           {selectedChat.isTeam ? (
   selectedChat.chatImage ? (
     <img
-  src={
-  selectedChat.chatImage?.startsWith("http")
-    ? selectedChat.chatImage
-    : `${API_BASE}${selectedChat.chatImage}`
+src={
+(selectedChat.chatImage || selectedChat.image)?.startsWith("http")
+? (selectedChat.chatImage || selectedChat.image)
+: `${API_BASE}${selectedChat.chatImage || selectedChat.image}`
 }
-  className="w-10 h-10 rounded-full object-cover"
+className="w-10 h-10 rounded-full object-cover"
 />
   ) : (
     <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
