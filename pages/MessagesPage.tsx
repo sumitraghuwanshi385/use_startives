@@ -316,16 +316,22 @@ month:'short'
   }, [token]);
 
   const fetchChats = async () => {
-    try {
-      const { data } = await axios.get(`${API_BASE}/api/chat`, { headers: authHeaders });
-      if (data?.success) {
-        const processed = (data.chats || []).map((c: any) => ({ ...c, messages: c.messages || [] }));
-        setChats(processed);
-      }
-    } catch (e: any) {
-      console.error('fetchChats error:', e?.response?.data || e?.message || e);
+  try {
+    const { data } = await axios.get(`${API_BASE}/api/chat`, { headers: authHeaders });
+    if (data?.success) {
+
+      const processed = (data.chats || []).map((c: any) => ({
+        ...c,
+        chatImage: c.chatImage || c.image || "",
+        messages: c.messages || []
+      }));
+
+      setChats(processed);
     }
-  };
+  } catch (e: any) {
+    console.error('fetchChats error:', e?.response?.data || e?.message || e);
+  }
+};
 
 useEffect(() => {
   if (!token) return;
@@ -764,8 +770,8 @@ filteredChats.map(chat => (
              
             <div className="flex items-center gap-3">
               {chat.isTeam ? (
-  chat.chatImage ? (
-    <img
+  (chat.chatImage || chat.image) ? (
+<img
 src={
 (chat.chatImage || chat.image)?.startsWith("http")
 ? (chat.chatImage || chat.image)
@@ -773,7 +779,7 @@ src={
 }
 className="w-12 h-12 rounded-full object-cover"
 />
-  ) : (
+) : (
     <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-md">
       {chat.name?.[0] || 'T'}
     </div>
@@ -850,8 +856,8 @@ onClick={(e) => {
           </button>
 
           {selectedChat.isTeam ? (
-  selectedChat.chatImage ? (
-    <img
+  (selectedChat.chatImage || selectedChat.image) ? (
+<img
 src={
 (selectedChat.chatImage || selectedChat.image)?.startsWith("http")
 ? (selectedChat.chatImage || selectedChat.image)
@@ -859,7 +865,7 @@ src={
 }
 className="w-10 h-10 rounded-full object-cover"
 />
-  ) : (
+) : (
     <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs">
       {selectedChat.name?.[0] || 'T'}
     </div>
