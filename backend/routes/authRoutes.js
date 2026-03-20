@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware'); // ✅ Imported
+const { verifyOtp } = require('../controllers/authController');
 
 const { 
     registerUser, 
@@ -16,6 +17,7 @@ const {
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
 router.post('/google', googleLogin);
+router.post('/verify-otp', verifyOtp);
 router.get('/me', protect, getCurrentUser);
 router.get('/users/:id', getUserById); // ✅ Ye public rehna chahiye taaki sab profile dekh sakein
 
@@ -23,5 +25,6 @@ router.get('/users/:id', getUserById); // ✅ Ye public rehna chahiye taaki sab 
 // 🔒 Yahan 'protect' lagana zaroori hai
 router.put('/profile', protect, updateUserProfile);      // ✅ Added protect
 router.put('/save-project', protect, toggleSavedProject); // ✅ Added protect
+
 
 module.exports = router;
