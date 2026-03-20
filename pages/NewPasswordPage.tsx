@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
@@ -15,6 +15,12 @@ const NewPasswordPage: React.FC = () => {
 
   const email = state?.email;
   const otp = state?.otp;
+
+useEffect(() => {
+  if (!email || !otp) {
+    navigate("/forgot-password");
+  }
+}, [email, otp, navigate]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
