@@ -1,4 +1,5 @@
 import React, { useState, useRef, ChangeEvent, KeyboardEvent, ClipboardEvent, useEffect } from 'react';
+import axios from "axios";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { ChevronLeftIcon } from '../constants';
@@ -66,12 +67,29 @@ const [isLoading, setIsLoading] = useState(false);
     }
 
     if (isResetFlow) {
-        // Mock verification for reset
-        await new Promise(r => setTimeout(r, 1500));
-        setIsLoading(false);
-        navigate('/new-password');
-        return;
+  try {
+    const email = location.state?.email;
+
+    const res = await axios.post('/api/auth/reset-password', {
+      email,
+      otp: verificationCode,
+      newPassword: "12345678" // ⚠️ TEMP (abhi ke liye fix)
+    });
+
+    if (res.data?.success) {
+      addNotificationCallBack("Password reset successful", "success");
+      navigate('/login', { state: { resetSuccess: true } });
+    } else {
+      addNotificationCallBack("Reset failed", "error");
     }
+
+  } catch (err:any) {
+    addNotificationCallBack(err.response?.data?.message || "Error", "error");
+  }
+
+  setIsLoading(false);
+  return;
+}
 
     const success = await verifyAndLogin(verificationCode);
 setIsLoading(false);
