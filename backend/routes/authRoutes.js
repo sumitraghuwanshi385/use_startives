@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware'); // ✅ Imported
+const { protect } = require('../middleware/authMiddleware');
 
+// ✅ ADD THESE TWO
 const { 
     registerUser, 
     loginUser, 
@@ -9,20 +10,25 @@ const {
     updateUserProfile, 
     toggleSavedProject,
     getUserById,
-    getCurrentUser
+    getCurrentUser,
+    sendResetOtp,     
+    resetPassword     
 } = require('../controllers/authController');
 
-// --- PUBLIC ROUTES (No Login Required) ---
+// --- PUBLIC ROUTES ---
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
 router.post('/google', googleLogin);
+
+// ✅ FORGOT PASSWORD ROUTES (IMPORTANT 🔥)
+router.post('/forgot-password', sendResetOtp);
+router.post('/reset-password', resetPassword);
+
 router.get('/me', protect, getCurrentUser);
-router.get('/users/:id', getUserById); // ✅ Ye public rehna chahiye taaki sab profile dekh sakein
+router.get('/users/:id', getUserById);
 
-// --- PROTECTED ROUTES (Login Required) ---
-// 🔒 Yahan 'protect' lagana zaroori hai
-router.put('/profile', protect, updateUserProfile);      // ✅ Added protect
-router.put('/save-project', protect, toggleSavedProject); // ✅ Added protect
-
+// --- PROTECTED ROUTES ---
+router.put('/profile', protect, updateUserProfile);
+router.put('/save-project', protect, toggleSavedProject);
 
 module.exports = router;
