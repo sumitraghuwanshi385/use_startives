@@ -29,7 +29,9 @@ const app = express();
 // ===== MIDDLEWARES =====
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL, // e.g. https://startives.vercel.app
+  process.env.FRONTEND_URL,
+  "https://startives.com",
+  "https://www.startives.com",
   "http://localhost:3000",
   "http://localhost:5173",
 ].filter(Boolean);
