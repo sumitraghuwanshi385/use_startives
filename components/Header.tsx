@@ -208,7 +208,7 @@ const handleBellClick = async () => {
         <div className="flex items-center space-x-8">
           <Link to={currentUser ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0">
             <img 
-              src="https://i.postimg.cc/pLTtqf3Q/Picsart-25-09-19-20-29-01-019.png" 
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" 
               alt="Startives Logo" 
               className="h-9" 
             />
