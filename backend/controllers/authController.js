@@ -334,6 +334,77 @@ const toggleSavedProject = async (req, res) => {
     }
 };
 
+// ================= RESET PASSWORD =================
+
+const resetOtpStore = {};
+
+// SEND OTP
+const sendResetOtp = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    resetOtpStore[email] = {
+      otp,
+      expires: Date.now() + 10 * 60 * 1000
+    };
+
+    await sendEmail(email, "Reset Password OTP", otp);
+
+    return res.json({
+      success: true
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send OTP"
+    });
+  }
+};
+
+
+// VERIFY + RESET PASSWORD
+const resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  const record = resetOtpStore[email];
+
+  if (!record) {
+    return res.status(400).json({ success: false, message: "OTP not found" });
+  }
+
+  if (record.expires < Date.now()) {
+    return res.status(400).json({ success: false, message: "OTP expired" });
+  }
+
+  if (record.otp !== otp) {
+    return res.status(400).json({ success: false, message: "Invalid OTP" });
+  }
+
+  const user = await User.findOne({ email });
+
+  user.password = newPassword;
+  await user.save();
+
+  delete resetOtpStore[email];
+
+  return res.json({
+    success: true,
+    message: "Password reset successful"
+  });
+};
+
 module.exports = {
     registerUser,
     loginUser,
@@ -342,4 +413,6 @@ module.exports = {
     toggleSavedProject,
     getUserById,
     getCurrentUser,
+    sendResetOtp,   
+    resetPassword
 };
