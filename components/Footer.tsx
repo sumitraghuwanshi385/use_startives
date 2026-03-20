@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
           <div className="md:col-span-1 lg:col-span-2">
              <Link to="/" className="flex items-center text-[var(--text-primary)] mb-3">
-                <img src="https://i.postimg.cc/pLTtqf3Q/Picsart-25-09-19-20-29-01-019.png" alt="Startives Logo" style={{ height: '32px' }} className="mr-3" />
+                <img src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" alt="Startives Logo" style={{ height: '32px' }} className="mr-3" />
                 <span className="font-startives-brand text-2xl tracking-tighter gradient-text bg-gradient-to-r from-red-500 to-blue-500">{APP_NAME}</span>
             </Link>
             <p className="text-sm max-w-sm">Empowering Startup Founders to Connect & Build.</p>
