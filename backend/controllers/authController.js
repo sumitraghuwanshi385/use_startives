@@ -3,6 +3,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
+const otpStore = {};
 
 // --- Generate Token ---
 const generateToken = (id) => {
@@ -107,11 +108,17 @@ try {
   console.log("Email failed:", err.message);
 }
 
-    // ✅ return verification code to frontend
-    return res.status(201).json({
-      success: true,
-      verificationCode: verificationCode
-    });
+    // store OTP
+otpStore[email] = {
+  code: verificationCode,
+  expires: Date.now() + 10 * 60 * 1000
+};
+
+// DON'T send OTP to frontend
+return res.status(200).json({
+  success: true,
+  message: "OTP sent to email"
+});
 
   } catch (error) {
 
@@ -331,9 +338,50 @@ const toggleSavedProject = async (req, res) => {
     }
 };
 
+const verifyOtp = async (req, res) => {
+  const { email, otp, password, name } = req.body;
+
+  const record = otpStore[email];
+
+  if (!record) {
+    return res.status(400).json({ success: false, message: "OTP not found" });
+  }
+
+  if (record.expires < Date.now()) {
+    delete otpStore[email]; // cleanup expired OTP
+    return res.status(400).json({ success: false, message: "OTP expired" });
+  }
+
+  if (record.code !== otp) {
+    return res.status(400).json({ success: false, message: "Invalid OTP" });
+  }
+
+  // ✅ delete OTP immediately (prevent reuse)
+  delete otpStore[email];
+
+  // ✅ check if user already exists
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    return res.status(400).json({
+      success: false,
+      message: "User already exists"
+    });
+  }
+
+  // ✅ create user now
+  const user = await User.create({ email, password, name });
+
+  return res.json({
+    success: true,
+    token: generateToken(user._id)
+  });
+};
+
 module.exports = {
     registerUser,
     loginUser,
+verifyOtp,
     googleLogin,
     updateUserProfile,
     toggleSavedProject,
