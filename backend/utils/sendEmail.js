@@ -8,7 +8,7 @@ const sendEmail = async (to, subject, code) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: "Startives <onboarding@resend.dev>",
+        from: "Startives <no-reply@startives.com>",
         to: [to],
         subject: subject,
         html: `
