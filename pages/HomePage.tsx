@@ -141,9 +141,9 @@ const HomePage: React.FC = () => {
   ];
   
   const testimonials = [
-      { name: "Kenji Tanaka", role: "Founder, Nexus AI", quote: `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.` },
-      { name: "Priya Sharma", role: "UX Designer", quote: `I was looking to join an exciting project and found the perfect fit here. The quality of ideas is amazing.` },
-      { name: "Wei Zhang", role: "Full-Stack Developer", quote: `As a developer, this platform is a goldmine. I get to work on innovative projects and build my portfolio.` }
+      { name: "Prince", role: "Founder, Apives", quote: `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.` },
+      { name: "Sumit", role: "UX Designer", quote: `I was looking to join an exciting project and found the perfect fit here. The quality of ideas is amazing.` },
+      { name: "Sonali Jaiswal", role: "Full-Stack Developer", quote: `As a developer, this platform is a goldmine. I get to work on innovative projects and build my portfolio.` }
   ];
 
   const companyLogos = [
@@ -415,7 +415,7 @@ const HomePage: React.FC = () => {
                 {[...testimonials, ...testimonials].map((testimonial, index) => (
                   <div key={index} className="flex-shrink-0 w-[90vw] sm:w-[420px]">
                     <div className="p-6 bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] flex flex-col space-y-4 h-full transform transition-all duration-300 hover:-translate-y-1 hover:shadow-none hover:border-purple-500/20 relative overflow-hidden font-poppins shadow-none">
-                      <img src="https://i.postimg.cc/pLTtqf3Q/Picsart-25-09-19-20-29-01-019.png" alt="Logo" className="absolute -top-4 -right-4 w-24 h-24 opacity-5" />
+                      <img src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" alt="Logo" className="absolute -top-4 -right-4 w-24 h-24 opacity-5" />
                       <div className="flex justify-between items-center z-10">
                         <div className="flex space-x-0.5 text-yellow-400">
                           <StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon />
