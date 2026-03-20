@@ -198,7 +198,7 @@ const AboutStartivesBox: React.FC = () => {
                         <div className="flex flex-col gap-3">
                             <div className="flex items-start gap-3 mt-1">
                                 <a 
-                                    href="https://x.com/startives" 
+                                    href="https://x.com/usestartives" 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
                                     className="w-9 h-9 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-[var(--border-primary)] flex items-center justify-center text-[var(--text-primary)] hover:bg-neutral-900 hover:text-white transition-all transform hover:scale-105 shadow-none"
@@ -213,7 +213,7 @@ const AboutStartivesBox: React.FC = () => {
                             </div>
                             <div className="flex items-start gap-3">
                                 <a 
-                                    href="https://instagram.com/startives" 
+                                    href="https://instagram.com/usestartives" 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
                                     className="w-9 h-9 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-[var(--border-primary)] flex items-center justify-center text-[var(--text-primary)] hover:bg-gradient-to-tr hover:from-purple-500 hover:to-orange-500 hover:text-white transition-all transform hover:scale-105 shadow-none"
