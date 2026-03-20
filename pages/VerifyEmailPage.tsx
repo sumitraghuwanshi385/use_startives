@@ -67,25 +67,14 @@ const [isLoading, setIsLoading] = useState(false);
     }
 
     if (isResetFlow) {
-  try {
-    const email = location.state?.email;
+  const email = location.state?.email;
 
-    const res = await axios.post('/api/auth/reset-password', {
+  navigate('/new-password', {
+    state: {
       email,
-      otp: verificationCode,
-      newPassword: "12345678" // ⚠️ TEMP (abhi ke liye fix)
-    });
-
-    if (res.data?.success) {
-      addNotificationCallBack("Password reset successful", "success");
-      navigate('/login', { state: { resetSuccess: true } });
-    } else {
-      addNotificationCallBack("Reset failed", "error");
+      otp: verificationCode
     }
-
-  } catch (err:any) {
-    addNotificationCallBack(err.response?.data?.message || "Error", "error");
-  }
+  });
 
   setIsLoading(false);
   return;
