@@ -93,21 +93,23 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // ✅ generate verification code
+    // ✅ FIX: USER CREATE KARO
+    const user = await User.create({
+      email,
+      password,
+      name: name || "User"
+    });
+
+    // OTP generate
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // DO NOT create user yet
-// user will be created after verification
+    // send email
+    try {
+      await sendEmail(email, "Verify your Startives Account", verificationCode);
+    } catch (err) {
+      console.log("Email failed:", err.message);
+    }
 
-    // ✅ send email
-    // send email in background (no delay)
-try {
-  await sendEmail(email, "Verify your Startives Account", verificationCode);
-} catch (err) {
-  console.log("Email failed:", err.message);
-}
-
-    // ✅ return verification code to frontend
     return res.status(201).json({
       success: true,
       verificationCode: verificationCode
@@ -124,6 +126,7 @@ try {
 
   }
 };
+
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 const loginUser = async (req, res) => {
