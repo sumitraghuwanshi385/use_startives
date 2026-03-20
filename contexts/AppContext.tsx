@@ -274,7 +274,11 @@ if (!user.savedProjectIds) {
   setAuthLoadingState({ isLoading: true, messages: ["Creating account..."] });
 
   try {
-    const res = await axios.post('/api/auth/signup', { email, password });
+    const res = await axios.post('/api/auth/signup', { 
+      email, 
+      password,
+      name: email.split("@")[0] // ✅ FIX
+    });
 
     if (!res.data || !res.data.success) {
       addNotificationCallBack("Signup failed.", "error");
