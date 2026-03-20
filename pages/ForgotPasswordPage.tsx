@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeftIcon } from '../constants';
 import { useAppContext } from '../contexts/AppContext';
+import axios from 'axios'; // ✅ ADD ONLY THIS
 
 const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,16 +13,36 @@ const ForgotPasswordPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
     if (!email.trim()) {
       addNotification("Please enter your email address.", "error");
       setIsLoading(false);
       return;
     }
-    // Simulate API call to send code
-    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    try {
+      // ✅ REAL API CALL (REPLACED FAKE ONE)
+      const res = await axios.post('/api/auth/forgot-password', { email });
+
+      if (res.data?.success) {
+        addNotification(`Verification code sent.`, "success");
+
+        navigate('/verify-email', { 
+          state: { fromReset: true, email } 
+        });
+
+      } else {
+        addNotification("Failed to send code.", "error");
+      }
+
+    } catch (err:any) {
+      addNotification(
+        err.response?.data?.message || "Something went wrong",
+        "error"
+      );
+    }
+
     setIsLoading(false);
-    addNotification(`Verification code sent.`, "success");
-    navigate('/verify-email', { state: { fromReset: true, email } });
   };
 
   return (
