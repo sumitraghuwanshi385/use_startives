@@ -258,7 +258,7 @@ Asset Shop
 </h1>
 
 <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">
-Founders selling to founders.
+Where Startups & SaaS Get Bought and Sold.
 </p>
 </div>
 
