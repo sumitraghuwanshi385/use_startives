@@ -289,7 +289,7 @@ setIsModalOpen(false);
       </div>
 
       <div className="text-left mb-6 font-poppins px-1">
-          <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter">Ventures</h1>
+          <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter">Products</h1>
           <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">Manage your projects and digital assets in one place.</p>
       </div>
 
