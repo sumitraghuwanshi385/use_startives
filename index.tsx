@@ -11,7 +11,7 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
 
 import { AppProvider } from './contexts/AppContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from "react-router-dom";
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -21,13 +21,13 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <HashRouter>
+    <BrowserRouter>
       <ThemeProvider>
         <AppProvider>
           <App />
            <Analytics />  
         </AppProvider>
       </ThemeProvider>
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>
 );
