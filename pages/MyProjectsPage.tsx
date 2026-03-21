@@ -290,7 +290,7 @@ setIsModalOpen(false);
 
       <div className="text-left mb-6 font-poppins px-1">
           <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tighter">Ventures</h1>
-          <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">Manage your ventures and digital assets in one place.</p>
+          <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">Manage your projects and digital assets in one place.</p>
       </div>
 
       <div className="flex justify-center mb-10">
@@ -312,9 +312,9 @@ setIsModalOpen(false);
 </h3>
 
 <p className="text-xs font-medium text-[var(--text-muted)] mt-2 max-w-xs mx-auto italic">
-  Manage and track your ventures from this space.
+  Manage and track your projects from this space.
 </p>
-                <Link to="/post-idea" className="mt-4 inline-block text-purple-600 font-black uppercase text-[10px] hover:underline">Post your first idea</Link>
+                <Link to="/post-idea" className="mt-4 inline-block text-purple-600 font-black uppercase text-[10px] hover:underline">Post your first project</Link>
             </div>
           )
         ) : (
