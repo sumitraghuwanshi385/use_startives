@@ -171,14 +171,14 @@ const WhitelistEmptyGraphic: React.FC<{ type: 'ventures' | 'assets' }> = ({ type
       {/* HEADLINE */}
       <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight uppercase">
         {type === 'ventures'
-          ? 'No saved ventures'
+          ? 'No saved projects'
           : 'No saved assets'}
       </h3>
 
       {/* SUBHEADLINE */}
       <p className="text-xs font-medium text-[var(--text-muted)] italic mt-2 max-w-xs mx-auto">
         {type === 'ventures'
-          ? 'Save promising ventures to build your private vault.'
+          ? 'Save promising projects to build your private vault.'
           : 'Your curated digital assets will appear here.'}
       </p>
 
@@ -223,7 +223,7 @@ const savedAssetsCount = assets.filter(
           Whitelist
         </h1>
         <p className="text-[11px] text-[var(--text-muted)] font-medium mt-0.5 uppercase tracking-widest">
-          Your curated collection of high-potential ventures.
+          Your curated collection of high-potential Products.
         </p>
       </div>
 
@@ -237,7 +237,7 @@ const savedAssetsCount = assets.filter(
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            Ventures ({savedProjects.length})
+            Projects ({savedProjects.length})
           </button>
           <button
             onClick={() => setActiveTab('assets')}
