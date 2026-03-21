@@ -296,7 +296,8 @@ const userAssets = assets.filter(
                     Professional Bio
                 </h3>
                 <section className="bg-white dark:bg-neutral-950 p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-sm">
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-90 whitespace-pre-wrap">
+                    <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium opacity-90 whitespace-pre-wrap">
+
                         {user.bio || "This innovator prefers to let their work speak for itself. Connect to learn more about their journey."}
                     </p>
                 </section>
