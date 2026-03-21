@@ -25,6 +25,7 @@ root.render(
       <ThemeProvider>
         <AppProvider>
           <App />
+           <Analytics />  
         </AppProvider>
       </ThemeProvider>
     </HashRouter>
