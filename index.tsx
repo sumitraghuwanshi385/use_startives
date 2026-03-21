@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import "./global.css";
+import { Analytics } from '@vercel/analytics/react'
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {
   document.body.innerHTML =
