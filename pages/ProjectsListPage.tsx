@@ -253,25 +253,33 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
       <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
         <div className="flex items-center gap-2">
-         {idea.founderId && (
-  <div
-  className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-  onClick={(e) => {
-    e.stopPropagation();
-    navigate(`/user/${idea.founderId}`);
-  }}
->
-  <img
-    src={`https://i.pravatar.cc/150?u=${idea.founderId}`}
-    className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
-  />
-  <span className="text-xs font-black text-[var(--text-secondary)]">
-    {idea.founderName
-      ? idea.founderName.split(" ")[0]
-      : "Founder"}
-  </span>
-</div>
-)}
+         {idea.founderId && (() => {
+  const founder = getUserById(idea.founderId);
+
+  return (
+    <div
+      className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/user/${idea.founderId}`);
+      }}
+    >
+      <img
+        src={
+          founder?.profilePictureUrl ||
+          `https://i.pravatar.cc/150?u=${idea.founderId}`
+        }
+        className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
+      />
+
+      <span className="text-xs font-black text-[var(--text-secondary)]">
+        {founder?.name
+          ? founder.name.split(" ")[0]
+          : "Founder"}
+      </span>
+    </div>
+  );
+})()}
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
             <span className="opacity-30">•</span>
             {timeAgo(idea.postedDate)}
