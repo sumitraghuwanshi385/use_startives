@@ -70,6 +70,28 @@ const getImageUrl = (url: string) => {
   return url;
 };
 
+// ✅ NEW: link detect + clickable
+const renderTextWithLinks = (text: string) => {
+  const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+
+  return text.split(urlRegex).map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={index}
+          href={part.startsWith('http') ? part : `https://${part}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-purple-600 font-semibold underline break-all hover:text-purple-400 transition"
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
+
 export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: string) => void; className?: string }> = ({
   talk,
   onDeleteRequest,
@@ -160,7 +182,9 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
       </div>
 
       <div className="space-y-4 text-left">
-        <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium whitespace-pre-wrap">{talk.content}</p>
+        <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium whitespace-pre-wrap">
+  {renderTextWithLinks(talk.content)}
+</p>
 
         {talk.imageUrl && (
           <div className="rounded-xl overflow-hidden border border-[var(--border-primary)] bg-[var(--background-tertiary)] shadow-none">
