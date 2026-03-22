@@ -72,14 +72,18 @@ const getImageUrl = (url: string) => {
 
 // ✅ NEW: link detect + clickable
 const renderTextWithLinks = (text: string) => {
-  const urlRegex = /((https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}([^\s]*)?)/g;
+  const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/;
 
-  return text.split(urlRegex).map((part, index) => {
-    if (part.match(urlRegex)) {
+  const parts = text.split(/(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/g);
+
+  return parts.map((part, index) => {
+    if (urlRegex.test(part)) {
+      const href = part.startsWith('http') ? part : `https://${part}`;
+
       return (
         <a
           key={index}
-          href={part.startsWith('http') ? part : `https://${part}`}
+          href={href}
           target="_blank"
           rel="noopener noreferrer"
           className="text-purple-600 font-semibold underline break-all hover:text-purple-400 transition"
@@ -88,7 +92,8 @@ const renderTextWithLinks = (text: string) => {
         </a>
       );
     }
-    return part;
+
+    return <span key={index}>{part}</span>;
   });
 };
 
