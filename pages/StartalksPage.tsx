@@ -72,7 +72,7 @@ const getImageUrl = (url: string) => {
 
 // ✅ NEW: link detect + clickable
 const renderTextWithLinks = (text: string) => {
-  const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+  const urlRegex = /((https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}([^\s]*)?)/g;
 
   return text.split(urlRegex).map((part, index) => {
     if (part.match(urlRegex)) {
@@ -97,7 +97,10 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
   onDeleteRequest,
   className = "",
 }) => {
-  const { reactToStartalk, currentUser } = useAppContext();
+  const { reactToStartalk, currentUser, users } = useAppContext();
+
+const realUser = users?.find(u => u.id === talk.authorId);
+
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<number | null>(null);
@@ -164,7 +167,9 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
                 {talk.authorName}
               </span>
             )}
-            <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">{talk.authorHeadline || "Builder"}</p>
+            <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">
+  {realUser?.headline || talk.authorHeadline || "Builder"}
+</p>
           </div>
         </div>
 
