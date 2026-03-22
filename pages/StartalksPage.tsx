@@ -144,23 +144,35 @@ const realUser = users?.find(u => u.id === talk.authorId);
     <div className={`bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] p-5 md:p-6 transition-all duration-300 hover:shadow-none hover:border-purple-500/30 group flex flex-col gap-4 select-none font-poppins ${className}`}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          {profileClickable ? (
-            <Link to={`/user/${talk.authorId}`} className="relative shrink-0">
-              {talk.authorAvatar ? (
-                <img src={talk.authorAvatar} alt={talk.authorName} className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border-primary)] shadow-none" />
-              ) : (
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-none">{initials}</div>
-              )}
-            </Link>
-          ) : (
-            <div className="relative shrink-0">
-              {talk.authorAvatar ? (
-                <img src={talk.authorAvatar} alt={talk.authorName} className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border-primary)] shadow-none" />
-              ) : (
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-none">{initials}</div>
-              )}
-            </div>
-          )}
+         {profileClickable ? (
+  <Link to={`/user/${talk.authorId}`} className="relative shrink-0">
+    {realUser?.avatar || talk.authorAvatar ? (
+      <img
+        src={realUser?.avatar || talk.authorAvatar}
+        alt={displayName}
+        className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border-primary)]"
+      />
+    ) : (
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs md:text-sm">
+        {initials}
+      </div>
+    )}
+  </Link>
+) : (
+  <div className="relative shrink-0">
+    {realUser?.avatar || talk.authorAvatar ? (
+      <img
+        src={realUser?.avatar || talk.authorAvatar}
+        alt={displayName}
+        className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border-primary)]"
+      />
+    ) : (
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full icon-bg-gradient flex items-center justify-center text-white font-bold text-xs md:text-sm">
+        {initials}
+      </div>
+    )}
+  </div>
+)}
 
           <div className="overflow-hidden text-left">
             {profileClickable ? (
