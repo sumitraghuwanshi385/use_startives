@@ -106,6 +106,8 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 
 const realUser = users?.find(u => u.id === talk.authorId);
 
+const displayName = realUser?.name || talk.authorName;
+
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<number | null>(null);
@@ -181,7 +183,7 @@ const realUser = users?.find(u => u.id === talk.authorId);
               </Link>
             ) : (
               <span className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight font-poppins" title="Profile not available">
-                {talk.authorName}
+                {displayName}
               </span>
             )}
             <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">
