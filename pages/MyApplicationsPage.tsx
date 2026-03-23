@@ -228,14 +228,29 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
     const {
       getUserById,
       updateApplicationStatus,
+fetchUserProfile, 
       sendConnectionRequest,
       currentUser,
     } = useAppContext();
 
-    const applicant =
-      application?.applicantId
-        ? getUserById(getId(application.applicantId))
-        : null;
+    const [applicant, setApplicant] = useState<any>(null);
+
+useEffect(() => {
+  const loadApplicant = async () => {
+    const id = getId(application.applicantId);
+    if (!id) return;
+
+    let user = getUserById(id);
+
+    if (!user) {
+      user = await fetchUserProfile(id); // 🔥 backend fetch
+    }
+
+    setApplicant(user);
+  };
+
+  loadApplicant();
+}, [application.applicantId]);
 
     const position = idea?.positions?.find(
       (p) => getId(p) === getId(application.positionId)
@@ -250,24 +265,24 @@ const ReceivedCard: React.FC<{ application: Application; idea?: StartupIdea }> =
         {/* HEADER */}
 <div className="flex items-center justify-between">
   <div className="flex items-center gap-3">
-    {applicant && (
+  
       <>
         <Link to={`/user/${applicant.id}`}>
           <img
-            src={applicant.profilePictureUrl}
-            className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
-          />
+  src={applicant?.profilePictureUrl || applicant?.avatar || "/default-avatar.png"}
+  className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
+/>
         </Link>
 
         <div>
           <Link
-            to={`/user/${applicant.id}`}
+            to={`/user/${applicant?.id}`}
             className="text-sm font-medium text-[var(--text-primary)]"
           >
-            {applicant.name}
+            {applicant?.name || "User"}
           </Link>
           <p className="text-xs text-purple-500">
-            {applicant.headline}
+            {applicant?.headline || "Builder"}
           </p>
         </div>
       </>
