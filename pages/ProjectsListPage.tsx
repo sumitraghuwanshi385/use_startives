@@ -158,9 +158,23 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
 
+const [, forceUpdate] = useState(0);
+
+useEffect(() => {
+  if (users?.length) {
+    forceUpdate(prev => prev + 1);
+  }
+}, [users]);
+
+const { users } = useAppContext();
+
 const founder = users?.find(u => u.id === idea.founderId);
-const displayUser = founder || idea.founder;
-  
+
+// 🔥 force reactive fallback
+const displayUser = useMemo(() => {
+  return founder || idea.founder || null;
+}, [founder, idea.founder]);
+
   return (
     <article
       className="group relative bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:border-purple-500/30 overflow-hidden cursor-pointer flex flex-col h-full shadow-none font-poppins"
@@ -264,19 +278,16 @@ const displayUser = founder || idea.founder;
       navigate(`/user/${idea.founderId}`);
     }}
   >
-    <img
-      src={
-        displayUser?.profilePictureUrl ||
-        displayUser?.avatar ||
-        '/default-avatar.png'
-      }
+    src={
+  displayUser?.profilePictureUrl ||
+  displayUser?.avatar ||
+  `https://ui-avatars.com/api/?name=${displayUser?.name || "Founder"}`
+}
       className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
     />
 
     <span className="text-xs font-black text-[var(--text-secondary)]">
-      {displayUser?.name
-        ? displayUser.name.split(" ")[0]
-        : "Founder"}
+      {displayUser?.name?.split(" ")[0] || "Founder"}
     </span>
   </div>
 )}
