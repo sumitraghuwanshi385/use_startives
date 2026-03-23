@@ -286,7 +286,6 @@ useEffect(() => {
           </p>
         </div>
       </>
-    )}
   </div>
 
   <span
