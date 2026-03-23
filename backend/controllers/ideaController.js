@@ -12,13 +12,21 @@ const formatIdea = (idea) => {
   // Convert main _id
   ideaObj.id = ideaObj._id?.toString();
 
-  // 🔥 IMPORTANT FIX: convert founderId properly
-  if (ideaObj.founderId) {
-    ideaObj.founderId = ideaObj.founderId.toString();
-  }
+// 🔥 HANDLE populated founder
+if (ideaObj.founderId && typeof ideaObj.founderId === 'object') {
+  ideaObj.founder = {
+    id: ideaObj.founderId._id?.toString(),
+    name: ideaObj.founderId.name,
+    avatar: ideaObj.founderId.avatar,
+    profilePictureUrl: ideaObj.founderId.profilePictureUrl
+  };
 
-  // Ensure founderName always exists
-  ideaObj.founderName = ideaObj.founderName || "Founder";
+  ideaObj.founderId = ideaObj.founder.id;
+} else if (ideaObj.founderId) {
+  ideaObj.founderId = ideaObj.founderId.toString();
+}
+
+ideaObj.founderName = ideaObj.founderName || "Founder";
 
   // Convert positions safely
   if (Array.isArray(ideaObj.positions)) {
@@ -139,7 +147,9 @@ const getIdeas = async (req, res) => {
     if (stage && stage !== 'All') query.stage = stage;
     if (location && location !== 'All') query.location = location;
 
-    const ideas = await Idea.find(query).sort({ createdAt: -1 });
+    const ideas = await Idea.find(query)
+  .populate('founderId', 'name avatar profilePictureUrl')
+  .sort({ createdAt: -1 });
 
     return res.json({
       success: true,
