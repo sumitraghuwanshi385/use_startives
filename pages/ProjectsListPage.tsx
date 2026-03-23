@@ -160,12 +160,6 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
 const [, forceUpdate] = useState(0);
 
-useEffect(() => {
-  if (users?.length) {
-    forceUpdate(prev => prev + 1);
-  }
-}, [users]);
-
 const founder = users?.find(u => u.id === idea.founderId);
 
 // 🔥 force reactive fallback
