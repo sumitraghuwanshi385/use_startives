@@ -15,6 +15,18 @@ const formatTalk = (t, currentUserId = null) => {
     obj.reactions = obj.reactions || {};
     obj.userReactions = obj.userReactions || {};
 
+// 🔥 inject LIVE user data
+if (obj.authorId && typeof obj.authorId === 'object') {
+    obj.author = {
+        id: obj.authorId._id?.toString(),
+        name: obj.authorId.name,
+        avatar: obj.authorId.profilePictureUrl,
+        headline: obj.authorId.headline
+    };
+
+    obj.authorId = obj.author.id;
+}
+
     // ✅ Important for React button state
     if (currentUserId) {
         obj.currentUserReaction = obj.userReactions[currentUserId] || null;
@@ -32,8 +44,9 @@ const getStartalks = async (req, res) => {
         const userId = req.user?._id?.toString() || null;
 
         const talks = await Startalk.find()
-            .sort({ createdAt: -1 })
-            .lean();
+  .populate('authorId', 'name profilePictureUrl headline')
+  .sort({ createdAt: -1 })
+  .lean();
 
         return res.json({
             success: true,
