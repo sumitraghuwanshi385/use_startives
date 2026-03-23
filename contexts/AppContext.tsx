@@ -1046,10 +1046,13 @@ await fetchConnections();
     loadInitialData();
   }, [fetchConnections]);
 
-// 🔥 Fetch startalks after user + token ready
+
+// 🔥 Fetch startalks AFTER users load (IMPORTANT FIX)
 useEffect(() => {
   const fetchStartalks = async () => {
-    if (!token || !currentUser) return;
+
+    // ❗ MAIN FIX
+    if (!token || !currentUser || users.length === 0) return;
 
     try {
       const res = await axios.get('/api/startalks', {
@@ -1065,7 +1068,8 @@ useEffect(() => {
   };
 
   fetchStartalks();
-}, [token, currentUser]);
+
+}, [token, currentUser, users]); 
 
 useEffect(() => {
   if (!token) {
