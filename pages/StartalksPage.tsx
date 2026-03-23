@@ -104,11 +104,29 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 }) => {
   const { reactToStartalk, currentUser, users } = useAppContext();
 
-const displayUser = users?.find(u => u.id === talk.authorId);
+const displayUser = users?.find(
+  u => String(u.id) === String(talk.authorId)
+);
 
-const displayName = displayUser?.name || talk.authorName || "User";
-const displayAvatar = displayUser?.profilePictureUrl || displayUser?.avatar || talk.authorAvatar;
-const displayHeadline = displayUser?.headline || talk.authorHeadline;
+const isMe = String(currentUser?.id) === String(talk.authorId);
+
+const displayName =
+  displayUser?.name ||
+  (isMe ? currentUser?.name : null) ||
+  talk.authorName ||
+  "User";
+
+const displayAvatar =
+  displayUser?.profilePictureUrl ||
+  displayUser?.avatar ||
+  (isMe ? currentUser?.profilePictureUrl || currentUser?.avatar : null) ||
+  talk.authorAvatar;
+
+const displayHeadline =
+  displayUser?.headline ||
+  (isMe ? currentUser?.headline : null) ||
+  talk.authorHeadline ||
+  "Builder";
 
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
