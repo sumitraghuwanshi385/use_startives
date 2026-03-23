@@ -158,12 +158,16 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
 
-const founder = users?.find(u => u.id === idea.founderId);
+const realUser = users?.find(u => u.id === idea.founderId);
 
-// 🔥 force reactive fallback
-const displayUser = useMemo(() => {
-  return founder || idea.founder || null;
-}, [founder, idea.founder]);
+const displayName = realUser?.name || idea.founder?.name || "Founder";
+
+const displayAvatar =
+  realUser?.avatar ||
+  realUser?.profilePictureUrl ||
+  idea.founder?.avatar ||
+  idea.founder?.profilePictureUrl ||
+  null;
 
   return (
     <article
@@ -262,26 +266,27 @@ const displayUser = useMemo(() => {
         <div className="flex items-center gap-2">
          {idea.founderId && (
   <div
-    className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-    onClick={(e) => {
-      e.stopPropagation();
-      navigate(`/user/${idea.founderId}`);
-    }}
-  >
-<img
-    src={
-  displayUser?.profilePictureUrl ||
-  displayUser?.avatar ||
-  `https://ui-avatars.com/api/?name=${displayUser?.name || "Founder"}`
-}
-      className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
+  className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+  onClick={(e) => {
+    e.stopPropagation();
+    navigate(`/user/${idea.founderId}`);
+  }}
+>
+  {displayAvatar ? (
+    <img
+      src={displayAvatar}
+      className="w-5 h-5 rounded-full object-cover"
     />
+  ) : (
+    <div className="w-5 h-5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-[8px] font-bold">
+      {displayName.charAt(0)}
+    </div>
+  )}
 
-    <span className="text-xs font-black text-[var(--text-secondary)]">
-      {displayUser?.name?.split(" ")[0] || "Founder"}
-    </span>
-  </div>
-)}
+  <span className="text-xs font-black text-[var(--text-secondary)]">
+    {displayName.split(" ")[0]}
+  </span>
+</div>
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
             <span className="opacity-30">•</span>
             {timeAgo(idea.postedDate)}
