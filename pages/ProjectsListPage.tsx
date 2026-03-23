@@ -278,6 +278,7 @@ const displayUser = useMemo(() => {
       navigate(`/user/${idea.founderId}`);
     }}
   >
+<img
     src={
   displayUser?.profilePictureUrl ||
   displayUser?.avatar ||
