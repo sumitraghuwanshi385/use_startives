@@ -7,526 +7,533 @@ import { MOCK_USERS_RAW, EnvelopeOpenIcon } from '../constants';
 axios.defaults.baseURL = 'https://startives.onrender.com';
 axios.defaults.withCredentials = true;
 
-
-
 const INITIAL_APPLICATIONS: Application[] = [];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [startupIdeas, setStartupIdeas] = useState<StartupIdea[]>([]);
+const [startupIdeas, setStartupIdeas] = useState<StartupIdea[]>([]);
 const [assets,setAssets] = useState<any[]>([]);
-  const [startalks, setStartalks] = useState<Startalk[]>([]);
-  const [sentApplications, setSentApplications] = useState<Application[]>([]);
+const [startalks, setStartalks] = useState<Startalk[]>([]);
+const [sentApplications, setSentApplications] = useState<Application[]>([]);
 const [receivedApplications, setReceivedApplications] = useState<Application[]>([]);
-  const [notifications, setNotifications] = useState<AppSystemNotification[]>([]);
-  const [appNotifications, setAppNotifications] =
-  useState<AppNotification[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(() => {
-  const savedUser = localStorage.getItem("user");
-  return savedUser ? JSON.parse(savedUser) : null;
+const [notifications, setNotifications] = useState<AppSystemNotification[]>([]);
+const [appNotifications, setAppNotifications] =
+useState<AppNotification[]>([]);
+const [currentUser, setCurrentUser] = useState<User | null>(() => {
+const savedUser = localStorage.getItem("user");
+return savedUser ? JSON.parse(savedUser) : null;
 });
 
-  // Start empty; fill from backend
-  const [users, setUsers] = useState<User[]>([]);
-  
-  const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
-  const [isLoading, setIsLoading] = useState(true);
-  const [authLoadingState, setAuthLoadingState] = useState({ isLoading: false, messages: [] as string[] });
-  
-  const [showOnboardingModal, setShowOnboardingModal] = useState(false);
-  const [pendingVerificationUser, setPendingVerificationUser] =
-  useState<{email: string; code: string; password: string} | null>(null);
+// Start empty; fill from backend
+const [users, setUsers] = useState<User[]>([]);
 
-  const [sentConnectionRequests, setSentConnectionRequests] = useState<string[]>([]);
-  const [connectedUserIds, setConnectedUserIds] = useState<string[]>([]);
+const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
+const [isLoading, setIsLoading] = useState(true);
+const [authLoadingState, setAuthLoadingState] = useState({ isLoading: false, messages: [] as string[] });
+
+const [showOnboardingModal, setShowOnboardingModal] = useState(false);
+const [pendingVerificationUser, setPendingVerificationUser] =
+useState<{email: string; code: string; password: string} | null>(null);
+
+const [sentConnectionRequests, setSentConnectionRequests] = useState<string[]>([]);
+const [connectedUserIds, setConnectedUserIds] = useState<string[]>([]);
 
 useEffect(() => {
 
-  const token = localStorage.getItem("authToken");
+const token = localStorage.getItem("authToken");
 
-  if (!token) {
-    setIsLoading(false);
-    return;
-  }
+if (!token) {
+setIsLoading(false);
+return;
+}
 
-  const loadUser = async () => {
-    try {
+const loadUser = async () => {
+try {
 
-      const res = await axios.get("/api/auth/me", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+const res = await axios.get("/api/auth/me", {  
+    headers: { Authorization: `Bearer ${token}` }  
+  });  
 
-      if (res.data?.success) {
-        const user = res.data.user;
+  if (res.data?.success) {  
+    const user = res.data.user;  
 
-        setCurrentUser(user);
-        localStorage.setItem("user", JSON.stringify(user));
-      }
+    setCurrentUser(user);  
+    localStorage.setItem("user", JSON.stringify(user));  
+  }  
 
-    } catch (err) {
-      console.log("User load failed");
-    }
+} catch (err) {  
+  console.log("User load failed");  
+}  
 
-    setIsLoading(false);
-  };
+setIsLoading(false);
 
-  loadUser();
+};
+
+loadUser();
 
 }, []);
 
-  // ---------------- NOTIFICATIONS ----------------
-  const addNotificationCallBack = useCallback((message: string, type: AppSystemNotification['type']) => {
-    const newNotification: AppSystemNotification = {
-      id: new Date().toISOString() + Math.random(),
-      message,
-      type,
-    };
-    setNotifications(prev => [...prev, newNotification]);
-    setTimeout(() => {
-      setNotifications(prev => prev.filter(n => n.id !== newNotification.id));
-    }, 5000);
-  }, []);
+// ---------------- NOTIFICATIONS ----------------
+const addNotificationCallBack = useCallback((message: string, type: AppSystemNotification['type']) => {
+const newNotification: AppSystemNotification = {
+id: new Date().toISOString() + Math.random(),
+message,
+type,
+};
+setNotifications(prev => [...prev, newNotification]);
+setTimeout(() => {
+setNotifications(prev => prev.filter(n => n.id !== newNotification.id));
+}, 5000);
+}, []);
 
-  const removeNotification = (id: string) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
-  };
-
-  const markNotificationAsRead = (id: string) => {
-    setAppNotifications(prev => prev.map(n => n.id === id ? {...n, isRead: true} : n));
-  };
-
-  const markAllNotificationsAsRead = () => {
-  setAppNotifications(prev =>
-    prev.map(n => ({ ...n, isRead: true }))
-  );
+const removeNotification = (id: string) => {
+setNotifications(prev => prev.filter(notification => notification.id !== id));
 };
 
-  const getAuthToken = () => token || localStorage.getItem('authToken');
+const markNotificationAsRead = (id: string) => {
+setAppNotifications(prev => prev.map(n => n.id === id ? {...n, isRead: true} : n));
+};
+
+const markAllNotificationsAsRead = () => {
+setAppNotifications(prev =>
+prev.map(n => ({ ...n, isRead: true }))
+);
+};
+
+const getAuthToken = () => token || localStorage.getItem('authToken');
 
 const removeAppNotification = async (id: string) => {
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    // 🔥 Backend delete (agar route hai)
-    await axios.delete(`/api/notifications/${id}`, {
-      headers: { Authorization: `Bearer ${t}` }
-    });
-  } catch (err) {
-    console.log("Backend delete failed (continuing frontend remove)");
-  }
+try {
+// 🔥 Backend delete (agar route hai)
+await axios.delete(/api/notifications/${id}, {
+headers: { Authorization: Bearer ${t} }
+});
+} catch (err) {
+console.log("Backend delete failed (continuing frontend remove)");
+}
 
-  // 🔥 Always remove from frontend state
-  setAppNotifications(prev =>
-    prev.filter(n => (n._id || n.id) !== id)
-  );
+// 🔥 Always remove from frontend state
+setAppNotifications(prev =>
+prev.filter(n => (n._id || n.id) !== id)
+);
 };
 
 // ---------------- FETCH NOTIFICATIONS ----------------
 const fetchNotifications = async () => {
-  const t = localStorage.getItem("authToken");
-  if (!t) return;
+const t = localStorage.getItem("authToken");
+if (!t) return;
 
-  try {
-    const res = await axios.get("/api/notifications", {
-      headers: { Authorization: `Bearer ${t}` },
-    });
+try {
+const res = await axios.get("/api/notifications", {
+headers: { Authorization: Bearer ${t} },
+});
 
-    if (res.data?.success && Array.isArray(res.data.notifications)) {
-      setAppNotifications(res.data.notifications);
-    } else {
-      setAppNotifications([]);
-    }
+if (res.data?.success && Array.isArray(res.data.notifications)) {  
+  setAppNotifications(res.data.notifications);  
+} else {  
+  setAppNotifications([]);  
+}
 
-  } catch (err) {
-    console.error("Notification fetch failed", err);
-  }
+} catch (err) {
+console.error("Notification fetch failed", err);
+}
 };
 
-  // ---------------- CONNECTIONS ----------------
-  const fetchConnections = useCallback(async () => {
-  const t = getAuthToken();
-  if (!t) return;
+// ---------------- CONNECTIONS ----------------
+const fetchConnections = useCallback(async () => {
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.get('/api/connections', {
-      headers: { Authorization: `Bearer ${t}` },
-    });
+try {
+const res = await axios.get('/api/connections', {
+headers: { Authorization: Bearer ${t} },
+});
 
-    if (res.data?.success) {
-      const backendUsers = res.data.connections || [];
+if (res.data?.success) {  
+  const backendUsers = res.data.connections || [];  
 
-      const normalizedUsers = backendUsers.map((u: any) => ({
-        ...u,
-        id: u._id || u.id
-      }));
+  const normalizedUsers = backendUsers.map((u: any) => ({  
+    ...u,  
+    id: u._id || u.id  
+  }));  
 
-      // ✅ Update users state
-      setUsers(prev => {
-        const existingIds = prev.map(u => u.id);
-        const newOnes = normalizedUsers.filter(u => !existingIds.includes(u.id));
-        return [...prev, ...newOnes];
-      });
+  // ✅ Update users state  
+  setUsers(prev => {  
+    const existingIds = prev.map(u => u.id);  
+    const newOnes = normalizedUsers.filter(u => !existingIds.includes(u.id));  
+    return [...prev, ...newOnes];  
+  });  
 
-      const ids = normalizedUsers.map((u: any) => u.id);
-      setConnectedUserIds(ids);
+  const ids = normalizedUsers.map((u: any) => u.id);  
+  setConnectedUserIds(ids);  
 
-      // ✅ Refresh current user properly INSIDE success block
-      const profileRes = await axios.get('/api/auth/me', {
-        headers: { Authorization: `Bearer ${t}` }
-      });
+  // ✅ Refresh current user properly INSIDE success block  
+  const profileRes = await axios.get('/api/auth/me', {  
+    headers: { Authorization: `Bearer ${t}` }  
+  });  
 
-      if (profileRes.data?.success) {
-        const updatedUser = profileRes.data.user;
-        setCurrentUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-      }
-    }
+  if (profileRes.data?.success) {  
+    const updatedUser = profileRes.data.user;  
+    setCurrentUser(updatedUser);  
+    localStorage.setItem("user", JSON.stringify(updatedUser));  
+  }  
+}
 
-  } catch (err) {
-    console.error('fetchConnections failed', err);
-  }
+} catch (err) {
+console.error('fetchConnections failed', err);
+}
 }, [token]);
 
-
 const fetchCurrentUser = async () => {
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.get('/api/auth/me', {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+try {
+const res = await axios.get('/api/auth/me', {
+headers: { Authorization: Bearer ${t} }
+});
 
-    if (res.data?.success) {
-      const updatedUser = res.data.user;
-      setCurrentUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-    }
-  } catch (err) {
-    console.error("Fetch current user failed", err);
-  }
+if (res.data?.success) {  
+  const updatedUser = res.data.user;  
+  setCurrentUser(updatedUser);  
+  localStorage.setItem("user", JSON.stringify(updatedUser));  
+}
+
+} catch (err) {
+console.error("Fetch current user failed", err);
+}
 };
 
 const fetchAllUsers = async () => {
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.get('/api/auth/users', {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+try {
+const res = await axios.get('/api/auth/users', {
+headers: { Authorization: Bearer ${t} }
+});
 
-    if (res.data?.success) {
-      const normalized = res.data.users.map((u: any) => ({
-        ...u,
-        id: u._id || u.id
-      }));
-      setUsers(normalized);
-    }
-  } catch (err) {
-    console.error("Fetch all users failed", err);
-  }
+if (res.data?.success) {  
+  const normalized = res.data.users.map((u: any) => ({  
+    ...u,  
+    id: u._id || u.id  
+  }));  
+  setUsers(normalized);  
+}
+
+} catch (err) {
+console.error("Fetch all users failed", err);
+}
 };
 
-  // ---------------- AUTH (FIXED) ----------------
-  const login = async (credential: string, password?: string, fromSignup: boolean = false): Promise<boolean> => {
-    setAuthLoadingState({ isLoading: true, messages: ["Authenticating..."]});
-    try {
-      const response = await axios.post('/api/auth/login', { email: credential, password });
-      
-      // ✅ Build Fix: Check failure first
-      if (!response.data?.success) {
-        addNotificationCallBack(response.data?.message || 'Login failed.', 'error');
-        return false;
-      }
+// ---------------- AUTH (FIXED) ----------------
+const login = async (credential: string, password?: string, fromSignup: boolean = false): Promise<boolean> => {
+setAuthLoadingState({ isLoading: true, messages: ["Authenticating..."]});
+try {
+const response = await axios.post('/api/auth/login', { email: credential, password });
 
-      // Success path
-      const { user, token: newToken } = response.data;
+// ✅ Build Fix: Check failure first  
+  if (!response.data?.success) {  
+    addNotificationCallBack(response.data?.message || 'Login failed.', 'error');  
+    return false;  
+  }  
+
+  // Success path  
+  const { user, token: newToken } = response.data;
 
 // 🔥 Ensure savedProjectIds exists
 if (!user.savedProjectIds) {
-  user.savedProjectIds = [];
+user.savedProjectIds = [];
 }
 
-      localStorage.setItem('authToken', newToken);
-      localStorage.setItem('user', JSON.stringify(user));
+localStorage.setItem('authToken', newToken);  
+  localStorage.setItem('user', JSON.stringify(user));  
 
-      setToken(newToken);
-      setCurrentUser(user);
+  setToken(newToken);  
+  setCurrentUser(user);  
 
-      if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
-      if (user?.connections) setConnectedUserIds(user.connections);
+  if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);  
+  if (user?.connections) setConnectedUserIds(user.connections);  
 
-      setShowOnboardingModal(fromSignup || !user?.headline);
-      return true;
-    } catch (error: any) {
-      console.error("Login API Error:", error);
-      addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');
-      return false;
-    } finally {
-      setAuthLoadingState({ isLoading: false, messages: [] });
-    }
-  };
-
-  const signup = async (email: string, password?: string): Promise<boolean> => {
-  setAuthLoadingState({ isLoading: true, messages: ["Creating account..."] });
-
-  try {
-    const res = await axios.post('/api/auth/signup', { 
-      email, 
-      password,
-      name: email.split("@")[0] // ✅ FIX
-    });
-
-    if (!res.data || !res.data.success) {
-      addNotificationCallBack("Signup failed.", "error");
-      return false;
-    }
-
-    const code = res.data.verificationCode;
-
-    if (!code) {
-      addNotificationCallBack("Verification code not received.", "error");
-      return false;
-    }
-
-    setPendingVerificationUser({
-      email,
-      code,
-      password: password || ""
-    });
-
-    return true;
-
-  } catch (err:any) {
-    console.error("Signup error", err);
-    addNotificationCallBack(err.response?.data?.message || "Signup failed", "error");
-    return false;
-  } finally {
-    setAuthLoadingState({ isLoading: false, messages: [] });
-  }
-};
-
-  const verifyAndLogin = async (code: string): Promise<boolean> => {
-  setAuthLoadingState({ isLoading: true, messages: ["Verifying..."] });
-
-  try {
-    if (!pendingVerificationUser) return false;
-
-    if (pendingVerificationUser.code !== code) {
-      addNotificationCallBack("Invalid verification code.", "error");
-      return false;
-    }
-
-    // ✅ use REAL password
-    const success = await login(
-      pendingVerificationUser.email,
-      pendingVerificationUser.password,
-      true
-    );
-
-    if (success) {
-      setPendingVerificationUser(null);
-    }
-
-    return success;
-
-  } finally {
-    setAuthLoadingState({ isLoading: false, messages: [] });
-  }
-};
-
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    setToken(null);
-    setCurrentUser(null);
-    setConnectedUserIds([]);
-    setSentConnectionRequests([]);
-    setUsers([]);
-  };
-  
-  const updateUser = async (updates: UserProfileUpdate): Promise<boolean> => {
-    if (!currentUser) return false;
-    
-    const currentToken = getAuthToken();
-    if (!currentToken) {
-        addNotificationCallBack("You are not logged in. Please refresh.", "error");
-        return false;
-    }
-
-    setAuthLoadingState({ isLoading: true, messages: ["Updating profile..."] });
-    try {
-        const response = await axios.put('/api/auth/profile', { id: currentUser.id, ...updates }, {
-            headers: { Authorization: `Bearer ${currentToken}`, 'Content-Type': 'application/json' }
-        });
-        
-        if (response.data.success) {
-
-    const updatedUserData = response.data.user;
-
-    setCurrentUser(updatedUserData);
-
-    localStorage.setItem('user', JSON.stringify(updatedUserData));
-
-    setUsers(prev =>
-      prev.map(u =>
-        (u.id === updatedUserData.id || u.id === updatedUserData._id)
-          ? { ...u, ...updatedUserData }
-          : u
-      )
-    );
-
-    return true;
+  setShowOnboardingModal(fromSignup || !user?.headline);  
+  return true;  
+} catch (error: any) {  
+  console.error("Login API Error:", error);  
+  addNotificationCallBack(error.response?.data?.message || 'Something went wrong.', 'error');  
+  return false;  
+} finally {  
+  setAuthLoadingState({ isLoading: false, messages: [] });  
 }
 
-        addNotificationCallBack("Failed to update profile.", "error");
-        return false;
-    } catch (error: any) {
-        console.error("Update Profile Error:", error);
-        addNotificationCallBack(error.response?.data?.message || "Something went wrong.", "error");
-        return false;
-    } finally {
-        setAuthLoadingState({ isLoading: false, messages: [] });
-    }
-  };
+};
+
+const signup = async (email: string, password?: string): Promise<boolean> => {
+setAuthLoadingState({ isLoading: true, messages: ["Creating account..."] });
+
+try {
+const res = await axios.post('/api/auth/signup', {
+email,
+password,
+name: email.split("@")[0] // ✅ FIX
+});
+
+if (!res.data || !res.data.success) {  
+  addNotificationCallBack("Signup failed.", "error");  
+  return false;  
+}  
+
+const code = res.data.verificationCode;  
+
+if (!code) {  
+  addNotificationCallBack("Verification code not received.", "error");  
+  return false;  
+}  
+
+setPendingVerificationUser({  
+  email,  
+  code,  
+  password: password || ""  
+});  
+
+return true;
+
+} catch (err:any) {
+console.error("Signup error", err);
+addNotificationCallBack(err.response?.data?.message || "Signup failed", "error");
+return false;
+} finally {
+setAuthLoadingState({ isLoading: false, messages: [] });
+}
+};
+
+const verifyAndLogin = async (code: string): Promise<boolean> => {
+setAuthLoadingState({ isLoading: true, messages: ["Verifying..."] });
+
+try {
+if (!pendingVerificationUser) return false;
+
+if (pendingVerificationUser.code !== code) {  
+  addNotificationCallBack("Invalid verification code.", "error");  
+  return false;  
+}  
+
+// ✅ use REAL password  
+const success = await login(  
+  pendingVerificationUser.email,  
+  pendingVerificationUser.password,  
+  true  
+);  
+
+if (success) {  
+  setPendingVerificationUser(null);  
+}  
+
+return success;
+
+} finally {
+setAuthLoadingState({ isLoading: false, messages: [] });
+}
+};
+
+const logout = () => {
+localStorage.removeItem('authToken');
+localStorage.removeItem('user');
+setToken(null);
+setCurrentUser(null);
+setConnectedUserIds([]);
+setSentConnectionRequests([]);
+setUsers([]);
+};
+
+const updateUser = async (updates: UserProfileUpdate): Promise<boolean> => {
+if (!currentUser) return false;
+
+const currentToken = getAuthToken();  
+if (!currentToken) {  
+    addNotificationCallBack("You are not logged in. Please refresh.", "error");  
+    return false;  
+}  
+
+setAuthLoadingState({ isLoading: true, messages: ["Updating profile..."] });  
+try {  
+    const response = await axios.put('/api/auth/profile', { id: currentUser.id, ...updates }, {  
+        headers: { Authorization: `Bearer ${currentToken}`, 'Content-Type': 'application/json' }  
+    });  
+      
+    if (response.data.success) {  
+
+const updatedUserData = response.data.user;  
+
+setCurrentUser(updatedUserData);  
+
+localStorage.setItem('user', JSON.stringify(updatedUserData));  
+
+setUsers(prev =>  
+  prev.map(u =>  
+    (u.id === updatedUserData.id || u.id === updatedUserData._id)  
+      ? { ...u, ...updatedUserData }  
+      : u  
+  )  
+);  
+
+return true;
+
+}
+
+addNotificationCallBack("Failed to update profile.", "error");  
+    return false;  
+} catch (error: any) {  
+    console.error("Update Profile Error:", error);  
+    addNotificationCallBack(error.response?.data?.message || "Something went wrong.", "error");  
+    return false;  
+} finally {  
+    setAuthLoadingState({ isLoading: false, messages: [] });  
+}
+
+};
 // ✅ NEW - Google Login
 const googleLogin = async (accessToken: string): Promise<boolean> => {
-    setAuthLoadingState({ isLoading: true, messages: ["Signing in with Google..."] });
-    try {
-        const response = await axios.post('/api/auth/google', { access_token: accessToken });
-        
-        if (!response.data?.success) {
-            addNotificationCallBack(response.data?.message || 'Google login failed.', 'error');
-            return false;
-        }
-        
-        const { user, token: newToken } = response.data;
-        if (!user.savedProjectIds) user.savedProjectIds = [];
-        
-        localStorage.setItem('authToken', newToken);
-        localStorage.setItem('user', JSON.stringify(user));
-        setToken(newToken);
-        setCurrentUser(user);
-        
-        if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);
-        if (user?.connections) setConnectedUserIds(user.connections);
-        
-        setShowOnboardingModal(!user?.headline);
-        addNotificationCallBack("Signed in with Google!", "success");
-        return true;
-        
-    } catch (error: any) {
-        console.error("Google Login Error:", error);
-        addNotificationCallBack(error.response?.data?.message || 'Google login failed.', 'error');
-        return false;
-    } finally {
-        setAuthLoadingState({ isLoading: false, messages: [] });
-    }
+setAuthLoadingState({ isLoading: true, messages: ["Signing in with Google..."] });
+try {
+const response = await axios.post('/api/auth/google', { access_token: accessToken });
+
+if (!response.data?.success) {  
+        addNotificationCallBack(response.data?.message || 'Google login failed.', 'error');  
+        return false;  
+    }  
+      
+    const { user, token: newToken } = response.data;  
+    if (!user.savedProjectIds) user.savedProjectIds = [];  
+      
+    localStorage.setItem('authToken', newToken);  
+    localStorage.setItem('user', JSON.stringify(user));  
+    setToken(newToken);  
+    setCurrentUser(user);  
+      
+    if (user?.sentRequests) setSentConnectionRequests(user.sentRequests);  
+    if (user?.connections) setConnectedUserIds(user.connections);  
+      
+    setShowOnboardingModal(!user?.headline);  
+    addNotificationCallBack("Signed in with Google!", "success");  
+    return true;  
+      
+} catch (error: any) {  
+    console.error("Google Login Error:", error);  
+    addNotificationCallBack(error.response?.data?.message || 'Google login failed.', 'error');  
+    return false;  
+} finally {  
+    setAuthLoadingState({ isLoading: false, messages: [] });  
+}
+
 };
-  // ---------------- IDEAS ----------------
-  const addIdea = async (ideaData: any) => {
-  if (!currentUser) return false;
+// ---------------- IDEAS ----------------
+const addIdea = async (ideaData: any) => {
+if (!currentUser) return false;
 
-  const t = getAuthToken();
-  if (!t) return false;
+const t = getAuthToken();
+if (!t) return false;
 
-  setAuthLoadingState({ isLoading: true, messages: ["Launching project..."] });
+setAuthLoadingState({ isLoading: true, messages: ["Launching project..."] });
 
-  try {
-    const response = await axios.post(
-      '/api/ideas',
-      ideaData,
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+try {
+const response = await axios.post(
+'/api/ideas',
+ideaData,
+{ headers: { Authorization: Bearer ${t} } }
+);
 
-    if (response.data?.success) {
-      // 🔥 Important: use backend returned idea
-      setStartupIdeas(prev => [response.data.idea, ...prev]);
+if (response.data?.success) {  
+  // 🔥 Important: use backend returned idea  
+  setStartupIdeas(prev => [response.data.idea, ...prev]);  
 
-      addNotificationCallBack("Project launched successfully!", "success");
-      return true;
-    }
+  addNotificationCallBack("Project launched successfully!", "success");  
+  return true;  
+}  
 
-    return false;
-  } catch (error: any) {
-    console.error("Add Idea Error:", error);
-    addNotificationCallBack(
-      error.response?.data?.message || "Failed to launch project.",
-      "error"
-    );
-    return false;
-  } finally {
-    setAuthLoadingState({ isLoading: false, messages: [] });
-  }
+return false;
+
+} catch (error: any) {
+console.error("Add Idea Error:", error);
+addNotificationCallBack(
+error.response?.data?.message || "Failed to launch project.",
+"error"
+);
+return false;
+} finally {
+setAuthLoadingState({ isLoading: false, messages: [] });
+}
 };
-  const updateIdea = async (ideaId: string, updatedData: any) => {
-  if (!currentUser) return false;
+const updateIdea = async (ideaId: string, updatedData: any) => {
+if (!currentUser) return false;
 
-  const t = getAuthToken();
-  if (!t) return false;
+const t = getAuthToken();
+if (!t) return false;
 
-  try {
-    const res = await axios.put(
-      `/api/ideas/${ideaId}`,
-      updatedData,
-      {
-        headers: { Authorization: `Bearer ${t}` }
-      }
-    );
+try {
+const res = await axios.put(
+/api/ideas/${ideaId},
+updatedData,
+{
+headers: { Authorization: Bearer ${t} }
+}
+);
 
-    if (res.data?.success) {
-      const updatedIdea = res.data.idea;
+if (res.data?.success) {  
+  const updatedIdea = res.data.idea;  
 
-      // 🔥 update local state
-      setStartupIdeas(prev =>
-        prev.map(idea =>
-          idea.id === ideaId ? updatedIdea : idea
-        )
-      );
+  // 🔥 update local state  
+  setStartupIdeas(prev =>  
+    prev.map(idea =>  
+      idea.id === ideaId ? updatedIdea : idea  
+    )  
+  );  
 
-      return true;
-    }
+  return true;  
+}  
 
-    return false;
-  } catch (error) {
-    console.error("Update idea failed", error);
-    return false;
-  }
+return false;
+
+} catch (error) {
+console.error("Update idea failed", error);
+return false;
+}
 };
-  
+
 const deleteIdea = async (ideaId: string) => {
-  if (!currentUser) return false;
+if (!currentUser) return false;
 
-  const t = getAuthToken();
-  if (!t) return false;
+const t = getAuthToken();
+if (!t) return false;
 
-  try {
-    const res = await axios.delete(
-      `/api/ideas/${ideaId}`,
-      {
-        headers: { Authorization: `Bearer ${t}` }
-      }
-    );
+try {
+const res = await axios.delete(
+/api/ideas/${ideaId},
+{
+headers: { Authorization: Bearer ${t} }
+}
+);
 
-    if (res.data?.success) {
-      // 🔥 Remove from local state
-      setStartupIdeas(prev =>
-        prev.filter(idea => idea.id !== ideaId)
-      );
+if (res.data?.success) {  
+  // 🔥 Remove from local state  
+  setStartupIdeas(prev =>  
+    prev.filter(idea => idea.id !== ideaId)  
+  );  
 
-      addNotificationCallBack("Project deleted successfully.", "success");
-      return true;
-    }
+  addNotificationCallBack("Project deleted successfully.", "success");  
+  return true;  
+}  
 
-    return false;
-  } catch (error) {
-    console.error("Delete idea failed", error);
-    addNotificationCallBack("Failed to delete project.", "error");
-    return false;
-  }
+return false;
+
+} catch (error) {
+console.error("Delete idea failed", error);
+addNotificationCallBack("Failed to delete project.", "error");
+return false;
+}
 };
 
 // ---------------- ASSETS ----------------
@@ -572,9 +579,9 @@ if(!t) return false;
 try{
 
 const res = await axios.delete(
-`/api/assets/${assetId}`,
+/api/assets/${assetId},
 {
-headers:{ Authorization:`Bearer ${t}` }
+headers:{ Authorization:Bearer ${t} }
 }
 );
 
@@ -615,10 +622,10 @@ if(!t) return false;
 try{
 
 const res = await axios.put(
-`/api/assets/${assetId}`,
+/api/assets/${assetId},
 updatedData,
 {
-headers:{ Authorization:`Bearer ${t}` }
+headers:{ Authorization:Bearer ${t} }
 }
 );
 
@@ -656,503 +663,508 @@ return false;
 
 };
 
-  // ---------------- STARTALKS ----------------
-  const addStartalk = async (content: string, imageUrl?: string) => {
-      if (!currentUser) return;
-      const t = getAuthToken();
-      try {
-          const response = await axios.post('/api/startalks', { content, imageUrl }, { headers: { Authorization: `Bearer ${t}` } });
-          if (response.data.success) {
-              setStartalks(prev => [response.data.startalk, ...prev]);
-              addNotificationCallBack("Post shared!", "success");
-          }
-      } catch (error) { addNotificationCallBack("Failed to post.", "error"); }
-  };
-
-  const deleteStartalk = async (talkId: string) => { 
-      const t = getAuthToken();
-      try {
-        await axios.delete(`/api/startalks/${talkId}`, { headers: { Authorization: `Bearer ${t}` } });
-        setStartalks(prev => prev.filter(talk => talk.id !== talkId));
-        addNotificationCallBack("Post removed.", "info");
-    } catch (error) { addNotificationCallBack("Failed to delete post.", "error"); }
-  };
-
-  const reactToStartalk = async (talkId: string, emoji: string) => {
-      if (!currentUser) return;
-      const t = getAuthToken();
-
-      setStartalks(prev => prev.map(talk => {
-        if (talk.id === talkId) {
-          const reactions = { ...(talk.reactions || {}) };
-          const userReactions = { ...(talk.userReactions || {}) };
-          const oldEmoji = userReactions[currentUser.id];
-          
-          if (oldEmoji === emoji) {
-             reactions[emoji] = Math.max(0, (reactions[emoji] || 0) - 1);
-             if (reactions[emoji] === 0) delete reactions[emoji];
-             delete userReactions[currentUser.id];
-             return { ...talk, reactions, userReactions, currentUserReaction: undefined };
-          } else {
-             if (oldEmoji) {
-                reactions[oldEmoji] = Math.max(0, (reactions[oldEmoji] || 0) - 1);
-                if (reactions[oldEmoji] === 0) delete reactions[oldEmoji];
-             }
-             reactions[emoji] = (reactions[emoji] || 0) + 1;
-             userReactions[currentUser.id] = emoji;
-             return { ...talk, reactions, userReactions, currentUserReaction: emoji };
-          }
-        }
-        return talk;
-      }));
-
-      try {
-        const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });
-        if (response.data.success) {
-            const updatedTalk = response.data.startalk;
-            const myReaction = updatedTalk.userReactions ? updatedTalk.userReactions[currentUser.id] : undefined;
-            setStartalks(prev => prev.map(t => t.id === talkId ? { ...updatedTalk, currentUserReaction: myReaction } : t));
-        }
-      } catch (error) { console.error("Reaction failed:", error); }
-  };
-
-  // ---------------- USER HELPERS ----------------
-  const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
-  const getPositionById = (ideaId: string, positionId: string) => {
-  const idea = getIdeaById(ideaId);
-  if (!idea || !idea.positions) return undefined;
-
-  return idea.positions.find(
-    (pos: any) =>
-      pos.id === positionId ||
-      pos._id === positionId ||
-      pos.id?.toString() === positionId ||
-      pos._id?.toString() === positionId
-  );
+// ---------------- STARTALKS ----------------
+const addStartalk = async (content: string, imageUrl?: string) => {
+if (!currentUser) return;
+const t = getAuthToken();
+try {
+const response = await axios.post('/api/startalks', { content, imageUrl }, { headers: { Authorization: Bearer ${t} } });
+if (response.data.success) {
+setStartalks(prev => [response.data.startalk, ...prev]);
+addNotificationCallBack("Post shared!", "success");
+}
+} catch (error) { addNotificationCallBack("Failed to post.", "error"); }
 };
-  const getUserById = useCallback((identifier: string, by: 'id' | 'email' = 'id') => {
-    const allUsers = [...users];
-    if (currentUser && !allUsers.find(u => u.id === currentUser.id)) allUsers.push(currentUser);
-    return by === 'id' ? allUsers.find(u => u.id === identifier) : allUsers.find(u => u.email === identifier);
-  }, [users, currentUser]);
 
-  const fetchUserProfile = useCallback(async (userId: string) => {
-    try {
-        const res = await axios.get(`/api/auth/users/${userId}`);
-        if (res.data?.success) {
-            const fetchedUser = res.data.user;
-            setUsers(prev => {
-                if (prev.find(u => u.id === fetchedUser.id)) return prev;
-                return [...prev, fetchedUser];
-            });
-            return fetchedUser;
-        }
-    } catch (error) { console.error("Fetch User Error:", error); }
-    return null;
-  }, []);
+const deleteStartalk = async (talkId: string) => {
+const t = getAuthToken();
+try {
+await axios.delete(/api/startalks/${talkId}, { headers: { Authorization: Bearer ${t} } });
+setStartalks(prev => prev.filter(talk => talk.id !== talkId));
+addNotificationCallBack("Post removed.", "info");
+} catch (error) { addNotificationCallBack("Failed to delete post.", "error"); }
+};
 
-  // ---------------- INTERACTIONS ----------------
-  const sendConnectionRequest = async (targetUserId: string) => {
-    if (!currentUser) return;
-    const t = getAuthToken();
-    try {
-        const res = await axios.post(`/api/connections/request/${targetUserId}`, {}, { headers: { Authorization: `Bearer ${t}` } });
-        if (res.data?.success) {
-            setSentConnectionRequests(prev => [...prev, targetUserId]);
-            addNotificationCallBack("Connection request sent!", "success");
+const reactToStartalk = async (talkId: string, emoji: string) => {
+if (!currentUser) return;
+const t = getAuthToken();
 
-await fetchConnections();      
-    await fetchNotifications(); 
-}
+setStartalks(prev => prev.map(talk => {  
+    if (talk.id === talkId) {  
+      const reactions = { ...(talk.reactions || {}) };  
+      const userReactions = { ...(talk.userReactions || {}) };  
+      const oldEmoji = userReactions[currentUser.id];  
         
-    } catch (error: any) {
-        addNotificationCallBack(error.response?.data?.message || "Failed to send request.", "error");
-    }
-  };
+      if (oldEmoji === emoji) {  
+         reactions[emoji] = Math.max(0, (reactions[emoji] || 0) - 1);  
+         if (reactions[emoji] === 0) delete reactions[emoji];  
+         delete userReactions[currentUser.id];  
+         return { ...talk, reactions, userReactions, currentUserReaction: undefined };  
+      } else {  
+         if (oldEmoji) {  
+            reactions[oldEmoji] = Math.max(0, (reactions[oldEmoji] || 0) - 1);  
+            if (reactions[oldEmoji] === 0) delete reactions[oldEmoji];  
+         }  
+         reactions[emoji] = (reactions[emoji] || 0) + 1;  
+         userReactions[currentUser.id] = emoji;  
+         return { ...talk, reactions, userReactions, currentUserReaction: emoji };  
+      }  
+    }  
+    return talk;  
+  }));  
 
-  const acceptConnectionRequest = async (requesterId: string) => {
-  if (!currentUser) return;
-  const t = getAuthToken();
-  if (!t) return;
+  try {  
+    const response = await axios.post(`/api/startalks/${talkId}/react`, { emoji }, { headers: { Authorization: `Bearer ${t}` } });  
+    if (response.data.success) {  
+        const updatedTalk = response.data.startalk;  
+        const myReaction = updatedTalk.userReactions ? updatedTalk.userReactions[currentUser.id] : undefined;  
+        setStartalks(prev => prev.map(t => t.id === talkId ? { ...updatedTalk, currentUserReaction: myReaction } : t));  
+    }  
+  } catch (error) { console.error("Reaction failed:", error); }
 
-  try {
-    const res = await axios.post(
-      `/api/connections/accept/${requesterId}`,
-      {},
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+};
 
-    if (res.data?.success) {
-  addNotificationCallBack("Connection accepted successfully!", "success");
+// ---------------- USER HELPERS ----------------
+const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
+const getPositionById = (ideaId: string, positionId: string) => {
+const idea = getIdeaById(ideaId);
+if (!idea || !idea.positions) return undefined;
 
-  await fetchAllUsers();
-  await fetchConnections();
-  await fetchNotifications();
+return idea.positions.find(
+(pos: any) =>
+pos.id === positionId ||
+pos._id === positionId ||
+pos.id?.toString() === positionId ||
+pos._id?.toString() === positionId
+);
+};
+const getUserById = useCallback((identifier: string, by: 'id' | 'email' = 'id') => {
+const allUsers = [...users];
+if (currentUser && !allUsers.find(u => u.id === currentUser.id)) allUsers.push(currentUser);
+return by === 'id' ? allUsers.find(u => u.id === identifier) : allUsers.find(u => u.email === identifier);
+}, [users, currentUser]);
+
+const fetchUserProfile = useCallback(async (userId: string) => {
+try {
+const res = await axios.get(/api/auth/users/${userId});
+if (res.data?.success) {
+const fetchedUser = res.data.user;
+setUsers(prev => {
+if (prev.find(u => u.id === fetchedUser.id)) return prev;
+return [...prev, fetchedUser];
+});
+return fetchedUser;
+}
+} catch (error) { console.error("Fetch User Error:", error); }
+return null;
+}, []);
+
+// ---------------- INTERACTIONS ----------------
+const sendConnectionRequest = async (targetUserId: string) => {
+if (!currentUser) return;
+const t = getAuthToken();
+try {
+const res = await axios.post(/api/connections/request/${targetUserId}, {}, { headers: { Authorization: Bearer ${t} } });
+if (res.data?.success) {
+setSentConnectionRequests(prev => [...prev, targetUserId]);
+addNotificationCallBack("Connection request sent!", "success");
+
+await fetchConnections();
+await fetchNotifications();
 }
 
-  } catch (error) {
-    console.error("Accept failed", error);
-  }
+} catch (error: any) {  
+    addNotificationCallBack(error.response?.data?.message || "Failed to send request.", "error");  
+}
+
+};
+
+const acceptConnectionRequest = async (requesterId: string) => {
+if (!currentUser) return;
+const t = getAuthToken();
+if (!t) return;
+
+try {
+const res = await axios.post(
+/api/connections/accept/${requesterId},
+{},
+{ headers: { Authorization: Bearer ${t} } }
+);
+
+if (res.data?.success) {
+
+addNotificationCallBack("Connection accepted successfully!", "success");
+
+await fetchAllUsers();
+await fetchConnections();
+await fetchNotifications();
+}
+
+} catch (error) {
+console.error("Accept failed", error);
+}
 };
 
 const declineConnectionRequest = async (requesterId: string) => {
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.delete(
-      `/api/connections/decline/${requesterId}`,
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+try {
+const res = await axios.delete(
+/api/connections/decline/${requesterId},
+{ headers: { Authorization: Bearer ${t} } }
+);
 
-    if (res.data?.success) {
-  addNotificationCallBack("Connection request declined.", "info");
+if (res.data?.success) {
 
-  await fetchAllUsers();
-  await fetchConnections();
-  await fetchNotifications();
+addNotificationCallBack("Connection request declined.", "info");
+
+await fetchAllUsers();
+await fetchConnections();
+await fetchNotifications();
 }
-  } catch (err) {
-    console.error("Decline failed", err);
-  }
+} catch (err) {
+console.error("Decline failed", err);
+}
 };
 
-  const removeConnection = async (userId: string) => {
-  const t = getAuthToken();
-  if (!t) return;
+const removeConnection = async (userId: string) => {
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.delete(
-      `/api/connections/${userId}`,
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+try {
+const res = await axios.delete(
+/api/connections/${userId},
+{ headers: { Authorization: Bearer ${t} } }
+);
 
-    if (res.data?.success) {
-  addNotificationCallBack("Connection removed successfully.", "success");
+if (res.data?.success) {
 
-  await fetchAllUsers();
-  await fetchConnections();
+addNotificationCallBack("Connection removed successfully.", "success");
+
+await fetchAllUsers();
+await fetchConnections();
 }
 
-  } catch (err) {
-    console.error("Remove connection failed", err);
-  }
+} catch (err) {
+console.error("Remove connection failed", err);
+}
 };
 
-  const isRequestPending = (id: string) => sentConnectionRequests.includes(id);
-  const isUserConnected = (id: string) => connectedUserIds.includes(id);
+const isRequestPending = (id: string) => sentConnectionRequests.includes(id);
+const isUserConnected = (id: string) => connectedUserIds.includes(id);
 
-  // ---------------- PLACEHOLDERS ----------------
-  const removeApplication = () => {};
-  // ---------------- SAVE PROJECT ----------------
+// ---------------- PLACEHOLDERS ----------------
+const removeApplication = () => {};
+// ---------------- SAVE PROJECT ----------------
 
 const toggleSaveProject = async (projectId: string) => {
-  if (!currentUser) return;
+if (!currentUser) return;
 
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.put(
-      "/api/auth/save-project",
-      { projectId: String(projectId) },
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+try {
+const res = await axios.put(
+"/api/auth/save-project",
+{ projectId: String(projectId) },
+{ headers: { Authorization: Bearer ${t} } }
+);
 
-    if (res.data?.success) {
-      const updatedIds = res.data.savedProjectIds || [];
+if (res.data?.success) {  
+  const updatedIds = res.data.savedProjectIds || [];  
 
-      const updatedUser = {
-        ...currentUser,
-        savedProjectIds: updatedIds.map((id: any) => String(id))
-      };
+  const updatedUser = {  
+    ...currentUser,  
+    savedProjectIds: updatedIds.map((id: any) => String(id))  
+  };  
 
-      setCurrentUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-    }
+  setCurrentUser(updatedUser);  
+  localStorage.setItem("user", JSON.stringify(updatedUser));  
+}
 
-  } catch (err) {
-    console.error("Toggle save failed", err);
-  }
+} catch (err) {
+console.error("Toggle save failed", err);
+}
 };
 
 const isProjectSaved = (projectId: string) => {
-  if (!currentUser?.savedProjectIds) return false;
+if (!currentUser?.savedProjectIds) return false;
 
-  return currentUser.savedProjectIds.some(
-    (id: any) => String(id) === String(projectId)
-  );
+return currentUser.savedProjectIds.some(
+(id: any) => String(id) === String(projectId)
+);
 };
 
 const addApplication = async (applicationData: any) => {
-  if (!currentUser) return false;
+if (!currentUser) return false;
 
-  const t = localStorage.getItem("authToken");
-  if (!t) return false;
+const t = localStorage.getItem("authToken");
+if (!t) return false;
 
-  try {
-    const res = await axios.post(
-      "/api/applications",
-      applicationData,
-      { headers: { Authorization: `Bearer ${t}` } }
-    );
+try {
+const res = await axios.post(
+"/api/applications",
+applicationData,
+{ headers: { Authorization: Bearer ${t} } }
+);
 
-    if (res.data?.success) {
-      const newApp = {
-        ...res.data.application,
-        id: res.data.application._id || res.data.application.id
-      };
+if (res.data?.success) {  
+  const newApp = {  
+    ...res.data.application,  
+    id: res.data.application._id || res.data.application.id  
+  };  
 
-      // 👇 Immediately update state
-      setSentApplications(prev => [newApp, ...prev]);
+  // 👇 Immediately update state  
+  setSentApplications(prev => [newApp, ...prev]);  
 
-      return true;
-    }
+  return true;  
+}  
 
-    return false;
-  } catch (err) {
-    console.error("Application submit failed", err);
-    return false;
-  }
+return false;
+
+} catch (err) {
+console.error("Application submit failed", err);
+return false;
+}
 };
 
 // ---------------- APPLICATIONS ----------------
 
 // Fetch SENT applications
 const fetchSentApplications = async () => {
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.get('/api/applications/sent', {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+try {
+const res = await axios.get('/api/applications/sent', {
+headers: { Authorization: Bearer ${t} }
+});
 if (res.data?.success && Array.isArray(res.data.applications)) {
-  const normalized = res.data.applications.map((app: any) => ({
-    ...app,
-    id: app._id || app.id
-  }));
+const normalized = res.data.applications.map((app: any) => ({
+...app,
+id: app._id || app.id
+}));
 
-  setSentApplications(normalized);
+setSentApplications(normalized);
 } else {
-  setSentApplications([]);
+setSentApplications([]);
 }
-    
-  } catch (err) {
-    console.error("Fetch sent failed", err);
-  }
+
+} catch (err) {
+console.error("Fetch sent failed", err);
+}
 };
 
 // Fetch RECEIVED applications
 const fetchReceivedApplications = async () => {
-  const t = getAuthToken();
-  if (!t) return;
+const t = getAuthToken();
+if (!t) return;
 
-  try {
-    const res = await axios.get('/api/applications/received', {
-      headers: { Authorization: `Bearer ${t}` }
-    });
+try {
+const res = await axios.get('/api/applications/received', {
+headers: { Authorization: Bearer ${t} }
+});
 if (res.data?.success && Array.isArray(res.data.applications)) {
-  const normalized = res.data.applications.map((app: any) => ({
-    ...app,
-    id: app._id || app.id
-  }));
+const normalized = res.data.applications.map((app: any) => ({
+...app,
+id: app._id || app.id
+}));
 
-  setReceivedApplications(normalized);
+setReceivedApplications(normalized);
 } else {
-  setReceivedApplications([]);
+setReceivedApplications([]);
 }
 
-  } catch (err) {
-    console.error("Fetch received failed", err);
-  }
+} catch (err) {
+console.error("Fetch received failed", err);
+}
 };
 
 const fetchApplications = async () => {
-  await fetchSentApplications();
-  await fetchReceivedApplications();
+await fetchSentApplications();
+await fetchReceivedApplications();
 };
 
 // Update status
 const updateApplicationStatus = async (id: string, status: string) => {
-  const t = getAuthToken();
-  if (!t) {
-    alert("No auth token found");
-    return;
-  }
+const t = getAuthToken();
+if (!t) {
+alert("No auth token found");
+return;
+}
 
-  try {
-    const res = await axios.put(
-      `/api/applications/${id}/status`,
-      { status },
-      {
-        headers: { Authorization: `Bearer ${t}` }
-      }
-    );
+try {
+const res = await axios.put(
+/api/applications/${id}/status,
+{ status },
+{
+headers: { Authorization: Bearer ${t} }
+}
+);
 
-    if (res.data?.success) {
-      // 🔥 Immediately update local state
-      setReceivedApplications(prev =>
-        prev.map(app =>
-          app.id === id ? { ...app, status } : app
-        )
-      );
+if (res.data?.success) {  
+  // 🔥 Immediately update local state  
+  setReceivedApplications(prev =>  
+    prev.map(app =>  
+      app.id === id ? { ...app, status } : app  
+    )  
+  );  
 
-      setSentApplications(prev =>
-        prev.map(app =>
-          app.id === id ? { ...app, status } : app
-        )
-      );
+  setSentApplications(prev =>  
+    prev.map(app =>  
+      app.id === id ? { ...app, status } : app  
+    )  
+  );  
 
-      await fetchNotifications();
-    }
+  await fetchNotifications();  
+}
 
-  } catch (error) {
-    console.error("Status update failed", error);
-    alert("Failed to update status");
-  }
+} catch (error) {
+console.error("Status update failed", error);
+alert("Failed to update status");
+}
 };
-  // ---------------- INITIAL LOAD ----------------
-  useEffect(() => {
-    const loadInitialData = async () => {
-      setIsLoading(true);
-      try {
-          const res = await axios.get('/api/ideas');
-          if (res.data.success) setStartupIdeas(res.data.ideas);
+// ---------------- INITIAL LOAD ----------------
+useEffect(() => {
+const loadInitialData = async () => {
+setIsLoading(true);
+try {
+const res = await axios.get('/api/ideas');
+if (res.data.success) setStartupIdeas(res.data.ideas);
 await fetchAssets();
-      } catch (error) { console.error("Failed to fetch ideas", error); }
+} catch (error) { console.error("Failed to fetch ideas", error); }
 
-      const storedToken = localStorage.getItem('authToken');
-      const storedUser = localStorage.getItem('user');
-      if (storedToken && storedUser) {
-  try {
-    const parsedUser = JSON.parse(storedUser);
-    setToken(storedToken);
-    setCurrentUser(parsedUser);
+const storedToken = localStorage.getItem('authToken');  
+  const storedUser = localStorage.getItem('user');  
+  if (storedToken && storedUser) {
 
-    if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);
-    if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);
+try {
+const parsedUser = JSON.parse(storedUser);
+setToken(storedToken);
+setCurrentUser(parsedUser);
 
-    await fetchAllUsers();
+if(parsedUser.connections) setConnectedUserIds(parsedUser.connections);  
+if(parsedUser.sentRequests) setSentConnectionRequests(parsedUser.sentRequests);  
+
+await fetchAllUsers();
+
 await fetchConnections();
 
-  } catch (e) {
-              localStorage.removeItem('authToken');
-              localStorage.removeItem('user');
-          }
-      }
-      setIsLoading(false);
-    };
-    loadInitialData();
-  }, [fetchConnections]);
+} catch (e) {
+localStorage.removeItem('authToken');
+localStorage.removeItem('user');
+}
+}
+setIsLoading(false);
+};
+loadInitialData();
+}, [fetchConnections]);
 
-
-// 🔥 Fetch startalks AFTER users load (IMPORTANT FIX)
+// 🔥 Fetch startalks after user + token ready
 useEffect(() => {
-  const fetchStartalks = async () => {
+const fetchStartalks = async () => {
+if (!token || !currentUser) return;
 
-    // ❗ MAIN FIX
-    if (!token || !currentUser || users.length === 0) return;
+try {  
+  const res = await axios.get('/api/startalks', {  
+    headers: { Authorization: `Bearer ${token}` }  
+  });  
 
-    try {
-      const res = await axios.get('/api/startalks', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+  if (res.data.success) {  
+    setStartalks(res.data.startalks);  
+  }  
+} catch (err) {  
+  console.error("Startalk fetch error:", err);  
+}
 
-      if (res.data.success) {
-        setStartalks(res.data.startalks);
-      }
-    } catch (err) {
-      console.error("Startalk fetch error:", err);
-    }
-  };
+};
 
-  fetchStartalks();
-
-}, [token, currentUser, users]); 
+fetchStartalks();
+}, [token, currentUser]);
 
 useEffect(() => {
-  if (!token) {
-    setCurrentUser(null);
-    return;
-  }
+if (!token) {
+setCurrentUser(null);
+return;
+}
 
-  const loadUser = async () => {
-  try {
-    const res = await axios.get('/api/auth/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+const loadUser = async () => {
+try {
+const res = await axios.get('/api/auth/me', {
+headers: { Authorization: Bearer ${token} }
+});
 
-    if (res.data?.success) {
+if (res.data?.success) {  
 
-      const updatedUser = res.data.user;
+  const updatedUser = res.data.user;  
 
-      setCurrentUser(updatedUser);
+  setCurrentUser(updatedUser);  
 
-      // 🔥 IMPORTANT
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+  // 🔥 IMPORTANT  
+  localStorage.setItem("user", JSON.stringify(updatedUser));  
 
-    }
-    } catch (err) {
-      console.error("User refresh failed");
-      setCurrentUser(null);
-    }
-  };
+}  
+} catch (err) {  
+  console.error("User refresh failed");  
+  setCurrentUser(null);  
+}
 
-  loadUser();
+};
 
-  fetchAllUsers();
-  fetchConnections();
-  fetchApplications();
-  fetchNotifications();
+loadUser();
+
+fetchAllUsers();
+fetchConnections();
+fetchApplications();
+fetchNotifications();
 
 }, [token]);
 
-
 useEffect(() => {
-  const handleNotificationRead = () => {
-    fetchNotifications();
-  };
+const handleNotificationRead = () => {
+fetchNotifications();
+};
 
-  window.addEventListener("notification-read", handleNotificationRead);
+window.addEventListener("notification-read", handleNotificationRead);
 
-  return () => {
-    window.removeEventListener("notification-read", handleNotificationRead);
-  };
+return () => {
+window.removeEventListener("notification-read", handleNotificationRead);
+};
 }, []);
 
-  const contextValue = useMemo(() => ({
-    startupIdeas, startalks, assets,
+const contextValue = useMemo(() => ({
+startupIdeas, startalks, assets,
 fetchAssets, sentApplications, fetchNotifications,
-  receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
-    login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus, googleLogin,
-    removeApplication,
-    toggleSaveProject, isProjectSaved, getUserById, removeConnection,
-declineConnectionRequest,
-    fetchUserProfile,
-    markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, fetchCurrentUser,
-    sentConnectionRequests, connectedUserIds, sendConnectionRequest,
-    acceptConnectionRequest,
-    isRequestPending, isUserConnected,
-    setShowOnboardingModal,
-  }), [
-    startupIdeas, startalks, sentApplications,
 receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, assets,deleteAsset, updateAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
-  ]);
+addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus, googleLogin,
+removeApplication,
+toggleSaveProject, isProjectSaved, getUserById, removeConnection,
+declineConnectionRequest,
+fetchUserProfile,
+markNotificationAsRead, markAllNotificationsAsRead, removeAppNotification, fetchCurrentUser,
+sentConnectionRequests, connectedUserIds, sendConnectionRequest,
+acceptConnectionRequest,
+isRequestPending, isUserConnected,
+setShowOnboardingModal,
+}), [
+startupIdeas, startalks, sentApplications,
+receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
+addNotificationCallBack, assets,deleteAsset, updateAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
+]);
 
-  return (
-    <AppContext.Provider value={contextValue}>
-      {children}
-    </AppContext.Provider>
-  );
+return (
+<AppContext.Provider value={contextValue}>
+{children}
+</AppContext.Provider>
+);
 };
 
 export const useAppContext = (): AppContextType => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error('useAppContext must be used within an AppProvider');
-  }
-  return context;
+const context = useContext(AppContext);
+if (context === undefined) {
+throw new Error('useAppContext must be used within an AppProvider');
+}
+return context;
 };
