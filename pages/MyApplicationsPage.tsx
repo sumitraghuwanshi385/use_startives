@@ -243,8 +243,9 @@ useEffect(() => {
     let user = getUserById(id);
 
     if (!user) {
-      user = await fetchUserProfile(id); // 🔥 backend fetch
-    }
+      if (!user && fetchUserProfile) {
+  user = await fetchUserProfile(id);
+}
 
     setApplicant(user);
   };
@@ -266,26 +267,28 @@ useEffect(() => {
 <div className="flex items-center justify-between">
   <div className="flex items-center gap-3">
   
-      <>
-        <Link to={`/user/${applicant.id}`}>
-          <img
-  src={applicant?.profilePictureUrl || applicant?.avatar || "/default-avatar.png"}
-  className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
-/>
-        </Link>
+    {applicant && (
+  <>
+    <Link to={`/user/${applicant?.id}`}>
+      <img
+        src={applicant?.profilePictureUrl || applicant?.avatar || "/default-avatar.png"}
+        className="w-12 h-12 rounded-full object-cover border border-[var(--border-secondary)]"
+      />
+    </Link>
 
-        <div>
-          <Link
-            to={`/user/${applicant?.id}`}
-            className="text-sm font-medium text-[var(--text-primary)]"
-          >
-            {applicant?.name || "User"}
-          </Link>
-          <p className="text-xs text-purple-500">
-            {applicant?.headline || "Builder"}
-          </p>
-        </div>
-      </>
+    <div>
+      <Link
+        to={`/user/${applicant?.id}`}
+        className="text-sm font-medium text-[var(--text-primary)]"
+      >
+        {applicant?.name || "User"}
+      </Link>
+      <p className="text-xs text-purple-500">
+        {applicant?.headline || "Builder"}
+      </p>
+    </div>
+  </>
+)}
   </div>
 
   <span
