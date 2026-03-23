@@ -325,6 +325,9 @@ const displayHeadline =
 
 const StartalksPage: React.FC = () => {
   const { startalks, addStartalk, deleteStartalk, addNotification } = useAppContext();
+const shuffleArray = (array: Startalk[]) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
   const [newTalkContent, setNewTalkContent] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null); // Stores URL now
@@ -332,7 +335,6 @@ const StartalksPage: React.FC = () => {
   const [isImageUploading, setIsImageUploading] = useState(false); // ✅ New state
   const [activeFilter, setActiveFilter] = useState<'Feed' | 'Latest' | 'Most reacted'>('Feed');
   const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
-const [shuffledTalks, setShuffledTalks] = useState<Startalk[]>([]);
 
   const location = useLocation();
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -343,15 +345,7 @@ const [shuffledTalks, setShuffledTalks] = useState<Startalk[]>([]);
     if (params.get('focus') === 'true' && textareaRef.current) textareaRef.current.focus();
   }, [location.search]);
 
-useEffect(() => {
-  const shuffled = [...startalks]
-    .map(a => ({ sort: Math.random(), value: a }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(a => a.value);
-
-  setShuffledTalks(shuffled);
-}, []);
-
+const hasShuffled = useRef(false);
 
   const handlePost = async () => {
     if (!newTalkContent.trim() || isPosting || isImageUploading) return;
@@ -422,7 +416,11 @@ formData.append('file', file);
     });
   }
 
-  return shuffledTalks.length > 0 ? shuffledTalks : startalks;
+  // ✅ Shuffle only once per mount
+  if (!hasShuffled.current) {
+    hasShuffled.current = true;
+    return [...startalks].sort(() => Math.random() - 0.5);
+  }
 
   return startalks;
 }, [startalks, activeFilter]);
