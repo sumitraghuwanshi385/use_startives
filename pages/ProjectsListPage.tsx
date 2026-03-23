@@ -287,6 +287,7 @@ const displayAvatar =
     {displayName.split(" ")[0]}
   </span>
 </div>
+)}
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
             <span className="opacity-30">•</span>
             {timeAgo(idea.postedDate)}
