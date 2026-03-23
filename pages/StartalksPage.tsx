@@ -104,9 +104,11 @@ export const StartalkCard: React.FC<{ talk: Startalk; onDeleteRequest?: (id: str
 }) => {
   const { reactToStartalk, currentUser, users } = useAppContext();
 
-const realUser = users?.find(u => u.id === talk.authorId);
+const displayUser = users?.find(u => u.id === talk.authorId);
 
-const displayName = realUser?.name || talk.authorName;
+const displayName = displayUser?.name || talk.authorName || "User";
+const displayAvatar = displayUser?.profilePictureUrl || displayUser?.avatar || talk.authorAvatar;
+const displayHeadline = displayUser?.headline || talk.authorHeadline;
 
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -148,9 +150,9 @@ const displayName = realUser?.name || talk.authorName;
         <div className="flex items-center gap-3">
          {profileClickable ? (
   <Link to={`/user/${talk.authorId}`} className="relative shrink-0">
-    {realUser?.avatar || talk.authorAvatar ? (
+    {displayAvatar ? (
       <img
-        src={realUser?.avatar || talk.authorAvatar}
+        src={displayAvatar}
         alt={displayName}
         className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border-primary)]"
       />
@@ -162,9 +164,9 @@ const displayName = realUser?.name || talk.authorName;
   </Link>
 ) : (
   <div className="relative shrink-0">
-    {realUser?.avatar || talk.authorAvatar ? (
+    {displayAvatar ? (
       <img
-        src={realUser?.avatar || talk.authorAvatar}
+        src={displayAvatar}
         alt={displayName}
         className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border-primary)]"
       />
@@ -176,20 +178,28 @@ const displayName = realUser?.name || talk.authorName;
   </div>
 )}
 
-          <div className="overflow-hidden text-left">
-            {profileClickable ? (
-              <Link to={`/user/${talk.authorId}`} className="font-semibold text-sm md:text-base text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight font-poppins">
-                {talk.authorName}
-              </Link>
-            ) : (
-              <span className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight font-poppins" title="Profile not available">
-                {displayName}
-              </span>
-            )}
-            <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">
-  {realUser?.headline || talk.authorHeadline || "Builder"}
-</p>
-          </div>
+<div className="overflow-hidden text-left">
+  {profileClickable ? (
+    <Link
+      to={`/user/${talk.authorId}`}
+      className="font-semibold text-sm md:text-base text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight font-poppins"
+    >
+      {displayName}
+    </Link>
+  ) : (
+    <span
+      className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate block tracking-tight font-poppins"
+      title="Profile not available"
+    >
+      {displayName}
+    </span>
+  )}
+
+  <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">
+    {displayHeadline || "Builder"}
+  </p>
+</div>
+         
         </div>
 
         <div className="flex items-center gap-2">
