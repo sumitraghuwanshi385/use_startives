@@ -166,8 +166,6 @@ useEffect(() => {
   }
 }, [users]);
 
-const { users } = useAppContext();
-
 const founder = users?.find(u => u.id === idea.founderId);
 
 // 🔥 force reactive fallback
