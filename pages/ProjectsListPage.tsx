@@ -158,8 +158,6 @@ const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
 
-const [, forceUpdate] = useState(0);
-
 const founder = users?.find(u => u.id === idea.founderId);
 
 // 🔥 force reactive fallback
