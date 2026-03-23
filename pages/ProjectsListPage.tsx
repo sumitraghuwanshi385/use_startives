@@ -155,7 +155,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 // --- Project Card Component (same as you had, unchanged) ---
 const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
-  const { toggleSaveProject, isProjectSaved, currentUser, getUserById } = useAppContext();
+  const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
 
 const founder = users?.find(u => u.id === idea.founderId);
@@ -280,7 +280,6 @@ const displayUser = founder || idea.founder;
     </span>
   </div>
 )}
-})()}
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
             <span className="opacity-30">•</span>
             {timeAgo(idea.postedDate)}
