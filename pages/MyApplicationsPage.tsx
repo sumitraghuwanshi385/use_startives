@@ -246,6 +246,7 @@ useEffect(() => {
       if (!user && fetchUserProfile) {
   user = await fetchUserProfile(id);
 }
+}
 
     setApplicant(user);
   };
