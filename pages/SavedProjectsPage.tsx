@@ -12,12 +12,26 @@ import {
 
 const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
-  const { toggleSaveProject, getUserById } = useAppContext();
+  const { toggleSaveProject, getUserById, fetchUserProfile } = useAppContext();
 
-  const founder = useMemo(
-    () => getUserById(idea.founderId),
-    [idea.founderId, getUserById]
-  );
+  const [founder, setFounder] = useState<any>(null);
+
+useEffect(() => {
+  const loadFounder = async () => {
+    const id = idea?.founderId;
+    if (!id) return;
+
+    let user = getUserById(id);
+
+    if (!user && fetchUserProfile) {
+      user = await fetchUserProfile(id);
+    }
+
+    setFounder(user);
+  };
+
+  loadFounder();
+}, [idea?.founderId]);
 
   return (
     <div className="bg-[var(--component-background)] rounded-[2rem] border border-[var(--border-primary)] transition-all duration-300 hover:border-purple-500/30 font-poppins shadow-none flex flex-col">
@@ -68,26 +82,29 @@ const SavedProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
         {/* LEFT: Profile + Time */}
         <div className="flex items-center gap-2">
-          {founder && (
-            <div
-              className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/user/${idea.founderId}`);
-              }}
-            >
-              <img
-                src={
-                  founder.profilePictureUrl ||
-                  `https://i.pravatar.cc/150?u=${founder.id}`
-                }
-                className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
-              />
-              <span className="text-xs font-black text-[var(--text-secondary)]">
-                {founder.name?.split(' ')[0]}
-              </span>
-            </div>
-          )}
+          {founder ? (
+  <div
+    className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity"
+    onClick={(e) => {
+      e.stopPropagation();
+      navigate(`/user/${founder.id}`);
+    }}
+  >
+    <img
+      src={
+        founder?.profilePictureUrl ||
+        founder?.avatar ||
+        `https://i.pravatar.cc/150?u=${founder?.id}`
+      }
+      className="w-5 h-5 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800"
+    />
+    <span className="text-xs font-black text-[var(--text-secondary)]">
+      {founder?.name?.split(' ')[0] || "User"}
+    </span>
+  </div>
+) : (
+  <span className="text-xs text-[var(--text-muted)]">Loading...</span>
+)}
 
           <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
   <span className="opacity-30">•</span>
