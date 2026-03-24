@@ -423,7 +423,7 @@ src={
 ? (teamDetails.chatImage || teamDetails.image)
 : (teamDetails.chatImage || teamDetails.image)?.startsWith("http")
 ? (teamDetails.chatImage || teamDetails.image)
-: `https://startives.onrender.com${teamDetails.chatImage || teamDetails.image}`
+: `https://use-startives.onrender.com${teamDetails.chatImage || teamDetails.image}`
 }
 alt={teamDetails.contact.name}
 className="w-28 h-28 rounded-full object-cover flex-shrink-0 border-4 border-[var(--background-tertiary)] shadow-lg"
