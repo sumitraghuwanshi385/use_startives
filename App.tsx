@@ -71,12 +71,12 @@ const App: React.FC = () => {
     try {
 
       // Wake backend
-      fetch("https://startives.onrender.com/test123").catch(()=>{})
+      fetch("https://use-startives.onrender.com/test123").catch(()=>{})
 
       // Prefetch APIs
-      fetch("https://startives.onrender.com/api/ideas").catch(()=>{})
-      fetch("https://startives.onrender.com/api/assets").catch(()=>{})
-      fetch("https://startives.onrender.com/api/startalks").catch(()=>{})
+      fetch("https://use-startives.onrender.com/api/ideas").catch(()=>{})
+      fetch("https://use-startives.onrender.com/api/assets").catch(()=>{})
+      fetch("https://use-startives.onrender.com/api/startalks").catch(()=>{})
 
     } catch (err) {}
   };
