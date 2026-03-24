@@ -263,7 +263,7 @@ const [teamSize, setTeamSize] = useState('');
 formData.append('file', file);
 
     const res = await axios.post(
-      'https://startives.onrender.com/api/upload',
+      'https://use-startives.onrender.com/api/upload',
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
