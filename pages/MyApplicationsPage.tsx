@@ -84,6 +84,8 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
   const isConnected =
     founder && currentUser?.connections?.includes(founder.id);
 
+const [requestSent, setRequestSent] = useState(false);
+
   return (
     <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
 
@@ -173,11 +175,19 @@ const SentCard: React.FC<{ application: Application; idea?: StartupIdea }> = ({
       </div>
     ) : (
       <button
-        onClick={() => sendConnectionRequest(founder.id)}
-        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
-      >
-        ADD CONNECTION
-      </button>
+  onClick={() => {
+    sendConnectionRequest(founder.id);
+    setRequestSent(true);
+  }}
+  disabled={requestSent}
+  className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full text-white ${
+    requestSent
+      ? "bg-green-600 cursor-not-allowed opacity-70"
+      : "button-gradient"
+  }`}
+>
+  {requestSent ? "REQUEST SENT" : "ADD CONNECTION"}
+</button>
     )}
 
     <Link
@@ -260,6 +270,8 @@ useEffect(() => {
 
     const isConnected =
       applicant && currentUser?.connections?.includes(applicant.id);
+
+const [requestSent, setRequestSent] = useState(false);
 
     return (
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-3xl p-6 space-y-5 font-poppins">
@@ -391,11 +403,19 @@ className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-
       </div>
     ) : (
       <button
-        onClick={() => sendConnectionRequest(applicant.id)}
-        className="flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full button-gradient text-white"
-      >
-        ADD CONNECTION
-      </button>
+  onClick={() => {
+    sendConnectionRequest(applicant.id);
+    setRequestSent(true);
+  }}
+  disabled={requestSent}
+  className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-full text-white ${
+    requestSent
+      ? "bg-green-600 cursor-not-allowed opacity-70"
+      : "button-gradient"
+  }`}
+>
+  {requestSent ? "REQUEST SENT" : "ADD CONNECTION"}
+</button>
     )}
 
     <Link
