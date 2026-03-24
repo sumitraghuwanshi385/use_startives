@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { User, ChatConversation, MessageType, FileAttachment } from '../types';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const API_BASE = 'https://startives.onrender.com';
+const API_BASE = 'https://use-startives.onrender.com';
 
 const getImageUrl = (url?: string) => {
 
