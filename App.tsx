@@ -173,5 +173,4 @@ const App: React.FC = () => {
         </GoogleOAuthProvider>
   );
 };
-
 export default App;
