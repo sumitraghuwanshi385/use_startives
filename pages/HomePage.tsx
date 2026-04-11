@@ -251,9 +251,9 @@ const handleProtectedRoute = (path: string) => {
   <div className="container mx-auto px-4">
 
     <div className="text-center mb-10 fade-in-up">
-      <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
-        Discover Projects
-      </h2>
+      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
+  Discover Projects
+</h2>
       <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
         Explore live startup ideas, apply to join teams, or submit your own and find co-founders.
       </p>
