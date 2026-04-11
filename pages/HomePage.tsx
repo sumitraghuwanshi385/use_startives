@@ -15,6 +15,7 @@ import {
     UsersIcon,
     IdeaStarIcon
 } from '../constants'; 
+import ProjectCard from '../pages/ProjectsListPage';
 
 const GradientButton: React.FC<{ to?: string; href?: string; children: React.ReactNode; className?: string; icon?: React.ReactNode, type?: "button" | "submit" | "reset", onClick?: () => void, "data-animate-delay"?: string }> = ({ to, href, children, className, icon, type="button", onClick, "data-animate-delay": dataAnimateDelay }) => {
   const commonClasses = `button-gradient inline-flex items-center justify-center text-white font-semibold py-3 px-8 rounded-full text-base transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500/50 ${className}`;
@@ -258,33 +259,13 @@ const handleProtectedRoute = (path: string) => {
       </p>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {recentProjects.map((idea) => (
-        <div
-          key={idea.id}
-          onClick={() => handleProtectedRoute(`/idea/${idea.id}`)}
-          className="cursor-pointer bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40"
-        >
-          <h3 className="text-base font-bold text-[var(--text-primary)]">
-            {idea.title}
-          </h3>
-
-          <p className="text-xs text-purple-500 mt-1">
-            {idea.tagline}
-          </p>
-
-          <div className="flex justify-between items-center mt-4">
-            <span className="text-[10px] text-[var(--text-muted)] font-bold">
-              {timeAgo(idea.createdAt || idea.postedDate)}
-            </span>
-
-            <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
-              View →
-            </span>
-          </div>
-        </div>
-      ))}
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  {recentProjects.map((idea) => (
+    <div key={idea.id} onClick={() => handleProtectedRoute(`/idea/${idea.id}`)}>
+      <ProjectCard idea={idea} />
     </div>
+  ))}
+</div>
 
     <div className="flex justify-center gap-4 mt-10">
 
