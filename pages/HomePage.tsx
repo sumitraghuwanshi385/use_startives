@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
+import { timeAgo } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
     APP_NAME, 
@@ -133,6 +135,26 @@ const EcosystemStatCard: React.FC<{ endValue: number; label: string; description
 const HomePage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
 
+const navigate = useNavigate();
+const { startupIdeas, currentUser } = useAppContext();
+
+const recentProjects = [...startupIdeas]
+  .filter((idea) => !idea.askingPrice)
+  .sort(
+    (a, b) =>
+      new Date(b.createdAt || b.postedDate).getTime() -
+      new Date(a.createdAt || a.postedDate).getTime()
+  )
+  .slice(0, 4);
+
+const handleProtectedRoute = (path: string) => {
+  if (!currentUser) {
+    navigate("/login");
+  } else {
+    navigate(path);
+  }
+};
+
   const features = [
     { icon: <CheckBadgeIcon />, title: "Validate your idea", description: "Get feedback on your startup concept from a diverse community of experts and peers.", gradient: 'from-sky-400 to-cyan-300' },
     { icon: <UsersIcon />, title: "Find a co-founder", description: "Connect with passionate individuals who share your vision and have the skills to help you succeed.", gradient: 'from-red-500 to-rose-400' },
@@ -222,6 +244,68 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </section>
+
+{/* 🔥 DISCOVER PROJECTS SECTION */}
+<section className="py-12 sm:py-16 bg-[var(--background-primary)]">
+  <div className="container mx-auto px-4">
+
+    <div className="text-center mb-10 fade-in-up">
+      <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
+        Discover Projects
+      </h2>
+      <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
+        Explore live startup ideas, apply to join teams, or submit your own and find co-founders.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {recentProjects.map((idea) => (
+        <div
+          key={idea.id}
+          onClick={() => handleProtectedRoute(`/idea/${idea.id}`)}
+          className="cursor-pointer bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/40"
+        >
+          <h3 className="text-base font-bold text-[var(--text-primary)]">
+            {idea.title}
+          </h3>
+
+          <p className="text-xs text-purple-500 mt-1">
+            {idea.tagline}
+          </p>
+
+          <div className="flex justify-between items-center mt-4">
+            <span className="text-[10px] text-[var(--text-muted)] font-bold">
+              {timeAgo(idea.createdAt || idea.postedDate)}
+            </span>
+
+            <span className="text-[10px] font-black text-purple-600 uppercase tracking-widest">
+              View →
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div className="flex justify-center gap-4 mt-10">
+
+      <button
+        onClick={() => handleProtectedRoute("/discover")}
+        className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest"
+      >
+        Explore Projects
+      </button>
+
+      <button
+        onClick={() => handleProtectedRoute("/submit-idea")}
+        className="bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest"
+      >
+        Submit Idea
+      </button>
+
+    </div>
+
+  </div>
+</section>
 
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
             <div className="container mx-auto px-4">
