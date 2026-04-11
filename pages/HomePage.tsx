@@ -15,7 +15,7 @@ import {
     UsersIcon,
     IdeaStarIcon
 } from '../constants'; 
-import ProjectCard from '../pages/ProjectsListPage';
+import { ProjectCard } from '../pages/ProjectsListPage';
 
 const GradientButton: React.FC<{ to?: string; href?: string; children: React.ReactNode; className?: string; icon?: React.ReactNode, type?: "button" | "submit" | "reset", onClick?: () => void, "data-animate-delay"?: string }> = ({ to, href, children, className, icon, type="button", onClick, "data-animate-delay": dataAnimateDelay }) => {
   const commonClasses = `button-gradient inline-flex items-center justify-center text-white font-semibold py-3 px-8 rounded-full text-base transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500/50 ${className}`;
@@ -261,9 +261,7 @@ const handleProtectedRoute = (path: string) => {
 
    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
   {recentProjects.map((idea) => (
-    <div key={idea.id} onClick={() => handleProtectedRoute(`/idea/${idea.id}`)}>
-      <ProjectCard idea={idea} />
-    </div>
+    <ProjectCard key={idea.id} idea={idea} />
   ))}
 </div>
 
