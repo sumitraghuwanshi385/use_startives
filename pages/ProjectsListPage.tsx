@@ -153,7 +153,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 };
 
 // --- Project Card Component (same as you had, unchanged) ---
-const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
+export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
