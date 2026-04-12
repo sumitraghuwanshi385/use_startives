@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
+import BottomNav from './components/BottomNav';
 import PostIdeaPage from './pages/PostIdeaPage';
 import IdeaDetailPage from './pages/IdeaDetailPage';
 import AssetDetailsPage from './pages/AssetDetailsPage';
@@ -122,7 +123,7 @@ const App: React.FC = () => {
       {currentUser && showOnboardingModal && <OnboardingPage />}
       {showHeader && <Header />}
 <NotificationArea />
-      <main className={`flex-grow ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+      <main className={`flex-grow pb-16 ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -168,7 +169,11 @@ const App: React.FC = () => {
         </Routes>
       </main>
       {showFooter && <Footer />}
-      {showFAB && <FloatingActionMenu />}
+
+/* 🔥 Bottom Nav */
+{currentUser && <BottomNav />}
+
+{showFAB && <FloatingActionMenu />}
     </div>
         </GoogleOAuthProvider>
   );
