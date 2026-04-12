@@ -1,10 +1,7 @@
-import {
-  Home,
-  Sparkles
-} from "lucide-react";
+import { Home, Sparkles } from "lucide-react";
 
 import {
-  IdeaStarIcon,
+  GlobeModernIcon, // ✅ Projects (Discover Ideas)
   ShoppingBagIcon,
   ChatBubbleLeftRightIcon
 } from "../constants";
@@ -17,10 +14,10 @@ const BottomNav = () => {
 
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
-    { name: "Projects", icon: IdeaStarIcon, path: "/projects", type: "custom" },
+    { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" }, // ✅ FIXED
     { name: "Asset", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
     { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
-    { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
+    { name: "Messenger", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
 
   return (
@@ -40,27 +37,16 @@ const BottomNav = () => {
               className="flex flex-col items-center justify-center flex-1"
             >
               
-              {/* 🔥 ICON */}
-              {item.type === "lucide" ? (
-                <Icon
-                  strokeWidth={isActive ? 2.5 : 1.8}
-                  className={`w-6 h-6 mb-[3px] transition-all duration-150
-                    ${
-                      isActive
-                        ? "text-[var(--text-primary)] opacity-100 border border-black/10 dark:border-white/10 rounded-lg p-[2px]"
-                        : "text-[var(--text-muted)] opacity-80"
-                    }`}
-                />
-              ) : (
-                <Icon
-                  className={`w-6 h-6 mb-[3px] transition-all duration-150
-                    ${
-                      isActive
-                        ? "text-[var(--text-primary)] border border-black/10 dark:border-white/10 rounded-lg p-[2px]"
-                        : "text-[var(--text-muted)] opacity-80"
-                    }`}
-                />
-              )}
+              {/* 🔥 ICON (NO ANIMATION / NO BG / NO SCALE) */}
+              <Icon
+                strokeWidth={1.8}
+                className={`w-6 h-6 mb-[3px]
+                  ${
+                    isActive
+                      ? "text-[var(--text-primary)] border border-black/10 dark:border-white/10 rounded-md p-[2px]"
+                      : "text-[var(--text-muted)]"
+                  }`}
+              />
 
               {/* 🔥 TEXT */}
               <span
