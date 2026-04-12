@@ -1,12 +1,15 @@
-import { Home, Sparkles } from "lucide-react";
-
 import {
-  GlobeModernIcon, // ✅ Projects (Discover Ideas)
-  ShoppingBagIcon,
-  ChatBubbleLeftRightIcon
-} from "../constants";
-
+  Home,
+  Sparkles
+} from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+
+// 🔥 Custom icons from dashboard
+import {
+  GlobeModernIcon,        // Projects (Discover ideas)
+  ShoppingBagIcon,        // Asset
+  ChatBubbleLeftRightIcon // Messages
+} from "../constants";
 
 const BottomNav = () => {
   const navigate = useNavigate();
@@ -14,20 +17,19 @@ const BottomNav = () => {
 
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
-    { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" }, // ✅ FIXED
+    { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" },
     { name: "Asset", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
     { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
-    { name: "Messenger", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
+    { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-50">
 
       {/* 🔥 NAV BAR */}
-      <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3.5 flex justify-between items-center">
+      <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
         {navItems.map((item, index) => {
-          const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.path);
 
           return (
@@ -37,16 +39,27 @@ const BottomNav = () => {
               className="flex flex-col items-center justify-center flex-1"
             >
               
-              {/* 🔥 ICON (NO ANIMATION / NO BG / NO SCALE) */}
-              <Icon
-                strokeWidth={1.8}
-                className={`w-6 h-6 mb-[3px]
-                  ${
-                    isActive
-                      ? "text-[var(--text-primary)] border border-black/10 dark:border-white/10 rounded-md p-[2px]"
-                      : "text-[var(--text-muted)]"
-                  }`}
-              />
+              {/* 🔥 ICON */}
+              {item.type === "lucide" ? (
+                <item.icon
+                  strokeWidth={1.8}
+                  className={`w-6 h-6 mb-[3px]
+                    ${
+                      isActive
+                        ? "text-[var(--text-primary)]"
+                        : "text-[var(--text-muted)]"
+                    }`}
+                />
+              ) : (
+                <item.icon
+                  className={`w-6 h-6 mb-[3px]
+                    ${
+                      isActive
+                        ? "text-[var(--text-primary)]"
+                        : "text-[var(--text-muted)]"
+                    }`}
+                />
+              )}
 
               {/* 🔥 TEXT */}
               <span
