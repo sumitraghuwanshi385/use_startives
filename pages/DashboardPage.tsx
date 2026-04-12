@@ -78,7 +78,7 @@ const DiscoverProjectsShortcut: React.FC = () => {
                     <GlobeModernIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover ideas</h3>
+                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover Projects</h3>
                     <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Explore trending innovations</p>
                 </div>
             </div>
@@ -105,7 +105,7 @@ const MarketplaceShortcut: React.FC = () => {
                     <ShoppingBagIcon className="w-5 h-5 text-red-500 dark:text-red-400" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-red-500 transition-colors tracking-tight font-poppins">Asset shop</h3>
+                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-red-500 transition-colors tracking-tight font-poppins">Asset Shop</h3>
                     <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Browse verified assets</p>
                 </div>
             </div>
