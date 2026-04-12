@@ -1,10 +1,14 @@
 import {
   Home,
-  Rocket,
-  LayoutDashboard,
-  Sparkles,
-  MessageSquareMore
+  Sparkles
 } from "lucide-react";
+
+import {
+  IdeaStarIcon,
+  ShoppingBagIcon,
+  ChatBubbleLeftRightIcon
+} from "../constants";
+
 import { useNavigate, useLocation } from "react-router-dom";
 
 const BottomNav = () => {
@@ -12,20 +16,18 @@ const BottomNav = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-    { name: "Projects", icon: Rocket, path: "/projects" },
-
-    // 🔥 BETTER ICONS
-    { name: "Asset", icon: Home, path: "/blueprint" }, // cleaner than briefcase
-    { name: "Startalks", icon: Sparkles, path: "/startalks" }, // premium ✨
-    { name: "Messages", icon: MessageSquareMore, path: "/messages" }, // modern 💬
+    { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
+    { name: "Projects", icon: IdeaStarIcon, path: "/projects", type: "custom" },
+    { name: "Asset", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
+    { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
+    { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-50">
 
-      {/* 🔥 NAV BAR (HEIGHT INCREASED SLIGHTLY) */}
-      <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
+      {/* 🔥 NAV BAR */}
+      <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3.5 flex justify-between items-center">
 
         {navItems.map((item, index) => {
           const Icon = item.icon;
@@ -38,16 +40,27 @@ const BottomNav = () => {
               className="flex flex-col items-center justify-center flex-1"
             >
               
-              {/* 🔥 ICON (PROPER ACTIVE STYLE) */}
-              <Icon
-                strokeWidth={isActive ? 2.5 : 1.8}
-                className={`w-6 h-6 mb-[3px] transition-all duration-200
-                  ${
-                    isActive
-                      ? "text-[var(--text-primary)] scale-110"
-                      : "text-[var(--text-muted)]"
-                  }`}
-              />
+              {/* 🔥 ICON */}
+              {item.type === "lucide" ? (
+                <Icon
+                  strokeWidth={isActive ? 2.5 : 1.8}
+                  className={`w-6 h-6 mb-[3px] transition-all duration-150
+                    ${
+                      isActive
+                        ? "text-[var(--text-primary)] opacity-100 border border-black/10 dark:border-white/10 rounded-lg p-[2px]"
+                        : "text-[var(--text-muted)] opacity-80"
+                    }`}
+                />
+              ) : (
+                <Icon
+                  className={`w-6 h-6 mb-[3px] transition-all duration-150
+                    ${
+                      isActive
+                        ? "text-[var(--text-primary)] border border-black/10 dark:border-white/10 rounded-lg p-[2px]"
+                        : "text-[var(--text-muted)] opacity-80"
+                    }`}
+                />
+              )}
 
               {/* 🔥 TEXT */}
               <span
