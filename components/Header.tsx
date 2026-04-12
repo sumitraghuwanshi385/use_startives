@@ -258,16 +258,22 @@ const handleBellClick = async () => {
       {/* ☰ Hamburger Menu */}
       <div ref={profileDropdownRef} className="relative">
         <button
-          onClick={handleMenuClick}
-          className={commonIconButtonClasses}
-          aria-label="Open menu"
-        >
-          <HamburgerIcon
-            className={`w-6 h-6 ${
-              isMenuAnimating ? "animate-icon-click" : ""
-            }`}
-          />
-        </button>
+  onClick={handleMenuClick}
+  className={commonIconButtonClasses}
+  aria-label="Open menu"
+>
+  {currentUser?.profilePictureUrl ? (
+    <img
+      src={currentUser.profilePictureUrl}
+      alt={currentUser.name}
+      className="w-8 h-8 rounded-full object-cover border border-[var(--border-primary)]"
+    />
+  ) : (
+    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+      {getInitials(currentUser.name)}
+    </div>
+  )}
+</button>
 
         {/* Dropdown */}
         <div
