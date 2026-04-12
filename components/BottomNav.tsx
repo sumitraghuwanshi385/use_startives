@@ -1,9 +1,9 @@
 import {
   Home,
   Rocket,
-  Briefcase,
-  Star,
-  MessageCircle
+  LayoutDashboard,
+  Sparkles,
+  MessageSquareMore
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -12,18 +12,20 @@ const BottomNav = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Dashboard", icon: Home, path: "/dashboard" },
+    { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     { name: "Projects", icon: Rocket, path: "/projects" },
-    { name: "Asset", icon: Briefcase, path: "/blueprint" }, // ✅ FIXED
-    { name: "Startalks", icon: Star, path: "/startalks" },
-    { name: "Messages", icon: MessageCircle, path: "/messages" },
+
+    // 🔥 BETTER ICONS
+    { name: "Asset", icon: Home, path: "/blueprint" }, // cleaner than briefcase
+    { name: "Startalks", icon: Sparkles, path: "/startalks" }, // premium ✨
+    { name: "Messages", icon: MessageSquareMore, path: "/messages" }, // modern 💬
   ];
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-50">
 
-      {/* 🔥 NAV BAR */}
-      <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-2 flex justify-between items-center">
+      {/* 🔥 NAV BAR (HEIGHT INCREASED SLIGHTLY) */}
+      <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
         {navItems.map((item, index) => {
           const Icon = item.icon;
@@ -36,12 +38,13 @@ const BottomNav = () => {
               className="flex flex-col items-center justify-center flex-1"
             >
               
-              {/* 🔥 ICON */}
+              {/* 🔥 ICON (PROPER ACTIVE STYLE) */}
               <Icon
-                className={`w-6 h-6 mb-[2px]
+                strokeWidth={isActive ? 2.5 : 1.8}
+                className={`w-6 h-6 mb-[3px] transition-all duration-200
                   ${
                     isActive
-                      ? "fill-current text-[var(--text-primary)]"
+                      ? "text-[var(--text-primary)] scale-110"
                       : "text-[var(--text-muted)]"
                   }`}
               />
