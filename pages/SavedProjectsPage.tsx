@@ -264,7 +264,7 @@ const savedAssetsCount = assets.filter(
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            Assets ({savedAssetsCount})
+            Listings ({savedAssetsCount})
           </button>
         </div>
       </div>
