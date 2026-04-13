@@ -303,7 +303,7 @@ const userAssets = assets.filter(
                     <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
                         <IdentificationIcon className="w-3 h-3" />
                     </div>
-                    Professional Bio
+                    Bio
                 </h3>
                 <section className="bg-white dark:bg-neutral-950 p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-sm">
                     <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium opacity-90 whitespace-pre-wrap">
