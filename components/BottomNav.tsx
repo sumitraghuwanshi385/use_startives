@@ -4,7 +4,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// 🔥 Custom icons from dashboard
+// 🔥 Custom icons
 import {
   GlobeModernIcon,
   ShoppingBagIcon,
@@ -15,22 +15,14 @@ const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ HIDE ONLY ON:
-  // - individual chat page (e.g. /messages/123)
-  // - landing page (/)
-  // - login/signup pages
   const path = location.pathname;
 
-  const isChatPage =
-    path.startsWith("/messages/") && path !== "/messages";
+  // ✅ HIDE CONDITIONS
+  const hideExactRoutes = ["/", "/login", "/signup"];
 
-  const hideOnRoutes = [
-    "/",
-    "/login",
-    "/signup"
-  ];
+  const isChatPage = /^\/messages\/[^/]+/.test(path);
 
-  if (isChatPage || hideOnRoutes.includes(path)) {
+  if (hideExactRoutes.includes(path) || isChatPage) {
     return null;
   }
 
@@ -44,7 +36,6 @@ const BottomNav = () => {
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-[999]">
-      {/* 🔥 NAV BAR */}
       <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
         {navItems.map((item, index) => {
@@ -57,7 +48,7 @@ const BottomNav = () => {
               className="flex flex-col items-center justify-center flex-1"
             >
               
-              {/* 🔥 ICON */}
+              {/* ICON */}
               {item.type === "lucide" ? (
                 <item.icon
                   strokeWidth={1.8}
@@ -79,7 +70,7 @@ const BottomNav = () => {
                 />
               )}
 
-              {/* 🔥 TEXT */}
+              {/* TEXT */}
               <span
                 className={`text-[10px] font-semibold leading-none
                   ${
