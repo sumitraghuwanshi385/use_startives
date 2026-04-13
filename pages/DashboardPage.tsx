@@ -79,7 +79,7 @@ const DiscoverProjectsShortcut: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover Projects</h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Explore trending innovations</p>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Explore Trending Innovations</p>
                 </div>
             </div>
             <div className="relative">
@@ -105,8 +105,8 @@ const MarketplaceShortcut: React.FC = () => {
                     <ShoppingBagIcon className="w-5 h-5 text-red-500 dark:text-red-400" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-red-500 transition-colors tracking-tight font-poppins">Asset Shop</h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Browse verified assets</p>
+                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-red-500 transition-colors tracking-tight font-poppins">Marketplace</h3>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Browse Projects Marketplace</p>
                 </div>
             </div>
             <div className="relative">
