@@ -116,16 +116,11 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-full transition-all duration-300 border shadow-none
-          ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'}
-          text-[var(--text-primary)] focus:outline-none min-w-[100px] font-poppins`}
-      >
-        <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
-        <span className="truncate max-w-[80px]">
+<div className="relative" ref={dropdownRef}>
+<button type="button" onClick={() => setIsOpen(!isOpen)} className={flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'} text-[var(--text-primary)] focus:outline-none flex-1 font-poppins}>
+
+<span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>  
+    <span className="truncate max-w-[80px] font-poppins">
           {selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}
         </span>
         <ChevronDownIconUI className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
