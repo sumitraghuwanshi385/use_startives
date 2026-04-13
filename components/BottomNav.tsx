@@ -6,14 +6,20 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 // 🔥 Custom icons from dashboard
 import {
-  GlobeModernIcon,        // Projects (Discover ideas)
-  ShoppingBagIcon,        // Asset
-  ChatBubbleLeftRightIcon // Messages
+  GlobeModernIcon,
+  ShoppingBagIcon,
+  ChatBubbleLeftRightIcon
 } from "../constants";
 
 const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // ✅ HIDE NAV ON CHAT / MESSAGE PAGES
+  const hideOnRoutes = ["/messages", "/chat"];
+  if (hideOnRoutes.some(route => location.pathname.startsWith(route))) {
+    return null;
+  }
 
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
@@ -24,8 +30,7 @@ const BottomNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-50">
-
+    <div className="fixed bottom-0 left-0 w-full z-[999]">
       {/* 🔥 NAV BAR */}
       <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
