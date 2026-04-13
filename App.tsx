@@ -62,6 +62,7 @@ const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: s
 
 const App: React.FC = () => {
   const location = useLocation();
+const isChatPage = /^\/messages\/[^/]+/.test(location.pathname);
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
 
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ;
@@ -123,7 +124,7 @@ const App: React.FC = () => {
       {currentUser && showOnboardingModal && <OnboardingPage />}
       {showHeader && <Header />}
 <NotificationArea />
-      <main className={`flex-grow pb-16 ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+      <main className={`flex-grow ${isFullHeightPage || isChatPage ? '' : 'pb-16'} ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -170,8 +171,7 @@ const App: React.FC = () => {
       </main>
       {showFooter && <Footer />}
 
-/* 🔥 Bottom Nav */
-{currentUser && <BottomNav />}
+{currentUser && !isChatPage && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
 
 {showFAB && <FloatingActionMenu />}
     </div>
