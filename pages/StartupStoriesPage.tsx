@@ -74,7 +74,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button type="button" onClick={() => setIsOpen(!isOpen)} className={`flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-full transition-all duration-300 border shadow-none ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'} text-[var(--text-primary)] focus:outline-none min-w-[100px] font-poppins`}>
+      <button type="button" onClick={() => setIsOpen(!isOpen)} className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-[11px] font-bold rounded-full transition-all duration-300 border shadow-none ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'} text-[var(--text-primary)] focus:outline-none min-w-[100px] font-poppins`}>
 
         <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
         <span className="truncate max-w-[80px] font-poppins">{selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}</span>
@@ -250,7 +250,7 @@ return list;
   return (
     <div className="bg-[var(--background-secondary)] min-h-screen flex flex-col font-poppins">
         <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="flex flex-col gap-2">
 
 <div className="text-left">
 <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">
@@ -261,39 +261,6 @@ Marketplace
 Where Startups & SaaS Get Bought and Sold.
 </p>
 </div>
-
-<div className="flex items-center gap-8 px-7 py-2.5 
-bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
-text-white px-6 py-2.5 rounded-full shadow-lg">
-
-<div className="flex items-center gap-3">
-<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-Total Assets
-</p>
-
-<p className="text-sm font-black">
-{assets.length}
-</p>
-</div>
-
-<div className="w-px h-4 bg-white/20"></div>
-
-<div className="flex items-center gap-3">
-<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
-Assets This Week
-</p>
-
-<p className="text-sm font-black">
-{
-assets.filter(a =>
-Date.now() - new Date(a.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000
-).length
-}
-</p>
-</div>
-
-</div>
-
 </div>
 </div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex justify-center"><div className="relative group max-w-2xl w-full"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><SearchIcon className="h-5 w-5 text-[var(--text-muted)]" /></div><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search digital assets..." className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-emerald-500 outline-none transition-all text-base font-medium font-poppins" /></div></div>
