@@ -275,7 +275,19 @@ const [isAttachOpen, setIsAttachOpen] = useState(false);
   const docInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
-  const location = useLocation();
+const location = useLocation();
+
+useEffect(() => {
+  if (selectedChatId) {
+    document.body.classList.add('chat-open');
+  } else {
+    document.body.classList.remove('chat-open');
+  }
+
+  return () => {
+    document.body.classList.remove('chat-open');
+  };
+}, [selectedChatId]);
 
   const selectedChat = useMemo(() => chats.find(c => c.id === selectedChatId), [chats, selectedChatId]);
 
