@@ -289,6 +289,11 @@ useEffect(() => {
   };
 }, [selectedChatId]);
 
+// 🔥 ALSO REMOVE WHEN PAGE LOADS / CHANGES
+useEffect(() => {
+  document.body.classList.remove('chat-open');
+}, []);
+
   const selectedChat = useMemo(() => chats.find(c => c.id === selectedChatId), [chats, selectedChatId]);
 
   const filteredChats = useMemo(() => chats.filter(c => (activeType === 'teams' ? c.isTeam : !c.isTeam)), [chats, activeType]);
@@ -889,6 +894,9 @@ onClick={(e) => {
   e.stopPropagation();
   setSelectedChatId(null);
 }}
+
+ document.body.classList.remove('chat-open');
+  }}
             className="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--background-tertiary)]"
           >
             <ArrowLeftIcon />
