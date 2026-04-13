@@ -18,7 +18,7 @@ const BottomNav = () => {
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
     { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" },
-    { name: "Asset", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
+    { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
     { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
