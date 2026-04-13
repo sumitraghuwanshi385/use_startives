@@ -223,7 +223,7 @@ const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
                     </div>
                     <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
                         <ShoppingBagIcon className="w-3.5 h-3.5 text-orange-500" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Assets</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Listings</span>
                         <span className="text-xs font-black text-[var(--text-primary)] ml-1">{myAssets.length}</span>
                     </div>
                     <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
@@ -234,7 +234,7 @@ const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
 <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
   <BoltIcon className="w-3.5 h-3.5 text-emerald-500" />
   <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-    Updates
+    Talks
   </span>
   <span className="text-xs font-black text-[var(--text-primary)] ml-1">
     {myTalks.length}
@@ -277,7 +277,7 @@ const [talkToDeleteId, setTalkToDeleteId] = useState<string | null>(null);
                     <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
                         <BoltIcon className="w-3 h-3" />
                     </div>
-                    My Updates
+                    My Talks
                 </h3>
                 {myTalks.length > 0 ? (
                     <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar snap-x snap-mandatory px-2">
