@@ -418,7 +418,7 @@ const displayIdeas =
         </div>
 
         {/* Search */}
-        <div className="mb-6 flex justify-center">
+        <div className="mb-4 flex justify-center">
           <div className="relative group max-w-2xl w-full">
             <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
               <SearchIcon className="h-5 w-5 text-[var(--text-muted)]" />
@@ -434,7 +434,7 @@ const displayIdeas =
         </div>
 
         {/* Filters */}
-        <div className="sticky top-[68px] z-30 bg-[var(--background-secondary)]/80 backdrop-blur-lg -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 mb-8 border-b border-[var(--border-primary)]">
+        <div className="sticky top-[68px] z-30 bg-[var(--background-secondary)]/80 backdrop-blur-lg -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-2 mb-4 border-b border-[var(--border-primary)]">
           <div className="flex flex-wrap justify-center gap-3">
             <CustomDropdown
               label="All stages"
