@@ -1,30 +1,37 @@
 import {
   Home,
-  Sparkles
+  Sparkles // ⚡ Flash icon (same jo tu chah raha)
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-
 
 // 🔥 Custom icons
 import {
   GlobeModernIcon,
   ShoppingBagIcon,
-  ChatBubbleLeftRightIcon,
-IdeaStarIcon
+  ChatBubbleLeftRightIcon
 } from "../constants";
 
 const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const path = location.pathname;
+  // ✅ FIX: Detect chat page ( /messages/:id )
+  const isChatPage = /^\/messages\/[^/]+/.test(location.pathname);
 
-  // ✅ HIDE CONDITIONS
-  const hideExactRoutes = ["/", "/login", "/signup"];
+  // ✅ HIDE conditions
+  const hideRoutes = [
+    "/login",
+    "/signup",
+    "/verify-email",
+    "/forgot-password",
+    "/new-password"
+  ];
 
-  const isChatPage = /^\/messages\/[^/]+/.test(path);
-
-  if (hideExactRoutes.includes(path) || isChatPage) {
+  // ✅ FINAL HIDE LOGIC
+  if (
+    hideRoutes.includes(location.pathname) || // auth pages
+    isChatPage // inside chat
+  ) {
     return null;
   }
 
@@ -32,12 +39,17 @@ const BottomNav = () => {
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
     { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" },
     { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
-    { name: "Startalks", icon: IdeaStarIcon, path: "/startalks", type: "lucide" },
+
+    // ⚡ FLASH ICON FIX
+    { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
+
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-[999]">
+      
+      {/* 🔥 NAV BAR */}
       <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
         {navItems.map((item, index) => {
@@ -57,7 +69,7 @@ const BottomNav = () => {
                   className={`w-6 h-6 mb-[3px]
                     ${
                       isActive
-                        ? "text-[var(--text-primary)]"
+                        ? "text-[var(--text-primary)] scale-110"
                         : "text-[var(--text-muted)]"
                     }`}
                 />
@@ -66,7 +78,7 @@ const BottomNav = () => {
                   className={`w-6 h-6 mb-[3px]
                     ${
                       isActive
-                        ? "text-[var(--text-primary)]"
+                        ? "text-[var(--text-primary)] scale-110"
                         : "text-[var(--text-muted)]"
                     }`}
                 />
