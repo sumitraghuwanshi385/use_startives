@@ -15,9 +15,22 @@ const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ HIDE NAV ON CHAT / MESSAGE PAGES
-  const hideOnRoutes = ["/messages", "/chat"];
-  if (hideOnRoutes.some(route => location.pathname.startsWith(route))) {
+  // ✅ HIDE ONLY ON:
+  // - individual chat page (e.g. /messages/123)
+  // - landing page (/)
+  // - login/signup pages
+  const path = location.pathname;
+
+  const isChatPage =
+    path.startsWith("/messages/") && path !== "/messages";
+
+  const hideOnRoutes = [
+    "/",
+    "/login",
+    "/signup"
+  ];
+
+  if (isChatPage || hideOnRoutes.includes(path)) {
     return null;
   }
 
