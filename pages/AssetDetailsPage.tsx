@@ -438,6 +438,7 @@ setCurrentImage(index);
                                     </div>
                                 </div>
                             </section>
+)}
 {/* MONETIZATION */}
 <section className="space-y-4">
 <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] px-2">
