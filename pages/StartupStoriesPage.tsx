@@ -74,7 +74,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button type="button" onClick={() => setIsOpen(!isOpen)} className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-[11px] font-bold rounded-full transition-all duration-300 border shadow-none ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'} text-[var(--text-primary)] focus:outline-none min-w-[100px] font-poppins`}>
+      <button type="button" onClick={() => setIsOpen(!isOpen)} className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-[11px] font-bold rounded-full transition-all duration-300 border shadow-none ${isOpen ? 'bg-white dark:bg-neutral-800 border-purple-500' : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'} text-[var(--text-primary)] focus:outline-none w-[32%] font-poppins`}>
 
         <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
         <span className="truncate max-w-[80px] font-poppins">{selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}</span>
@@ -263,10 +263,10 @@ Where Startups & SaaS Get Bought and Sold.
 </div>
 </div>
 </div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex justify-center"><div className="relative group max-w-2xl w-full"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><SearchIcon className="h-5 w-5 text-[var(--text-muted)]" /></div><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search digital assets..." className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-emerald-500 outline-none transition-all text-base font-medium font-poppins" /></div></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-4 flex justify-center"><div className="relative group max-w-2xl w-full"><div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none"><SearchIcon className="h-5 w-5 text-[var(--text-muted)]" /></div><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search digital assets..." className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-emerald-500 outline-none transition-all text-base font-medium font-poppins" /></div></div>
 
 
-        <div className="bg-[var(--background-secondary)] border-b border-[var(--border-primary)] font-poppins"><div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-center gap-3"><CustomDropdown label="All categories" value={activeCategory} options={['All', ...STARTUP_CATEGORIES].map(c => ({value: c, label: c}))} onChange={setActiveCategory} icon={<TagIcon className="w-4 h-4" />} /><CustomDropdown label="All models"
+        <div className="bg-[var(--background-secondary)] border-b border-[var(--border-primary)] font-poppins"><div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center gap-2"><CustomDropdown label="All categories" value={activeCategory} options={['All', ...STARTUP_CATEGORIES].map(c => ({value: c, label: c}))} onChange={setActiveCategory} icon={<TagIcon className="w-4 h-4" />} /><CustomDropdown label="All models"
 value={activePricing}
 options={modelOptions.map(m => ({value: m, label: m}))} onChange={setActivePricing} icon={<GrowthIcon className="w-4 h-4" />} /><CustomDropdown label="All locations" value={activeLocation} options={['All', ...COUNTRIES.map(c => c.name)].map(l => ({value: l, label: l}))} onChange={setActiveLocation} icon={<MapPinIcon className="w-4 h-4" />} /></div></div>
 
