@@ -106,7 +106,7 @@ const MarketplaceShortcut: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-red-500 transition-colors tracking-tight font-poppins">Marketplace</h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Browse Projects Marketplace</p>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Explore Listings</p>
                 </div>
             </div>
             <div className="relative">
@@ -133,7 +133,7 @@ const MessageCenter: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-blue-600 transition-colors tracking-tight font-poppins">Messenger</h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Coordinate with teams</p>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Coordinate With Teams</p>
                 </div>
             </div>
             
