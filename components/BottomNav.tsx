@@ -4,11 +4,13 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+
 // 🔥 Custom icons
 import {
   GlobeModernIcon,
   ShoppingBagIcon,
-  ChatBubbleLeftRightIcon
+  ChatBubbleLeftRightIcon,
+IdeaStarIcon
 } from "../constants";
 
 const BottomNav = () => {
@@ -30,7 +32,7 @@ const BottomNav = () => {
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
     { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" },
     { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
-    { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
+    { name: "Startalks", icon: IdeaStarIcon, path: "/startalks", type: "lucide" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
 
