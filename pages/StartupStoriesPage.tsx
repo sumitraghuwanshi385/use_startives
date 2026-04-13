@@ -254,7 +254,7 @@ return list;
 
 <div className="text-left">
 <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)] leading-tight">
-Asset Shop
+Marketplace
 </h1>
 
 <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">
