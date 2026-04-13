@@ -62,7 +62,8 @@ const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: s
 
 const App: React.FC = () => {
   const location = useLocation();
-const isChatPage = /^\/messages\/[^/]+/.test(location.pathname);
+const isChatOpen = document.body.classList.contains('chat-open');
+
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
 
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ;
@@ -124,7 +125,9 @@ const isChatPage = /^\/messages\/[^/]+/.test(location.pathname);
       {currentUser && showOnboardingModal && <OnboardingPage />}
       {showHeader && <Header />}
 <NotificationArea />
-      <main className={`flex-grow ${isFullHeightPage || isChatPage ? '' : 'pb-16'} ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+
+      <main className={`flex-grow ${isFullHeightPage || isChatOpen ? '' : 'pb-16'} ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -171,7 +174,7 @@ const isChatPage = /^\/messages\/[^/]+/.test(location.pathname);
       </main>
       {showFooter && <Footer />}
 
-{currentUser && !isChatPage && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
+{currentUser && !isChatOpen && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
 
 {showFAB && <FloatingActionMenu />}
     </div>
