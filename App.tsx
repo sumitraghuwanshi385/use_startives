@@ -62,7 +62,7 @@ const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: s
 
 const App: React.FC = () => {
   const location = useLocation();
-const isChatOpen = document.body.classList.contains('chat-open');
+const [isChatOpen, setIsChatOpen] = React.useState(false);
 
   const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
 
@@ -86,6 +86,20 @@ const isChatOpen = document.body.classList.contains('chat-open');
 
   warmServer();
 
+}, []);
+
+useEffect(() => {
+  const observer = new MutationObserver(() => {
+    const hasClass = document.body.classList.contains('chat-open');
+    setIsChatOpen(hasClass);
+  });
+
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+
+  return () => observer.disconnect();
 }, []);
 
   const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
