@@ -308,17 +308,6 @@ Founder & Seller
 
 )}
 
-{founder?.bio && (
-<div className="relative">
-<div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500/50 to-transparent"></div>
-
-<p className="text-xs font-poppins text-purple-600 pl-3 leading-relaxed line-clamp-4">
-{founder.bio}
-</p>
-
-</div>
-)}
-
 
 </section>
 
@@ -413,7 +402,8 @@ className="px-2.5 py-1 bg-white dark:bg-neutral-800 rounded-lg text-[8px] font-b
                         <div className="lg:col-span-2 p-8 sm:p-10 space-y-12">
                             
                             {/* GALLERY */}
-                            <section className="space-y-4">
+                            {asset.gallery && asset.gallery.length > 0 && (
+<section className="space-y-4">
 
 <div className="flex items-center justify-between px-2">
 
