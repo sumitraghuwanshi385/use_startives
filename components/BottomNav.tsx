@@ -8,7 +8,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   GlobeModernIcon,
   ShoppingBagIcon,
-  ChatBubbleLeftRightIcon
+  ChatBubbleLeftRightIcon,
+BoltIcon
 } from "../constants";
 
 const BottomNav = () => {
@@ -40,8 +41,7 @@ const BottomNav = () => {
     { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" },
     { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
 
-    // ⚡ FLASH ICON FIX
-    { name: "Startalks", icon: Sparkles, path: "/startalks", type: "lucide" },
+    { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "lucide" },
 
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" },
   ];
