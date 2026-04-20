@@ -8,10 +8,14 @@ const FloatingActionMenu: React.FC = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef<any>(null);
 
-  // ✅ correct detection
+  // ✅ SHOW ONLY ON THESE PAGES
+  const isProjectsPage = location.pathname.includes("project");
   const isAssetsPage = location.pathname.includes("asset");
 
-  const label = isAssetsPage ? "List Asset" : "Post Project";
+  if (!isProjectsPage && !isAssetsPage) return null;
+
+  // ✅ TEXT + ROUTE FIXED
+  const label = isAssetsPage ? "List Asset" : "Post";
   const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
   useEffect(() => {
@@ -22,7 +26,7 @@ const FloatingActionMenu: React.FC = () => {
 
       scrollTimeout.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 200);
+      }, 180);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -34,26 +38,25 @@ const FloatingActionMenu: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-20 right-5 z-[999]">
+    <div className="fixed bottom-20 right-4 z-[999]">
 
       <button
         onClick={() => navigate(route)}
         className={`
           flex items-center justify-center
-          transition-all duration-300 ease-out
           rounded-full
+          transition-all duration-300 ease-out
           active:scale-95
-          
-          bg-gradient-to-r from-red-500 to-blue-500
-          text-white
 
-          shadow-[0_0_15px_rgba(239,68,68,0.35)]
-          hover:shadow-[0_0_25px_rgba(59,130,246,0.45)]
+          bg-gradient-to-r from-red-500 to-blue-500 text-white
+
+          shadow-[0_0_12px_rgba(239,68,68,0.35)]
+          hover:shadow-[0_0_20px_rgba(59,130,246,0.45)]
 
           ${
             isScrolling
-              ? "w-10 h-10"              // 🔘 scrolling → circle
-              : "px-4 py-2 gap-2"       // 💊 idle → small pill
+              ? "w-10 h-10"          // 🔘 SCROLL → CIRCLE
+              : "px-3 py-2 gap-1.5" // 💊 IDLE → SMALL PILL
           }
         `}
       >
@@ -61,7 +64,9 @@ const FloatingActionMenu: React.FC = () => {
         {/* ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
+          className={`w-4 h-4 transition-transform duration-300 ${
+            isScrolling ? "rotate-90 scale-110" : ""
+          }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -73,7 +78,7 @@ const FloatingActionMenu: React.FC = () => {
         {/* TEXT */}
         <span
           className={`
-            text-[9px] font-black uppercase tracking-widest whitespace-nowrap
+            text-[9px] font-bold uppercase tracking-wide whitespace-nowrap
             transition-all duration-200
             ${
               isScrolling
