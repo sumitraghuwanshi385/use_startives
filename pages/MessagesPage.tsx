@@ -357,18 +357,22 @@ month:'short'
 
       const processed = (data.chats || []).map((c: any) => ({
   ...c,
-
-  // TEAM NAME FIX
   name: c.name || c.contact?.name || "Team",
-
-  // IMAGE FIX
   chatImage: c.image || c.chatImage || "",
-image: c.image || c.chatImage || "",
-
+  image: c.image || c.chatImage || "",
   messages: c.messages || []
 }));
 
-      setChats(processed);
+setChats(prev => {
+  return processed.map((newChat: any) => {
+    const oldChat = prev.find(c => c.id === newChat.id);
+
+    return {
+      ...newChat,
+      messages: oldChat?.messages || newChat.messages || []
+    };
+  });
+}); 
     }
   } catch (e: any) {
     console.error('fetchChats error:', e?.response?.data || e?.message || e);
