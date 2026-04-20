@@ -357,22 +357,18 @@ month:'short'
 
       const processed = (data.chats || []).map((c: any) => ({
   ...c,
+
+  // TEAM NAME FIX
   name: c.name || c.contact?.name || "Team",
+
+  // IMAGE FIX
   chatImage: c.image || c.chatImage || "",
-  image: c.image || c.chatImage || "",
+image: c.image || c.chatImage || "",
+
   messages: c.messages || []
 }));
 
-setChats(prev => {
-  return processed.map((newChat: any) => {
-    const oldChat = prev.find(c => c.id === newChat.id);
-
-    return {
-      ...newChat,
-      messages: oldChat?.messages || newChat.messages || []
-    };
-  });
-}); 
+      setChats(processed);
     }
   } catch (e: any) {
     console.error('fetchChats error:', e?.response?.data || e?.message || e);
@@ -381,66 +377,25 @@ setChats(prev => {
 
 useEffect(() => {
   if (!token) return;
-
-  fetchChats(); // first load
-
-  const interval = setInterval(() => {
-    fetchChats(); // 🔥 auto refresh chats
-  }, 3000);
-
-  return () => clearInterval(interval);
-}, [token]);
+  fetchChats();
+}, []);
 
   useEffect(() => {
-  if (!selectedChatId || !token) return;
+    if (!selectedChatId || !token) return;
 
-  const loadMessages = async () => {
-    try {
-      const { data } = await axios.get(
-        `${API_BASE}/api/chat/${selectedChatId}/messages`,
-        { headers: authHeaders }
-      );
-
-      if (data?.success) {
-        setChats(prev =>
-          prev.map(c => {
-            if (c.id !== selectedChatId) return c;
-
-            const existing = c.messages || [];
-            const incoming = data.messages || [];
-
-            const cleanedExisting = existing.filter(
-              (e: any) =>
-                !incoming.some(
-                  (m: any) =>
-                    m.text === e.text &&
-                    m.timestamp !== e.timestamp
-                )
-            );
-
-            const merged = [
-              ...cleanedExisting,
-              ...incoming.filter(
-                (m: any) =>
-                  !cleanedExisting.some((e: any) => e._id === m._id)
-              ),
-            ];
-
-            return { ...c, messages: merged };
-          })
-        );
+    const loadMessages = async () => {
+      try {
+        const { data } = await axios.get(`${API_BASE}/api/chat/${selectedChatId}/messages`, { headers: authHeaders });
+        if (data?.success) {
+          setChats(prev => prev.map(c => (c.id === selectedChatId ? { ...c, messages: data.messages || [] } : c)));
+        }
+      } catch (e: any) {
+        console.error('loadMessages error:', e?.response?.data || e?.message || e);
       }
-    } catch (e: any) {}
-  };
+    };
 
-  loadMessages(); // first load
-
-  const interval = setInterval(() => {
-    loadMessages(); // 🔥 realtime feel
-  }, 2000);
-
-  return () => clearInterval(interval);
-}, [selectedChatId, token]);
+    loadMessages();
+  }, [selectedChatId, token, authHeaders]);
 
   // /messages?chatWith=<userId>
   useEffect(() => {
@@ -518,64 +473,24 @@ markAsRead();
 
     try {
       const payload = { text: text?.trim(), file, type };
-      // 🔥 STEP 1: temp message create
-const tempId = "temp-" + Date.now();
+      const { data } = await axios.post(`${API_BASE}/api/chat/${selectedChatId}/messages`, payload, { headers: authHeaders });
 
-const tempMessage = {
-  _id: tempId,
-  text: text?.trim(),
-  file,
-  type,
-  senderId: currentUser.id,
-  timestamp: new Date().toISOString(),
-};
-
-// 🔥 STEP 2: instantly UI me add
-setChats(prev =>
-  prev.map(chat =>
-    chat.id === selectedChatId
-      ? {
-          ...chat,
-          messages: [...(chat.messages || []), tempMessage],
-        }
-      : chat
-  )
-);
-
-setMessageText('');
-
-try {
-  // 🔥 STEP 3: backend call
-  const { data } = await axios.post(
-    `${API_BASE}/api/chat/${selectedChatId}/messages`,
-    payload,
-    { headers: authHeaders }
-  );
-
-  if (data?.success) {
-    const realMsg = data.message;
-
-    // 🔥 STEP 4: temp replace with real
-    setChats(prev =>
-      prev.map(chat =>
-        chat.id === selectedChatId
-          ? {
-              ...chat,
-              messages: (chat.messages || []).map(m =>
-                m._id === tempId ? realMsg : m
-              ),
-              lastMessagePreview:
-                text?.trim() ||
-                (type === "image" ? "Sent an image" : "Sent a file"),
-              lastMessageTimestamp: realMsg.timestamp,
-            }
-          : chat
-      )
-    );
-  }
-} catch (err) {
-  console.error(err);
-}
+      if (data?.success) {
+        const newMessage = data.message;
+        setChats(prev =>
+          prev.map(chat =>
+            chat.id === selectedChatId
+              ? {
+                  ...chat,
+                  messages: [...(chat.messages || []), newMessage],
+                  lastMessagePreview: text?.trim() || (type === 'image' ? 'Sent an image' : 'Sent a file'),
+                  lastMessageTimestamp: newMessage.timestamp,
+                }
+              : chat
+          )
+        );
+        setMessageText('');
+      }
     } catch (e: any) {
       console.error('sendMessage error:', e?.response?.data || e?.message || e);
       addNotification('Failed to send message', 'error');
