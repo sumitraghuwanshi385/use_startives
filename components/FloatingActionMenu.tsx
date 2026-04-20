@@ -10,26 +10,14 @@ const FloatingActionMenu: React.FC = () => {
 
   const path = location.pathname;
 
-  // ✅ EXACT PAGE MATCHING (IMPORTANT)
-  const isProjectsPage =
-    path === "/projects" || path === "/project" || path === "/discover";
-
-  const isAssetsPage =
-    path === "/assets" || path === "/marketplace";
+  // ✅ PAGE DETECTION
+  const isProjectsPage = path === "/projects";
+  const isAssetsPage = path === "/blueprint"; // ⚠️ tera marketplace yahi hai
 
   const isPostPage =
     path === "/post-idea" || path === "/submit-asset";
 
-  // ❌ hide on post pages
-  if (isPostPage) return null;
-
-  // ❌ show only on listing pages
-  if (!isProjectsPage && !isAssetsPage) return null;
-
-  // ✅ dynamic
-  const label = isAssetsPage ? "List Asset" : "Post Project";
-  const route = isAssetsPage ? "/submit-asset" : "/post-idea";
-
+  // ✅ ALWAYS RUN HOOK (TOP LEVEL ONLY)
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolling(true);
@@ -43,6 +31,14 @@ const FloatingActionMenu: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // ❌ AFTER hooks → conditions
+  if (isPostPage) return null;
+  if (!isProjectsPage && !isAssetsPage) return null;
+
+  // ✅ dynamic text + route
+  const label = isAssetsPage ? "List Your Asset" : "Post Idea";
+  const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
   return (
     <div className="fixed bottom-20 right-4 z-[999]">
@@ -61,8 +57,8 @@ const FloatingActionMenu: React.FC = () => {
           shadow-[0_8px_25px_rgba(239,68,68,0.35)]
 
           ${isScrolling
-            ? "w-11 h-11"
-            : "px-4 py-2.5 gap-2"}
+            ? "w-10 h-10"
+            : "px-3 py-2 gap-2"}
         `}
       >
 
@@ -84,6 +80,7 @@ const FloatingActionMenu: React.FC = () => {
             {label}
           </span>
         )}
+
       </button>
 
     </div>
