@@ -10,25 +10,25 @@ const FloatingActionMenu: React.FC = () => {
 
   const path = location.pathname;
 
-  // ✅ EXACT match (no includes bug)
-  const showOnProjects =
-    path === "/projects" ||
-    path === "/project" ||
-    path === "/discover";
+  // ✅ EXACT PAGE MATCHING (IMPORTANT)
+  const isProjectsPage =
+    path === "/projects" || path === "/project" || path === "/discover";
 
-  const showOnAssets =
-    path === "/assets" ||
-    path === "/marketplace";
+  const isAssetsPage =
+    path === "/assets" || path === "/marketplace";
 
-  const shouldShow = showOnProjects || showOnAssets;
+  const isPostPage =
+    path === "/post-idea" || path === "/submit-asset";
 
-  // ❌ IMPORTANT: hooks ke baad hi return karna
-  if (!shouldShow) return null;
+  // ❌ hide on post pages
+  if (isPostPage) return null;
 
-  const isAssetPage = showOnAssets;
+  // ❌ show only on listing pages
+  if (!isProjectsPage && !isAssetsPage) return null;
 
-  const label = isAssetPage ? "List Asset" : "Post Project";
-  const route = isAssetPage ? "/submit-asset" : "/post-idea";
+  // ✅ dynamic
+  const label = isAssetsPage ? "List Asset" : "Post Project";
+  const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,19 +46,26 @@ const FloatingActionMenu: React.FC = () => {
 
   return (
     <div className="fixed bottom-20 right-4 z-[999]">
+
       <button
         onClick={() => navigate(route)}
         className={`
           flex items-center justify-center
           rounded-full
-          transition-all duration-300
-          bg-gradient-to-r from-red-500 to-blue-500
-          text-white
+          transition-all duration-300 ease-in-out
           active:scale-95
 
-          ${isScrolling ? "w-11 h-11" : "px-4 py-2 gap-2"}
+          bg-gradient-to-r from-red-500 to-blue-500
+          text-white
+
+          shadow-[0_8px_25px_rgba(239,68,68,0.35)]
+
+          ${isScrolling
+            ? "w-11 h-11"
+            : "px-4 py-2.5 gap-2"}
         `}
       >
+
         {/* ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -78,6 +85,7 @@ const FloatingActionMenu: React.FC = () => {
           </span>
         )}
       </button>
+
     </div>
   );
 };
