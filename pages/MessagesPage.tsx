@@ -377,25 +377,46 @@ image: c.image || c.chatImage || "",
 
 useEffect(() => {
   if (!token) return;
-  fetchChats();
-}, []);
+
+  fetchChats(); // first load
+
+  const interval = setInterval(() => {
+    fetchChats(); // 🔥 auto refresh chats
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [token]);
 
   useEffect(() => {
-    if (!selectedChatId || !token) return;
+  if (!selectedChatId || !token) return;
 
-    const loadMessages = async () => {
-      try {
-        const { data } = await axios.get(`${API_BASE}/api/chat/${selectedChatId}/messages`, { headers: authHeaders });
-        if (data?.success) {
-          setChats(prev => prev.map(c => (c.id === selectedChatId ? { ...c, messages: data.messages || [] } : c)));
-        }
-      } catch (e: any) {
-        console.error('loadMessages error:', e?.response?.data || e?.message || e);
+  const loadMessages = async () => {
+    try {
+      const { data } = await axios.get(
+        `${API_BASE}/api/chat/${selectedChatId}/messages`,
+        { headers: authHeaders }
+      );
+
+      if (data?.success) {
+        setChats(prev =>
+          prev.map(c =>
+            c.id === selectedChatId
+              ? { ...c, messages: data.messages || [] }
+              : c
+          )
+        );
       }
-    };
+    } catch (e: any) {}
+  };
 
-    loadMessages();
-  }, [selectedChatId, token, authHeaders]);
+  loadMessages(); // first load
+
+  const interval = setInterval(() => {
+    loadMessages(); // 🔥 realtime feel
+  }, 2000);
+
+  return () => clearInterval(interval);
+}, [selectedChatId, token]);
 
   // /messages?chatWith=<userId>
   useEffect(() => {
