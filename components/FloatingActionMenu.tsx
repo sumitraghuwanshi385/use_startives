@@ -6,40 +6,49 @@ const FloatingActionMenu: React.FC = () => {
   const location = useLocation();
 
   const [isExpanded, setIsExpanded] = useState(true);
-  const lastScroll = useRef(0);
-  const timeoutRef = useRef<any>(null);
+  const scrollTimeout = useRef<any>(null);
 
-  // 🔥 auto detect page
+  // ✅ detect page properly
   const isAssetsPage = location.pathname.includes("asset");
 
   const label = isAssetsPage ? "Post Asset" : "Post Project";
   const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
   useEffect(() => {
-    const handleScroll = () => {
-      const current = window.scrollY;
+    let isScrolling: any;
 
-      // 👇 scrolling → collapse
-      if (current > lastScroll.current) {
-        setIsExpanded(false);
+    const handleScroll = () => {
+      // 🔥 ALWAYS collapse while scrolling
+      setIsExpanded(false);
+
+      // clear previous timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
       }
 
-      lastScroll.current = current;
-
-      // 👇 stop → expand
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
+      // 🔥 expand after scroll stops
+      scrollTimeout.current = setTimeout(() => {
         setIsExpanded(true);
-      }, 180);
+      }, 200);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout.current);
+    };
   }, []);
 
   return (
-    <div className="fixed bottom-6 right-5 z-[999]">
-
+    <div
+      className="
+        fixed 
+        bottom-20   /* 👈 NAVBAR SE UPAR */
+        right-5 
+        z-[999]
+      "
+    >
       <button
         onClick={() => navigate(route)}
         className={`
@@ -48,22 +57,27 @@ const FloatingActionMenu: React.FC = () => {
           rounded-full
           active:scale-95
           
-          bg-gradient-to-r from-purple-600 to-indigo-600
+          /* 🔥 YOUR BRAND GRADIENT */
+          bg-gradient-to-r from-blue-500 to-red-500
           text-white
 
-          shadow-[0_0_20px_rgba(139,92,246,0.35)]
-          hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]
+          shadow-[0_0_20px_rgba(59,130,246,0.35)]
+          hover:shadow-[0_0_30px_rgba(239,68,68,0.45)]
 
-          ${isExpanded 
-            ? "px-5 py-3 gap-2"
-            : "w-12 h-12"}
+          ${
+            isExpanded
+              ? "px-5 py-3 gap-2"
+              : "w-12 h-12"
+          }
         `}
       >
 
-        {/* PLUS ICON */}
+        {/* ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5"
+          className={`w-5 h-5 transition-transform duration-300 ${
+            isExpanded ? "" : "scale-110"
+          }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -77,12 +91,15 @@ const FloatingActionMenu: React.FC = () => {
           className={`
             text-[10px] font-black uppercase tracking-widest whitespace-nowrap
             transition-all duration-300
-            ${isExpanded ? "opacity-100 ml-1" : "opacity-0 w-0 overflow-hidden"}
+            ${
+              isExpanded
+                ? "opacity-100 ml-1"
+                : "opacity-0 w-0 overflow-hidden"
+            }
           `}
         >
           {label}
         </span>
-
       </button>
     </div>
   );
