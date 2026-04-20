@@ -8,13 +8,25 @@ const FloatingActionMenu: React.FC = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const timeoutRef = useRef<any>(null);
 
-  // ✅ show only on these pages
-  const isProjectPage = location.pathname.includes("project");
-  const isAssetPage = location.pathname.includes("asset");
+  const path = location.pathname;
 
-  if (!isProjectPage && !isAssetPage) return null;
+  // ✅ EXACT match (no includes bug)
+  const showOnProjects =
+    path === "/projects" ||
+    path === "/project" ||
+    path === "/discover";
 
-  // ✅ dynamic label + route
+  const showOnAssets =
+    path === "/assets" ||
+    path === "/marketplace";
+
+  const shouldShow = showOnProjects || showOnAssets;
+
+  // ❌ IMPORTANT: hooks ke baad hi return karna
+  if (!shouldShow) return null;
+
+  const isAssetPage = showOnAssets;
+
   const label = isAssetPage ? "List Asset" : "Post Project";
   const route = isAssetPage ? "/submit-asset" : "/post-idea";
 
@@ -25,7 +37,7 @@ const FloatingActionMenu: React.FC = () => {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 220); // smooth timing
+      }, 200);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -34,27 +46,20 @@ const FloatingActionMenu: React.FC = () => {
 
   return (
     <div className="fixed bottom-20 right-4 z-[999]">
-
       <button
         onClick={() => navigate(route)}
         className={`
           flex items-center justify-center
           rounded-full
-          transition-all duration-300 ease-in-out
-          active:scale-95
-
+          transition-all duration-300
           bg-gradient-to-r from-red-500 to-blue-500
           text-white
+          active:scale-95
 
-          shadow-[0_8px_25px_rgba(239,68,68,0.35)]
-
-          ${isScrolling
-            ? "w-11 h-11"
-            : "px-4 py-2.5 gap-2"}
+          ${isScrolling ? "w-11 h-11" : "px-4 py-2 gap-2"}
         `}
       >
-
-        {/* PLUS ICON */}
+        {/* ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-4 h-4"
@@ -67,18 +72,11 @@ const FloatingActionMenu: React.FC = () => {
         </svg>
 
         {/* TEXT */}
-        <span
-          className={`
-            text-[10px] font-bold uppercase tracking-wider whitespace-nowrap
-            transition-all duration-300
-            ${isScrolling
-              ? "opacity-0 w-0 overflow-hidden"
-              : "opacity-100"}
-          `}
-        >
-          {label}
-        </span>
-
+        {!isScrolling && (
+          <span className="text-[10px] font-bold uppercase tracking-wide">
+            {label}
+          </span>
+        )}
       </button>
     </div>
   );
