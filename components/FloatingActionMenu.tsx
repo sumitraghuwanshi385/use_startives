@@ -6,35 +6,30 @@ const FloatingActionMenu: React.FC = () => {
   const location = useLocation();
 
   const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeout = useRef<any>(null);
+  const timeoutRef = useRef<any>(null);
 
-  // ✅ SHOW ONLY ON THESE PAGES
-  const isProjectsPage = location.pathname.includes("project");
-  const isAssetsPage = location.pathname.includes("asset");
+  // ✅ show only on these pages
+  const isProjectPage = location.pathname.includes("project");
+  const isAssetPage = location.pathname.includes("asset");
 
-  if (!isProjectsPage && !isAssetsPage) return null;
+  if (!isProjectPage && !isAssetPage) return null;
 
-  // ✅ TEXT + ROUTE FIXED
-  const label = isAssetsPage ? "List Asset" : "Post";
-  const route = isAssetsPage ? "/submit-asset" : "/post-idea";
+  // ✅ dynamic label + route
+  const label = isAssetPage ? "List Asset" : "Post Project";
+  const route = isAssetPage ? "/submit-asset" : "/post-idea";
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolling(true);
 
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-
-      scrollTimeout.current = setTimeout(() => {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 180);
+      }, 220); // smooth timing
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimeout.current);
-    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -45,28 +40,24 @@ const FloatingActionMenu: React.FC = () => {
         className={`
           flex items-center justify-center
           rounded-full
-          transition-all duration-300 ease-out
+          transition-all duration-300 ease-in-out
           active:scale-95
 
-          bg-gradient-to-r from-red-500 to-blue-500 text-white
+          bg-gradient-to-r from-red-500 to-blue-500
+          text-white
 
-          shadow-[0_0_12px_rgba(239,68,68,0.35)]
-          hover:shadow-[0_0_20px_rgba(59,130,246,0.45)]
+          shadow-[0_8px_25px_rgba(239,68,68,0.35)]
 
-          ${
-            isScrolling
-              ? "w-10 h-10"          // 🔘 SCROLL → CIRCLE
-              : "px-3 py-2 gap-1.5" // 💊 IDLE → SMALL PILL
-          }
+          ${isScrolling
+            ? "w-11 h-11"
+            : "px-4 py-2.5 gap-2"}
         `}
       >
 
-        {/* ICON */}
+        {/* PLUS ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className={`w-4 h-4 transition-transform duration-300 ${
-            isScrolling ? "rotate-90 scale-110" : ""
-          }`}
+          className="w-4 h-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -78,13 +69,11 @@ const FloatingActionMenu: React.FC = () => {
         {/* TEXT */}
         <span
           className={`
-            text-[9px] font-bold uppercase tracking-wide whitespace-nowrap
-            transition-all duration-200
-            ${
-              isScrolling
-                ? "opacity-0 w-0 overflow-hidden"
-                : "opacity-100"
-            }
+            text-[10px] font-bold uppercase tracking-wider whitespace-nowrap
+            transition-all duration-300
+            ${isScrolling
+              ? "opacity-0 w-0 overflow-hidden"
+              : "opacity-100"}
           `}
         >
           {label}
