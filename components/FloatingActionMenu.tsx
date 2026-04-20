@@ -5,30 +5,23 @@ const FloatingActionMenu: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef<any>(null);
 
-  // ✅ detect page properly
+  // ✅ correct detection
   const isAssetsPage = location.pathname.includes("asset");
 
-  const label = isAssetsPage ? "Post Asset" : "Post Project";
+  const label = isAssetsPage ? "List Asset" : "Post Project";
   const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
   useEffect(() => {
-    let isScrolling: any;
-
     const handleScroll = () => {
-      // 🔥 ALWAYS collapse while scrolling
-      setIsExpanded(false);
+      setIsScrolling(true);
 
-      // clear previous timeout
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
 
-      // 🔥 expand after scroll stops
       scrollTimeout.current = setTimeout(() => {
-        setIsExpanded(true);
+        setIsScrolling(false);
       }, 200);
     };
 
@@ -41,14 +34,8 @@ const FloatingActionMenu: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className="
-        fixed 
-        bottom-20   /* 👈 NAVBAR SE UPAR */
-        right-5 
-        z-[999]
-      "
-    >
+    <div className="fixed bottom-20 right-5 z-[999]">
+
       <button
         onClick={() => navigate(route)}
         className={`
@@ -57,17 +44,16 @@ const FloatingActionMenu: React.FC = () => {
           rounded-full
           active:scale-95
           
-          /* 🔥 YOUR BRAND GRADIENT */
-          bg-gradient-to-r from-blue-500 to-red-500
+          bg-gradient-to-r from-red-500 to-blue-500
           text-white
 
-          shadow-[0_0_20px_rgba(59,130,246,0.35)]
-          hover:shadow-[0_0_30px_rgba(239,68,68,0.45)]
+          shadow-[0_0_15px_rgba(239,68,68,0.35)]
+          hover:shadow-[0_0_25px_rgba(59,130,246,0.45)]
 
           ${
-            isExpanded
-              ? "px-5 py-3 gap-2"
-              : "w-12 h-12"
+            isScrolling
+              ? "w-10 h-10"              // 🔘 scrolling → circle
+              : "px-4 py-2 gap-2"       // 💊 idle → small pill
           }
         `}
       >
@@ -75,9 +61,7 @@ const FloatingActionMenu: React.FC = () => {
         {/* ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className={`w-5 h-5 transition-transform duration-300 ${
-            isExpanded ? "" : "scale-110"
-          }`}
+          className="w-4 h-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -89,17 +73,18 @@ const FloatingActionMenu: React.FC = () => {
         {/* TEXT */}
         <span
           className={`
-            text-[10px] font-black uppercase tracking-widest whitespace-nowrap
-            transition-all duration-300
+            text-[9px] font-black uppercase tracking-widest whitespace-nowrap
+            transition-all duration-200
             ${
-              isExpanded
-                ? "opacity-100 ml-1"
-                : "opacity-0 w-0 overflow-hidden"
+              isScrolling
+                ? "opacity-0 w-0 overflow-hidden"
+                : "opacity-100"
             }
           `}
         >
           {label}
         </span>
+
       </button>
     </div>
   );
