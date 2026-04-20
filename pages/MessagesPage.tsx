@@ -494,24 +494,64 @@ markAsRead();
 
     try {
       const payload = { text: text?.trim(), file, type };
-      const { data } = await axios.post(`${API_BASE}/api/chat/${selectedChatId}/messages`, payload, { headers: authHeaders });
+      // 🔥 STEP 1: temp message create
+const tempId = "temp-" + Date.now();
 
-      if (data?.success) {
-        const newMessage = data.message;
-        setChats(prev =>
-          prev.map(chat =>
-            chat.id === selectedChatId
-              ? {
-                  ...chat,
-                  messages: [...(chat.messages || []), newMessage],
-                  lastMessagePreview: text?.trim() || (type === 'image' ? 'Sent an image' : 'Sent a file'),
-                  lastMessageTimestamp: newMessage.timestamp,
-                }
-              : chat
-          )
-        );
-        setMessageText('');
-      }
+const tempMessage = {
+  _id: tempId,
+  text: text?.trim(),
+  file,
+  type,
+  senderId: currentUser.id,
+  timestamp: new Date().toISOString(),
+};
+
+// 🔥 STEP 2: instantly UI me add
+setChats(prev =>
+  prev.map(chat =>
+    chat.id === selectedChatId
+      ? {
+          ...chat,
+          messages: [...(chat.messages || []), tempMessage],
+        }
+      : chat
+  )
+);
+
+setMessageText('');
+
+try {
+  // 🔥 STEP 3: backend call
+  const { data } = await axios.post(
+    `${API_BASE}/api/chat/${selectedChatId}/messages`,
+    payload,
+    { headers: authHeaders }
+  );
+
+  if (data?.success) {
+    const realMsg = data.message;
+
+    // 🔥 STEP 4: temp replace with real
+    setChats(prev =>
+      prev.map(chat =>
+        chat.id === selectedChatId
+          ? {
+              ...chat,
+              messages: (chat.messages || []).map(m =>
+                m._id === tempId ? realMsg : m
+              ),
+              lastMessagePreview:
+                text?.trim() ||
+                (type === "image" ? "Sent an image" : "Sent a file"),
+              lastMessageTimestamp: realMsg.timestamp,
+            }
+          : chat
+      )
+    );
+  }
+} catch (err) {
+  console.error(err);
+}
     } catch (e: any) {
       console.error('sendMessage error:', e?.response?.data || e?.message || e);
       addNotification('Failed to send message', 'error');
