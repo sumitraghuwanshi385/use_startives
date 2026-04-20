@@ -409,7 +409,6 @@ useEffect(() => {
             const existing = c.messages || [];
             const incoming = data.messages || [];
 
-            // 🔥 temp + duplicate remove
             const cleanedExisting = existing.filter(
               (e: any) =>
                 !incoming.some(
@@ -419,7 +418,6 @@ useEffect(() => {
                 )
             );
 
-            // 🔥 merge without flicker
             const merged = [
               ...cleanedExisting,
               ...incoming.filter(
@@ -434,15 +432,6 @@ useEffect(() => {
       }
     } catch (e: any) {}
   };
-
-  loadMessages();
-
-  const interval = setInterval(() => {
-    loadMessages();
-  }, 2000);
-
-  return () => clearInterval(interval);
-}, [selectedChatId, token]);
 
   loadMessages(); // first load
 
