@@ -12,32 +12,39 @@ const FloatingActionMenu: React.FC = () => {
 
   // ✅ PAGE DETECTION
   const isProjectsPage = path === "/projects";
-  const isAssetsPage = path === "/blueprint"; // ⚠️ tera marketplace yahi hai
+  const isAssetsPage = path === "/blueprint";
 
   const isPostPage =
     path === "/post-idea" || path === "/submit-asset";
 
-  // ✅ ALWAYS RUN HOOK (TOP LEVEL ONLY)
+  // ✅ SCROLL DETECTION (IMPROVED)
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolling(true);
+      if (!ticking) {
+        setIsScrolling(true);
+        ticking = true;
+      }
 
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 200);
+        ticking = false;
+      }, 180);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ❌ AFTER hooks → conditions
+  // ❌ CONDITIONS AFTER HOOK
   if (isPostPage) return null;
   if (!isProjectsPage && !isAssetsPage) return null;
 
-  // ✅ dynamic text + route
-  const label = isAssetsPage ? "List Your Asset" : "Post Idea";
+  // ✅ dynamic
+  const label = isAssetsPage ? "List Your Asset" : "Post Your Idea";
   const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
   return (
@@ -54,8 +61,6 @@ const FloatingActionMenu: React.FC = () => {
           bg-gradient-to-r from-red-500 to-blue-500
           text-white
 
-          shadow-[0_8px_25px_rgba(239,68,68,0.35)]
-
           ${isScrolling
             ? "w-10 h-10"
             : "px-3 py-2 gap-2"}
@@ -65,7 +70,7 @@ const FloatingActionMenu: React.FC = () => {
         {/* ICON */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
+          className={`transition-all duration-300 ${isScrolling ? "w-5 h-5" : "w-4 h-4"}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -75,11 +80,17 @@ const FloatingActionMenu: React.FC = () => {
         </svg>
 
         {/* TEXT */}
-        {!isScrolling && (
-          <span className="text-[10px] font-bold uppercase tracking-wide">
-            {label}
-          </span>
-        )}
+        <span
+          className={`
+            text-[10px] font-bold uppercase tracking-wide whitespace-nowrap
+            transition-all duration-300
+            ${isScrolling
+              ? "opacity-0 w-0 overflow-hidden"
+              : "opacity-100"}
+          `}
+        >
+          {label}
+        </span>
 
       </button>
 
