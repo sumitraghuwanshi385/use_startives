@@ -399,15 +399,46 @@ useEffect(() => {
 
       if (data?.success) {
         setChats(prev =>
-          prev.map(c =>
-            c.id === selectedChatId
-              ? { ...c, messages: data.messages || [] }
-              : c
-          )
+          prev.map(c => {
+            if (c.id !== selectedChatId) return c;
+
+            const existing = c.messages || [];
+            const incoming = data.messages || [];
+
+            // 🔥 temp + duplicate remove
+            const cleanedExisting = existing.filter(
+              (e: any) =>
+                !incoming.some(
+                  (m: any) =>
+                    m.text === e.text &&
+                    m.timestamp !== e.timestamp
+                )
+            );
+
+            // 🔥 merge without flicker
+            const merged = [
+              ...cleanedExisting,
+              ...incoming.filter(
+                (m: any) =>
+                  !cleanedExisting.some((e: any) => e._id === m._id)
+              ),
+            ];
+
+            return { ...c, messages: merged };
+          })
         );
       }
     } catch (e: any) {}
   };
+
+  loadMessages();
+
+  const interval = setInterval(() => {
+    loadMessages();
+  }, 2000);
+
+  return () => clearInterval(interval);
+}, [selectedChatId, token]);
 
   loadMessages(); // first load
 
