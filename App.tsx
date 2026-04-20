@@ -190,7 +190,7 @@ useEffect(() => {
 
 {currentUser && !isChatOpen && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
 
-{showFAB && <FloatingActionMenu />}
+<FloatingActionMenu />
     </div>
         </GoogleOAuthProvider>
   );
