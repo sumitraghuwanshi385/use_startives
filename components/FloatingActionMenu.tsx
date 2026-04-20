@@ -1,83 +1,91 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { IdeaStarIcon, PlusCircleIcon, ShoppingBagIcon, BoltIcon } from '../constants';
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FloatingActionMenu: React.FC = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+  const [isExpanded, setIsExpanded] = useState(true);
+  const lastScroll = useRef(0);
+  const timeoutRef = useRef<any>(null);
 
-    return (
-        <div className="fixed bottom-24 right-6 z-[999] pointer-events-none flex flex-col items-end w-max" ref={menuRef}>
-            
-            {/* Menu Options */}
-            <div className={`flex flex-col gap-3 mb-4 transition-all duration-300 transform ${
-                isOpen 
-                ? 'translate-y-0 opacity-100 pointer-events-auto' 
-                : 'translate-y-6 opacity-0 pointer-events-none invisible'
-            }`}>
-                
-                <Link 
-                    to="/startalks?focus=true" 
-                    className="flex items-center gap-3 bg-[var(--component-background)] p-3 pr-5 rounded-full border border-[var(--border-primary)] hover:border-blue-500 transition-all hover:-translate-x-2 shadow-xl"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
-                        <BoltIcon className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-primary)]">
-                        Post an Update
-                    </span>
-                </Link>
+  // 🔥 auto detect page
+  const isAssetsPage = location.pathname.includes("asset");
 
-                <Link 
-                    to="/post-idea" 
-                    className="flex items-center gap-3 bg-[var(--component-background)] p-3 pr-5 rounded-full border border-[var(--border-primary)] hover:border-purple-500 transition-all hover:-translate-x-2 shadow-xl"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
-                        <PlusCircleIcon className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-primary)]">
-                        Post New Project
-                    </span>
-                </Link>
+  const label = isAssetsPage ? "Post Asset" : "Post Project";
+  const route = isAssetsPage ? "/submit-asset" : "/post-idea";
 
-                <Link 
-                    to="/submit-asset" 
-                    className="flex items-center gap-3 bg-[var(--component-background)] p-3 pr-5 rounded-full border border-[var(--border-primary)] hover:border-red-500 transition-all hover:-translate-x-2 shadow-xl"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600">
-                        <ShoppingBagIcon className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-primary)]">
-                        List Your Asset
-                    </span>
-                </Link>
-            </div>
+  useEffect(() => {
+    const handleScroll = () => {
+      const current = window.scrollY;
 
-            {/* Main FAB */}
-            <button 
-                onClick={() => setIsOpen(!isOpen)}
-                className={`w-14 h-14 rounded-full button-gradient pointer-events-auto flex items-center justify-center text-white transition-all duration-300 transform active:scale-90 shadow-lg ${
-                    isOpen ? 'rotate-45' : 'hover:scale-110'
-                }`}
-                aria-label="Toggle action menu"
-            >
-                <PlusCircleIcon className="w-7 h-7" />
-            </button>
-        </div>
-    );
+      // 👇 scrolling → collapse
+      if (current > lastScroll.current) {
+        setIsExpanded(false);
+      }
+
+      lastScroll.current = current;
+
+      // 👇 stop → expand
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setIsExpanded(true);
+      }, 180);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="fixed bottom-6 right-5 z-[999]">
+
+      <button
+        onClick={() => navigate(route)}
+        className={`
+          flex items-center justify-center
+          transition-all duration-300 ease-out
+          rounded-full
+          active:scale-95
+          
+          bg-gradient-to-r from-purple-600 to-indigo-600
+          text-white
+
+          shadow-[0_0_20px_rgba(139,92,246,0.35)]
+          hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]
+
+          ${isExpanded 
+            ? "px-5 py-3 gap-2"
+            : "w-12 h-12"}
+        `}
+      >
+
+        {/* PLUS ICON */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2.5}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+
+        {/* TEXT */}
+        <span
+          className={`
+            text-[10px] font-black uppercase tracking-widest whitespace-nowrap
+            transition-all duration-300
+            ${isExpanded ? "opacity-100 ml-1" : "opacity-0 w-0 overflow-hidden"}
+          `}
+        >
+          {label}
+        </span>
+
+      </button>
+    </div>
+  );
 };
 
 export default FloatingActionMenu;
