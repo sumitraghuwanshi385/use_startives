@@ -183,7 +183,7 @@ const handleBellClick = async () => {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
-{ name: 'Global', path: '/globe' },
+{ name: 'Starverse', path: '/globe' },
   ];
 
   // Mobile Menu Links (Dropdown)
