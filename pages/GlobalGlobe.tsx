@@ -31,52 +31,25 @@ const GlobalGlobe: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // 🌍 INIT GLOBE
+  // 🌍 INIT GLOBE (FIXED)
   useEffect(() => {
     if (!globeRef.current) return;
 
     const globe: any = Globe()(globeRef.current)
       .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
       .backgroundColor("rgba(0,0,0,0)")
-      .htmlElementsData(users)
-      .htmlLat("lat")
-      .htmlLng("lng")
-      .htmlElement((d: any) => {
-        const el = document.createElement("div");
-
-        el.innerHTML = `
-          <div style="
-            width:30px;
-            height:30px;
-            border-radius:50%;
-            padding:2px;
-            background:linear-gradient(135deg,#ff3b3b,#3b82f6);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            cursor:pointer;
-          ">
-            <img src="${d.profilePictureUrl || 'https://i.pravatar.cc/100'}"
-              style="
-                width:100%;
-                height:100%;
-                border-radius:50%;
-                object-fit:cover;
-                border:2px solid white;
-              "
-            />
-          </div>
-        `;
-
-        el.onclick = () => {
-          setSelectedUser(d);
-          globe.pointOfView(
-            { lat: d.lat, lng: d.lng, altitude: 1.4 },
-            1000
-          );
-        };
-
-        return el;
+      .pointsData(users) // ✅ FIXED
+      .pointLat("lat")
+      .pointLng("lng")
+      .pointColor(() => "#ff3b3b")
+      .pointAltitude(0.02)
+      .pointRadius(0.35)
+      .onPointClick((d: any) => {
+        setSelectedUser(d);
+        globe.pointOfView(
+          { lat: d.lat, lng: d.lng, altitude: 1.5 },
+          1000
+        );
       });
 
     globe.controls().autoRotate = true;
@@ -94,7 +67,7 @@ const GlobalGlobe: React.FC = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden font-[Poppins] bg-[var(--background-secondary)]">
 
-      {/* 🔥 DOT BG (LIGHT STRONG, DARK SOFT) */}
+      {/* 🔥 DOT BG */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
@@ -102,25 +75,30 @@ const GlobalGlobe: React.FC = () => {
             "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
           backgroundSize: "16px 16px",
           opacity: document.documentElement.classList.contains("dark")
-            ? 0.4   // dark softer
-            : 1     // light strong
+            ? 0.4
+            : 1
         }}
       />
 
       {/* 🌍 GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 PREMIUM TOP PILL */}
+      {/* 🔥 TOP PILL */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
         <div className="
-          px-5 py-2 rounded-full text-xs font-semibold tracking-wide
-          bg-white/20 backdrop-blur-xl
+          px-6 py-2 rounded-full text-xs font-semibold tracking-wide
+          bg-white/30 backdrop-blur-xl
           border border-white/40
           text-[var(--text-primary)]
-          shadow-[0_8px_30px_rgba(0,0,0,0.2)]
+          shadow-xl
         ">
           STARVERSE • {users.length}+ Builders
         </div>
+
+        {/* 🌟 DESCRIPTION */}
+        <p className="text-[10px] text-center mt-2 text-[var(--text-muted)]">
+          Discover builders around the world in real-time 🌍
+        </p>
       </div>
 
       {/* 🔥 USER POPUP */}
@@ -153,7 +131,7 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* 🔥 RIGHT CONTROLS (FIXED + ALWAYS VISIBLE) */}
+      {/* 🔥 CONTROLS (RIGHT BOTTOM FIXED) */}
       <div
         className="fixed right-3 z-[9999] flex flex-col gap-2"
         style={{
@@ -163,25 +141,25 @@ const GlobalGlobe: React.FC = () => {
 
         <button
           onClick={() => setAutoRotate(true)}
-          className="px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          Auto
+          ▶ Auto
         </button>
 
         <button
           onClick={() => setAutoRotate(false)}
-          className="px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          Stop
+          ⏸ Stop
         </button>
 
         <button
           onClick={() =>
             globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })
           }
-          className="px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          Reset
+          🔄 Reset
         </button>
 
       </div>
