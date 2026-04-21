@@ -43,10 +43,12 @@ const GlobalGlobe: React.FC = () => {
       .htmlElement((d: any) => {
         const el = document.createElement("div");
 
+        el.style.pointerEvents = "auto"; // 🔥 FIX CLICK
+
         el.innerHTML = `
           <div style="
-            width:32px;
-            height:32px;
+            width:34px;
+            height:34px;
             border-radius:50%;
             padding:2px;
             background:linear-gradient(135deg,#ff3b3b,#3b82f6);
@@ -67,8 +69,10 @@ const GlobalGlobe: React.FC = () => {
           </div>
         `;
 
-        el.onclick = () => {
+        el.onclick = (e: any) => {
+          e.stopPropagation(); // 🔥 IMPORTANT FIX
           setSelectedUser(d);
+
           globe.pointOfView(
             { lat: d.lat, lng: d.lng, altitude: 1.3 },
             800
@@ -93,8 +97,19 @@ const GlobalGlobe: React.FC = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
 
+      {/* 🔥 DOT BACKGROUND BACK */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
+          backgroundSize: "16px 16px",
+          opacity: 0.6
+        }}
+      />
+
       {/* GLOBE */}
-      <div ref={globeRef} className="w-full h-full" />
+      <div ref={globeRef} className="w-full h-full relative z-10" />
 
       {/* TOP */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
