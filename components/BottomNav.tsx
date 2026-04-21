@@ -1,9 +1,7 @@
-import { Home } from "lucide-react";
+import { Home, Globe, Rocket } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
-  GlobeModernIcon,
-  ShoppingBagIcon,
   ChatBubbleLeftRightIcon,
   BoltIcon
 } from "../constants";
@@ -28,8 +26,13 @@ const BottomNav = () => {
 
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
-    { name: "Projects", icon: GlobeModernIcon, path: "/projects", type: "custom" },
-    { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
+
+    // 🔥 UPDATED → ROCKET ICON
+    { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
+
+    // 🔥 NEW → STARVERSE
+    { name: "Starverse", icon: Globe, path: "/globe", type: "lucide" },
+
     { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "custom" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
