@@ -1,22 +1,10 @@
-import { Home, Globe, Rocket, Radio } from "lucide-react";
+import { Home, Globe, Rocket, Network } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   ChatBubbleLeftRightIcon,
 } from "../constants";
 
-
-export const FlameIcon = ({ className = "w-6 h-6" }) => {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className={className}
-    >
-      <path d="M12 2C9 6 6 8.5 6 12a6 6 0 0 0 12 0c0-3.5-3-6-6-10zm0 3.5c2 2.5 3.5 4 3.5 6.5a3.5 3.5 0 1 1-7 0c0-2.5 1.5-4 3.5-6.5z" />
-    </svg>
-  );
-};
 
 const BottomNav = () => {
   const navigate = useNavigate();
@@ -45,7 +33,7 @@ const BottomNav = () => {
     // 🔥 NEW → STARVERSE
     { name: "Starverse", icon: Globe, path: "/globe", type: "lucide" },
 
-    { name: "Startalks", icon: FlameIcon, path: "/startalks", type: "custom" },
+    { name: "Startalks", icon: Network, path: "/startalks", type: "custom" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
 
