@@ -1,9 +1,15 @@
-import express from "express";
-import { saveLocation, getAllLocations } from "../controllers/locationController.js";
-
+const express = require("express");
 const router = express.Router();
 
+const {
+  saveLocation,
+  getAllLocations
+} = require("../controllers/locationController");
+
+// 📍 Save location
 router.post("/save-location", saveLocation);
+
+// 📍 Get all locations
 router.get("/all-locations", getAllLocations);
 
-export default router;
+module.exports = router;
