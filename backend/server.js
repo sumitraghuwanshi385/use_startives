@@ -21,6 +21,7 @@ const uploadRoutes = require('./routes/uploadRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const assetRoutes = require("./routes/assetRoutes");
+const locationRoutes = require('./routes/locationRoutes');
 
 
 const app = express();
@@ -85,6 +86,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use("/api/assets",assetRoutes);
+app.use('/api/location', locationRoutes);
 
 // ===== SERVER =====
 const PORT = process.env.PORT || 5000;
