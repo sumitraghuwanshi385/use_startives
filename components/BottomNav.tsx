@@ -10,15 +10,10 @@ export const FlameIcon = ({ className = "w-6 h-6" }) => {
   return (
     <svg
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
       className={className}
     >
-      <path d="M12 3c2.5 3 4 5 4 7a4 4 0 1 1-8 0c0-2 1.5-4 4-7z" />
-      <path d="M12 10c1.5 2 2.5 3 2.5 4.5A2.5 2.5 0 0 1 12 17a2.5 2.5 0 0 1-2.5-2.5c0-1.5 1-2.5 2.5-4.5z" />
+      <path d="M12 2C9 6 6 8.5 6 12a6 6 0 0 0 12 0c0-3.5-3-6-6-10zm0 3.5c2 2.5 3.5 4 3.5 6.5a3.5 3.5 0 1 1-7 0c0-2.5 1.5-4 3.5-6.5z" />
     </svg>
   );
 };
