@@ -13,6 +13,9 @@ const GlobalGlobe: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [autoRotate, setAutoRotate] = useState(true);
 
+  // 🔥 THEME DETECT
+  const isDark = document.documentElement.classList.contains("dark");
+
   // FETCH USERS
   useEffect(() => {
     const fetchUsers = async () => {
@@ -35,8 +38,12 @@ const GlobalGlobe: React.FC = () => {
     globeRef.current.innerHTML = "";
 
     const globe: any = Globe()(globeRef.current)
-      .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg") // 🌍 ALWAYS DARK EARTH
-      .backgroundColor("#000000") // 🔥 FORCE DARK BG ALWAYS
+      .globeImageUrl(
+        isDark
+          ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg" // dark earth
+          : "//unpkg.com/three-globe/example/img/earth-day.jpg" // light earth
+      )
+      .backgroundColor("rgba(0,0,0,0)")
       .htmlElementsData(users)
       .htmlLat("lat")
       .htmlLng("lng")
@@ -86,7 +93,7 @@ const GlobalGlobe: React.FC = () => {
     globe.controls().autoRotateSpeed = 0.6;
 
     globeInstance.current = globe;
-  }, [users]);
+  }, [users, isDark]);
 
   useEffect(() => {
     if (globeInstance.current) {
@@ -95,44 +102,70 @@ const GlobalGlobe: React.FC = () => {
   }, [autoRotate]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
+    <div
+      className="relative w-full h-screen overflow-hidden"
+      style={{
+        backgroundColor: isDark ? "#000" : "#ffffff"
+      }}
+    >
 
-      {/* 🔥 DOT BACKGROUND (FORCED DARK MODE LOOK) */}
+      {/* 🔥 DOT BACKGROUND */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
+          backgroundImage: isDark
+            ? "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)"
+            : "radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px)",
           backgroundSize: "16px 16px",
-          opacity: 0.6
+          opacity: isDark ? 0.6 : 1
         }}
       />
 
-      {/* 🌍 GLOBE */}
+      {/* GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 TOP */}
+      {/* TOP */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
-        <div className="px-6 py-2 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-xl border border-white/30 text-white">
+        <div
+          className="px-6 py-2 rounded-full text-xs font-semibold backdrop-blur-xl border"
+          style={{
+            background: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)",
+            color: isDark ? "#fff" : "#000",
+            borderColor: isDark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.1)"
+          }}
+        >
           STARVERSE • {users.length}+ Builders
         </div>
 
-        <p className="text-[11px] text-center mt-2 text-gray-300">
+        <p
+          className="text-[11px] text-center mt-2"
+          style={{
+            color: isDark ? "#ccc" : "#555"
+          }}
+        >
           Real builders across the world 🌍
         </p>
       </div>
 
-      {/* 🔥 POPUP CENTER */}
+      {/* POPUP */}
       {selectedUser && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
-          <div className="bg-black/80 p-5 rounded-2xl shadow-xl w-64 border border-white/20 backdrop-blur-xl">
-            
+          <div
+            className="p-5 rounded-2xl shadow-xl w-64 backdrop-blur-xl border"
+            style={{
+              background: isDark ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.9)",
+              borderColor: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)"
+            }}
+          >
             <div className="flex flex-col items-center gap-2 text-center">
               <img
                 src={selectedUser.profilePictureUrl || "https://i.pravatar.cc/100"}
                 className="w-16 h-16 rounded-full"
               />
-              <h2 className="text-sm font-semibold text-white">
+              <h2
+                className="text-sm font-semibold"
+                style={{ color: isDark ? "#fff" : "#000" }}
+              >
                 {selectedUser.name}
               </h2>
             </div>
@@ -147,7 +180,7 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* 🔥 CONTROLS */}
+      {/* CONTROLS */}
       <div className="fixed right-3 bottom-24 z-[9999] flex flex-col gap-2">
 
         <button
