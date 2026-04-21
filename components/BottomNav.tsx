@@ -1,4 +1,4 @@
-import { Home, Globe, Rocket, Flame } from "lucide-react";
+import { Home, Globe, Rocket, FlameKindling } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
@@ -32,7 +32,7 @@ const BottomNav = () => {
     // 🔥 NEW → STARVERSE
     { name: "Starverse", icon: Globe, path: "/globe", type: "lucide" },
 
-    { name: "Startalks", icon: Flame, path: "/startalks", type: "custom" },
+    { name: "Startalks", icon: FlameKindling, path: "/startalks", type: "custom" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
 
