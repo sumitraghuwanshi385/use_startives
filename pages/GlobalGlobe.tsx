@@ -47,16 +47,15 @@ const GlobalGlobe: React.FC = () => {
 
         el.innerHTML = `
           <div style="
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
+            width:30px;
+            height:30px;
+            border-radius:50%;
             padding:2px;
-            background: linear-gradient(135deg,#ff3b3b,#3b82f6);
+            background:linear-gradient(135deg,#ff3b3b,#3b82f6);
             display:flex;
             align-items:center;
             justify-content:center;
             cursor:pointer;
-            box-shadow:0 0 12px rgba(255,59,59,0.6);
           ">
             <img src="${d.profilePictureUrl || 'https://i.pravatar.cc/100'}"
               style="
@@ -94,9 +93,9 @@ const GlobalGlobe: React.FC = () => {
   }, [autoRotate]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[var(--background-secondary)]">
+    <div className="relative w-full h-screen overflow-hidden font-[Poppins] bg-[var(--background-secondary)]">
 
-      {/* 🔥 DYNAMIC DOT BG */}
+      {/* 🔥 DOT BG */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
@@ -104,23 +103,21 @@ const GlobalGlobe: React.FC = () => {
             "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
           backgroundSize: "18px 18px",
           opacity: document.documentElement.classList.contains("dark")
-            ? 0.5   // dark → lighter
-            : 0.9   // light → stronger
+            ? 0.5
+            : 0.9
         }}
       />
 
       {/* 🌍 GLOBE */}
-      <div ref={globeRef} className="w-full h-full z-10 relative" />
+      <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 PREMIUM TOP PILL */}
+      {/* 🔥 TOP PILL */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
         <div className="
-          px-5 py-2 rounded-full text-xs font-bold tracking-wide
-          bg-gradient-to-r from-red-500/20 to-blue-500/20
-          border border-white/20 backdrop-blur-xl
+          px-4 py-1.5 rounded-full text-xs font-semibold
+          bg-white/10 backdrop-blur-md border border-white/20
           text-[var(--text-primary)]
-          shadow-[0_0_20px_rgba(255,0,0,0.2)]
-          animate-pulse
+          shadow-md
         ">
           STARVERSE • {users.length}+ Builders
         </div>
@@ -137,7 +134,7 @@ const GlobalGlobe: React.FC = () => {
                 className="w-10 h-10 rounded-full"
               />
               <div>
-                <h2 className="text-sm font-bold text-[var(--text-primary)]">
+                <h2 className="text-sm font-semibold text-[var(--text-primary)]">
                   {selectedUser.name}
                 </h2>
                 <p className="text-[10px] text-[var(--text-muted)]">
@@ -148,7 +145,7 @@ const GlobalGlobe: React.FC = () => {
 
             <button
               onClick={() => navigate(`/user/${selectedUser.id}`)}
-              className="mt-3 w-full py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500"
+              className="mt-3 w-full py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500"
             >
               View Profile
             </button>
@@ -156,33 +153,30 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* 🔥 CONTROLS (FIXED ABOVE NAV) */}
-      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-[999] flex gap-3">
+      {/* 🔥 RIGHT SIDE CONTROLS */}
+      <div className="absolute bottom-24 right-4 z-[999] flex flex-col gap-2">
 
         <button
           onClick={() => setAutoRotate(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow-xl"
+          className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          <Play size={14} />
-          Auto
+          <Play size={12} />
         </button>
 
         <button
           onClick={() => setAutoRotate(false)}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow-xl"
+          className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          <Pause size={14} />
-          Stop
+          <Pause size={12} />
         </button>
 
         <button
           onClick={() =>
             globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })
           }
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow-xl"
+          className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          <RotateCcw size={14} />
-          Reset
+          <RotateCcw size={12} />
         </button>
 
       </div>
