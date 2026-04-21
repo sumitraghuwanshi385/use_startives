@@ -2,7 +2,6 @@
 import Globe from "globe.gl";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Play, Pause, RotateCcw } from "lucide-react";
 
 const GlobalGlobe: React.FC = () => {
   const globeRef = useRef<HTMLDivElement | null>(null);
@@ -95,29 +94,30 @@ const GlobalGlobe: React.FC = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden font-[Poppins] bg-[var(--background-secondary)]">
 
-      {/* 🔥 DOT BG */}
+      {/* 🔥 DOT BG (LIGHT STRONG, DARK SOFT) */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
+            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
+          backgroundSize: "16px 16px",
           opacity: document.documentElement.classList.contains("dark")
-            ? 0.5
-            : 0.9
+            ? 0.4   // dark softer
+            : 1     // light strong
         }}
       />
 
       {/* 🌍 GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 TOP PILL */}
+      {/* 🔥 PREMIUM TOP PILL */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
         <div className="
-          px-4 py-1.5 rounded-full text-xs font-semibold
-          bg-white/10 backdrop-blur-md border border-white/20
+          px-5 py-2 rounded-full text-xs font-semibold tracking-wide
+          bg-white/20 backdrop-blur-xl
+          border border-white/40
           text-[var(--text-primary)]
-          shadow-md
+          shadow-[0_8px_30px_rgba(0,0,0,0.2)]
         ">
           STARVERSE • {users.length}+ Builders
         </div>
@@ -153,30 +153,35 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* 🔥 RIGHT SIDE CONTROLS */}
-      <div className="absolute bottom-24 right-4 z-[999] flex flex-col gap-2">
+      {/* 🔥 RIGHT CONTROLS (FIXED + ALWAYS VISIBLE) */}
+      <div
+        className="fixed right-3 z-[9999] flex flex-col gap-2"
+        style={{
+          bottom: "calc(90px + env(safe-area-inset-bottom))"
+        }}
+      >
 
         <button
           onClick={() => setAutoRotate(true)}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          <Play size={12} />
+          Auto
         </button>
 
         <button
           onClick={() => setAutoRotate(false)}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          <Pause size={12} />
+          Stop
         </button>
 
         <button
           onClick={() =>
             globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })
           }
-          className="flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="px-3 py-1.5 rounded-full text-[10px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
         >
-          <RotateCcw size={12} />
+          Reset
         </button>
 
       </div>
