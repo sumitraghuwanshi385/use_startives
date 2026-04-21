@@ -1,9 +1,8 @@
-import { Home, Globe, Rocket, Sparkles } from "lucide-react";
+import { Home, Globe, Rocket, Flame } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   ChatBubbleLeftRightIcon,
-  BoltIcon
 } from "../constants";
 
 const BottomNav = () => {
@@ -33,7 +32,7 @@ const BottomNav = () => {
     // 🔥 NEW → STARVERSE
     { name: "Starverse", icon: Globe, path: "/globe", type: "lucide" },
 
-    { name: "Startalks", icon: Sparkles, path: "/startalks", type: "custom" },
+    { name: "Startalks", icon: Flame, path: "/startalks", type: "custom" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
 
