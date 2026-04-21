@@ -6,10 +6,10 @@ const {
   getAllLocations
 } = require("../controllers/locationController");
 
-// 📍 Save location
+// 📍 Save user location
 router.post("/save-location", saveLocation);
 
-// 📍 Get all locations
+// 📍 Get all users location
 router.get("/all-locations", getAllLocations);
 
 module.exports = router;
