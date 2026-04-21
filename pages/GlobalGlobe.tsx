@@ -2,6 +2,7 @@
 import Globe from "globe.gl";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Play, Pause, RotateCcw } from "lucide-react";
 
 const GlobalGlobe: React.FC = () => {
   const globeRef = useRef<HTMLDivElement | null>(null);
@@ -17,33 +18,39 @@ const GlobalGlobe: React.FC = () => {
     const fetchUsers = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/location/all-locations`
+          "https://use-startives.onrender.com/api/location/all-locations"
         );
         const data = await res.json();
 
+        console.log("🔥 USERS DATA:", data);
+
         const valid = data.filter((u: any) => u.lat && u.lng);
         setUsers(valid);
+
       } catch (err) {
-        console.log(err);
+        console.log("❌ FETCH ERROR:", err);
       }
     };
 
     fetchUsers();
   }, []);
 
-  // 🌍 INIT GLOBE (FIXED)
+  // 🌍 INIT GLOBE (FORCE RECREATE)
   useEffect(() => {
     if (!globeRef.current) return;
+
+    // 🧹 cleanup old globe
+    globeRef.current.innerHTML = "";
 
     const globe: any = Globe()(globeRef.current)
       .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
       .backgroundColor("rgba(0,0,0,0)")
-      .pointsData(users) // ✅ FIXED
+      .pointsData(users)
       .pointLat("lat")
       .pointLng("lng")
       .pointColor(() => "#ff3b3b")
-      .pointAltitude(0.02)
-      .pointRadius(0.35)
+      .pointAltitude(0.03)
+      .pointRadius(0.5)
       .onPointClick((d: any) => {
         setSelectedUser(d);
         globe.pointOfView(
@@ -52,11 +59,12 @@ const GlobalGlobe: React.FC = () => {
         );
       });
 
-    globe.controls().autoRotate = true;
+    globe.controls().autoRotate = autoRotate;
     globe.controls().autoRotateSpeed = 0.6;
 
     globeInstance.current = globe;
-  }, [users]);
+
+  }, [users]); // 🔥 IMPORTANT
 
   useEffect(() => {
     if (globeInstance.current) {
@@ -67,7 +75,7 @@ const GlobalGlobe: React.FC = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden font-[Poppins] bg-[var(--background-secondary)]">
 
-      {/* 🔥 DOT BG */}
+      {/* DOT BG */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
@@ -80,31 +88,24 @@ const GlobalGlobe: React.FC = () => {
         }}
       />
 
-      {/* 🌍 GLOBE */}
+      {/* GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 TOP PILL */}
+      {/* TOP */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
-        <div className="
-          px-6 py-2 rounded-full text-xs font-semibold tracking-wide
-          bg-white/30 backdrop-blur-xl
-          border border-white/40
-          text-[var(--text-primary)]
-          shadow-xl
-        ">
+        <div className="px-6 py-2 rounded-full text-xs font-semibold bg-white/30 backdrop-blur-xl border border-white/40 shadow-xl">
           STARVERSE • {users.length}+ Builders
         </div>
 
-        {/* 🌟 DESCRIPTION */}
-        <p className="text-[10px] text-center mt-2 text-[var(--text-muted)]">
-          Discover builders around the world in real-time 🌍
+        <p className="text-[10px] text-center mt-2 text-gray-400">
+          Discover builders around the world 🌍
         </p>
       </div>
 
-      {/* 🔥 USER POPUP */}
+      {/* POPUP */}
       {selectedUser && (
         <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-[var(--component-background)] p-4 rounded-2xl shadow-xl w-64 border border-[var(--border-primary)]">
+          <div className="bg-black/80 p-4 rounded-2xl shadow-xl w-64 border border-white/20">
             
             <div className="flex items-center gap-3">
               <img
@@ -112,10 +113,10 @@ const GlobalGlobe: React.FC = () => {
                 className="w-10 h-10 rounded-full"
               />
               <div>
-                <h2 className="text-sm font-semibold text-[var(--text-primary)]">
+                <h2 className="text-sm font-semibold text-white">
                   {selectedUser.name}
                 </h2>
-                <p className="text-[10px] text-[var(--text-muted)]">
+                <p className="text-[10px] text-gray-400">
                   {selectedUser.lat.toFixed(2)}, {selectedUser.lng.toFixed(2)}
                 </p>
               </div>
@@ -131,7 +132,7 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* 🔥 CONTROLS (RIGHT BOTTOM FIXED) */}
+      {/* CONTROLS */}
       <div
         className="fixed right-3 z-[9999] flex flex-col gap-2"
         style={{
@@ -141,25 +142,25 @@ const GlobalGlobe: React.FC = () => {
 
         <button
           onClick={() => setAutoRotate(true)}
-          className="px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] text-white bg-gradient-to-r from-red-500 to-blue-500"
         >
-          ▶ Auto
+          <Play size={12} /> Auto
         </button>
 
         <button
           onClick={() => setAutoRotate(false)}
-          className="px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] text-white bg-gradient-to-r from-red-500 to-blue-500"
         >
-          ⏸ Stop
+          <Pause size={12} /> Stop
         </button>
 
         <button
           onClick={() =>
             globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })
           }
-          className="px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] text-white bg-gradient-to-r from-red-500 to-blue-500"
         >
-          🔄 Reset
+          <RotateCcw size={12} /> Reset
         </button>
 
       </div>
