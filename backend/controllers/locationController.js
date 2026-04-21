@@ -1,15 +1,21 @@
-import axios from "axios";
-import User from "../models/User.js";
+const axios = require("axios");
+const User = require("../models/User");
 
-// 📍 Save location
-export const saveLocation = async (req, res) => {
+// 📍 SAVE USER LOCATION
+const saveLocation = async (req, res) => {
   try {
     const { userId } = req.body;
 
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "UserId required" });
+    }
+
+    // 🌍 Get IP-based location
     const ipData = await axios.get("http://ip-api.com/json/");
 
     const { lat, lon, city, country } = ipData.data;
 
+    // 💾 Save to DB
     await User.findByIdAndUpdate(userId, {
       location: {
         lat,
@@ -19,26 +25,44 @@ export const saveLocation = async (req, res) => {
       }
     });
 
-    res.json({ success: true });
+    return res.json({
+      success: true,
+      lat,
+      lng: lon,
+      city,
+      country
+    });
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Save Location Error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
   }
 };
 
-// 📍 Get all users
-export const getAllLocations = async (req, res) => {
+// 📍 GET ALL USERS LOCATION
+const getAllLocations = async (req, res) => {
   try {
-    const users = await User.find({ "location.lat": { $exists: true } });
+    const users = await User.find({
+      "location.lat": { $exists: true, $ne: null }
+    });
 
-    res.json(users.map(u => ({
+    const formatted = users.map((u) => ({
       id: u._id,
       name: u.name,
       lat: u.location.lat,
-      lng: u.location.lng
-    })));
+      lng: u.location.lng,
+      profilePictureUrl: u.profilePictureUrl || null
+    }));
+
+    res.json(formatted);
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Get Locations Error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
   }
+};
+
+module.exports = {
+  saveLocation,
+  getAllLocations
 };
