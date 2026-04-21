@@ -5,6 +5,24 @@ import {
   ChatBubbleLeftRightIcon,
 } from "../constants";
 
+
+export const FlameIcon = ({ className = "w-6 h-6" }) => {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M12 3c2.5 3 4 5 4 7a4 4 0 1 1-8 0c0-2 1.5-4 4-7z" />
+      <path d="M12 10c1.5 2 2.5 3 2.5 4.5A2.5 2.5 0 0 1 12 17a2.5 2.5 0 0 1-2.5-2.5c0-1.5 1-2.5 2.5-4.5z" />
+    </svg>
+  );
+};
+
 const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +50,7 @@ const BottomNav = () => {
     // 🔥 NEW → STARVERSE
     { name: "Starverse", icon: Globe, path: "/globe", type: "lucide" },
 
-    { name: "Startalks", icon: Radio, path: "/startalks", type: "custom" },
+    { name: "Startalks", icon: FlameIcon, path: "/startalks", type: "custom" },
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
 
