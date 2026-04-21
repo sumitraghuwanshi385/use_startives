@@ -35,15 +35,15 @@ const GlobalGlobe: React.FC = () => {
     globeRef.current.innerHTML = "";
 
     const globe: any = Globe()(globeRef.current)
-      .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
-      .backgroundColor("rgba(0,0,0,0)")
+      .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg") // 🌍 ALWAYS DARK EARTH
+      .backgroundColor("#000000") // 🔥 FORCE DARK BG ALWAYS
       .htmlElementsData(users)
       .htmlLat("lat")
       .htmlLng("lng")
       .htmlElement((d: any) => {
         const el = document.createElement("div");
 
-        el.style.pointerEvents = "auto"; // 🔥 FIX CLICK
+        el.style.pointerEvents = "auto";
 
         el.innerHTML = `
           <div style="
@@ -70,7 +70,7 @@ const GlobalGlobe: React.FC = () => {
         `;
 
         el.onclick = (e: any) => {
-          e.stopPropagation(); // 🔥 IMPORTANT FIX
+          e.stopPropagation();
           setSelectedUser(d);
 
           globe.pointOfView(
@@ -97,7 +97,7 @@ const GlobalGlobe: React.FC = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
 
-      {/* 🔥 DOT BACKGROUND BACK */}
+      {/* 🔥 DOT BACKGROUND (FORCED DARK MODE LOOK) */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -108,10 +108,10 @@ const GlobalGlobe: React.FC = () => {
         }}
       />
 
-      {/* GLOBE */}
+      {/* 🌍 GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* TOP */}
+      {/* 🔥 TOP */}
       <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
         <div className="px-6 py-2 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-xl border border-white/30 text-white">
           STARVERSE • {users.length}+ Builders
@@ -122,7 +122,7 @@ const GlobalGlobe: React.FC = () => {
         </p>
       </div>
 
-      {/* POPUP CENTER */}
+      {/* 🔥 POPUP CENTER */}
       {selectedUser && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
           <div className="bg-black/80 p-5 rounded-2xl shadow-xl w-64 border border-white/20 backdrop-blur-xl">
@@ -147,7 +147,7 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* CONTROLS */}
+      {/* 🔥 CONTROLS */}
       <div className="fixed right-3 bottom-24 z-[9999] flex flex-col gap-2">
 
         <button
