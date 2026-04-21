@@ -39,7 +39,6 @@ import ContactUsPage from './pages/ContactUsPage';
 import SearchPage from './pages/SearchPage';
 import { useAppContext } from './contexts/AppContext';
 import FloatingActionMenu from './components/FloatingActionMenu';
-import GlobalGlobe from './pages/GlobalGlobe';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
@@ -157,7 +156,7 @@ useEffect(() => {
           <Route path="/new-password" element={<NewPasswordPage />} />
           <Route path="/contact-us" element={<WithPageContainer><ContactUsPage /></WithPageContainer>} />
           <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
-<Route path="/globe" element={<GlobalGlobe />} />
+
 
           <Route path="/dashboard" element={
   <ProtectedRoute>
