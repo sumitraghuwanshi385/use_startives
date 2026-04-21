@@ -1,13 +1,20 @@
 const axios = require("axios");
 const User = require("../models/User");
 
+// 🔀 RANDOM FALLBACK LOCATION (GLOBAL)
+const randomLat = () => (Math.random() * 180 - 90);
+const randomLng = () => (Math.random() * 360 - 180);
+
 // 📍 SAVE USER LOCATION
 const saveLocation = async (req, res) => {
   try {
     const { userId } = req.body;
 
     if (!userId) {
-      return res.status(400).json({ success: false, message: "UserId required" });
+      return res.status(400).json({
+        success: false,
+        message: "UserId required"
+      });
     }
 
     // 🌍 Get IP-based location
@@ -15,7 +22,6 @@ const saveLocation = async (req, res) => {
 
     const { lat, lon, city, country } = ipData.data;
 
-    // 💾 Save to DB
     await User.findByIdAndUpdate(userId, {
       location: {
         lat,
@@ -35,22 +41,23 @@ const saveLocation = async (req, res) => {
 
   } catch (err) {
     console.error("Save Location Error:", err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 
-// 📍 GET ALL USERS LOCATION
+// 📍 GET ALL USERS (WITH FALLBACK)
 const getAllLocations = async (req, res) => {
   try {
-    const users = await User.find({
-      "location.lat": { $exists: true, $ne: null }
-    });
+    const users = await User.find();
 
     const formatted = users.map((u) => ({
       id: u._id,
       name: u.name,
-      lat: u.location.lat,
-      lng: u.location.lng,
+      lat: u.location?.lat ?? randomLat(),
+      lng: u.location?.lng ?? randomLng(),
       profilePictureUrl: u.profilePictureUrl || null
     }));
 
@@ -58,7 +65,10 @@ const getAllLocations = async (req, res) => {
 
   } catch (err) {
     console.error("Get Locations Error:", err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 };
 
