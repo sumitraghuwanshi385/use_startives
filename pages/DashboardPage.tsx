@@ -2,7 +2,21 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
-import { IdeaStarIcon, ChevronRightIcon, SparklesIcon, ShoppingBagIcon, TwitterXIcon, ChatBubbleLeftRightIcon, GlobeAltIcon, ChatBubbleBottomCenterTextIcon, XMarkIcon, UserCircleIcon, SparklesIcon, InstagramIcon, PaperAirplaneIcon, GlobeModernIcon } from '../constants';
+import { 
+  IdeaStarIcon,
+  ChevronRightIcon,
+  SparklesIcon,
+  ShoppingBagIcon,
+  TwitterXIcon,
+  ChatBubbleLeftRightIcon,
+  GlobeAltIcon,
+  ChatBubbleBottomCenterTextIcon,
+  XMarkIcon,
+  UserCircleIcon,
+  InstagramIcon,
+  PaperAirplaneIcon,
+  GlobeModernIcon
+} from '../constants';
 
 // --- DashboardStatCard Component ---
 interface DashboardSummaryStatCardProps {
