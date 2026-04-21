@@ -39,7 +39,6 @@ import ContactUsPage from './pages/ContactUsPage';
 import SearchPage from './pages/SearchPage';
 import { useAppContext } from './contexts/AppContext';
 import FloatingActionMenu from './components/FloatingActionMenu';
-import GlobalGlobe from './pages/GlobalGlobe';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
@@ -185,7 +184,7 @@ useEffect(() => {
           <Route path="/connections" element={<ProtectedRoute><WithPageContainer><ConnectionsPage /></WithPageContainer></ProtectedRoute>} />
           <Route path="/saved-projects" element={<ProtectedRoute><WithPageContainer><SavedProjectsPage /></WithPageContainer></ProtectedRoute>} />
           <Route path="/activity-log" element={<ProtectedRoute><WithPageContainer><ActivityLogPage /></WithPageContainer></ProtectedRoute>} />
-<Route path="/globe" element={<GlobalGlobe />} />
+
   
           <Route path="*" element={currentUser ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />} />
         </Routes>
