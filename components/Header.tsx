@@ -183,6 +183,7 @@ const handleBellClick = async () => {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
+{ name: 'Global', path: '/globe' },
   ];
 
   // Mobile Menu Links (Dropdown)
@@ -192,6 +193,7 @@ const handleBellClick = async () => {
     { name: 'Asset Shop', path: '/blueprint' },
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
+{ name: 'Starverse', path: '/globe' },
   ];
 
   const getInitials = (name?: string): string => {
