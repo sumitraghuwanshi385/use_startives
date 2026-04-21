@@ -40,7 +40,7 @@ import SearchPage from './pages/SearchPage';
 import { useAppContext } from './contexts/AppContext';
 import FloatingActionMenu from './components/FloatingActionMenu';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import GlobalGlobe from './pages/GlobalGlobe';
+import GlobalGlobe from './components/GlobalGlobe';
 
 interface PageTitleProps {
   title: string;
