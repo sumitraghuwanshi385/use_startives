@@ -2,7 +2,7 @@
 import Globe from "globe.gl";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Play, Pause, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, Filter } from "lucide-react";
 
 const GlobalGlobe: React.FC = () => {
   const globeRef = useRef<HTMLDivElement | null>(null);
@@ -11,6 +11,7 @@ const GlobalGlobe: React.FC = () => {
 
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [autoRotate, setAutoRotate] = useState(true);
 
   // 🌍 FETCH USERS
   useEffect(() => {
@@ -21,11 +22,7 @@ const GlobalGlobe: React.FC = () => {
         );
         const data = await res.json();
 
-        // ✅ FILTER VALID USERS ONLY
-        const validUsers = data.filter(
-          (u: any) => u.lat && u.lng
-        );
-
+        const validUsers = data.filter((u: any) => u.lat && u.lng);
         setUsers(validUsers);
       } catch (err) {
         console.log(err);
@@ -46,8 +43,8 @@ const GlobalGlobe: React.FC = () => {
       .pointLat("lat")
       .pointLng("lng")
       .pointColor(() => "#ff3b3b")
-      .pointAltitude(0.02)
-      .pointRadius(0.35)
+      .pointAltitude(0.025)
+      .pointRadius(0.4)
       .onPointClick((d: any) => {
         globe.pointOfView(
           { lat: d.lat, lng: d.lng, altitude: 1.5 },
@@ -62,26 +59,48 @@ const GlobalGlobe: React.FC = () => {
     globeInstance.current = globe;
   }, [users]);
 
-  return (
-    <div className="relative w-full h-screen overflow-hidden">
+  // 🔥 AUTO ROTATE CONTROL
+  useEffect(() => {
+    if (globeInstance.current) {
+      globeInstance.current.controls().autoRotate = autoRotate;
+    }
+  }, [autoRotate]);
 
-      {/* 🔥 BACKGROUND DOT PATTERN */}
-      <div className="absolute inset-0 dot-pattern-bg opacity-20 pointer-events-none"></div>
+  return (
+    <div className="relative w-full h-screen overflow-hidden bg-[var(--background-secondary)]">
+
+      {/* 🔥 STRONG DOT PATTERN (FIXED) */}
+      <div className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)",
+          backgroundSize: "18px 18px"
+        }}
+      />
 
       {/* 🌍 GLOBE */}
-      <div ref={globeRef} className="w-full h-full" />
+      <div ref={globeRef} className="w-full h-full z-10 relative" />
 
       {/* 🔥 TOP PILL */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20">
-        <div className="px-4 py-1.5 rounded-full backdrop-blur-md border text-xs font-bold tracking-wide shadow
-        bg-white/10 border-white/20 text-[var(--text-primary)]">
+      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-30">
+        <div className="px-4 py-1.5 rounded-full backdrop-blur-md border text-xs font-bold shadow
+        bg-[var(--component-background)] border-[var(--border-primary)] text-[var(--text-primary)]">
           STARVERSE • {users.length}+ Builders
+        </div>
+      </div>
+
+      {/* 🔥 FILTER PILL (NEW) */}
+      <div className="absolute top-5 left-4 z-30">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold text-white
+        bg-gradient-to-r from-red-500 to-blue-500 shadow">
+          <Filter size={14} />
+          Global
         </div>
       </div>
 
       {/* 🔥 USER POPUP */}
       {selectedUser && (
-        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-30">
+        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-40">
           <div className="bg-[var(--component-background)] p-4 rounded-2xl shadow-xl w-64 border border-[var(--border-primary)]">
             
             <h2 className="font-bold text-sm text-[var(--text-primary)]">
@@ -92,30 +111,41 @@ const GlobalGlobe: React.FC = () => {
               {selectedUser.lat.toFixed(2)}, {selectedUser.lng.toFixed(2)}
             </p>
 
-            <button
-              onClick={() => navigate(`/user/${selectedUser.id}`)}
-              className="mt-3 w-full py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500"
-            >
-              View Profile
-            </button>
+            <div className="flex gap-2 mt-3">
+              <button
+                onClick={() => navigate(`/user/${selectedUser.id}`)}
+                className="flex-1 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500"
+              >
+                Profile
+              </button>
+
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="flex-1 py-2 rounded-full text-xs font-bold bg-gray-200 dark:bg-neutral-700 text-[var(--text-primary)]"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* 🔥 BOTTOM CONTROLS (NAV KE UPAR) */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+      {/* 🔥 BOTTOM TOOLBAR (FIXED + VISIBLE) */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 flex gap-3">
 
         <button
-          onClick={() => (globeInstance.current.controls().autoRotate = true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500"
+          onClick={() => setAutoRotate(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white
+          bg-gradient-to-r from-red-500 to-blue-500 shadow-lg"
         >
           <Play size={14} />
           Auto
         </button>
 
         <button
-          onClick={() => (globeInstance.current.controls().autoRotate = false)}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500"
+          onClick={() => setAutoRotate(false)}
+          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white
+          bg-gradient-to-r from-red-500 to-blue-500 shadow-lg"
         >
           <Pause size={14} />
           Stop
@@ -123,15 +153,24 @@ const GlobalGlobe: React.FC = () => {
 
         <button
           onClick={() =>
-            globeInstance.current.pointOfView({ lat: 20, lng: 0, altitude: 2 })
+            globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })
           }
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-blue-500"
+          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white
+          bg-gradient-to-r from-red-500 to-blue-500 shadow-lg"
         >
           <RotateCcw size={14} />
           Reset
         </button>
 
       </div>
+
+      {/* 🔥 EXTRA FEATURE: LIVE LABEL */}
+      <div className="absolute bottom-28 right-4 z-30">
+        <div className="px-3 py-1 rounded-full text-[10px] font-bold text-white bg-gradient-to-r from-red-500 to-blue-500 shadow">
+          LIVE USERS
+        </div>
+      </div>
+
     </div>
   );
 };
