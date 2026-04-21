@@ -11,6 +11,13 @@ const userSchema = mongoose.Schema({
     headline: { type: String },
     country: { type: String },
     profilePictureUrl: { type: String },
+// 🔥 ADD THIS BLOCK 👇
+location: {
+  lat: { type: Number },
+  lng: { type: Number },
+  city: { type: String },
+  country: { type: String }
+},
     
 bio: { type: String },
 
