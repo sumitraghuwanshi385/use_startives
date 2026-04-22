@@ -251,10 +251,10 @@ const displayAvatar =
         <div className="space-y-2.5 mt-auto border-t border-[var(--border-primary)] pt-4">
 
   <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest">
-    Open Positions
+    Join as
   </h4>
 
-  {idea.positions.length > 0 && (
+  {(idea.positions && idea.positions.length > 0) && (
     <div
       onClick={(e) => {
         e.stopPropagation();
@@ -273,9 +273,11 @@ const displayAvatar =
       {/* TEXT */}
       <div className="flex-1 px-3 overflow-hidden">
         <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
-          Apply for <span className="text-purple-500">
-            {idea.positions[0].title}
-          </span> role
+          Apply for{" "}
+          <span className="text-purple-500">
+            {idea.positions?.[0]?.title || "Role"}
+          </span>{" "}
+          role
         </p>
 
         {idea.positions.length > 1 && (
