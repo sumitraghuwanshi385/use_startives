@@ -254,7 +254,7 @@ const displayAvatar =
     Join the Build
   </h4>
 
-  {(idea.positions && idea.positions.length > 0) && (
+  {idea.positions && idea.positions.length > 0 && (
     <div
       onClick={(e) => {
         e.stopPropagation();
@@ -265,37 +265,33 @@ const displayAvatar =
       hover:border-purple-500/40 transition-all duration-300 cursor-pointer overflow-hidden"
     >
 
-      {/* LEFT ICON */}
       <div className="w-10 h-10 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-xl font-bold text-black">
         +
       </div>
 
-      {/* TEXT */}
       <div className="flex-1 px-3 overflow-hidden">
         <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
-          Apply for{" "}
-          <span className="text-purple-500">
-            {idea.positions?.[0]?.title || "Role"}
+          Apply for
+          <span className="text-purple-500 ml-1">
+            {idea.positions[0]?.title || "Role"}
           </span>
         </p>
 
-        {(idea.positions?.length || 0) > 1 && (
+        {idea.positions.length > 1 && (
           <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
             +{idea.positions.length - 1} more openings
           </p>
         )}
       </div>
 
-      {/* RIGHT ARROW */}
-      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:translate-x-1 transition-transform">
-        →
+      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white">
+        <span>&rarr;</span>
       </div>
 
     </div>
   )}
 
 </div>
-
       <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
         <div className="flex items-center gap-2">
          {idea.founderId && (
