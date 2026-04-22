@@ -249,21 +249,51 @@ const displayAvatar =
         </div>
 
         <div className="space-y-2.5 mt-auto border-t border-[var(--border-primary)] pt-4">
-          <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest">Open Positions</h4>
-          <div className="flex flex-wrap gap-1.5">
-            {idea.positions.slice(0, 2).map(pos => (
-              <span key={pos.id} className="text-[9px] font-black tracking-tight px-3 py-1 rounded-full uppercase button-gradient text-white flex items-center justify-center">
-                {pos.title}
-              </span>
-            ))}
-            {idea.positions.length > 2 && (
-              <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 py-1 px-1">
-                +{idea.positions.length - 2} more
-              </span>
-            )}
-          </div>
-        </div>
+
+  <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest">
+    Open Positions
+  </h4>
+
+  {idea.positions.length > 0 && (
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/idea/${idea.id}`);
+      }}
+      className="group flex items-center justify-between px-4 py-3 rounded-2xl border border-[var(--border-primary)] 
+      bg-gradient-to-r from-black/80 to-neutral-900/80 dark:from-neutral-900 dark:to-black 
+      hover:border-purple-500/40 transition-all duration-300 cursor-pointer overflow-hidden"
+    >
+
+      {/* LEFT ICON */}
+      <div className="w-10 h-10 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-xl font-bold text-black">
+        +
       </div>
+
+      {/* TEXT */}
+      <div className="flex-1 px-3 overflow-hidden">
+        <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
+          Apply for <span className="text-purple-500">
+            {idea.positions[0].title}
+          </span> role
+        </p>
+
+        {idea.positions.length > 1 && (
+          <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
+            +{idea.positions.length - 1} more openings
+          </p>
+        )}
+      </div>
+
+      {/* RIGHT ARROW */}
+      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:translate-x-1 transition-transform">
+        →
+      </div>
+
+    </div>
+  )}
+
+</div>
 
       <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
         <div className="flex items-center gap-2">
