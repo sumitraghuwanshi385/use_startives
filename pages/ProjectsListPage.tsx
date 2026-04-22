@@ -413,20 +413,33 @@ const ProjectsListPage: React.FC = () => {
               <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
             </div>
 
-            {/* ✅ FIX: Pill — compact, horizontal, both stats centered with label+number stacked */}
-            <div className="inline-flex items-center self-start md:self-auto bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] text-white rounded-full shadow-lg overflow-hidden">
-              <div className="flex flex-col items-center justify-center px-5 py-2">
-                <p className="text-[7px] font-black uppercase text-white/70 tracking-widest leading-none">Total Projects</p>
-                <p className="text-sm font-black leading-tight mt-0.5">{totalProjects}</p>
-              </div>
-              <div className="w-px h-7 bg-white/25 shrink-0"></div>
-              <div className="flex flex-col items-center justify-center px-5 py-2">
-                <p className="text-[7px] font-black uppercase text-white/70 tracking-widest leading-none">New This Week</p>
-                <p className="text-sm font-black leading-tight mt-0.5">{newThisWeek}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+            <div className="inline-flex items-center bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] text-white rounded-full shadow-lg overflow-hidden">
+
+  {/* LEFT */}
+  <div className="flex items-center gap-2 px-5 py-2">
+    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+      Total Projects
+    </p>
+    <p className="text-sm font-black">
+      {totalProjects}
+    </p>
+  </div>
+
+  <div className="w-px h-5 bg-white/30"></div>
+
+  {/* RIGHT */}
+  <div className="flex items-center gap-2 px-5 py-2">
+    <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
+      New This Week
+    </p>
+    <p className="text-sm font-black">
+      {newThisWeek}
+    </p>
+  </div>
+  </div>
+</div>
+
+</div>
 
         {/* Search */}
         <div className="mb-4 flex justify-center">
