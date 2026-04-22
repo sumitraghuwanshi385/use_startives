@@ -1,482 +1,489 @@
-// src/pages/PublicProfilePage.tsx
-import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import { useAppContext } from '../contexts/AppContext';
-import { StartalkCard } from './StartalksPage';
-import { User } from '../types';
-import { 
-    getFlagEmoji, 
-    EnvelopeOpenIcon, 
-    TwitterXIcon, 
-    ChevronLeftIcon, 
-    ShoppingBagIcon, 
-    GlobeAltIcon, 
-    LinkIconHero, 
-    UsersIcon,
-    IdentificationIcon,
-    AcademicCapIcon,
-    GithubLogoIcon,
-    LinkedInLogoIcon,
-    InstagramIcon,
-    HeartIcon,
-    BoltIcon,
-    GlobeModernIcon,
-    PaperAirplaneIcon
-    // CheckCircleIcon yahan se hata diya hai kyunki niche defined hai
+import { StartupIdea } from '../types';
+import {
+timeAgo,
+STARTUP_CATEGORIES,
+BookmarkSquareIcon,
+WORK_MODES,
+COUNTRIES,
+MagnifyingGlassIcon as SearchIcon,
 } from '../constants';
 
-// --- Local Icons (Defined here to avoid import errors) ---
-const ClockIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => ( 
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+// --- Icons ---
+const BookmarkIcon: React.FC<{ className?: string; solid?: boolean }> = ({ className = "w-5 h-5", solid }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill={solid ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+</svg>
 );
 
-// ✅ CheckCircleIcon Local Definition
-const CheckCircleIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => ( 
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg
+xmlns="http://www.w3.org/2000/svg"
+fill="none"
+viewBox="0 0 24 24"
+strokeWidth={1.8}
+stroke="currentColor"
+className={className}
+> 
+<rect x="3" y="3" width="7" height="7" rx="2" />  
+<rect x="14" y="3" width="7" height="7" rx="2" />  
+<rect x="3" y="14" width="7" height="7" rx="2" />  
+<rect x="14" y="14" width="7" height="7" rx="2" />
+</svg>  
 );
 
-const ProfilePillCard: React.FC<{ 
-    title: string; 
-    subtitle: string; 
-    imageUrl?: string;
-    link: string; 
-    badge?: string;
-    badgeColor?: string;
-}> = ({ title, subtitle, imageUrl, link, badge, badgeColor = "bg-purple-100 text-purple-700" }) => (
-    <Link 
-        to={link}
-        className="flex-shrink-0 flex items-center gap-3 px-5 py-3.5 bg-white dark:bg-neutral-900 border border-[var(--border-primary)] rounded-full hover:border-purple-500/40 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300 min-w-[240px] max-w-[320px] group shadow-sm snap-start"
-    >
-        <div className="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-[var(--text-primary)] border border-[var(--border-primary)] group-hover:border-purple-500/30 transition-colors overflow-hidden">
-            {imageUrl ? (
-                <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
-            ) : (
-                <GlobeModernIcon className="w-5 h-5" />
-            )}
-        </div>
-        <div className="overflow-hidden flex-grow">
-            <div className="flex items-center gap-2">
-                <h4 className="font-bold text-sm text-[var(--text-primary)] truncate">{title}</h4>
-                {badge && <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>}
-            </div>
-            <p className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 truncate">{subtitle}</p>
-        </div>
-        <ChevronLeftIcon className="w-3 h-3 rotate-180 text-[var(--text-muted)] opacity-50 group-hover:translate-x-1 transition-transform" />
-    </Link>
+const ChevronDownIconUI: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+</svg>
+);
+const CheckIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+</svg>
+);
+
+// Custom Filter Icons
+const GrowthIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+</svg>
+);
+const TagIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+<path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+</svg>
+);
+const MapPinIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+<path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+</svg>
 );
 
 const STAGE_COLOR_MAP: Record<string, string> = {
-  "Idea":
-    "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
-
-  "MVP":
-    "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
-
-  "Prototype":
-    "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
-
-  "Beta":
-    "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
-
-  "Launched":
-    "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
-
-  "Scaling":
-    "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
-
-  "Fundraising":
-    "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
-
-  "Acquired":
-    "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
+"Idea": "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
+"MVP": "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
+"Prototype": "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
+"Beta": "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
+"Launched": "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
+"Scaling": "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
+"Fundraising": "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
+"Acquired": "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
 };
 
-const PublicProfilePage: React.FC = () => {
-  const { userId } = useParams<{ userId: string }>();
-  const { 
-  getUserById, 
-  fetchUserProfile, 
-  sendConnectionRequest, 
-  currentUser, 
-  startupIdeas,
-  assets,
-  isRequestPending, 
-  isUserConnected, 
-  startalks, 
-  connectedUserIds 
-} = useAppContext();
-  const navigate = useNavigate();
+// --- Custom Dropdown Component ---
+interface CustomDropdownProps {
+label: string;
+value: string;
+onChange: (value: string) => void;
+options: { value: string; label: string }[];
+icon: React.ReactNode;
+}
 
-  const [fetchedUser, setFetchedUser] = useState<User | null>(null);
-  const [loadingUser, setLoadingUser] = useState(true);
+const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange, options, icon }) => {
+const [isOpen, setIsOpen] = useState(false);
+const dropdownRef = useRef<HTMLDivElement>(null);
+const selectedOption = options.find(opt => opt.value === value);
 
-  // ✅ Fetch user if not already available
-  useEffect(() => {
-    if (!userId) return;
+useEffect(() => {
+const handleClickOutside = (event: MouseEvent) => {
+if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) setIsOpen(false);
+};
+document.addEventListener("mousedown", handleClickOutside);
+return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
 
-    // Check local first
-    const existing = getUserById(userId);
-    if (existing) {
-        setFetchedUser(existing);
-        setLoadingUser(false);
-    } else {
-        // Fetch from API
-        fetchUserProfile(userId).then(u => {
-            setFetchedUser(u);
-            setLoadingUser(false);
-        });
-    }
-  }, [userId, getUserById, fetchUserProfile]);
-  
-  // Show Loading or Not Found
-  if (loadingUser) return <div className="text-center py-20">Loading Innovator...</div>;
-  if (!fetchedUser) {
-    return (
-      <div className="text-center py-20">
-        <h1 className="text-3xl font-black uppercase text-[var(--accent-danger-text)] mb-4 tracking-tight">Innovator Not Found</h1>
-        <Link 
-          to="/projects" 
-          className="button-gradient inline-flex items-center text-white font-black uppercase text-xs tracking-widest py-3 px-8 rounded-full shadow-lg"
+return (
+<div className="relative" ref={dropdownRef}>
+<button
+  type="button"
+  onClick={() => setIsOpen(!isOpen)}
+  className={`flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none
+  ${isOpen
+    ? 'bg-white dark:bg-neutral-800 border-purple-500'
+    : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'}
+  text-[var(--text-primary)] focus:outline-none flex-1 font-poppins`}
+>
+  <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
+  <span className="truncate max-w-[80px] font-poppins">
+    {selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}
+  </span>
+  <ChevronDownIconUI className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+</button>
+
+{isOpen && (
+  <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden font-poppins">
+    <div className="overflow-y-auto max-h-80 p-2 custom-scrollable">
+      {options.map((option) => (
+        <button
+          key={option.value}
+          onClick={() => { onChange(option.value); setIsOpen(false); }}
+          className={`w-full text-left px-3.5 py-2 rounded-xl text-xs transition-all duration-200 flex items-center justify-between group
+            ${value === option.value ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold' : 'text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]'}`}
         >
-          Return to Marketplace
-        </Link>
-      </div>
-    );
-  }
-
-  // Assign to user variable
-  const user = fetchedUser;
-  
-  const userProjects = startupIdeas.filter(
-  idea => idea.founderId?.toString() === user.id?.toString() && !idea.askingPrice
-);
-
-const userAssets = assets.filter(
-  asset => asset.founderId?.toString() === user.id?.toString()
-);
-
-  const userTalks = startalks.filter(talk => talk.authorId === user.id);
-
-  const initials = user.name?.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() || 'U';
-  const countryFlag = user?.country && user.country !== "Unknown"
-  ? getFlagEmoji(user.country)
-  : null;
-
-  const isOwnProfile = currentUser?.id === user.id;
-  const requestIsPending = !isOwnProfile && isRequestPending(user.id);
-  const usersAreConnected = !isOwnProfile && isUserConnected(user.id);
-
-  const handleConnectionAction = () => {
-    if (isOwnProfile) {
-        navigate('/profile/edit'); 
-        return;
-    }
-    if (usersAreConnected) {
-      navigate(`/messages?chatWith=${user.id}`);
-    } else if (!requestIsPending) {
-      sendConnectionRequest(user.id);
-    }
-  };
-  
-  const getButtonContent = () => {
-    if (isOwnProfile) return <span>Edit Profile</span>;
-    // ✅ Updated to use local CheckCircleIcon
-    if (usersAreConnected) return <><CheckCircleIcon className="w-4 h-4" /><span>Connected</span></>;
-    if (requestIsPending) return <><ClockIcon className="w-4 h-4" /><span>Invite Sent</span></>;
-    return <><PaperAirplaneIcon className="w-4 h-4 -rotate-45" /><span>Send Invite</span></>;
-  };
-
-  const getButtonClasses = () => {
-    let base = "inline-flex items-center space-x-2 font-black uppercase tracking-widest py-2.5 px-6 rounded-full transition-all duration-300 text-[10px] transform hover:scale-105 active:scale-95";
-    if (isOwnProfile || (!requestIsPending && !usersAreConnected)) base += " button-gradient text-white";
-    else if (usersAreConnected) base += " bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/30";
-    else if (requestIsPending) base += " bg-neutral-100 dark:bg-neutral-800 text-[var(--text-muted)] border border-[var(--border-primary)] cursor-not-allowed";
-    return base;
-  };
-
-
-  return (
-    <div className="space-y-6 pb-20 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between mb-1">
-          <button onClick={() => navigate(-1)} className="inline-flex items-center space-x-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 group rounded-full px-5 py-2 bg-[var(--background-tertiary)] border border-[var(--border-primary)]">
-            <ChevronLeftIcon className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
-            <span>Go Back</span>
-          </button>
-          
-          <button onClick={handleConnectionAction} className={getButtonClasses()} disabled={requestIsPending}>
-            {getButtonContent()}
-          </button>
-      </div>
-
-      <section className="bg-white dark:bg-black border border-[var(--border-primary)] rounded-[3rem] p-8 relative overflow-hidden shadow-sm">
-        <div className="absolute inset-0 dot-pattern-bg opacity-[0.03] pointer-events-none"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-[100px] -mr-48 -mt-48 pointer-events-none"></div>
-        
-        <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
-            <div className="relative group">
-    <div className="absolute -inset-4 bg-gradient-to-tr from-red-500/10 to-blue-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-
-    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-neutral-100 dark:bg-neutral-800 border-4 border-white dark:border-neutral-900 shadow-2xl flex-shrink-0 flex items-center justify-center overflow-hidden relative z-10">
-        {user.profilePictureUrl ? (
-            <img
-               src={user.profilePictureUrl}
-                alt={user.name}
-                className="w-full h-full object-cover"
-            />
-        ) : (
-            <span className="text-5xl font-black text-neutral-300 dark:text-neutral-700">
-                {initials}
-            </span>
-        )}
-    </div>
-</div>
-
-            <div className="flex-grow text-center md:text-left space-y-5 pt-2">
-                <div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3">
-                        <h1 className="text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] leading-none">{user.name}</h1>
-                        <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-full border border-[var(--border-primary)]">
-                            {user?.country ? (
-  <>
-    <span className="text-xl">{getFlagEmoji(user.country)}</span>
-    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-      {user.country}
-    </span>
-  </>
-) : (
-  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-    Global
-  </span>
-)}
-                        </div>
-                    </div>
-                    <p className="text-lg text-purple-600 dark:text-purple-400 font-medium mt-2 font-poppins">
-  {user.headline || "Innovator & Builder"}
-</p>
-                </div>
-
-                <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                    <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
-                        <GlobeModernIcon className="w-3.5 h-3.5 text-purple-500" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Projects</span>
-                        <span className="text-xs font-black text-[var(--text-primary)] ml-1">{userProjects.length}</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
-                        <ShoppingBagIcon className="w-3.5 h-3.5 text-orange-500" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Listings</span>
-                        <span className="text-xs font-black text-[var(--text-primary)] ml-1">{userAssets.length}</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
-                        <UsersIcon className="w-3.5 h-3.5 text-blue-500" />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">Connections</span>
-                        <span className="text-xs font-black text-[var(--text-primary)] ml-1">
-  {user.connections?.length || 0}
-</span>
-                    </div>
-<div className="flex items-center gap-2 bg-neutral-100/60 dark:bg-neutral-900/60 backdrop-blur-md px-4 py-2 rounded-full border border-[var(--border-primary)] shadow-sm">
-  <BoltIcon className="w-3.5 h-3.5 text-emerald-500" />
-  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">
-    Talks
-  </span>
-  <span className="text-xs font-black text-[var(--text-primary)] ml-1">
-    {userTalks.length}
-  </span>
-</div>
-                </div>
-
-                {isOwnProfile && (
-  <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 pt-2">
-    <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)] font-medium">
-      <EnvelopeOpenIcon className="w-4 h-4 opacity-50 text-purple-500" />
-      <span>{user.email}</span>
+          <span className="truncate">{option.label}</span>
+          {value === option.value && <CheckIcon className="w-4 h-4" />}
+        </button>
+      ))}
     </div>
   </div>
 )}
-            </div>
+</div>
+);
+};
+
+// --- Project Card Component ---
+export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
+const navigate = useNavigate();
+const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
+const isSaved = currentUser ? isProjectSaved(idea.id) : false;
+
+const realUser = users?.find(u => u.id === idea.founderId);
+
+const displayName = realUser?.name || idea.founder?.name || "Founder";
+
+const displayAvatar =
+realUser?.avatar ||
+realUser?.profilePictureUrl ||
+idea.founder?.avatar ||
+idea.founder?.profilePictureUrl ||
+null;
+
+return (
+<article
+className="group relative bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:border-purple-500/30 overflow-hidden cursor-pointer flex flex-col h-full shadow-none font-poppins"
+onClick={() => navigate(`/idea/${idea.id}`)}
+>
+<div className="absolute top-0 left-0 z-20">
+<span
+className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-br-2xl border-r border-b border-[var(--border-primary)] shadow-none inline-block ${STAGE_COLOR_MAP[idea.stage] || "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"}`}
+>
+{idea.stage}
+</span>
+</div>
+
+<div className="absolute top-0 right-0 z-20">
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      if (!currentUser) {
+        navigate('/login');
+        return;
+      }
+      toggleSaveProject(idea.id);
+    }}
+    className={`w-12 h-12 rounded-bl-2xl flex items-center justify-center transition-all duration-300 border-l border-b border-[var(--border-primary)] ${isSaved ? 'bg-red-500 text-white border-red-600' : 'bg-white dark:bg-neutral-950 text-neutral-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}
+  >
+    <BookmarkIcon className="w-5 h-5" solid={isSaved} />
+  </button>
+</div>
+
+<div className="px-5 pt-14 pb-5 flex-grow flex flex-col">
+  <div className="flex gap-4 items-center mb-5">
+    <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-[var(--border-primary)] shadow-none group-hover:scale-105 transition-transform duration-500 bg-neutral-100 dark:bg-neutral-800">
+      {idea.imageUrl ? (
+        <img src={idea.imageUrl} alt={idea.title} className="w-full h-full object-cover" />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] bg-neutral-200 dark:bg-neutral-700">
+          <BookmarkSquareIcon className="w-8 h-8 opacity-40" />
         </div>
-      </section>
+      )}
+    </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <div className="lg:col-span-2 space-y-12">
-            <div className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <IdentificationIcon className="w-3 h-3" />
-                    </div>
-                    Bio
-                </h3>
-                <section className="bg-white dark:bg-neutral-950 p-8 rounded-[2.5rem] border border-[var(--border-primary)] shadow-sm">
-                    <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium opacity-90 whitespace-pre-wrap">
+    <div className="flex-grow overflow-hidden">
+      <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins">
+        {idea.title}
+      </h3>
+      <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
+        {idea.tagline}
+      </p>
+    </div>
+  </div>
 
-                        {user.bio || "This innovator prefers to let their work speak for itself. Connect to learn more about their journey."}
-                    </p>
-                </section>
+  <p className="text-sm text-[var(--text-secondary)] line-clamp-4 leading-relaxed mb-6 font-medium opacity-80 flex-grow">
+    {idea.description}
+  </p>
+
+  <div className="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+    {[
+      { label: 'Category', val: idea.category || 'Venture' },
+      { label: 'Model', val: idea.businessModel || 'Other' },
+      { label: 'Mode', val: idea.workMode || 'N/A' },
+      { label: 'Base', val: idea.location ? idea.location.split(',')[0] : 'Global' }
+    ].map(item => (
+      <div key={item.label} className="flex items-center justify-center bg-gray-50 dark:bg-neutral-900 rounded-xl border border-[var(--border-primary)] shadow-none group-hover:border-purple-500/30 transition-all text-center py-1.5 px-1 overflow-hidden">
+        <div className="flex flex-col items-center w-full">
+          <span className="text-[7px] text-[var(--text-muted)] uppercase font-black tracking-widest leading-none mb-1">{item.label}</span>
+          <span className="text-[9px] font-bold text-[var(--text-primary)] leading-none truncate w-full">{item.val}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* ✅ Join the Build section — light mode light, dark mode dark, gradient + icon */}
+  <div className="space-y-2 mt-auto border-t border-[var(--border-primary)] pt-4">
+    <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2">Join the Build</h4>
+    <div className="flex flex-col gap-1.5">
+      {idea.positions.slice(0, 2).map(pos => (
+        <div
+          key={pos.id}
+          className="flex items-center justify-between bg-gray-100 dark:bg-neutral-800 rounded-xl px-3 py-2 border border-gray-200 dark:border-neutral-700/60"
+        >
+          <div className="flex items-center gap-2.5">
+            {/* ✅ FIX 2: + icon bg → red-to-blue gradient */}
+            <div className="w-6 h-6 rounded-lg bg-[linear-gradient(135deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-white">
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+              </svg>
             </div>
+            <span className="text-[11px] font-semibold text-gray-700 dark:text-white/80 font-poppins">
+              Apply for{' '}
+              <span className="text-purple-600 dark:text-purple-400 font-bold">{pos.title}</span>
+              {' '}role
+            </span>
+          </div>
+          {/* ✅ FIX 1: arrow bg — light mode light gray, dark mode dark */}
+          <div className="w-7 h-7 rounded-lg bg-gray-200 dark:bg-neutral-700/60 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gray-600 dark:text-white/70">
+              <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+            </svg>
+          </div>
+        </div>
+      ))}
+      {idea.positions.length > 2 && (
+        <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 py-1 px-1">
+          +{idea.positions.length - 2} more
+        </span>
+      )}
+    </div>
+  </div>
+</div>
 
-             <section className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <BoltIcon className="w-3 h-3" />
-                    </div>
-                    Feed Activity
-                </h3>
-                {userTalks.length > 0 ? (
-                    <div className="flex gap-6 overflow-x-auto pb-6 no-scrollbar snap-x snap-mandatory px-2">
-                        {userTalks.map(talk => (
-                            <StartalkCard key={talk.id} talk={talk} className="flex-shrink-0 w-[320px] sm:w-[480px] snap-start shadow-none" />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="p-8 text-center bg-neutral-50 dark:bg-neutral-900/50 rounded-[2.5rem] border-2 border-dashed border-[var(--border-primary)]">
-                        <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No public activity recently</p>
-                    </div>
-                )}
-            </section>
+<div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
+  <div className="flex items-center gap-2">
+    {idea.founderId && (
+      <div
+        className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/user/${idea.founderId}`);
+        }}
+      >
+        {displayAvatar ? (
+          <img
+            src={displayAvatar}
+            className="w-5 h-5 rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-5 h-5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-[8px] font-bold">
+            {displayName.charAt(0)}
+          </div>
+        )}
+        <span className="text-xs font-black text-[var(--text-secondary)]">
+          {displayName.split(" ")[0]}
+        </span>
+      </div>
+    )}
+    <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
+      <span className="opacity-30">•</span>
+      {timeAgo(idea.postedDate)}
+    </span>
+  </div>
+  <div className="flex items-center text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 group-hover:translate-x-1 transition-transform">
+    Details
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+      <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+    </svg>
+  </div>
+</div>
+</article>
+);
+};
 
-            <section className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <GlobeModernIcon className="w-3 h-3" />
-                    </div>
-                    Projects Listed
-                </h3>
-                {userProjects.length > 0 ? (
-                    <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
-                        {userProjects.map(idea => (
-                            <ProfilePillCard 
-                                key={idea.id}
-                                title={idea.title}
-                                subtitle={idea.tagline}
-                                imageUrl={idea.imageUrl}
-                                link={`/idea/${idea.id}`}
-                                badge={idea.stage}
-badgeColor={
-  STAGE_COLOR_MAP[idea.stage] ||
-  "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"
+// keep your exported graphic
+export const NoResultsAnimatedGraphic: React.FC = () => (
+  <div className="flex flex-col items-center justify-center p-8 relative overflow-hidden h-64 mx-auto w-full">
+    <svg width="240" height="240" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="no-res-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#EF4444" />
+          <stop offset="100%" stopColor="#3B82F6" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(100, 95)">
+        <circle cx="0" cy="0" r="35" stroke="url(#no-res-grad)" strokeWidth="3" opacity="0.1" />
+        <circle cx="0" cy="0" r="28" stroke="url(#no-res-grad)" strokeWidth="4" strokeDasharray="5 10">
+          <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="12s" repeatCount="indefinite" />
+        </circle>
+        <g transform="translate(-15, -15)">
+          <path d="M22 22 L35 35" stroke="url(#no-res-grad)" strokeWidth="8" strokeLinecap="round" opacity="0.8" />
+          <circle cx="12" cy="12" r="12" stroke="url(#no-res-grad)" strokeWidth="4" />
+        </g>
+      </g>
+    </svg>
+  </div>
+);
+
+const ProjectsListPage: React.FC = () => {
+const { startupIdeas, isLoading: appLoading } = useAppContext();
+
+const [searchTerm, setSearchTerm] = useState('');
+const [filters, setFilters] = useState({ stage: 'All', category: 'All', location: 'All' });
+
+// ✅ NEW: backend results
+const [results, setResults] = useState<StartupIdea[]>([]);
+const [isFetching, setIsFetching] = useState(false);
+
+// ✅ ADD THIS
+const displayIdeas =
+searchTerm ||
+filters.stage !== 'All' ||
+filters.category !== 'All' ||
+filters.location !== 'All'
+? results
+: startupIdeas;
+
+// ✅ Fetch from backend whenever search/filters change (debounced)
+useEffect(() => {
+const timer = setTimeout(async () => {
+try {
+setIsFetching(true);
+
+const params: any = {};
+    if (searchTerm.trim()) params.q = searchTerm.trim();
+    if (filters.category !== 'All') params.category = filters.category;
+    if (filters.stage !== 'All') params.stage = filters.stage;
+    if (filters.location !== 'All') params.location = filters.location;
+
+    const res = await axios.get('/api/ideas', { params });
+    if (res.data?.success) setResults(res.data.ideas || []);
+    else setResults([]);
+  } catch (e) {
+    console.error('Fetch filtered ideas failed', e);
+    setResults([]);
+  } finally {
+    setIsFetching(false);
+  }
+}, 300);
+
+return () => clearTimeout(timer);
+
+}, [searchTerm, filters]);
+
+const totalProjects = startupIdeas.length;
+const newThisWeek = startupIdeas.filter(
+(i) => new Date(i.postedDate).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000
+).length;
+
+if (appLoading) {
+return (
+<div className="flex justify-center items-center min-h-[calc(100vh-10rem)]">
+<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+</div>
+);
 }
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="p-8 text-center bg-neutral-50 dark:bg-neutral-900/50 rounded-[2.5rem] border-2 border-dashed border-[var(--border-primary)]">
-                        <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No active public projects</p>
-                    </div>
-                )}
-            </section>
 
-             <section className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <ShoppingBagIcon className="w-3 h-3" />
-                    </div>
-                     Assets Listed
-                </h3>
-                {userAssets.length > 0 ? (
-                    <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory px-2">
-                        {userAssets.map(asset => (
-                            
-<ProfilePillCard 
-  key={asset._id || asset.id}
-  title={asset.title}
-  subtitle={asset.tagline}
-  imageUrl={asset.brandLogo}
-  link={`/asset/${asset._id || asset.id}`}
-  badge={asset.askingPrice}
-  badgeColor="bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300"
-/>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="p-8 text-center bg-neutral-50 dark:bg-neutral-900/50 rounded-[2.5rem] border-2 border-dashed border-[var(--border-primary)]">
-                        <p className="text-xs font-bold text-[var(--text-muted)] uppercase italic tracking-widest">No vetted assets available</p>
-                    </div>
-                )}
-            </section>
+return (
+<div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
+  {/* ✅ FIX 4: overflow-x-hidden to stop right side clipping */}
+  <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8 overflow-x-hidden">
+    <div className="text-left mb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">Discover Projects</h1>
+          <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
         </div>
 
-        <div className="lg:col-span-1 space-y-10">
-            <div className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <LinkIconHero className="w-3 h-3" />
-                    </div>
-                    Connectivity
-                </h3>
-                <section className="bg-white dark:bg-neutral-950 p-6 rounded-[2.5rem] border border-[var(--border-primary)] shadow-sm">
-                    {user.socialLinks && Object.values(user.socialLinks).some(link => link) ? (
-                        <div className="space-y-3">
-                            {user.socialLinks.linkedin && (
-                                <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900 rounded-full hover:bg-sky-50 dark:hover:bg-sky-900/10 transition-colors group border border-[var(--border-primary)] hover:border-sky-200 dark:hover:border-sky-900/30 shadow-sm px-5">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-primary)]">LinkedIn</span>
-                                    <LinkedInLogoIcon className="w-4 h-4 text-sky-600" />
-                                </a>
-                            )}
-                            {user.socialLinks.github && (
-                                <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors group border border-[var(--border-primary)] hover:border-neutral-200 dark:hover:border-neutral-700 shadow-sm px-5">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-primary)]">GitHub</span>
-                                    <GithubLogoIcon className="w-4 h-4 text-[var(--text-primary)]" />
-                                </a>
-                            )}
-                            {user.socialLinks.twitter && (
-                                <a href={user.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900 rounded-full hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors group border border-[var(--border-primary)] hover:border-pink-200 dark:hover:border-pink-900/30 shadow-sm px-5">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-primary)]">X (Twitter)</span>
-                                    <TwitterXIcon className="w-4 h-4 text-pink-600" />
-                                </a>
-                            )}
-                            {user.socialLinks.instagram && (
-                                <a href={user.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-900 rounded-full hover:bg-gradient-to-tr hover:from-purple-500/10 hover:to-orange-500/10 transition-colors group border border-[var(--border-primary)] hover:border-purple-200 dark:hover:border-purple-900/30 shadow-sm px-5">
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-primary)]">Instagram</span>
-                                    <InstagramIcon className="w-4 h-4 text-purple-600" />
-                                </a>
-                            )}
-                        </div>
-                    ) : <p className="text-[10px] font-medium text-[var(--text-muted)] italic text-center">No social links provided.</p>}
-                </section>
-            </div>
-
-            <div className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <HeartIcon className="w-3 h-3" />
-                    </div>
-                    Interests
-                </h3>
-                <section className="bg-white dark:bg-neutral-950 p-6 rounded-[2.5rem] border border-[var(--border-primary)] shadow-sm">
-                    <div className="flex flex-wrap gap-2">
-                        {user.interests && user.interests.length > 0 ? (
-                            user.interests.map(interest => (
-                                <span key={interest} className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-900 border border-[var(--border-primary)] rounded-full text-[10px] font-bold text-[var(--text-primary)] uppercase tracking-tight shadow-inner">
-                                    {interest}
-                                </span>
-                            ))
-                        ) : <p className="text-[10px] italic text-[var(--text-muted)] text-center w-full">No interests listed.</p>}
-                    </div>
-                </section>
-            </div>
-
-            <div className="space-y-4">
-                <h3 className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-white">
-                        <AcademicCapIcon className="w-3 h-3" />
-                    </div>
-                    Expertise
-                </h3>
-                <section className="bg-white dark:bg-neutral-950 p-6 rounded-[2.5rem] border border-[var(--border-primary)] shadow-sm">
-                    <div className="flex flex-wrap gap-2">
-                        {user.skills && user.skills.length > 0 ? (
-                            user.skills.map(skill => (
-                                <span key={skill} className="px-4 py-1.5 bg-neutral-100 dark:bg-neutral-900 border border-[var(--border-primary)] rounded-full text-[10px] font-bold text-[var(--text-primary)] uppercase tracking-tight shadow-inner">
-                                    {skill}
-                                </span>
-                            ))
-                        ) : <p className="text-[10px] italic text-[var(--text-muted)] text-center w-full">No skills added yet.</p>}
-                    </div>
-                </section>
-            </div>
+        {/* ✅ FIX 3: Total Projects & New This Week — both properly centered inside pill */}
+        <div className="flex items-center bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] text-white px-6 py-2.5 rounded-full shadow-lg self-start md:self-auto">
+          <div className="flex flex-col items-center justify-center gap-0.5 px-4">
+            <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
+            <p className="text-sm font-black">{totalProjects}</p>
+          </div>
+          <div className="w-px h-8 bg-white/20"></div>
+          <div className="flex flex-col items-center justify-center gap-0.5 px-4">
+            <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">New This Week</p>
+            <p className="text-sm font-black">{newThisWeek}</p>
+          </div>
         </div>
       </div>
     </div>
-  );
+
+    {/* Search */}
+    <div className="mb-4 flex justify-center">
+      <div className="relative group max-w-2xl w-full">
+        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+          <SearchIcon className="h-5 w-5 text-[var(--text-muted)]" />
+        </div>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search projects..."
+          className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-purple-500 outline-none transition-all text-base font-medium"
+        />
+      </div>
+    </div>
+
+    {/* Filters */}
+    <div className="sticky top-[68px] z-30 bg-[var(--background-secondary)]/80 backdrop-blur-lg -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-2 mb-4 border-b border-[var(--border-primary)]">
+      <div className="flex flex-wrap justify-center gap-3">
+        <CustomDropdown
+          label="All stages"
+          icon={<GrowthIcon />}
+          value={filters.stage}
+          onChange={(v) => setFilters((f) => ({ ...f, stage: v }))}
+          options={['All', 'Idea', 'MVP', 'Prototype', 'Beta', 'Launched', 'Scaling', 'Fundraising', 'Acquired'].map(s => ({ value: s, label: s }))}
+        />
+
+        <CustomDropdown
+          label="All categories"
+          icon={<CategoryIcon />}
+          value={filters.category}
+          onChange={(v) => setFilters((f) => ({ ...f, category: v }))}
+          options={['All', ...STARTUP_CATEGORIES].map(s => ({ value: s, label: s }))}
+        />
+
+        <CustomDropdown
+          label="All locations"
+          icon={<MapPinIcon />}
+          value={filters.location}
+          onChange={(v) => setFilters((f) => ({ ...f, location: v }))}
+          options={['All', ...COUNTRIES.map(c => c.name)].map(s => ({ value: s, label: s }))}
+        />
+      </div>
+    </div>
+
+    {/* Results */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+      {displayIdeas.length > 0 ? (
+        displayIdeas.map((idea) => <ProjectCard key={idea.id} idea={idea} />)
+      ) : (
+        <div className="col-span-full text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] p-12 overflow-hidden relative shadow-none">
+          <div className="absolute inset-0 dot-pattern-bg opacity-10"></div>
+          <NoResultsAnimatedGraphic />
+          <h2 className="text-3xl font-black text-[var(--text-primary)] mb-4 tracking-tighter uppercase">No matches found</h2>
+          <button
+            onClick={() => {
+              setSearchTerm('');
+              setFilters({ stage: 'All', category: 'All', location: 'All' });
+            }}
+            className="mt-10 px-8 py-3 button-gradient text-white rounded-full text-sm font-black tracking-widest uppercase shadow-none hover:scale-105 transition-all"
+          >
+            Reset Filters
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+);
 };
 
-export default PublicProfilePage;
+export default ProjectsListPage;
