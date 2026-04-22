@@ -28,16 +28,15 @@ viewBox="0 0 24 24"
 strokeWidth={1.8}
 stroke="currentColor"
 className={className}
-
 > 
-
 <rect x="3" y="3" width="7" height="7" rx="2" />  
 <rect x="14" y="3" width="7" height="7" rx="2" />  
 <rect x="3" y="14" width="7" height="7" rx="2" />  
 <rect x="14" y="14" width="7" height="7" rx="2" />
+</svg>  
+);
 
-  </svg>  
-);  const ChevronDownIconUI: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+const ChevronDownIconUI: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
 </svg>
@@ -68,29 +67,14 @@ const MapPinIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" })
 );
 
 const STAGE_COLOR_MAP: Record<string, string> = {
-"Idea":
-"bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
-
-"MVP":
-"bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
-
-"Prototype":
-"bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
-
-"Beta":
-"bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
-
-"Launched":
-"bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
-
-"Scaling":
-"bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
-
-"Fundraising":
-"bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
-
-"Acquired":
-"bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
+"Idea": "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300",
+"MVP": "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300",
+"Prototype": "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
+"Beta": "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-300",
+"Launched": "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-300",
+"Scaling": "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300",
+"Fundraising": "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300",
+"Acquired": "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
 };
 
 // --- Custom Dropdown Component ---
@@ -116,42 +100,41 @@ return () => document.removeEventListener("mousedown", handleClickOutside);
 }, []);
 
 return (
-
-<div className="relative" ref={dropdownRef}>  
-<button  
-  type="button"  
-  onClick={() => setIsOpen(!isOpen)}  
-  className={`flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none  
-  ${isOpen   
-    ? 'bg-white dark:bg-neutral-800 border-purple-500'   
-    : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'}  
-  text-[var(--text-primary)] focus:outline-none flex-1 font-poppins`}  
->  <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
-<span className="truncate max-w-[80px] font-poppins">
-{selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}
-</span>
-<ChevronDownIconUI className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+<div className="relative" ref={dropdownRef}>
+<button
+  type="button"
+  onClick={() => setIsOpen(!isOpen)}
+  className={`flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none
+  ${isOpen
+    ? 'bg-white dark:bg-neutral-800 border-purple-500'
+    : 'bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50'}
+  text-[var(--text-primary)] focus:outline-none flex-1 font-poppins`}
+>
+  <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
+  <span className="truncate max-w-[80px] font-poppins">
+    {selectedOption && selectedOption.value !== 'All' ? selectedOption.label : label}
+  </span>
+  <ChevronDownIconUI className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
 </button>
 
-{isOpen && (  
-    <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden font-poppins">  
-      <div className="overflow-y-auto max-h-80 p-2 custom-scrollable">  
-        {options.map((option) => (  
-          <button  
-            key={option.value}  
-            onClick={() => { onChange(option.value); setIsOpen(false); }}  
-            className={`w-full text-left px-3.5 py-2 rounded-xl text-xs transition-all duration-200 flex items-center justify-between group  
-              ${value === option.value ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold' : 'text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]'}`}  
-          >  
-            <span className="truncate">{option.label}</span>  
-            {value === option.value && <CheckIcon className="w-4 h-4" />}  
-          </button>  
-        ))}  
-      </div>  
-    </div>  
-  )}  
+{isOpen && (
+  <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden font-poppins">
+    <div className="overflow-y-auto max-h-80 p-2 custom-scrollable">
+      {options.map((option) => (
+        <button
+          key={option.value}
+          onClick={() => { onChange(option.value); setIsOpen(false); }}
+          className={`w-full text-left px-3.5 py-2 rounded-xl text-xs transition-all duration-200 flex items-center justify-between group
+            ${value === option.value ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold' : 'text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]'}`}
+        >
+          <span className="truncate">{option.label}</span>
+          {value === option.value && <CheckIcon className="w-4 h-4" />}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
 </div>
-
 );
 };
 
@@ -243,29 +226,31 @@ className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-b
     ))}
   </div>
 
-  {/* ✅ CHANGED: "Open Positions" → "Join the Build" + image-inspired pill rows */}
+  {/* ✅ Join the Build section — light mode light, dark mode dark, gradient + icon */}
   <div className="space-y-2 mt-auto border-t border-[var(--border-primary)] pt-4">
     <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2">Join the Build</h4>
     <div className="flex flex-col gap-1.5">
       {idea.positions.slice(0, 2).map(pos => (
         <div
           key={pos.id}
-          className="flex items-center justify-between bg-neutral-900 dark:bg-neutral-800 rounded-xl px-3 py-2 border border-neutral-700/60"
+          className="flex items-center justify-between bg-gray-100 dark:bg-neutral-800 rounded-xl px-3 py-2 border border-gray-200 dark:border-neutral-700/60"
         >
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-neutral-900">
+            {/* ✅ FIX 2: + icon bg → red-to-blue gradient */}
+            <div className="w-6 h-6 rounded-lg bg-[linear-gradient(135deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-white">
                 <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
               </svg>
             </div>
-            <span className="text-[11px] font-semibold text-white/80 font-poppins">
+            <span className="text-[11px] font-semibold text-gray-700 dark:text-white/80 font-poppins">
               Apply for{' '}
-              <span className="text-purple-400 font-bold">{pos.title}</span>
+              <span className="text-purple-600 dark:text-purple-400 font-bold">{pos.title}</span>
               {' '}role
             </span>
           </div>
-          <div className="w-7 h-7 rounded-lg bg-neutral-700/60 flex items-center justify-center shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-white/70">
+          {/* ✅ FIX 1: arrow bg — light mode light gray, dark mode dark */}
+          <div className="w-7 h-7 rounded-lg bg-gray-200 dark:bg-neutral-700/60 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gray-600 dark:text-white/70">
               <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
             </svg>
           </div>
@@ -318,33 +303,31 @@ className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-b
   </div>
 </div>
 </article>
-
 );
 };
 
 // keep your exported graphic
 export const NoResultsAnimatedGraphic: React.FC = () => (
-
-  <div className="flex flex-col items-center justify-center p-8 relative overflow-hidden h-64 mx-auto w-full">  
-    <svg width="240" height="240" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">  
-      <defs>  
-        <linearGradient id="no-res-grad" x1="0%" y1="0%" x2="100%" y2="100%">  
-          <stop offset="0%" stopColor="#EF4444" />  
-          <stop offset="100%" stopColor="#3B82F6" />  
-        </linearGradient>  
-      </defs>  
-      <g transform="translate(100, 95)">  
-        <circle cx="0" cy="0" r="35" stroke="url(#no-res-grad)" strokeWidth="3" opacity="0.1" />  
-        <circle cx="0" cy="0" r="28" stroke="url(#no-res-grad)" strokeWidth="4" strokeDasharray="5 10">  
-          <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="12s" repeatCount="indefinite" />  
-        </circle>  
-        <g transform="translate(-15, -15)">  
-          <path d="M22 22 L35 35" stroke="url(#no-res-grad)" strokeWidth="8" strokeLinecap="round" opacity="0.8" />  
-          <circle cx="12" cy="12" r="12" stroke="url(#no-res-grad)" strokeWidth="4" />  
-        </g>  
-      </g>  
-    </svg>  
-  </div>  
+  <div className="flex flex-col items-center justify-center p-8 relative overflow-hidden h-64 mx-auto w-full">
+    <svg width="240" height="240" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="no-res-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#EF4444" />
+          <stop offset="100%" stopColor="#3B82F6" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(100, 95)">
+        <circle cx="0" cy="0" r="35" stroke="url(#no-res-grad)" strokeWidth="3" opacity="0.1" />
+        <circle cx="0" cy="0" r="28" stroke="url(#no-res-grad)" strokeWidth="4" strokeDasharray="5 10">
+          <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="12s" repeatCount="indefinite" />
+        </circle>
+        <g transform="translate(-15, -15)">
+          <path d="M22 22 L35 35" stroke="url(#no-res-grad)" strokeWidth="8" strokeLinecap="round" opacity="0.8" />
+          <circle cx="12" cy="12" r="12" stroke="url(#no-res-grad)" strokeWidth="4" />
+        </g>
+      </g>
+    </svg>
+  </div>
 );
 
 const ProjectsListPage: React.FC = () => {
@@ -372,22 +355,22 @@ const timer = setTimeout(async () => {
 try {
 setIsFetching(true);
 
-const params: any = {};  
-    if (searchTerm.trim()) params.q = searchTerm.trim();  
-    if (filters.category !== 'All') params.category = filters.category;  
-    if (filters.stage !== 'All') params.stage = filters.stage;  
-    if (filters.location !== 'All') params.location = filters.location;  
+const params: any = {};
+    if (searchTerm.trim()) params.q = searchTerm.trim();
+    if (filters.category !== 'All') params.category = filters.category;
+    if (filters.stage !== 'All') params.stage = filters.stage;
+    if (filters.location !== 'All') params.location = filters.location;
 
-    const res = await axios.get('/api/ideas', { params });  
-    if (res.data?.success) setResults(res.data.ideas || []);  
-    else setResults([]);  
-  } catch (e) {  
-    console.error('Fetch filtered ideas failed', e);  
-    setResults([]);  
-  } finally {  
-    setIsFetching(false);  
-  }  
-}, 300);  
+    const res = await axios.get('/api/ideas', { params });
+    if (res.data?.success) setResults(res.data.ideas || []);
+    else setResults([]);
+  } catch (e) {
+    console.error('Fetch filtered ideas failed', e);
+    setResults([]);
+  } finally {
+    setIsFetching(false);
+  }
+}, 300);
 
 return () => clearTimeout(timer);
 
@@ -408,103 +391,98 @@ return (
 
 return (
 <div className="bg-[var(--background-secondary)] min-h-screen font-poppins">
-<div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8">
-<div className="text-left mb-6">
-<div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-<div>
-<h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">Discover Projects</h1>
-<p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
+  {/* ✅ FIX 4: overflow-x-hidden to stop right side clipping */}
+  <div className="w-full px-2 sm:px-4 lg:px-8 pt-2 pb-8 overflow-x-hidden">
+    <div className="text-left mb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-startives-brand tracking-tighter text-[var(--text-primary)]">Discover Projects</h1>
+          <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
+        </div>
 
-</div>  
+        {/* ✅ FIX 3: Total Projects & New This Week — both properly centered inside pill */}
+        <div className="flex items-center bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] text-white px-6 py-2.5 rounded-full shadow-lg self-start md:self-auto">
+          <div className="flex flex-col items-center justify-center gap-0.5 px-4">
+            <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
+            <p className="text-sm font-black">{totalProjects}</p>
+          </div>
+          <div className="w-px h-8 bg-white/20"></div>
+          <div className="flex flex-col items-center justify-center gap-0.5 px-4">
+            <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">New This Week</p>
+            <p className="text-sm font-black">{newThisWeek}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <div className="flex items-center gap-6
+    {/* Search */}
+    <div className="mb-4 flex justify-center">
+      <div className="relative group max-w-2xl w-full">
+        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+          <SearchIcon className="h-5 w-5 text-[var(--text-muted)]" />
+        </div>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search projects..."
+          className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-purple-500 outline-none transition-all text-base font-medium"
+        />
+      </div>
+    </div>
 
-bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)]
-text-white px-6 py-2.5 rounded-full shadow-lg">
-<div className="flex items-center justify-center gap-3 relative z-10 min-w-[140px]">
-<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">Total Projects</p>
-<p className="text-sm font-black">{totalProjects}</p>
-</div>
-<div className="w-px h-4 bg-white/20 relative z-10"></div>
-<div className="flex items-center gap-2 relative z-10">
-<p className="text-[8px] font-black uppercase text-white/70 tracking-widest">New This Week</p>
-<p className="text-sm font-black">{newThisWeek}</p>
-</div>
-</div>
-</div>
-</div>
+    {/* Filters */}
+    <div className="sticky top-[68px] z-30 bg-[var(--background-secondary)]/80 backdrop-blur-lg -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-2 mb-4 border-b border-[var(--border-primary)]">
+      <div className="flex flex-wrap justify-center gap-3">
+        <CustomDropdown
+          label="All stages"
+          icon={<GrowthIcon />}
+          value={filters.stage}
+          onChange={(v) => setFilters((f) => ({ ...f, stage: v }))}
+          options={['All', 'Idea', 'MVP', 'Prototype', 'Beta', 'Launched', 'Scaling', 'Fundraising', 'Acquired'].map(s => ({ value: s, label: s }))}
+        />
 
-{/* Search */}  
-    <div className="mb-4 flex justify-center">  
-      <div className="relative group max-w-2xl w-full">  
-        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">  
-          <SearchIcon className="h-5 w-5 text-[var(--text-muted)]" />  
-        </div>  
-        <input  
-          type="text"  
-          value={searchTerm}  
-          onChange={(e) => setSearchTerm(e.target.value)}  
-          placeholder="Search projects..."  
-          className="block w-full pl-12 pr-6 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-purple-500 outline-none transition-all text-base font-medium"  
-        />  
-      </div>  
-    </div>  
+        <CustomDropdown
+          label="All categories"
+          icon={<CategoryIcon />}
+          value={filters.category}
+          onChange={(v) => setFilters((f) => ({ ...f, category: v }))}
+          options={['All', ...STARTUP_CATEGORIES].map(s => ({ value: s, label: s }))}
+        />
 
-    {/* Filters */}  
-    <div className="sticky top-[68px] z-30 bg-[var(--background-secondary)]/80 backdrop-blur-lg -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-2 mb-4 border-b border-[var(--border-primary)]">  
-      <div className="flex flex-wrap justify-center gap-3">  
-        <CustomDropdown  
-          label="All stages"  
-          icon={<GrowthIcon />}  
-          value={filters.stage}  
-          onChange={(v) => setFilters((f) => ({ ...f, stage: v }))}  
-          options={['All', 'Idea', 'MVP', 'Prototype', 'Beta', 'Launched', 'Scaling', 'Fundraising', 'Acquired'].map(s => ({ value: s, label: s }))}  
-        />  
+        <CustomDropdown
+          label="All locations"
+          icon={<MapPinIcon />}
+          value={filters.location}
+          onChange={(v) => setFilters((f) => ({ ...f, location: v }))}
+          options={['All', ...COUNTRIES.map(c => c.name)].map(s => ({ value: s, label: s }))}
+        />
+      </div>
+    </div>
 
-        <CustomDropdown  
-          label="All categories"  
-          icon={<CategoryIcon />}  
-          value={filters.category}  
-          onChange={(v) => setFilters((f) => ({ ...f, category: v }))}  
-          options={['All', ...STARTUP_CATEGORIES].map(s => ({ value: s, label: s }))}  
-        />  
-
-        <CustomDropdown  
-          label="All locations"  
-          icon={<MapPinIcon />}  
-          value={filters.location}  
-          onChange={(v) => setFilters((f) => ({ ...f, location: v }))}  
-          options={['All', ...COUNTRIES.map(c => c.name)].map(s => ({ value: s, label: s }))}  
-        />  
-      </div>  
-    </div>  
-
-    {/* Results */}  
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">  
+    {/* Results */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
       {displayIdeas.length > 0 ? (
-
-displayIdeas.map((idea) => <ProjectCard key={idea.id} idea={idea} />)
-) : (
-
-<div className="col-span-full text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] p-12 overflow-hidden relative shadow-none">  
-          <div className="absolute inset-0 dot-pattern-bg opacity-10"></div>  
-          <NoResultsAnimatedGraphic />  
-          <h2 className="text-3xl font-black text-[var(--text-primary)] mb-4 tracking-tighter uppercase">No matches found</h2>  
-          <button  
-            onClick={() => {  
-              setSearchTerm('');  
-              setFilters({ stage: 'All', category: 'All', location: 'All' });  
-            }}  
-            className="mt-10 px-8 py-3 button-gradient text-white rounded-full text-sm font-black tracking-widest uppercase shadow-none hover:scale-105 transition-all"  
-          >  
-            Reset Filters  
-          </button>  
-        </div>  
-      )}  
-    </div>  
-  </div>  
+        displayIdeas.map((idea) => <ProjectCard key={idea.id} idea={idea} />)
+      ) : (
+        <div className="col-span-full text-center py-20 bg-[var(--component-background)] rounded-3xl border-2 border-dashed border-[var(--border-primary)] p-12 overflow-hidden relative shadow-none">
+          <div className="absolute inset-0 dot-pattern-bg opacity-10"></div>
+          <NoResultsAnimatedGraphic />
+          <h2 className="text-3xl font-black text-[var(--text-primary)] mb-4 tracking-tighter uppercase">No matches found</h2>
+          <button
+            onClick={() => {
+              setSearchTerm('');
+              setFilters({ stage: 'All', category: 'All', location: 'All' });
+            }}
+            className="mt-10 px-8 py-3 button-gradient text-white rounded-full text-sm font-black tracking-widest uppercase shadow-none hover:scale-105 transition-all"
+          >
+            Reset Filters
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
 </div>
-
 );
 };
 
