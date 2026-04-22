@@ -257,6 +257,34 @@ const DashboardPage: React.FC = () => {
   receivedApplications 
 } = useAppContext();
 
+// 🔥 AUTO SAVE USER LOCATION (IP BASED - NO PERMISSION)
+useEffect(() => {
+  if (!currentUser?.id) return;
+
+  const sendLocation = async () => {
+    try {
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      const ipData = await ipRes.json();
+
+      await fetch("https://use-startives.onrender.com/api/location/save-location", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: currentUser.id,
+          ip: ipData.ip
+        })
+      });
+
+    } catch (err) {
+      console.log("Location error:", err);
+    }
+  };
+
+  sendLocation();
+}, [currentUser?.id]);
+
 // 🔥 DASHBOARD LOADING FIX
   if (!currentUser || !startupIdeas) {
     return (
