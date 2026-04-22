@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Globe } from 'lucide-react';
+import { Globe } from "lucide-react";
 
 import { useAppContext } from '../contexts/AppContext';
 import { StartupIdea } from '../types';
@@ -192,39 +192,55 @@ export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
           </div>
 
           <div className="flex-grow overflow-hidden">
-            {/* ✅ Title row with Globe icon at end if websiteUrl exists */}
-            <div className="flex items-center gap-1.5 overflow-hidden">
-              <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins flex-1 min-w-0">
-                {idea.title}
-              </h3>
-              {websiteUrl && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open(websiteUrl, '_blank', 'noopener,noreferrer');
-                  }}
-                  className="shrink-0 p-0.5 rounded-full hover:scale-110 transition-transform"
-                  title="Visit website"
-                >
-                  {/* ✅ Globe with red-to-blue gradient via SVG linearGradient */}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <defs>
-                      <linearGradient id="globe-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#EF4444" />
-                        <stop offset="100%" stopColor="#3B82F6" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="12" cy="12" r="10" stroke="url(#globe-grad)" />
-                    <line x1="2" y1="12" x2="22" y2="12" stroke="url(#globe-grad)" />
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="url(#globe-grad)" />
-                  </svg>
-                </button>
-              )}
-            </div>
-            <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
-              {idea.tagline}
-            </p>
-          </div>
+  
+  {/* ✅ Title row with Globe icon */}
+  <div className="flex items-center gap-1.5">
+    
+    <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins">
+      {idea.title}
+    </h3>
+
+    {websiteUrl && (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open(websiteUrl, '_blank', 'noopener,noreferrer');
+        }}
+        className="shrink-0 p-0.5 rounded-full transition-all duration-300 hover:scale-110 hover:drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        title="Visit website"
+      >
+        {/* 🔥 Lucide-style Globe with gradient */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <defs>
+            <linearGradient id="globe-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#EF4444" />
+              <stop offset="100%" stopColor="#3B82F6" />
+            </linearGradient>
+          </defs>
+
+          <circle cx="12" cy="12" r="10" stroke="url(#globe-grad)" />
+          <line x1="2" y1="12" x2="22" y2="12" stroke="url(#globe-grad)" />
+          <path d="M12 2c3 4 3 16 0 20c-3-4-3-16 0-20z" stroke="url(#globe-grad)" />
+        </svg>
+      </button>
+    )}
+
+  </div>
+
+  <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
+    {idea.tagline}
+  </p>
+
+</div>
         </div>
 
         <p className="text-sm text-[var(--text-secondary)] line-clamp-4 leading-relaxed mb-6 font-medium opacity-80 flex-grow">
@@ -413,9 +429,8 @@ const ProjectsListPage: React.FC = () => {
               <p className="text-lg text-[var(--text-secondary)] font-medium mt-1">Find your next challenge and build something incredible.</p>
             </div>
 
-            <div className="inline-flex items-center bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] text-white rounded-full shadow-lg overflow-hidden">
+            <div className="inline-flex items-center mx-auto bg-[linear-gradient(90deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] text-white rounded-full shadow-lg overflow-hidden">
 
-  {/* LEFT */}
   <div className="flex items-center gap-2 px-5 py-2">
     <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
       Total Projects
@@ -427,7 +442,6 @@ const ProjectsListPage: React.FC = () => {
 
   <div className="w-px h-5 bg-white/30"></div>
 
-  {/* RIGHT */}
   <div className="flex items-center gap-2 px-5 py-2">
     <p className="text-[8px] font-black uppercase text-white/70 tracking-widest">
       New This Week
@@ -436,7 +450,8 @@ const ProjectsListPage: React.FC = () => {
       {newThisWeek}
     </p>
   </div>
-  </div>
+
+</div>
 </div>
 
 </div>
