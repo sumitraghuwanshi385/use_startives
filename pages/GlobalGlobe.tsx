@@ -12,14 +12,14 @@ const GlobalGlobe: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [autoRotate, setAutoRotate] = useState(true);
-  const [showInfo, setShowInfo] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark")
   );
 
-  // 🔥 THEME OBSERVER
+  // THEME OBSERVER
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.classList.contains("dark"));
@@ -33,7 +33,7 @@ const GlobalGlobe: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // 🔥 FETCH USERS + REMOVE DUPLICATES
+  // 🔥 FETCH USERS (DEDUP + CLEAN)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -42,25 +42,34 @@ const GlobalGlobe: React.FC = () => {
         );
         const data = await res.json();
 
-        const uniqueMap = new Map();
+        const map = new Map();
 
         data.forEach((u: any) => {
-          if (!u.lat || !u.lng) return;
+          if (!u?.id) return;
+          if (!u?.lat || !u?.lng) return;
+          if (!u?.name) return;
 
-          uniqueMap.set(u.id, {
+          const lat = Number(u.lat);
+          const lng = Number(u.lng);
+
+          if (isNaN(lat) || isNaN(lng)) return;
+
+          const locationText =
+            u.city && u.state && u.country
+              ? `${u.city}, ${u.state}, ${u.country}`
+              : u.state && u.country
+              ? `${u.state}, ${u.country}`
+              : u.country || "";
+
+          map.set(u.id, {
             ...u,
-            lat: Number(u.lat),
-            lng: Number(u.lng),
-            locationText:
-              u.city && u.country
-                ? `${u.city}, ${u.country}`
-                : u.state && u.country
-                ? `${u.state}, ${u.country}`
-                : u.country || ""
+            lat,
+            lng,
+            locationText,
           });
         });
 
-        setUsers(Array.from(uniqueMap.values()));
+        setUsers(Array.from(map.values()));
       } catch (err) {
         console.log("Fetch fail:", err);
       }
@@ -69,26 +78,30 @@ const GlobalGlobe: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // 🔥 INIT GLOBE (ONCE ONLY)
+  // INIT GLOBE
   useEffect(() => {
     if (!globeRef.current || globeInstance.current) return;
 
-    const globe = Globe()(globeRef.current)
-      .globeImageUrl(
-        isDark
-          ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-          : "//unpkg.com/three-globe/example/img/earth-day.jpg"
-      )
-      .backgroundColor("rgba(0,0,0,0)");
+    setTimeout(() => {
+      if (!globeRef.current) return;
 
-    globe.controls().autoRotate = true;
-    globe.controls().autoRotateSpeed = 0.6;
+      const globe = Globe()(globeRef.current)
+        .globeImageUrl(
+          isDark
+            ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+            : "//unpkg.com/three-globe/example/img/earth-day.jpg"
+        )
+        .backgroundColor("rgba(0,0,0,0)");
 
-    globeInstance.current = globe;
-    setIsReady(true);
+      globe.controls().autoRotate = true;
+      globe.controls().autoRotateSpeed = 0.6;
+
+      globeInstance.current = globe;
+      setIsReady(true);
+    }, 200);
   }, []);
 
-  // 🔥 UPDATE USERS (NO RECREATE)
+  // UPDATE USERS
   useEffect(() => {
     if (!globeInstance.current || !isReady) return;
 
@@ -127,7 +140,6 @@ const GlobalGlobe: React.FC = () => {
 
         el.onclick = (e: any) => {
           e.stopPropagation();
-
           setSelectedUser(d);
 
           globeInstance.current.pointOfView(
@@ -140,7 +152,7 @@ const GlobalGlobe: React.FC = () => {
       });
   }, [users, isReady]);
 
-  // 🔥 THEME SWITCH
+  // THEME SWITCH
   useEffect(() => {
     if (!globeInstance.current) return;
 
@@ -151,36 +163,24 @@ const GlobalGlobe: React.FC = () => {
     );
   }, [isDark]);
 
-  // 🔥 AUTO ROTATE
+  // AUTO ROTATE
   useEffect(() => {
     if (globeInstance.current) {
       globeInstance.current.controls().autoRotate = autoRotate;
     }
   }, [autoRotate]);
 
-  // 🔥 FIND ME (USER FOCUS)
-  const handleFindMe = async () => {
-    try {
-      const ipRes = await fetch("https://api.ipify.org?format=json");
-      const ipData = await ipRes.json();
+  // 🔥 FIND ME FIX (CURRENT USER)
+  const handleFindMe = () => {
+    const me = users.find((u: any) => u.id);
 
-      const res = await fetch(
-        `https://use-startives.onrender.com/api/location/all-locations`
+    if (me && globeInstance.current) {
+      setAutoRotate(false);
+
+      globeInstance.current.pointOfView(
+        { lat: me.lat, lng: me.lng, altitude: 1.2 },
+        1000
       );
-      const data = await res.json();
-
-      const me = data.find((u: any) => u.id);
-
-      if (me && globeInstance.current) {
-        setAutoRotate(false);
-
-        globeInstance.current.pointOfView(
-          { lat: me.lat, lng: me.lng, altitude: 1.2 },
-          1000
-        );
-      }
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -204,9 +204,9 @@ const GlobalGlobe: React.FC = () => {
       {/* GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 HEADER FIX */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-auto">
-        <div className="flex items-center gap-2 justify-center">
+      {/* HEADER */}
+      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
+        <div className="flex items-center gap-2 justify-center pointer-events-auto">
 
           <div
             className="px-6 py-2 rounded-full text-xs font-semibold backdrop-blur-xl border"
@@ -218,10 +218,9 @@ const GlobalGlobe: React.FC = () => {
             STARVERSE • {users.length}+ Builders
           </div>
 
-          {/* INFO ICON */}
           <button
             onClick={() => setShowInfo(!showInfo)}
-            className="w-7 h-7 flex items-center justify-center rounded-full border"
+            className="w-7 h-7 rounded-full border flex items-center justify-center"
           >
             <Info size={14} />
           </button>
@@ -234,11 +233,9 @@ const GlobalGlobe: React.FC = () => {
           Real builders across the world 🌍
         </p>
 
-        {/* INFO BOX */}
         {showInfo && (
-          <div className="mt-2 text-[10px] px-3 py-2 rounded-lg bg-black/80 text-white max-w-[250px] mx-auto">
-            We do not track your exact location. Locations are approximate based
-            on IP (city/state level).
+          <div className="mt-2 text-[10px] px-3 py-2 rounded-lg bg-black/80 text-white">
+            We do not track exact location. Only approximate city/state.
           </div>
         )}
       </div>
@@ -246,7 +243,12 @@ const GlobalGlobe: React.FC = () => {
       {/* POPUP */}
       {selectedUser && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
-          <div className="relative p-5 rounded-2xl w-64 backdrop-blur-xl border bg-black/80">
+          <div
+            className="relative p-5 rounded-2xl w-64 backdrop-blur-xl border"
+            style={{
+              background: isDark ? "rgba(0,0,0,0.85)" : "#fff"
+            }}
+          >
             <button
               onClick={() => setSelectedUser(null)}
               className="absolute top-2 right-2"
@@ -259,7 +261,7 @@ const GlobalGlobe: React.FC = () => {
                 src={selectedUser.profilePictureUrl || "https://i.pravatar.cc/100"}
                 className="w-16 h-16 rounded-full mx-auto"
               />
-              <h2 className="text-sm font-semibold mt-2 text-white">
+              <h2 className="text-sm font-semibold mt-2">
                 {selectedUser.name}
               </h2>
 
@@ -280,20 +282,31 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* RIGHT CONTROLS */}
+      {/* CONTROLS */}
       <div className="fixed right-3 bottom-24 z-[9999] flex flex-col gap-2">
-        <button onClick={() => setAutoRotate(true)} className="btn"> <Play size={12}/> Auto </button>
-        <button onClick={() => setAutoRotate(false)} className="btn"> <Pause size={12}/> Stop </button>
-        <button onClick={() => globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })} className="btn"> <RotateCcw size={12}/> Reset </button>
+        <button onClick={() => setAutoRotate(true)} className="btn">
+          <Play size={12} /> Auto
+        </button>
+        <button onClick={() => setAutoRotate(false)} className="btn">
+          <Pause size={12} /> Stop
+        </button>
+        <button
+          onClick={() =>
+            globeInstance.current?.pointOfView({ lat: 20, lng: 0, altitude: 2 })
+          }
+          className="btn"
+        >
+          <RotateCcw size={12} /> Reset
+        </button>
       </div>
 
-      {/* LEFT FIND ME */}
+      {/* FIND ME */}
       <div className="fixed left-3 bottom-24 z-[9999]">
         <button
           onClick={handleFindMe}
-          className="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white shadow-lg"
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white shadow-lg"
         >
-          <Locate size={16} />
+          <Locate size={18} />
         </button>
       </div>
     </div>
