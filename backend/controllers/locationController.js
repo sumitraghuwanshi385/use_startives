@@ -8,7 +8,7 @@ const randomLng = () => (Math.random() * 360 - 180);
 // 📍 SAVE USER LOCATION
 const saveLocation = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId, ip } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -17,16 +17,32 @@ const saveLocation = async (req, res) => {
       });
     }
 
-    // 🌍 Get IP-based location
-    const ipData = await axios.get("http://ip-api.com/json/");
+    let lat, lon, city, country, regionName;
 
-    const { lat, lon, city, country } = ipData.data;
+    // 🔥 NEW: IF IP COMES FROM FRONTEND (BEST CASE)
+    if (ip) {
+      const ipData = await axios.get(`http://ip-api.com/json/${ip}`);
+      lat = ipData.data.lat;
+      lon = ipData.data.lon;
+      city = ipData.data.city;
+      country = ipData.data.country;
+      regionName = ipData.data.regionName;
+    } else {
+      // 🔥 OLD METHOD (fallback - server IP)
+      const ipData = await axios.get("http://ip-api.com/json/");
+      lat = ipData.data.lat;
+      lon = ipData.data.lon;
+      city = ipData.data.city;
+      country = ipData.data.country;
+      regionName = ipData.data.regionName;
+    }
 
     await User.findByIdAndUpdate(userId, {
       location: {
         lat,
         lng: lon,
         city,
+        state: regionName,
         country
       }
     });
@@ -36,6 +52,7 @@ const saveLocation = async (req, res) => {
       lat,
       lng: lon,
       city,
+      state: regionName,
       country
     });
 
@@ -58,7 +75,10 @@ const getAllLocations = async (req, res) => {
       name: u.name,
       lat: u.location?.lat ?? randomLat(),
       lng: u.location?.lng ?? randomLng(),
-      profilePictureUrl: u.profilePictureUrl || null
+      profilePictureUrl: u.profilePictureUrl || null,
+      city: u.location?.city || "",
+      state: u.location?.state || "",
+      country: u.location?.country || ""
     }));
 
     res.json(formatted);
