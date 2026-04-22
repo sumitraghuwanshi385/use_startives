@@ -251,7 +251,7 @@ const displayAvatar =
         <div className="space-y-2.5 mt-auto border-t border-[var(--border-primary)] pt-4">
 
   <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest">
-    Join as
+    Join the Build
   </h4>
 
   {(idea.positions && idea.positions.length > 0) && (
@@ -276,11 +276,10 @@ const displayAvatar =
           Apply for{" "}
           <span className="text-purple-500">
             {idea.positions?.[0]?.title || "Role"}
-          </span>{" "}
-          role
+          </span>
         </p>
 
-        {idea.positions.length > 1 && (
+        {(idea.positions?.length || 0) > 1 && (
           <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
             +{idea.positions.length - 1} more openings
           </p>
