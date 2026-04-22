@@ -193,8 +193,8 @@ export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
 
           <div className="flex-grow overflow-hidden">
   
-  {/* ✅ Title row with Globe icon */}
-  <div className="flex items-center gap-1.5">
+  {/* Title + icon */}
+  <div className="flex items-center gap-2">
     
     <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins">
       {idea.title}
@@ -204,33 +204,14 @@ export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
       <button
         onClick={(e) => {
           e.stopPropagation();
-          window.open(websiteUrl, '_blank', 'noopener,noreferrer');
+          window.open(websiteUrl, "_blank", "noopener,noreferrer");
         }}
-        className="shrink-0 p-0.5 rounded-full transition-all duration-300 hover:scale-110 hover:drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full 
+        bg-gradient-to-r from-red-500 to-blue-500 
+        hover:scale-110 transition-all duration-300"
         title="Visit website"
       >
-        {/* 🔥 Lucide-style Globe with gradient */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <defs>
-            <linearGradient id="globe-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#EF4444" />
-              <stop offset="100%" stopColor="#3B82F6" />
-            </linearGradient>
-          </defs>
-
-          <circle cx="12" cy="12" r="10" stroke="url(#globe-grad)" />
-          <line x1="2" y1="12" x2="22" y2="12" stroke="url(#globe-grad)" />
-          <path d="M12 2c3 4 3 16 0 20c-3-4-3-16 0-20z" stroke="url(#globe-grad)" />
-        </svg>
+        <Globe className="w-3.5 h-3.5 text-white" />
       </button>
     )}
 
@@ -239,7 +220,6 @@ export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
     {idea.tagline}
   </p>
-
 </div>
         </div>
 
