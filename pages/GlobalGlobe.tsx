@@ -12,11 +12,13 @@ const GlobalGlobe: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [autoRotate, setAutoRotate] = useState(true);
+  const [isReady, setIsReady] = useState(false);
+
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark")
   );
 
-  // 🔥 THEME OBSERVER (NO LAG)
+  // 🔥 THEME OBSERVER
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.classList.contains("dark"));
@@ -30,7 +32,7 @@ const GlobalGlobe: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // 🔥 FETCH USERS (SAFE)
+  // 🔥 FETCH USERS SAFE
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -38,37 +40,52 @@ const GlobalGlobe: React.FC = () => {
           "https://use-startives.onrender.com/api/location/all-locations"
         );
         const data = await res.json();
-        const valid = data.filter((u: any) => u.lat && u.lng);
-        setUsers(valid);
+
+        const valid = data.map((u: any) => ({
+          ...u,
+          lat: Number(u.lat),
+          lng: Number(u.lng),
+          locationText:
+            u.city && u.country
+              ? `${u.city}, ${u.country}`
+              : u.country || "Unknown"
+        }));
+
+        setUsers(valid.filter((u: any) => u.lat && u.lng));
       } catch (err) {
-        console.log("Fetch error:", err);
+        console.log("Fetch fail:", err);
       }
     };
 
     fetchUsers();
   }, []);
 
-  // 🔥 INIT GLOBE ONLY ONCE (CRITICAL FIX)
+  // 🔥 INIT GLOBE ONCE (ULTRA SAFE)
   useEffect(() => {
     if (!globeRef.current || globeInstance.current) return;
 
-    const globe = Globe()(globeRef.current)
-      .globeImageUrl(
-        isDark
-          ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-          : "//unpkg.com/three-globe/example/img/earth-day.jpg"
-      )
-      .backgroundColor("rgba(0,0,0,0)");
+    setTimeout(() => {
+      if (!globeRef.current) return;
 
-    globe.controls().autoRotate = true;
-    globe.controls().autoRotateSpeed = 0.6;
+      const globe = Globe()(globeRef.current)
+        .globeImageUrl(
+          isDark
+            ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+            : "//unpkg.com/three-globe/example/img/earth-day.jpg"
+        )
+        .backgroundColor("rgba(0,0,0,0)");
 
-    globeInstance.current = globe;
+      globe.controls().autoRotate = true;
+      globe.controls().autoRotateSpeed = 0.6;
+
+      globeInstance.current = globe;
+      setIsReady(true);
+    }, 200); // 🔥 important delay fix
   }, []);
 
   // 🔥 UPDATE USERS (NO RECREATE)
   useEffect(() => {
-    if (!globeInstance.current) return;
+    if (!globeInstance.current || !isReady) return;
 
     globeInstance.current
       .htmlElementsData(users)
@@ -105,9 +122,10 @@ const GlobalGlobe: React.FC = () => {
 
         el.onclick = (e: any) => {
           e.stopPropagation();
+
           setSelectedUser(d);
 
-          globeInstance.current?.pointOfView(
+          globeInstance.current.pointOfView(
             { lat: d.lat, lng: d.lng, altitude: 1.3 },
             800
           );
@@ -115,9 +133,9 @@ const GlobalGlobe: React.FC = () => {
 
         return el;
       });
-  }, [users]);
+  }, [users, isReady]);
 
-  // 🔥 THEME SWITCH WITHOUT DESTROY
+  // 🔥 THEME SWITCH SAFE
   useEffect(() => {
     if (!globeInstance.current) return;
 
@@ -128,7 +146,7 @@ const GlobalGlobe: React.FC = () => {
     );
   }, [isDark]);
 
-  // 🔥 AUTO ROTATE CONTROL
+  // 🔥 AUTO ROTATE
   useEffect(() => {
     if (globeInstance.current) {
       globeInstance.current.controls().autoRotate = autoRotate;
@@ -142,36 +160,35 @@ const GlobalGlobe: React.FC = () => {
         backgroundColor: isDark ? "#000" : "#fff"
       }}
     >
-      {/* 🔥 DOT BG */}
+
+      {/* DOT BG */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           backgroundImage: isDark
             ? "radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px)"
             : "radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1px)",
-          backgroundSize: "16px 16px",
-          opacity: isDark ? 0.6 : 1
+          backgroundSize: "16px 16px"
         }}
       />
 
-      {/* 🌍 GLOBE */}
+      {/* GLOBE */}
       <div ref={globeRef} className="w-full h-full relative z-10" />
 
-      {/* 🔥 TOP */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
+      {/* HEADER FIXED */}
+      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 text-center">
         <div
           className="px-6 py-2 rounded-full text-xs font-semibold backdrop-blur-xl border"
           style={{
             background: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)",
-            color: isDark ? "#fff" : "#000",
-            borderColor: isDark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.1)"
+            color: isDark ? "#fff" : "#000"
           }}
         >
           STARVERSE • {users.length}+ Builders
         </div>
 
         <p
-          className="text-[11px] text-center mt-2"
+          className="text-[11px] mt-2"
           style={{
             color: isDark ? "#ccc" : "#555"
           }}
@@ -180,39 +197,40 @@ const GlobalGlobe: React.FC = () => {
         </p>
       </div>
 
-      {/* 🔥 POPUP */}
+      {/* POPUP */}
       {selectedUser && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
           <div
-            className="relative p-5 rounded-2xl shadow-xl w-64 backdrop-blur-xl border"
+            className="relative p-5 rounded-2xl w-64 backdrop-blur-xl border"
             style={{
-              background: isDark ? "rgba(0,0,0,0.85)" : "rgba(255,255,255,0.95)",
-              borderColor: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)"
+              background: isDark ? "rgba(0,0,0,0.85)" : "#fff"
             }}
           >
             <button
               onClick={() => setSelectedUser(null)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+              className="absolute top-2 right-2"
             >
               <X size={16} />
             </button>
 
-            <div className="flex flex-col items-center gap-2 text-center">
+            <div className="text-center">
               <img
                 src={selectedUser.profilePictureUrl || "https://i.pravatar.cc/100"}
-                className="w-16 h-16 rounded-full"
+                className="w-16 h-16 rounded-full mx-auto"
               />
-              <h2
-                className="text-sm font-semibold"
-                style={{ color: isDark ? "#fff" : "#000" }}
-              >
+              <h2 className="text-sm font-semibold mt-2">
                 {selectedUser.name}
               </h2>
+
+              {/* ✅ LOCATION TEXT */}
+              <p className="text-[10px] text-gray-400">
+                {selectedUser.locationText}
+              </p>
             </div>
 
             <button
               onClick={() => navigate(`/user/${selectedUser.id}`)}
-              className="mt-4 w-full py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-red-500 to-blue-500"
+              className="mt-4 w-full py-2 rounded-full text-xs text-white bg-gradient-to-r from-red-500 to-blue-500"
             >
               View Profile
             </button>
@@ -220,7 +238,7 @@ const GlobalGlobe: React.FC = () => {
         </div>
       )}
 
-      {/* 🔥 CONTROLS */}
+      {/* CONTROLS */}
       <div className="fixed right-3 bottom-24 z-[9999] flex flex-col gap-2">
         <button
           onClick={() => setAutoRotate(true)}
