@@ -16,7 +16,7 @@ const GlobalGlobe: React.FC = () => {
     document.documentElement.classList.contains("dark")
   );
 
-  // 🔥 FIX: REAL TIME THEME DETECT (NO LAG)
+  // 🔥 THEME OBSERVER (NO LAG)
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.classList.contains("dark"));
@@ -30,34 +30,47 @@ const GlobalGlobe: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // FETCH USERS
+  // 🔥 FETCH USERS (SAFE)
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch(
-        "https://use-startives.onrender.com/api/location/all-locations"
-      );
-      const data = await res.json();
-
-      const valid = data.filter((u: any) => u.lat && u.lng);
-      setUsers(valid);
+      try {
+        const res = await fetch(
+          "https://use-startives.onrender.com/api/location/all-locations"
+        );
+        const data = await res.json();
+        const valid = data.filter((u: any) => u.lat && u.lng);
+        setUsers(valid);
+      } catch (err) {
+        console.log("Fetch error:", err);
+      }
     };
 
     fetchUsers();
   }, []);
 
-  // INIT GLOBE (THEME RESPONSIVE)
+  // 🔥 INIT GLOBE ONLY ONCE (CRITICAL FIX)
   useEffect(() => {
-    if (!globeRef.current) return;
+    if (!globeRef.current || globeInstance.current) return;
 
-    globeRef.current.innerHTML = "";
-
-    const globe: any = Globe()(globeRef.current)
+    const globe = Globe()(globeRef.current)
       .globeImageUrl(
         isDark
           ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
           : "//unpkg.com/three-globe/example/img/earth-day.jpg"
       )
-      .backgroundColor("rgba(0,0,0,0)")
+      .backgroundColor("rgba(0,0,0,0)");
+
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.6;
+
+    globeInstance.current = globe;
+  }, []);
+
+  // 🔥 UPDATE USERS (NO RECREATE)
+  useEffect(() => {
+    if (!globeInstance.current) return;
+
+    globeInstance.current
       .htmlElementsData(users)
       .htmlLat("lat")
       .htmlLng("lng")
@@ -92,11 +105,9 @@ const GlobalGlobe: React.FC = () => {
 
         el.onclick = (e: any) => {
           e.stopPropagation();
-
-          // 🔥 FIX: ALWAYS SWITCH USER
           setSelectedUser(d);
 
-          globe.pointOfView(
+          globeInstance.current?.pointOfView(
             { lat: d.lat, lng: d.lng, altitude: 1.3 },
             800
           );
@@ -104,13 +115,20 @@ const GlobalGlobe: React.FC = () => {
 
         return el;
       });
+  }, [users]);
 
-    globe.controls().autoRotate = autoRotate;
-    globe.controls().autoRotateSpeed = 0.6;
+  // 🔥 THEME SWITCH WITHOUT DESTROY
+  useEffect(() => {
+    if (!globeInstance.current) return;
 
-    globeInstance.current = globe;
-  }, [users, isDark]);
+    globeInstance.current.globeImageUrl(
+      isDark
+        ? "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+        : "//unpkg.com/three-globe/example/img/earth-day.jpg"
+    );
+  }, [isDark]);
 
+  // 🔥 AUTO ROTATE CONTROL
   useEffect(() => {
     if (globeInstance.current) {
       globeInstance.current.controls().autoRotate = autoRotate;
@@ -124,8 +142,7 @@ const GlobalGlobe: React.FC = () => {
         backgroundColor: isDark ? "#000" : "#fff"
       }}
     >
-
-      {/* 🔥 DOT BACKGROUND (THEME FIXED) */}
+      {/* 🔥 DOT BG */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -163,7 +180,7 @@ const GlobalGlobe: React.FC = () => {
         </p>
       </div>
 
-      {/* 🔥 POPUP (WITH CLOSE BUTTON) */}
+      {/* 🔥 POPUP */}
       {selectedUser && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
           <div
@@ -173,8 +190,6 @@ const GlobalGlobe: React.FC = () => {
               borderColor: isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)"
             }}
           >
-
-            {/* ❌ CLOSE BUTTON */}
             <button
               onClick={() => setSelectedUser(null)}
               className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
@@ -207,7 +222,6 @@ const GlobalGlobe: React.FC = () => {
 
       {/* 🔥 CONTROLS */}
       <div className="fixed right-3 bottom-24 z-[9999] flex flex-col gap-2">
-
         <button
           onClick={() => setAutoRotate(true)}
           className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs text-white bg-gradient-to-r from-red-500 to-blue-500"
@@ -230,7 +244,6 @@ const GlobalGlobe: React.FC = () => {
         >
           <RotateCcw size={12} /> Reset
         </button>
-
       </div>
     </div>
   );
