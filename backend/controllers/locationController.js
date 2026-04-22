@@ -1,11 +1,51 @@
 const axios = require("axios");
 const User = require("../models/User");
 
-// 🔀 RANDOM FALLBACK LOCATION (GLOBAL)
+// 🔀 RANDOM FALLBACK (only if no data)
 const randomLat = () => (Math.random() * 180 - 90);
 const randomLng = () => (Math.random() * 360 - 180);
 
-// 📍 SAVE USER LOCATION
+// 🌍 GET BEST LOCATION FROM MULTIPLE APIs
+const getLocationFromIP = async (ip) => {
+  try {
+    // 🔥 1st TRY (BEST ACCURACY)
+    const res1 = await axios.get(`https://ipwho.is/${ip}`);
+    if (res1.data && res1.data.success) {
+      return {
+        lat: res1.data.latitude,
+        lng: res1.data.longitude,
+        city: res1.data.city,
+        state: res1.data.region,
+        country: res1.data.country
+      };
+    }
+  } catch (err) {}
+
+  try {
+    // 🔥 2nd TRY (FALLBACK)
+    const res2 = await axios.get(`http://ip-api.com/json/${ip}`);
+    if (res2.data && res2.data.status === "success") {
+      return {
+        lat: res2.data.lat,
+        lng: res2.data.lon,
+        city: res2.data.city,
+        state: res2.data.regionName,
+        country: res2.data.country
+      };
+    }
+  } catch (err) {}
+
+  // ❌ FAIL → fallback random (rare case)
+  return {
+    lat: randomLat(),
+    lng: randomLng(),
+    city: "",
+    state: "",
+    country: ""
+  };
+};
+
+// 📍 SAVE LOCATION
 const saveLocation = async (req, res) => {
   try {
     const { userId, ip } = req.body;
@@ -17,43 +57,23 @@ const saveLocation = async (req, res) => {
       });
     }
 
-    let lat, lon, city, country, regionName;
+    let locationData;
 
-    // 🔥 NEW: IF IP COMES FROM FRONTEND (BEST CASE)
+    // 🔥 USE USER IP (BEST)
     if (ip) {
-      const ipData = await axios.get(`http://ip-api.com/json/${ip}`);
-      lat = ipData.data.lat;
-      lon = ipData.data.lon;
-      city = ipData.data.city;
-      country = ipData.data.country;
-      regionName = ipData.data.regionName;
+      locationData = await getLocationFromIP(ip);
     } else {
-      // 🔥 OLD METHOD (fallback - server IP)
-      const ipData = await axios.get("http://ip-api.com/json/");
-      lat = ipData.data.lat;
-      lon = ipData.data.lon;
-      city = ipData.data.city;
-      country = ipData.data.country;
-      regionName = ipData.data.regionName;
+      // ⚠️ fallback (server IP — less accurate)
+      locationData = await getLocationFromIP("");
     }
 
     await User.findByIdAndUpdate(userId, {
-      location: {
-        lat,
-        lng: lon,
-        city,
-        state: regionName,
-        country
-      }
+      location: locationData
     });
 
     return res.json({
       success: true,
-      lat,
-      lng: lon,
-      city,
-      state: regionName,
-      country
+      ...locationData
     });
 
   } catch (err) {
@@ -65,12 +85,21 @@ const saveLocation = async (req, res) => {
   }
 };
 
-// 📍 GET ALL USERS (WITH FALLBACK)
+// 📍 GET ALL USERS (NO DUPLICATE + CLEAN DATA)
 const getAllLocations = async (req, res) => {
   try {
     const users = await User.find();
 
-    const formatted = users.map((u) => ({
+    // 🔥 REMOVE DUPLICATES BY ID
+    const uniqueMap = new Map();
+
+    users.forEach((u) => {
+      uniqueMap.set(String(u._id), u);
+    });
+
+    const uniqueUsers = Array.from(uniqueMap.values());
+
+    const formatted = uniqueUsers.map((u) => ({
       id: u._id,
       name: u.name,
       lat: u.location?.lat ?? randomLat(),
