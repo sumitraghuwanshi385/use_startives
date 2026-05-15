@@ -490,8 +490,8 @@ formData.append('file', file);
           </div>
         </FormSection>
 
-        <FormSection title="Visuals & Links" icon={<PhotoIcon />} subtext="Make your listing visually compelling.">
-          <FormRow label="Project Image" htmlFor="projectImage" isRequired subtext="Visual identity of your project.">
+        <FormSection title="Logo & Links" icon={<PhotoIcon />} subtext="Make your listing visually compelling.">
+          <FormRow label="Project Logo" htmlFor="projectImage" isRequired subtext="Visual identity of your project.">
             <div>
               <input
                 type="file"
