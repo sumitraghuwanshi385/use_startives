@@ -208,9 +208,9 @@ export default function StoryDetailsPage() {
           className="
             bg-[var(--component-background)]
             rounded-[32px]
-            p-5
-            md:p-7
-            max-w-4xl
+            p-4
+            md:p-10
+            max-w-5xl
             mx-auto
           "
         >
