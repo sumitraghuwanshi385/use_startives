@@ -65,7 +65,7 @@ export default function StoryDetailsPage() {
             absolute
             inset-0
             bg-gradient-to-b
-            from-black/30
+            from-black/20
             via-black/60
             to-[var(--background-primary)]
           "
@@ -98,39 +98,36 @@ export default function StoryDetailsPage() {
             mx-auto
             px-5
             md:px-8
-            pt-24
-            md:pt-32
+            pt-16
+            md:pt-20
             pb-16
           "
         >
 
-          {/* BACK */}
-          <div className="mb-7">
-
-            <Link
-              to="/stories"
-              className="
-                inline-flex
-                items-center
-                gap-2
-                px-4
-                py-2
-                rounded-full
-                border
-                border-white/15
-                bg-white/10
-                backdrop-blur-2xl
-                text-white
-                text-sm
-                hover:bg-white/15
-                transition-all
-              "
-            >
-              <ArrowLeft size={16} />
-              Back
-            </Link>
-
-          </div>
+          {/* BACK BUTTON */}
+          <Link
+            to="/stories"
+            className="
+              inline-flex
+              items-center
+              gap-2
+              px-4
+              py-2
+              rounded-full
+              border
+              border-white/15
+              bg-white/10
+              backdrop-blur-2xl
+              text-white
+              text-sm
+              hover:bg-white/15
+              transition-all
+              mb-5
+            "
+          >
+            <ArrowLeft size={16} />
+            Back
+          </Link>
 
           {/* CATEGORY */}
           <div
@@ -184,7 +181,12 @@ export default function StoryDetailsPage() {
               font-black
               leading-[0.92]
               tracking-[-0.06em]
-              text-white
+              text-transparent
+              bg-clip-text
+              bg-gradient-to-r
+              from-red-300
+              via-white
+              to-blue-300
               max-w-5xl
             "
           >
@@ -222,13 +224,14 @@ export default function StoryDetailsPage() {
                   backdrop-blur-2xl
                   text-[11px]
                   md:text-[12px]
-                  font-medium
+                  font-semibold
                   text-transparent
                   bg-clip-text
                   bg-gradient-to-r
-                  from-red-200
-                  to-blue-200
-                  shadow-[0_8px_25px_rgba(0,0,0,0.2)]
+                  from-red-400
+                  via-pink-300
+                  to-blue-400
+                  shadow-[0_8px_25px_rgba(0,0,0,0.25)]
                 "
               >
                 {item}
@@ -539,6 +542,100 @@ export default function StoryDetailsPage() {
 
         </div>
 
+        {/* GROWTH CHANNELS */}
+        <div
+          className="
+            rounded-[28px]
+            border
+            border-[var(--border-primary)]
+            bg-[var(--component-background)]
+            p-6
+            mt-16
+            max-w-4xl
+          "
+        >
+
+          <div className="flex items-center gap-3 mb-8">
+
+            <div
+              className="
+                w-10
+                h-[3px]
+                rounded-full
+                bg-gradient-to-r
+                from-red-500
+                to-blue-500
+              "
+            />
+
+            <h3 className="text-2xl font-black">
+              Growth Channels
+            </h3>
+
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+
+            {story.growthChannels?.map((item: string, index: number) => (
+              <div
+                key={index}
+                className="
+                  rounded-2xl
+                  border
+                  border-[var(--border-primary)]
+                  p-5
+                  bg-[var(--background-secondary)]
+                "
+              >
+
+                <div className="flex items-center gap-3 mb-3">
+
+                  <div
+                    className="
+                      w-2
+                      h-2
+                      rounded-full
+                      bg-gradient-to-r
+                      from-red-500
+                      to-blue-500
+                    "
+                  />
+
+                  <h4
+                    className="
+                      font-semibold
+                      text-transparent
+                      bg-clip-text
+                      bg-gradient-to-r
+                      from-red-500
+                      to-blue-500
+                    "
+                  >
+                    {item}
+                  </h4>
+
+                </div>
+
+                <p
+                  className="
+                    text-sm
+                    leading-7
+                    text-[var(--text-secondary)]
+                  "
+                >
+                  This growth engine helped PhotoAI spread rapidly
+                  across creator communities, startup audiences,
+                  and social media platforms through viral sharing
+                  and internet-native distribution strategies.
+                </p>
+
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+
         {/* STORY */}
         <div className="max-w-4xl mt-16">
 
@@ -590,90 +687,6 @@ export default function StoryDetailsPage() {
 
               </div>
 
-            ))}
-
-          </div>
-
-        </div>
-
-        {/* GROWTH CHANNELS */}
-        <div
-          className="
-            rounded-[28px]
-            border
-            border-[var(--border-primary)]
-            bg-[var(--component-background)]
-            p-6
-            mt-20
-            max-w-4xl
-          "
-        >
-
-          <div className="flex items-center gap-3 mb-8">
-
-            <div
-              className="
-                w-10
-                h-[3px]
-                rounded-full
-                bg-gradient-to-r
-                from-red-500
-                to-blue-500
-              "
-            />
-
-            <h3 className="text-2xl font-black">
-              Growth Channels
-            </h3>
-
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-5">
-
-            {story.growthChannels?.map((item: string, index: number) => (
-              <div
-                key={index}
-                className="
-                  rounded-2xl
-                  border
-                  border-[var(--border-primary)]
-                  p-5
-                  bg-[var(--background-secondary)]
-                "
-              >
-
-                <div className="flex items-center gap-3 mb-3">
-
-                  <div
-                    className="
-                      w-2
-                      h-2
-                      rounded-full
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                    "
-                  />
-
-                  <h4 className="font-semibold">
-                    {item}
-                  </h4>
-
-                </div>
-
-                <p
-                  className="
-                    text-sm
-                    leading-7
-                    text-[var(--text-secondary)]
-                  "
-                >
-                  This channel played a major role in helping
-                  PhotoAI reach global internet audiences and
-                  attract creator-focused users organically.
-                </p>
-
-              </div>
             ))}
 
           </div>
