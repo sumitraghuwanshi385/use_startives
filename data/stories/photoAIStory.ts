@@ -28,7 +28,7 @@ export const photoAIStory = {
   company: "PhotoAI",
 
   website:
-    "https://photoai.com",
+    "https://i.postimg.cc/KzsKmgpB/Screenshot-2026-05-27-18-37-18-24-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   productHunt:
     "https://www.producthunt.com/products/photo-ai",
