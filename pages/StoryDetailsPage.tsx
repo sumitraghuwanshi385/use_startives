@@ -19,7 +19,7 @@ export default function StoryDetailsPage() {
     <div className="bg-[var(--background-primary)] text-[var(--text-primary)] transition-colors duration-300">
 
       {/* HERO */}
-      <section className="relative min-h-[720px] md:min-h-[860px] overflow-hidden">
+      <section className="relative min-h-[680px] md:min-h-[820px] overflow-hidden">
 
         {/* BG IMAGE */}
         <img
@@ -72,7 +72,7 @@ export default function StoryDetailsPage() {
             md:px-8
             pt-12
             md:pt-16
-            pb-4
+            pb-1
           "
         >
 
@@ -140,13 +140,14 @@ export default function StoryDetailsPage() {
                 px-3
                 py-1.5
                 rounded-full
-                bg-white/15
+                bg-white/10
                 border
                 border-white/15
                 backdrop-blur-2xl
                 text-[11px]
                 md:text-[12px]
                 font-bold
+                shadow-[0_8px_25px_rgba(0,0,0,0.2)]
               "
             >
               <span
@@ -154,9 +155,8 @@ export default function StoryDetailsPage() {
                   text-transparent
                   bg-clip-text
                   bg-gradient-to-r
-                  from-red-300
-                  via-red-400
-                  to-blue-400
+                  from-red-500
+                  to-blue-500
                 "
               >
                 {story.category}
@@ -171,13 +171,14 @@ export default function StoryDetailsPage() {
                   px-3
                   py-1.5
                   rounded-full
-                  bg-white/15
+                  bg-white/10
                   border
                   border-white/15
                   backdrop-blur-2xl
                   text-[11px]
                   md:text-[12px]
                   font-bold
+                  shadow-[0_8px_25px_rgba(0,0,0,0.2)]
                 "
               >
                 <span
@@ -185,9 +186,8 @@ export default function StoryDetailsPage() {
                     text-transparent
                     bg-clip-text
                     bg-gradient-to-r
-                    from-red-300
-                    via-red-400
-                    to-blue-400
+                    from-red-500
+                    to-blue-500
                   "
                 >
                   {item}
@@ -201,7 +201,7 @@ export default function StoryDetailsPage() {
       </section>
 
       {/* MAIN */}
-      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-1 pb-10">
+      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-0 pb-10">
 
         {/* FOUNDER */}
         <div
