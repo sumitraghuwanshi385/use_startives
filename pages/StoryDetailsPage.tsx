@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { stories } from "../data/stories";
@@ -201,7 +202,7 @@ export default function StoryDetailsPage() {
       </section>
 
       {/* MAIN */}
-      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-0 pb-10">
+      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-6 md:pt-0 pb-10">
 
         {/* FOUNDER */}
         <div
@@ -250,7 +251,7 @@ export default function StoryDetailsPage() {
             <div className="flex-1">
 
               <p className="text-sm text-[var(--text-secondary)]">
-                Founder
+                Founder of {story.company}
               </p>
 
               <h2
