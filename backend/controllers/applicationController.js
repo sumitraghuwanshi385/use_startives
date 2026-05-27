@@ -2,7 +2,7 @@ const Application = require('../models/Application');
 const Idea = require('../models/Idea');
 const Notification = require('../models/Notification');
 const User = require('../models/User');
-const sendEmail = require('../utils/sendMail');
+const sendEmail = require('../utils/sendEmail');
 
 
 // ✅ CREATE APPLICATION
