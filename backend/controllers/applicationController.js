@@ -1,6 +1,8 @@
 const Application = require('../models/Application');
 const Idea = require('../models/Idea');
 const Notification = require('../models/Notification');
+const User = require('../models/User');
+const sendEmail = require('../utils/sendMail');
 
 
 // ✅ CREATE APPLICATION
@@ -59,6 +61,15 @@ const createApplication = async (req, res) => {
         positionTitle: position ? position.title : '',
         groupKey: `application_apply_${application._id}`,
       });
+
+      // ✅ EMAIL NOTIFICATION
+      const founder = await User.findById(idea.founderId);
+
+      await sendEmail(
+        founder.email,
+        "New Project Application",
+        `${req.user.name} applied to your project "${idea.title}"`
+      );
     }
 
     res.status(201).json({
@@ -203,6 +214,19 @@ const updateApplicationStatus = async (req, res) => {
       positionTitle: position ? position.title : "",
       groupKey: `application_status_${application._id}`,
     });
+
+    // ✅ EMAIL NOTIFICATION
+    const applicant = await User.findById(application.applicantId);
+
+    await sendEmail(
+      applicant.email,
+      status === "ACCEPTED"
+        ? "Application Accepted 🚀"
+        : "Application Update",
+      status === "ACCEPTED"
+        ? `You were accepted for ${position?.title || "the role"} in ${idea.title}`
+        : `Your application was updated for ${idea.title}`
+    );
 
     res.json({
       success: true,
