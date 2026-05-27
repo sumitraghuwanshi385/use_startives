@@ -1,7 +1,5 @@
-import { photoAIStory } from "./photoAIStory";
-import { nomadListStory } from "./nomadListStory";
+import { photoAIStory } from "./stories/photoAIStory";
 
 export const stories = [
   photoAIStory,
-  nomadListStory,
 ];
