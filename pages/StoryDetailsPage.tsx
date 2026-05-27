@@ -1,24 +1,3 @@
-Bhai issue tera StoryDetailsPage component me h, data me nahi.
-
-Abhi tera page:
-
-fixed dark background use kr raha h
-
-heading ka font-size bahut bada h
-
-content render hi ni ho raha niche
-
-sections map ni ho rahe properly
-
-white/light mode support ni h
-
-modern layout ni h
-
-
-Tu pura old StoryDetailsPage replace kr de.
-
-Ye premium modern layout use kar 👇
-
 import { useParams } from "react-router-dom";
 import { stories } from "../data/stories";
 
