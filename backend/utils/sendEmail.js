@@ -25,17 +25,16 @@ const sendEmail = async (to, subject, code) => {
             </p>
 
             <h2 style="font-size:20px;margin-bottom:10px;">
-              Verify your email
+              ${subject}
             </h2>
 
             <p style="color:#6b7280;font-size:14px;">
-              Use the verification code below to continue
+              ${code}
             </p>
 
             <div style="
               margin:30px 0;
-              font-size:34px;
-              letter-spacing:8px;
+              font-size:20px;
               font-weight:bold;
               color:#111827;
               background:#f1f5f9;
@@ -45,14 +44,10 @@ const sendEmail = async (to, subject, code) => {
               ${code}
             </div>
 
-            <p style="font-size:13px;color:#9ca3af;">
-              This code will expire in 10 minutes.
-            </p>
-
             <hr style="margin:30px 0;border:none;border-top:1px solid #eee">
 
             <p style="font-size:12px;color:#9ca3af;">
-              If you didn't request this email, you can safely ignore it.
+              Thank you for using Startives 🚀
             </p>
 
           </div>
