@@ -44,7 +44,7 @@ export default function StoryDetailsPage() {
         "
       >
 
-        {/* IMAGE */}
+        {/* BG IMAGE */}
         <img
           src={story.image}
           alt={story.title}
@@ -60,12 +60,13 @@ export default function StoryDetailsPage() {
         {/* OVERLAY */}
         <div className="absolute inset-0 bg-black/70" />
 
+        {/* GRADIENT */}
         <div
           className="
             absolute
             inset-0
             bg-gradient-to-b
-            from-black/20
+            from-black/10
             via-black/60
             to-[var(--background-primary)]
           "
@@ -75,11 +76,11 @@ export default function StoryDetailsPage() {
         <div
           className="
             absolute
-            top-[-120px]
+            top-[-150px]
             left-1/2
             -translate-x-1/2
-            w-[650px]
-            h-[650px]
+            w-[700px]
+            h-[700px]
             rounded-full
             blur-3xl
             opacity-20
@@ -98,15 +99,15 @@ export default function StoryDetailsPage() {
             mx-auto
             px-5
             md:px-8
-            pt-16
-            md:pt-20
+            pt-12
+            md:pt-16
             pb-16
           "
         >
 
           {/* BACK BUTTON */}
           <Link
-            to="/stories"
+            to="/builderstories"
             className="
               inline-flex
               items-center
@@ -126,7 +127,7 @@ export default function StoryDetailsPage() {
             "
           >
             <ArrowLeft size={16} />
-            Back
+            Back to Builder Stories
           </Link>
 
           {/* CATEGORY */}
@@ -218,19 +219,19 @@ export default function StoryDetailsPage() {
                   px-3
                   py-1.5
                   rounded-full
-                  bg-white/20
+                  bg-white/15
                   border
                   border-white/20
                   backdrop-blur-2xl
                   text-[11px]
                   md:text-[12px]
-                  font-semibold
+                  font-bold
                   text-transparent
                   bg-clip-text
                   bg-gradient-to-r
-                  from-red-400
-                  via-pink-300
-                  to-blue-400
+                  from-red-500
+                  via-pink-400
+                  to-blue-500
                   shadow-[0_8px_25px_rgba(0,0,0,0.25)]
                 "
               >
@@ -259,6 +260,7 @@ export default function StoryDetailsPage() {
               p-5
             "
           >
+
             <p className="text-sm text-[var(--text-secondary)]">
               Revenue
             </p>
@@ -279,9 +281,11 @@ export default function StoryDetailsPage() {
             </h3>
 
             <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              PhotoAI scaled rapidly through creator sharing loops,
-              public startup distribution, and strong AI product timing.
+              PhotoAI rapidly monetized through subscriptions,
+              creator-focused AI tools, and viral internet growth
+              driven by social sharing and online identity trends.
             </p>
+
           </div>
 
           <div
@@ -293,6 +297,7 @@ export default function StoryDetailsPage() {
               p-5
             "
           >
+
             <p className="text-sm text-[var(--text-secondary)]">
               Growth
             </p>
@@ -313,10 +318,11 @@ export default function StoryDetailsPage() {
             </h3>
 
             <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              The platform attracted creators, founders,
-              influencers, and internet users looking for
-              professional AI-generated identity photos.
+              The platform spread globally through creator communities,
+              startup founders, influencers, and users wanting
+              professional AI-generated profile photos instantly.
             </p>
+
           </div>
 
           <div
@@ -328,6 +334,7 @@ export default function StoryDetailsPage() {
               p-5
             "
           >
+
             <p className="text-sm text-[var(--text-secondary)]">
               Timeline
             </p>
@@ -348,10 +355,11 @@ export default function StoryDetailsPage() {
             </h3>
 
             <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              Danny moved aggressively during the AI boom
-              and launched quickly before the market became
-              overcrowded with competitors.
+              Danny executed quickly during peak generative AI momentum
+              and captured massive internet attention before
+              competitors saturated the market.
             </p>
+
           </div>
 
           <div
@@ -363,6 +371,7 @@ export default function StoryDetailsPage() {
               p-5
             "
           >
+
             <p className="text-sm text-[var(--text-secondary)]">
               Founded
             </p>
@@ -383,10 +392,11 @@ export default function StoryDetailsPage() {
             </h3>
 
             <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              The startup emerged during peak generative AI adoption
-              when creators and professionals wanted better
-              digital branding online.
+              PhotoAI launched when creators and internet professionals
+              increasingly needed strong personal branding
+              and visually polished online identity.
             </p>
+
           </div>
 
         </div>
@@ -418,11 +428,13 @@ export default function StoryDetailsPage() {
                 shrink-0
               "
             >
+
               <img
                 src={story.image}
                 alt={story.founder}
                 className="w-full h-full object-cover"
               />
+
             </div>
 
             {/* INFO */}
@@ -542,7 +554,7 @@ export default function StoryDetailsPage() {
 
         </div>
 
-        {/* GROWTH CHANNELS */}
+        {/* MONETIZATION */}
         <div
           className="
             rounded-[28px]
@@ -551,6 +563,56 @@ export default function StoryDetailsPage() {
             bg-[var(--component-background)]
             p-6
             mt-16
+            max-w-4xl
+          "
+        >
+
+          <div className="flex items-center gap-3 mb-6">
+
+            <div
+              className="
+                w-10
+                h-[3px]
+                rounded-full
+                bg-gradient-to-r
+                from-red-500
+                to-blue-500
+              "
+            />
+
+            <h3 className="text-2xl font-black">
+              Monetization Model
+            </h3>
+
+          </div>
+
+          <p
+            className="
+              text-[15px]
+              md:text-[16px]
+              leading-8
+              text-[var(--text-secondary)]
+            "
+          >
+            PhotoAI monetized primarily through subscription-based pricing
+            focused on creators, founders, professionals, and social media users.
+            Users paid for premium AI generations, faster rendering,
+            additional styles, creator packs, and advanced output quality.
+            This recurring revenue structure helped the company scale
+            aggressively while maintaining a lean bootstrapped operation.
+          </p>
+
+        </div>
+
+        {/* GROWTH CHANNELS */}
+        <div
+          className="
+            rounded-[28px]
+            border
+            border-[var(--border-primary)]
+            bg-[var(--component-background)]
+            p-6
+            mt-10
             max-w-4xl
           "
         >
@@ -577,6 +639,7 @@ export default function StoryDetailsPage() {
           <div className="grid md:grid-cols-2 gap-5">
 
             {story.growthChannels?.map((item: string, index: number) => (
+
               <div
                 key={index}
                 className="
@@ -623,13 +686,14 @@ export default function StoryDetailsPage() {
                     text-[var(--text-secondary)]
                   "
                 >
-                  This growth engine helped PhotoAI spread rapidly
-                  across creator communities, startup audiences,
-                  and social media platforms through viral sharing
-                  and internet-native distribution strategies.
+                  This distribution channel played a major role
+                  in helping PhotoAI spread across startup communities,
+                  creator ecosystems, social media audiences,
+                  and internet-native growth loops globally.
                 </p>
 
               </div>
+
             ))}
 
           </div>
