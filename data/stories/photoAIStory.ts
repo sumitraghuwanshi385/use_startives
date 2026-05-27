@@ -46,7 +46,7 @@ export const photoAIStory = {
   readingTime: "18 min read",
 
   image:
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1800&auto=format&fit=crop",
+    "https://ibb.co/d0k8X3RT",
 
   founderImage:
     "https://pbs.twimg.com/profile_images/1707065565637339136/rK8sJw5J_400x400.jpg",
