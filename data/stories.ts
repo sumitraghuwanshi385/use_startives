@@ -3,7 +3,7 @@ export const stories = [
     id: "photoai",
 
     title:
-      "How Danny Postma Built PhotoAI Into a Six-Figure AI SaaS During the AI Boom",
+      "How Danny Postma Built PhotoAI Into One of the Fastest Growing AI SaaS Products on the Internet",
 
     founder: "Danny Postma",
 
@@ -13,6 +13,11 @@ export const stories = [
 
     founderLinkedin:
       "https://www.linkedin.com/in/dannypostma/",
+
+    founderWebsite: "https://dannypostma.com",
+
+    founderBio:
+      "Dutch indie hacker and SaaS founder known for building internet businesses publicly through Twitter/X and the indie hacker ecosystem.",
 
     company: "PhotoAI",
 
@@ -32,259 +37,315 @@ export const stories = [
     foundedYear: "2023",
 
     image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1600&auto=format&fit=crop",
 
     summary:
-      "Danny Postma turned the AI image generation wave into a profitable SaaS by building PhotoAI publicly on Twitter/X, leveraging viral sharing loops and creator adoption.",
+      "Danny Postma used the explosive AI wave, creator economy, and public internet distribution to scale PhotoAI into a highly profitable bootstrapped AI startup with viral growth loops.",
 
     stats: [
       "$120K+ Monthly Revenue",
-      "25K+ Users",
-      "Solo Founder",
-      "Bootstrapped",
-      "AI SaaS",
-      "Viral Growth"
+      "25K+ Registered Users",
+      "100% Bootstrapped",
+      "Solo Founder Start",
+      "AI Creator Economy",
+      "Viral Distribution"
     ],
 
     growthMetrics: {
       firstMonthRevenue: "$2K",
-      month3Revenue: "$18K",
+      month3Revenue: "$18K+",
       month6Revenue: "$60K+",
       currentRevenue: "$120K+ MRR",
-      teamSize: "Small lean team",
-      pricing: "$29-$99 plans"
+      teamSize: "Lean remote team",
+      pricing: "$29-$99 plans",
+      traffic: "Millions of AI images generated"
     },
 
     techStack: [
       "Next.js",
+      "TypeScript",
       "Stripe",
       "Stable Diffusion",
       "Cloud GPU Servers",
       "Vercel",
-      "Supabase"
+      "Supabase",
+      "AI Inference Pipelines"
     ],
 
     growthChannels: [
-      "Twitter/X build in public",
-      "Product Hunt",
-      "AI influencer reposts",
-      "Viral result sharing",
-      "Creator economy",
-      "Referral loops"
+      "Twitter/X Build In Public",
+      "Product Hunt Launches",
+      "AI Creator Influencers",
+      "Viral User Sharing",
+      "Referral Loops",
+      "Organic Internet Virality",
+      "Visual Social Media Distribution"
     ],
 
     lessons: [
-      "Distribution > complexity",
-      "Ship before perfecting",
-      "AI products spread visually",
-      "Public building creates trust",
-      "Speed matters in trends"
+      "Distribution matters more than complexity",
+      "Speed wins trend-based markets",
+      "Visual products spread naturally online",
+      "Building publicly compounds trust",
+      "Simple products often convert best",
+      "Timing can completely change startup outcomes"
     ],
 
+    resources: {
+      website: "https://photoai.com",
+      twitter: "https://x.com/dannypostmaa",
+      linkedin: "https://www.linkedin.com/in/dannypostma/",
+      productHunt:
+        "https://www.producthunt.com/products/photo-ai"
+    },
+
     story: `
-BACKGROUND
+INTRODUCTION
 
-Before PhotoAI, Danny Postma was already active in the indie hacking and startup space.
-He had previously experimented with:
-- SaaS tools
-- online products
-- audience building
-- internet businesses
+In 2023, AI image generation exploded across the internet.
 
-When the AI image generation boom started after Stable Diffusion became popular,
-Danny noticed something important:
+Stable Diffusion, Midjourney, and generative AI suddenly became mainstream topics across:
+• Twitter/X
+• Reddit
+• YouTube
+• startup communities
+• creator ecosystems
 
-Most AI products were technical.
-Very few were consumer-friendly.
+Most founders rushed to build generic AI tools.
 
-At the same time:
-- creators wanted better profile pictures
-- startup founders wanted personal branding
-- influencers wanted AI-generated content
-- normal users wanted professional photos without expensive photoshoots
+But Danny Postma noticed something different.
 
-This became the insight behind PhotoAI.
+People did not simply want "AI technology."
 
---------------------------------------------------
+They wanted:
+BETTER PERSONAL IDENTITY ONLINE.
 
-THE IDEA
+This single insight became the foundation of PhotoAI.
 
-Danny realized people hated:
-- expensive photographers
-- studio setups
-- editing costs
-- slow delivery
+━━━━━━━━━━━━━━━━━━━━━━
 
-He wanted to create:
-"AI photoshoots from home."
+WHO IS DANNY POSTMA?
 
-The concept:
-Users upload selfies → AI trains model → generates professional images.
+Danny Postma was already active inside the indie hacker and bootstrapped startup ecosystem before PhotoAI existed.
 
-Simple.
-Clear.
-Viral.
+He spent years experimenting with:
+• internet businesses
+• SaaS products
+• online audiences
+• startup distribution
+• creator-driven products
 
---------------------------------------------------
+Unlike traditional founders,
+Danny focused heavily on:
+• shipping fast
+• testing publicly
+• audience-first growth
+• internet-native products
 
-BUILDING THE MVP
+That experience became critical later.
 
-Instead of spending months building,
-Danny moved extremely fast.
+━━━━━━━━━━━━━━━━━━━━━━
 
-The first version:
-- basic upload system
-- AI model training
-- image generation pipeline
-- Stripe payment system
+THE CORE INSIGHT
 
-The UI was minimal.
+Danny realized millions of internet users hated traditional photoshoots.
 
-What mattered was:
-RESULT QUALITY.
+The problems were obvious:
+• photographers were expensive
+• editing took time
+• professional setups felt inaccessible
+• personal branding content was difficult to create
 
---------------------------------------------------
+At the same time,
+people increasingly needed high-quality images for:
+• LinkedIn profiles
+• startup founder branding
+• creator businesses
+• social media growth
+• dating profiles
+• online communities
 
-FIRST USERS
+He saw a huge gap:
+"Professional AI photos without professional photography."
 
-Danny used Twitter/X as the main distribution channel.
+━━━━━━━━━━━━━━━━━━━━━━
 
-He posted:
-- screenshots
-- revenue updates
-- failures
-- experiments
-- generated portraits
-- customer reactions
+THE MVP
 
-This created:
-- curiosity
-- trust
-- virality
+Instead of building for months,
+Danny launched quickly.
 
-People started reposting generated images.
+The first version of PhotoAI was intentionally simple:
+• upload selfies
+• train AI model
+• generate portraits
 
-That became the growth engine.
+No complex dashboard.
+No giant feature set.
+No overengineering.
 
---------------------------------------------------
+The goal was simple:
+MAKE THE RESULTS LOOK AMAZING.
 
-EARLY GROWTH
+That was enough.
 
-Within weeks:
-- thousands visited the site
-- creators started sharing outputs
-- influencers tested the product
+━━━━━━━━━━━━━━━━━━━━━━
 
-Revenue quickly crossed:
-- $1K MRR
-- $5K MRR
-- $10K MRR
+EARLY DISTRIBUTION STRATEGY
 
-without paid ads.
+The smartest thing Danny did was distribution.
 
---------------------------------------------------
+He did not hide development.
 
-WHY PHOTOAI WENT VIRAL
+He openly shared everything publicly on Twitter/X:
+• screenshots
+• bugs
+• failures
+• revenue updates
+• customer feedback
+• AI-generated portraits
 
-The product had built-in virality.
+This strategy created:
+• trust
+• curiosity
+• community attention
+• founder credibility
 
-Every generated image became:
+The audience became emotionally invested in the journey.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+WHY PHOTOAI GREW SO FAST
+
+PhotoAI had something extremely powerful:
+
+BUILT-IN VIRALITY.
+
+Every generated photo became:
 FREE MARKETING.
 
-Users shared results on:
-- Twitter
-- LinkedIn
-- Instagram
-- TikTok
+Users naturally posted their AI portraits on:
+• Twitter/X
+• LinkedIn
+• Instagram
+• TikTok
+• Discord communities
 
-This created endless acquisition loops.
+Each image created curiosity:
+"How did you make this?"
 
---------------------------------------------------
+That question drove endless traffic loops.
 
-BIGGEST CHALLENGES
+━━━━━━━━━━━━━━━━━━━━━━
 
-As traffic exploded:
-- GPU costs increased
-- generation queues became slow
-- inference servers overloaded
+THE PRODUCT HUNT EFFECT
 
-AI infrastructure became the hardest problem.
+One major growth accelerator was Product Hunt.
 
-Danny had to:
-- optimize GPU usage
-- improve queues
-- reduce failures
-- improve generation quality
+The launch introduced PhotoAI to:
+• tech founders
+• creators
+• early adopters
+• AI enthusiasts
+• startup investors
 
---------------------------------------------------
+This pushed:
+• massive traffic spikes
+• new subscriptions
+• viral reposting
+• influencer exposure
 
-SCALING
+The internet effect compounded rapidly.
 
-As revenue grew,
-PhotoAI added:
-- better onboarding
-- more styles
-- creator templates
-- affiliate systems
-- subscription plans
-- faster generations
+━━━━━━━━━━━━━━━━━━━━━━
 
-The business became:
-a real AI SaaS company.
+THE BIGGEST CHALLENGE
 
---------------------------------------------------
+As traffic exploded,
+the infrastructure started breaking.
 
-MAIN GROWTH CHANNELS
+AI image generation is expensive.
 
-1. Build in Public
-Danny constantly shared progress publicly.
+GPU servers became overloaded.
+Generation queues slowed down.
+Costs increased aggressively.
 
-2. Viral Outputs
-AI photos naturally spread online.
+The company had to optimize:
+• inference pipelines
+• GPU allocation
+• queue systems
+• generation reliability
+• output quality
 
-3. Product Hunt
-Massive visibility boost.
+Infrastructure became one of the hardest scaling problems.
 
-4. Influencer Reposts
-Creators drove new traffic.
+━━━━━━━━━━━━━━━━━━━━━━
 
-5. AI Timing
-He launched exactly during the AI hype wave.
+REVENUE EXPANSION
 
---------------------------------------------------
+As the user base grew,
+PhotoAI expanded monetization through:
+• subscription plans
+• creator packages
+• premium generations
+• additional AI styles
+• faster processing
+• advanced outputs
 
-REVENUE MODEL
+Typical pricing ranged between:
+• $29/month
+• $59/month
+• $99+ premium plans
 
-PhotoAI monetized through:
-- subscriptions
-- generation credits
-- premium plans
-- creator packages
+The business rapidly crossed:
+• $10K MRR
+• $50K MRR
+• $100K+ MRR
 
-Plans ranged roughly from:
-$29 → $99+.
+while remaining lean.
 
---------------------------------------------------
+━━━━━━━━━━━━━━━━━━━━━━
 
-KEY LESSONS
+WHY BUILDING IN PUBLIC WORKED
 
-- Speed wins internet markets
-- Distribution matters more than code
-- Visual products spread fastest
-- Public building compounds growth
-- Simplicity converts better
+Danny's transparency became one of the company's biggest growth assets.
 
---------------------------------------------------
+People love watching:
+• startup growth
+• public experiments
+• revenue journeys
+• founder wins and failures
 
-TODAY
+This strategy transformed the founder himself into a growth channel.
 
-PhotoAI became one of the most recognized indie AI startups created during the AI boom.
+The audience marketed the product FOR him.
 
-It inspired thousands of builders to:
-- launch AI SaaS products
-- build publicly
-- focus on distribution
-- monetize quickly
+━━━━━━━━━━━━━━━━━━━━━━
+
+REAL BUSINESS TAKEAWAYS
+
+PhotoAI proved several important internet business principles:
+
+• Speed matters more than perfection
+• Distribution beats feature overload
+• Visual products spread fastest online
+• Audience building compounds over time
+• AI products succeed when UX feels simple
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CURRENT STATUS
+
+Today PhotoAI is recognized as one of the best-known bootstrapped AI creator startups launched during the AI boom.
+
+The company became a major inspiration inside:
+• indie hacking
+• AI SaaS
+• creator startups
+• build-in-public communities
+
+Danny Postma also became widely known for proving that:
+one founder with strong distribution can compete globally using internet leverage.
     `
   },
 
@@ -292,7 +353,7 @@ It inspired thousands of builders to:
     id: "nomadlist",
 
     title:
-      "How Pieter Levels Built Nomad List Into a Multi-Million Dollar Bootstrapped Empire",
+      "How Pieter Levels Built Nomad List Into a Multi-Million Dollar Bootstrapped Internet Empire",
 
     founder: "Pieter Levels",
 
@@ -302,6 +363,11 @@ It inspired thousands of builders to:
 
     founderLinkedin:
       "https://www.linkedin.com/in/pieterlevels/",
+
+    founderWebsite: "https://levels.io",
+
+    founderBio:
+      "Pieter Levels is one of the most influential indie hackers on the internet, known for building profitable startups without VC funding or large teams.",
 
     company: "Nomad List",
 
@@ -314,25 +380,25 @@ It inspired thousands of builders to:
 
     revenue: "$3M+ ARR",
 
-    growth: "Global remote work platform",
+    growth: "Millions of global users",
 
     timeline: "Several years",
 
     foundedYear: "2014",
 
     image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop",
 
     summary:
-      "Pieter Levels built Nomad List completely bootstrapped while traveling the world, eventually turning it into one of the internet’s most iconic indie businesses.",
+      "Pieter Levels transformed a simple spreadsheet for digital nomads into one of the internet’s most iconic bootstrapped communities and profitable online businesses.",
 
     stats: [
       "$3M+ ARR",
+      "Millions of Visitors",
       "100% Bootstrapped",
-      "Millions of Users",
-      "Global Community",
-      "Remote Work Pioneer",
-      "One-Man Startup"
+      "Global Remote Community",
+      "Indie Hacker Icon",
+      "One-Man Startup Era"
     ],
 
     growthMetrics: {
@@ -341,7 +407,8 @@ It inspired thousands of builders to:
       scalingRevenue: "$500K+",
       currentRevenue: "$3M+ ARR",
       teamSize: "Extremely lean",
-      pricing: "$99 membership"
+      pricing: "$99 membership",
+      traffic: "Massive SEO traffic globally"
     },
 
     techStack: [
@@ -350,214 +417,256 @@ It inspired thousands of builders to:
       "Bootstrap",
       "Custom APIs",
       "Stripe",
-      "Remote databases"
+      "Remote Databases",
+      "Server Automation"
     ],
 
     growthChannels: [
-      "Hacker News",
-      "Product Hunt",
       "SEO",
       "Twitter/X",
-      "Digital nomad communities",
-      "Word of mouth"
+      "Hacker News",
+      "Product Hunt",
+      "Remote Work Communities",
+      "Organic Word of Mouth",
+      "Founder Audience"
     ],
 
     lessons: [
-      "Start ugly but useful",
-      "Community creates defensibility",
+      "Useful products spread naturally",
+      "Community creates long-term moats",
       "Bootstrap for freedom",
-      "Ship continuously",
-      "Audience compounds over time"
+      "Shipping speed beats perfection",
+      "Audience compounds over years",
+      "Independence can outperform VC funding"
     ],
 
+    resources: {
+      website: "https://nomadlist.com",
+      twitter: "https://x.com/levelsio",
+      linkedin: "https://www.linkedin.com/in/pieterlevels/",
+      founderWebsite: "https://levels.io"
+    },
+
     story: `
-BACKGROUND
+INTRODUCTION
 
-Pieter Levels was already traveling and working remotely before remote work became mainstream.
+Before remote work became mainstream,
+Pieter Levels was already living the lifestyle most people only discovered years later.
 
-He noticed a huge problem:
+He traveled globally while working online and quickly noticed a huge problem:
 
 There was no reliable platform helping remote workers decide:
 "Which city should I live and work from?"
 
-Information online was:
-- outdated
-- scattered
-- fake
-- incomplete
+People depended on random blogs,
+outdated forums,
+or fake travel recommendations.
 
-This frustration became the foundation for Nomad List.
+This frustration eventually became Nomad List.
 
---------------------------------------------------
+━━━━━━━━━━━━━━━━━━━━━━
 
-THE IDEA
+WHO IS PIETER LEVELS?
 
-Pieter wanted to build:
-"A database for digital nomads."
+Pieter Levels became famous online for proving something unusual:
 
-The platform would rank cities using:
-- internet speed
-- weather
-- safety
-- cost of living
-- nightlife
-- startup culture
-- air quality
-- friendliness
+One person can build internet companies worth millions without:
+• venture capital
+• massive teams
+• startup offices
+• endless meetings
 
-At first,
-it was simply spreadsheets and public datasets.
+He became one of the faces of:
+• indie hacking
+• bootstrapped SaaS
+• internet entrepreneurship
+• build in public culture
 
---------------------------------------------------
+His philosophy was simple:
+SHIP FAST.
 
-FIRST VERSION
+━━━━━━━━━━━━━━━━━━━━━━
 
-The first version was extremely ugly.
+THE ORIGINAL IDEA
 
-But it solved a REAL problem.
+Pieter wanted to create:
+"A city ranking database for digital nomads."
 
-That mattered more than design.
+The product ranked cities using:
+• internet speed
+• weather
+• safety
+• nightlife
+• cost of living
+• startup ecosystem
+• air quality
+• friendliness
 
-Users immediately started sharing it in:
-- Reddit communities
-- Hacker News
-- travel forums
-- startup communities
+Initially,
+the project was basically spreadsheets combined with public datasets.
 
---------------------------------------------------
+But it solved a REAL internet problem.
 
-THE BREAKTHROUGH
+━━━━━━━━━━━━━━━━━━━━━━
 
-Nomad List exploded after:
-- Product Hunt launches
-- Hacker News front page
-- Twitter shares
+THE FIRST VERSION
 
-Remote workers finally had:
-ONE PLACE
-for city comparison.
+The first version looked terrible.
 
---------------------------------------------------
+No polished design.
+No giant engineering team.
+No complex branding.
 
-COMMUNITY EFFECTS
+But it was useful.
 
-The real magic started when users began:
-- adding reviews
-- updating data
-- discussing cities
-- helping each other
+That mattered more than appearance.
 
-Nomad List transformed from:
+Users instantly started sharing it across:
+• Reddit
+• Hacker News
+• startup forums
+• Facebook groups
+• travel communities
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+THE BREAKTHROUGH MOMENT
+
+Nomad List exploded after reaching:
+• Product Hunt
+• Hacker News front page
+• Twitter startup communities
+
+Remote workers suddenly had:
+ONE PLATFORM
+for comparing global cities.
+
+Traffic started compounding rapidly.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+THE COMMUNITY EFFECT
+
+The biggest transformation happened when users themselves started contributing:
+• city reviews
+• updates
+• recommendations
+• community discussions
+• real experiences
+
+The product evolved from:
 a tool
-→ into a community.
+→ into a network-driven community.
 
-That made it difficult to copy.
+That created defensibility.
 
---------------------------------------------------
+━━━━━━━━━━━━━━━━━━━━━━
 
-WHY IT WORKED
+WHY NOMAD LIST WORKED
 
-Pieter focused on:
-- usefulness
-- speed
-- transparency
-- community
+Pieter focused heavily on:
+• usefulness
+• speed
+• transparency
+• audience building
 
-He openly shared:
-- revenue
-- traffic
-- business insights
-- product experiments
+He publicly shared:
+• revenue numbers
+• traffic growth
+• startup experiments
+• failures
+• product ideas
 
-This made him one of the biggest build-in-public founders online.
+This authenticity attracted a huge internet audience.
 
---------------------------------------------------
+━━━━━━━━━━━━━━━━━━━━━━
 
-BOOTSTRAPPED PHILOSOPHY
+THE BOOTSTRAPPED APPROACH
 
-Unlike startups chasing VC funding,
-Pieter optimized for:
-- profitability
-- independence
-- freedom
-- lean operations
+Unlike traditional startups,
+Pieter intentionally stayed independent.
 
-He intentionally avoided:
-- huge teams
-- complicated structures
-- unnecessary meetings
+He optimized for:
+• freedom
+• profitability
+• flexibility
+• lean operations
 
---------------------------------------------------
+He avoided:
+• giant teams
+• unnecessary complexity
+• investor pressure
+
+This became one of the reasons indie hackers admired him.
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 REVENUE MODEL
 
 Nomad List monetized through:
-- paid memberships
-- premium access
-- community features
-- affiliate revenue
-- partnerships
+• memberships
+• premium communities
+• networking access
+• affiliate partnerships
+• travel products
+• remote work services
 
 Users paid to access:
-- advanced data
-- private chat groups
-- networking
-- insider community
+• advanced rankings
+• insider community chats
+• remote worker networking
+• deeper city intelligence
 
---------------------------------------------------
+━━━━━━━━━━━━━━━━━━━━━━
 
-EXPANSION
+THE SEO ADVANTAGE
 
-Pieter later expanded into:
-- Remote OK
-- Interior AI
-- Avatar AI
-- other profitable SaaS products
+One of Nomad List's biggest growth engines became SEO.
 
-His ecosystem became one of the biggest indie hacker success stories online.
+Thousands of people searched:
+• best cities for remote work
+• cheapest digital nomad cities
+• safest remote work destinations
 
---------------------------------------------------
+Nomad List ranked extremely well on Google,
+bringing consistent long-term traffic.
 
-MAIN GROWTH CHANNELS
+━━━━━━━━━━━━━━━━━━━━━━
 
-1. SEO
-Huge organic search traffic.
+THE EXPANSION
 
-2. Hacker News
-Massive early exposure.
+Pieter later expanded into multiple profitable startups including:
+• Remote OK
+• Interior AI
+• Avatar AI
 
-3. Twitter/X
-Founder audience growth.
+His ecosystem became one of the most respected examples of profitable internet businesses.
 
-4. Product Hunt
-Startup visibility.
+━━━━━━━━━━━━━━━━━━━━━━
 
-5. Word of Mouth
-Community referrals exploded growth.
+MAIN LESSONS FROM NOMAD LIST
 
---------------------------------------------------
+• Useful products spread naturally
+• Communities create defensibility
+• SEO compounds for years
+• Small teams can outperform large startups
+• Audiences become growth assets
 
-KEY LESSONS
+━━━━━━━━━━━━━━━━━━━━━━
 
-- Useful products spread naturally
-- Community creates moats
-- Shipping fast beats overthinking
-- Independence can outperform VC
-- Build audiences while building products
+CURRENT STATUS
 
---------------------------------------------------
+Today Nomad List remains one of the internet’s most iconic bootstrapped communities.
 
-TODAY
+It inspired:
+• solo founders
+• indie hackers
+• SaaS builders
+• remote work startups
+• internet entrepreneurs worldwide
 
-Nomad List became one of the internet’s most respected bootstrapped startups.
-
-It helped inspire:
-- indie hackers
-- solo founders
-- remote work startups
-- bootstrapped SaaS founders
-
-and proved one person can build internet businesses worth millions.
+Pieter Levels proved that:
+you do not need VC funding to build globally impactful internet companies.
     `
   }
 ];
