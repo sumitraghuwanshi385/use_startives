@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Notification = require('../models/Notification');
+const sendEmail = require('../utils/sendMail');
 
 // @desc    Send Connection Request
 // @route   POST /api/connections/request/:id
@@ -29,12 +30,19 @@ const sendRequest = async (req, res) => {
 
         // ✅ NOTIFICATION HERE (INSIDE TRY BLOCK)
         await Notification.create({
-    receiver: targetUser._id,
-    sender: currentUser._id,
-    type: "CONNECTION",
-    status: "PENDING",
-    message: `${currentUser.name} sent you a connection request`
-});
+            receiver: targetUser._id,
+            sender: currentUser._id,
+            type: "CONNECTION",
+            status: "PENDING",
+            message: `${currentUser.name} sent you a connection request`
+        });
+
+        // ✅ EMAIL NOTIFICATION
+        await sendEmail(
+            targetUser.email,
+            "New Connection Request",
+            `${currentUser.name} sent you a connection request on Startives`
+        );
 
         res.json({ success: true, message: 'Request sent' });
 
@@ -49,7 +57,7 @@ const acceptRequest = async (req, res) => {
     try {
         const requesterId = req.params.id; // Jisne request bheji thi
         const currentUser = await User.findById(req.user._id); // Main (Accept karne wala)
-        const requesterUser = await User.findById(requesterId); 
+        const requesterUser = await User.findById(requesterId);
 
         if (!currentUser || !requesterUser) return res.status(404).json({ message: 'User not found' });
 
@@ -72,23 +80,31 @@ const acceptRequest = async (req, res) => {
         await currentUser.save();
         await requesterUser.save()
 
-// 🔥 1️⃣ Remove old pending notification
-await Notification.deleteMany({
-    receiver: currentUser._id,
-    sender: requesterUser._id,
-    type: "CONNECTION",
-    status: "PENDING"
-});
+        // 🔥 1️⃣ Remove old pending notification
+        await Notification.deleteMany({
+            receiver: currentUser._id,
+            sender: requesterUser._id,
+            type: "CONNECTION",
+            status: "PENDING"
+        });
 
-await Notification.create({
-    receiver: requesterUser._id, 
-    sender: currentUser._id,
-    type: "CONNECTION",
-    status: "ACCEPTED",
-    message: `${currentUser.name} accepted your connection request`
-});
+        await Notification.create({
+            receiver: requesterUser._id,
+            sender: currentUser._id,
+            type: "CONNECTION",
+            status: "ACCEPTED",
+            message: `${currentUser.name} accepted your connection request`
+        });
+
+        // ✅ EMAIL NOTIFICATION
+        await sendEmail(
+            requesterUser.email,
+            "Connection Request Accepted",
+            `${currentUser.name} accepted your connection request on Startives`
+        );
 
         res.json({ success: true, message: 'Request accepted' });
+
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -171,5 +187,10 @@ const removeConnection = async (req, res) => {
   }
 };
 
-module.exports = { sendRequest, acceptRequest, getConnections, removeConnection,
-  declineRequest };
+module.exports = {
+  sendRequest,
+  acceptRequest,
+  getConnections,
+  removeConnection,
+  declineRequest
+};
