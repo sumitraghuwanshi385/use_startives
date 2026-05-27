@@ -72,7 +72,7 @@ export default function StoryDetailsPage() {
             md:px-8
             pt-12
             md:pt-16
-            pb-8
+            pb-4
           "
         >
 
@@ -110,11 +110,7 @@ export default function StoryDetailsPage() {
               font-black
               leading-[0.92]
               tracking-[-0.06em]
-              text-transparent
-              bg-clip-text
-              bg-gradient-to-r
-              from-red-400
-              to-blue-400
+              text-white
               max-w-5xl
             "
           >
@@ -158,7 +154,8 @@ export default function StoryDetailsPage() {
                   text-transparent
                   bg-clip-text
                   bg-gradient-to-r
-                  from-red-400
+                  from-red-300
+                  via-red-400
                   to-blue-400
                 "
               >
@@ -188,7 +185,8 @@ export default function StoryDetailsPage() {
                     text-transparent
                     bg-clip-text
                     bg-gradient-to-r
-                    from-red-400
+                    from-red-300
+                    via-red-400
                     to-blue-400
                   "
                 >
@@ -203,10 +201,7 @@ export default function StoryDetailsPage() {
       </section>
 
       {/* MAIN */}
-      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-5 pb-10">
-
-        {/* SINGLE DIVIDER */}
-        <div className="w-full h-px bg-white/10 mb-8" />
+      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-1 pb-10">
 
         {/* FOUNDER */}
         <div
