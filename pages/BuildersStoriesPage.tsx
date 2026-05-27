@@ -17,16 +17,17 @@ export default function BuildersStoriesPage() {
       <section
         className="
           relative
-          pt-10 md:pt-14
+          pt-8 md:pt-10
           pb-10 md:pb-14
           overflow-hidden
           border-b
           border-[var(--border-primary)]
         "
       >
-        {/* BACKGROUND GLOW */}
+        {/* BACKGROUND */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
 
+          {/* MAIN RED BLUE GLOW */}
           <div
             className="
               absolute
@@ -37,46 +38,47 @@ export default function BuildersStoriesPage() {
               h-[850px]
               rounded-full
               blur-3xl
-              opacity-[0.14]
+              opacity-[0.12]
               bg-gradient-to-br
-              from-red-600
-              via-blue-500
-              to-cyan-400
+              from-red-500
+              to-blue-500
             "
           />
 
+          {/* RED GLOW */}
+          <div
+            className="
+              absolute
+              bottom-[-80px]
+              left-[-80px]
+              w-[220px]
+              h-[220px]
+              rounded-full
+              blur-3xl
+              opacity-15
+              bg-red-500
+            "
+          />
+
+          {/* BLUE GLOW */}
           <div
             className="
               absolute
               top-20
-              right-[-120px]
-              w-[280px]
-              h-[280px]
+              right-[-90px]
+              w-[220px]
+              h-[220px]
               rounded-full
               blur-3xl
-              opacity-20
+              opacity-15
               bg-blue-500
-            "
-          />
-
-          <div
-            className="
-              absolute
-              bottom-0
-              left-[-100px]
-              w-[240px]
-              h-[240px]
-              rounded-full
-              blur-3xl
-              opacity-20
-              bg-red-500
             "
           />
         </div>
 
         <div className="max-w-7xl mx-auto px-5 md:px-8 relative z-10">
 
-          {/* TOP TEXT */}
+          {/* TEXT */}
           <div className="max-w-4xl">
 
             {/* PILL */}
@@ -89,11 +91,10 @@ export default function BuildersStoriesPage() {
                 py-2
                 rounded-full
                 border
-                border-white/10
+                border-[var(--border-primary)]
                 bg-[var(--component-background)]
                 backdrop-blur-xl
-                shadow-[0_10px_40px_rgba(37,99,235,0.15)]
-                mb-2
+                mb-4
               "
             >
               <div
@@ -104,7 +105,6 @@ export default function BuildersStoriesPage() {
                   bg-gradient-to-r
                   from-red-500
                   to-blue-500
-                  animate-pulse
                 "
               />
 
@@ -144,8 +144,7 @@ export default function BuildersStoriesPage() {
                 className="
                   bg-gradient-to-r
                   from-red-500
-                  via-blue-500
-                  to-cyan-400
+                  to-blue-500
                   bg-clip-text
                   text-transparent
                 "
@@ -167,30 +166,28 @@ export default function BuildersStoriesPage() {
               "
             >
               Deep startup case studies covering SaaS growth,
-              revenue, distribution, acquisition strategies,
-              failures, and how internet startups actually scaled.
+              revenue, acquisition strategies, failures,
+              distribution, and how internet startups scaled.
             </p>
 
             {/* MINI STATS */}
-            <div className="flex flex-wrap gap-3 mt-6">
+            <div className="flex flex-wrap gap-2 mt-5">
 
               {/* CARD */}
               <div
                 className="
-                  px-4
-                  py-3
-                  rounded-2xl
+                  px-3.5
+                  py-2.5
+                  rounded-xl
                   bg-[var(--component-background)]
                   border
                   border-[var(--border-primary)]
-                  backdrop-blur-xl
-                  shadow-[0_10px_30px_rgba(0,0,0,0.08)]
-                  min-w-[120px]
+                  min-w-[110px]
                 "
               >
                 <p
                   className="
-                    text-xl
+                    text-lg
                     font-black
                     bg-gradient-to-r
                     from-red-500
@@ -204,9 +201,9 @@ export default function BuildersStoriesPage() {
 
                 <p
                   className="
-                    text-[11px]
+                    text-[10px]
                     text-[var(--text-secondary)]
-                    mt-1
+                    mt-0.5
                     font-medium
                   "
                 >
@@ -217,24 +214,22 @@ export default function BuildersStoriesPage() {
               {/* CARD */}
               <div
                 className="
-                  px-4
-                  py-3
-                  rounded-2xl
+                  px-3.5
+                  py-2.5
+                  rounded-xl
                   bg-[var(--component-background)]
                   border
                   border-[var(--border-primary)]
-                  backdrop-blur-xl
-                  shadow-[0_10px_30px_rgba(0,0,0,0.08)]
-                  min-w-[120px]
+                  min-w-[115px]
                 "
               >
                 <p
                   className="
-                    text-xl
+                    text-lg
                     font-black
                     bg-gradient-to-r
-                    from-blue-500
-                    to-cyan-400
+                    from-red-500
+                    to-blue-500
                     bg-clip-text
                     text-transparent
                   "
@@ -244,33 +239,31 @@ export default function BuildersStoriesPage() {
 
                 <p
                   className="
-                    text-[11px]
+                    text-[10px]
                     text-[var(--text-secondary)]
-                    mt-1
+                    mt-0.5
                     font-medium
                   "
                 >
-                  Combined Revenue
+                  Revenue Tracked
                 </p>
               </div>
 
               {/* CARD */}
               <div
                 className="
-                  px-4
-                  py-3
-                  rounded-2xl
+                  px-3.5
+                  py-2.5
+                  rounded-xl
                   bg-[var(--component-background)]
                   border
                   border-[var(--border-primary)]
-                  backdrop-blur-xl
-                  shadow-[0_10px_30px_rgba(0,0,0,0.08)]
-                  min-w-[150px]
+                  min-w-[135px]
                 "
               >
                 <p
                   className="
-                    text-xl
+                    text-lg
                     font-black
                     bg-gradient-to-r
                     from-red-500
@@ -279,14 +272,14 @@ export default function BuildersStoriesPage() {
                     text-transparent
                   "
                 >
-                  Bootstrapped
+                  Bootstrap
                 </p>
 
                 <p
                   className="
-                    text-[11px]
+                    text-[10px]
                     text-[var(--text-secondary)]
-                    mt-1
+                    mt-0.5
                     font-medium
                   "
                 >
