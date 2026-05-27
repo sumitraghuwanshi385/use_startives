@@ -41,6 +41,8 @@ import { useAppContext } from './contexts/AppContext';
 import FloatingActionMenu from './components/FloatingActionMenu';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GlobalGlobe from './pages/GlobalGlobe';
+import BuildersStoriesPage from "./pages/BuildersStoriesPage";
+import StoryDetailsPage from "./pages/StoryDetailsPage";
 
 interface PageTitleProps {
   title: string;
@@ -156,6 +158,8 @@ useEffect(() => {
           <Route path="/new-password" element={<NewPasswordPage />} />
           <Route path="/contact-us" element={<WithPageContainer><ContactUsPage /></WithPageContainer>} />
           <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
+<Route path="/builders" element={<BuildersStoriesPage />} />
+<Route path="/builders/:id" element={<StoryDetailsPage />} />
 
 
           <Route path="/dashboard" element={
