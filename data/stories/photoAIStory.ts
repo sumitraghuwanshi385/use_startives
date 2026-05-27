@@ -28,7 +28,7 @@ export const photoAIStory = {
   company: "PhotoAI",
 
   website:
-    "https://i.postimg.cc/KzsKmgpB/Screenshot-2026-05-27-18-37-18-24-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
+    "https://photoai.com",
 
   productHunt:
     "https://www.producthunt.com/products/photo-ai",
@@ -46,10 +46,10 @@ export const photoAIStory = {
   readingTime: "18 min read",
 
   image:
-    "https://ibb.co/d0k8X3RT",
+    "https://i.postimg.cc/KzsKmgpB/Screenshot-2026-05-27-18-37-18-24-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://pbs.twimg.com/profile_images/1707065565637339136/rK8sJw5J_400x400.jpg",
+    "https://i.postimg.cc/j20WFn8Z/20260527-230613.jpg",
 
   summary:
     "Danny Postma transformed PhotoAI from a simple AI portrait generator into one of the internet’s most recognized bootstrapped AI startups by leveraging build-in-public marketing, creator-focused distribution, viral sharing loops, Product Hunt momentum, and rapid execution during the generative AI boom.",
