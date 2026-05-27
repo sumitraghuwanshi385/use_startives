@@ -9,52 +9,23 @@ export default function StoryDetailsPage() {
 
   if (!story) {
     return (
-      <div
-        className="
-          min-h-screen
-          flex
-          items-center
-          justify-center
-          bg-[var(--background-primary)]
-          text-[var(--text-primary)]
-        "
-      >
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background-primary)] text-[var(--text-primary)]">
         Story not found
       </div>
     );
   }
 
   return (
-    <div
-      className="
-        bg-[var(--background-primary)]
-        text-[var(--text-primary)]
-        transition-colors
-        duration-300
-      "
-    >
+    <div className="bg-[var(--background-primary)] text-[var(--text-primary)] transition-colors duration-300">
 
       {/* HERO */}
-      <section
-        className="
-          relative
-          min-h-[760px]
-          md:min-h-[900px]
-          overflow-hidden
-        "
-      >
+      <section className="relative min-h-[760px] md:min-h-[900px] overflow-hidden">
 
         {/* BG IMAGE */}
         <img
           src={story.image}
           alt={story.title}
-          className="
-            absolute
-            inset-0
-            w-full
-            h-full
-            object-cover
-          "
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
         {/* OVERLAY */}
@@ -76,7 +47,7 @@ export default function StoryDetailsPage() {
         <div
           className="
             absolute
-            top-[-150px]
+            top-[-140px]
             left-1/2
             -translate-x-1/2
             w-[700px]
@@ -100,7 +71,7 @@ export default function StoryDetailsPage() {
             px-5
             md:px-8
             pt-12
-            md:pt-16
+            md:pt-14
             pb-16
           "
         >
@@ -185,9 +156,9 @@ export default function StoryDetailsPage() {
               text-transparent
               bg-clip-text
               bg-gradient-to-r
-              from-red-300
+              from-red-400
               via-white
-              to-blue-300
+              to-blue-400
               max-w-5xl
             "
           >
@@ -226,16 +197,21 @@ export default function StoryDetailsPage() {
                   text-[11px]
                   md:text-[12px]
                   font-bold
-                  text-transparent
-                  bg-clip-text
-                  bg-gradient-to-r
-                  from-red-500
-                  via-pink-400
-                  to-blue-500
                   shadow-[0_8px_25px_rgba(0,0,0,0.25)]
                 "
               >
-                {item}
+                <span
+                  className="
+                    text-transparent
+                    bg-clip-text
+                    bg-gradient-to-r
+                    from-red-500
+                    via-pink-400
+                    to-blue-500
+                  "
+                >
+                  {item}
+                </span>
               </div>
 
             ))}
@@ -248,159 +224,6 @@ export default function StoryDetailsPage() {
       {/* MAIN */}
       <section className="max-w-6xl mx-auto px-5 md:px-8 py-10">
 
-        {/* QUICK STATS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-
-          <div
-            className="
-              rounded-3xl
-              border
-              border-[var(--border-primary)]
-              bg-[var(--component-background)]
-              p-5
-            "
-          >
-
-            <p className="text-sm text-[var(--text-secondary)]">
-              Revenue
-            </p>
-
-            <h3
-              className="
-                mt-2
-                text-2xl
-                font-black
-                bg-gradient-to-r
-                from-red-500
-                to-blue-500
-                bg-clip-text
-                text-transparent
-              "
-            >
-              {story.revenue}
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              PhotoAI rapidly monetized through subscriptions,
-              creator-focused AI tools, and viral internet growth
-              driven by social sharing and online identity trends.
-            </p>
-
-          </div>
-
-          <div
-            className="
-              rounded-3xl
-              border
-              border-[var(--border-primary)]
-              bg-[var(--component-background)]
-              p-5
-            "
-          >
-
-            <p className="text-sm text-[var(--text-secondary)]">
-              Growth
-            </p>
-
-            <h3
-              className="
-                mt-2
-                text-2xl
-                font-black
-                bg-gradient-to-r
-                from-red-500
-                to-blue-500
-                bg-clip-text
-                text-transparent
-              "
-            >
-              {story.growth}
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              The platform spread globally through creator communities,
-              startup founders, influencers, and users wanting
-              professional AI-generated profile photos instantly.
-            </p>
-
-          </div>
-
-          <div
-            className="
-              rounded-3xl
-              border
-              border-[var(--border-primary)]
-              bg-[var(--component-background)]
-              p-5
-            "
-          >
-
-            <p className="text-sm text-[var(--text-secondary)]">
-              Timeline
-            </p>
-
-            <h3
-              className="
-                mt-2
-                text-2xl
-                font-black
-                bg-gradient-to-r
-                from-red-500
-                to-blue-500
-                bg-clip-text
-                text-transparent
-              "
-            >
-              {story.timeline}
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              Danny executed quickly during peak generative AI momentum
-              and captured massive internet attention before
-              competitors saturated the market.
-            </p>
-
-          </div>
-
-          <div
-            className="
-              rounded-3xl
-              border
-              border-[var(--border-primary)]
-              bg-[var(--component-background)]
-              p-5
-            "
-          >
-
-            <p className="text-sm text-[var(--text-secondary)]">
-              Founded
-            </p>
-
-            <h3
-              className="
-                mt-2
-                text-2xl
-                font-black
-                bg-gradient-to-r
-                from-red-500
-                to-blue-500
-                bg-clip-text
-                text-transparent
-              "
-            >
-              {story.foundedYear}
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-              PhotoAI launched when creators and internet professionals
-              increasingly needed strong personal branding
-              and visually polished online identity.
-            </p>
-
-          </div>
-
-        </div>
-
         {/* FOUNDER */}
         <div
           className="
@@ -411,6 +234,7 @@ export default function StoryDetailsPage() {
             p-5
             md:p-6
             max-w-4xl
+            mt-2
           "
         >
 
@@ -428,13 +252,11 @@ export default function StoryDetailsPage() {
                 shrink-0
               "
             >
-
               <img
                 src={story.image}
                 alt={story.founder}
                 className="w-full h-full object-cover"
               />
-
             </div>
 
             {/* INFO */}
@@ -475,12 +297,15 @@ export default function StoryDetailsPage() {
                 <a
                   href={story.founderTwitter}
                   target="_blank"
+                  rel="noreferrer"
                   className="
                     px-4
                     py-2
                     rounded-full
                     border
                     border-[var(--border-primary)]
+                    text-white
+                    hover:border-red-500/40
                     transition-all
                   "
                 >
@@ -490,12 +315,15 @@ export default function StoryDetailsPage() {
                 <a
                   href={story.founderLinkedin}
                   target="_blank"
+                  rel="noreferrer"
                   className="
                     px-4
                     py-2
                     rounded-full
                     border
                     border-[var(--border-primary)]
+                    text-white
+                    hover:border-blue-500/40
                     transition-all
                   "
                 >
@@ -505,12 +333,15 @@ export default function StoryDetailsPage() {
                 <a
                   href={story.founderWebsite}
                   target="_blank"
+                  rel="noreferrer"
                   className="
                     px-4
                     py-2
                     rounded-full
                     border
                     border-[var(--border-primary)]
+                    text-white
+                    hover:border-purple-500/40
                     transition-all
                   "
                 >
@@ -525,6 +356,7 @@ export default function StoryDetailsPage() {
                 <a
                   href={story.website}
                   target="_blank"
+                  rel="noreferrer"
                   className="
                     inline-flex
                     items-center
@@ -554,154 +386,156 @@ export default function StoryDetailsPage() {
 
         </div>
 
-        {/* MONETIZATION */}
-        <div
-          className="
-            rounded-[28px]
-            border
-            border-[var(--border-primary)]
-            bg-[var(--component-background)]
-            p-6
-            mt-16
-            max-w-4xl
-          "
-        >
+        {/* QUICK STATS */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 mb-12">
 
-          <div className="flex items-center gap-3 mb-6">
-
-            <div
-              className="
-                w-10
-                h-[3px]
-                rounded-full
-                bg-gradient-to-r
-                from-red-500
-                to-blue-500
-              "
-            />
-
-            <h3 className="text-2xl font-black">
-              Monetization Model
-            </h3>
-
-          </div>
-
-          <p
+          <div
             className="
-              text-[15px]
-              md:text-[16px]
-              leading-8
-              text-[var(--text-secondary)]
+              rounded-3xl
+              border
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              p-5
             "
           >
-            PhotoAI monetized primarily through subscription-based pricing
-            focused on creators, founders, professionals, and social media users.
-            Users paid for premium AI generations, faster rendering,
-            additional styles, creator packs, and advanced output quality.
-            This recurring revenue structure helped the company scale
-            aggressively while maintaining a lean bootstrapped operation.
-          </p>
+            <p className="text-sm text-[var(--text-secondary)]">
+              Revenue
+            </p>
 
-        </div>
-
-        {/* GROWTH CHANNELS */}
-        <div
-          className="
-            rounded-[28px]
-            border
-            border-[var(--border-primary)]
-            bg-[var(--component-background)]
-            p-6
-            mt-10
-            max-w-4xl
-          "
-        >
-
-          <div className="flex items-center gap-3 mb-8">
-
-            <div
+            <h3
               className="
-                w-10
-                h-[3px]
-                rounded-full
+                mt-2
+                text-2xl
+                font-black
+                text-transparent
+                bg-clip-text
                 bg-gradient-to-r
                 from-red-500
                 to-blue-500
               "
-            />
-
-            <h3 className="text-2xl font-black">
-              Growth Channels
+            >
+              {story.revenue}
             </h3>
+
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              PhotoAI monetized aggressively through recurring subscriptions,
+              creator-focused AI tooling, and premium internet identity products.
+            </p>
 
           </div>
 
-          <div className="grid md:grid-cols-2 gap-5">
+          <div
+            className="
+              rounded-3xl
+              border
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              p-5
+            "
+          >
 
-            {story.growthChannels?.map((item: string, index: number) => (
+            <p className="text-sm text-[var(--text-secondary)]">
+              Growth
+            </p>
 
-              <div
-                key={index}
-                className="
-                  rounded-2xl
-                  border
-                  border-[var(--border-primary)]
-                  p-5
-                  bg-[var(--background-secondary)]
-                "
-              >
+            <h3
+              className="
+                mt-2
+                text-2xl
+                font-black
+                text-transparent
+                bg-clip-text
+                bg-gradient-to-r
+                from-red-500
+                to-blue-500
+              "
+            >
+              {story.growth}
+            </h3>
 
-                <div className="flex items-center gap-3 mb-3">
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              The platform spread globally through creator communities,
+              startup founders, influencers, and social media virality.
+            </p>
 
-                  <div
-                    className="
-                      w-2
-                      h-2
-                      rounded-full
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                    "
-                  />
+          </div>
 
-                  <h4
-                    className="
-                      font-semibold
-                      text-transparent
-                      bg-clip-text
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                    "
-                  >
-                    {item}
-                  </h4>
+          <div
+            className="
+              rounded-3xl
+              border
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              p-5
+            "
+          >
 
-                </div>
+            <p className="text-sm text-[var(--text-secondary)]">
+              Timeline
+            </p>
 
-                <p
-                  className="
-                    text-sm
-                    leading-7
-                    text-[var(--text-secondary)]
-                  "
-                >
-                  This distribution channel played a major role
-                  in helping PhotoAI spread across startup communities,
-                  creator ecosystems, social media audiences,
-                  and internet-native growth loops globally.
-                </p>
+            <h3
+              className="
+                mt-2
+                text-2xl
+                font-black
+                text-transparent
+                bg-clip-text
+                bg-gradient-to-r
+                from-red-500
+                to-blue-500
+              "
+            >
+              {story.timeline}
+            </h3>
 
-              </div>
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              Danny launched quickly during the AI boom and captured
+              global internet attention before competitors scaled.
+            </p>
 
-            ))}
+          </div>
+
+          <div
+            className="
+              rounded-3xl
+              border
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              p-5
+            "
+          >
+
+            <p className="text-sm text-[var(--text-secondary)]">
+              Founded
+            </p>
+
+            <h3
+              className="
+                mt-2
+                text-2xl
+                font-black
+                text-transparent
+                bg-clip-text
+                bg-gradient-to-r
+                from-red-500
+                to-blue-500
+              "
+            >
+              {story.foundedYear}
+            </h3>
+
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              The startup emerged during peak AI adoption
+              when internet identity became increasingly important.
+            </p>
 
           </div>
 
         </div>
 
         {/* STORY */}
-        <div className="max-w-4xl mt-16">
+        <div className="max-w-4xl">
 
           <div className="space-y-16">
 
