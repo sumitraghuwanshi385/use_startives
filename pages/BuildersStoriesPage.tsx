@@ -272,7 +272,7 @@ export default function BuildersStoriesPage() {
                     text-transparent
                   "
                 >
-                  Bootstrap
+                  Bootstrapped
                 </p>
 
                 <p
