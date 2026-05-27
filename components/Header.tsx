@@ -190,7 +190,8 @@ const handleBellClick = async () => {
   const mobileMenuLinks = [
     { name: 'Dashboard', path: '/dashboard' }, 
     { name: 'Discover Projects', path: '/projects' },
-    { name: 'Asset Shop', path: '/blueprint' },
+{ name: 'BuildersStories', path: '/builders-stories' },
+    { name: 'Marketplace', path: '/blueprint' },
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
 { name: 'Starverse', path: '/globe' },
