@@ -209,8 +209,8 @@ export default function StoryDetailsPage() {
             bg-[var(--component-background)]
             rounded-[32px]
             p-5
-            md:p-10
-            max-w-5xl
+            md:p-7
+            max-w-4xl
             mx-auto
           "
         >
@@ -240,7 +240,7 @@ export default function StoryDetailsPage() {
               "
             >
               <img
-                src={story.image}
+                src={story.founderImage || story.image}
                 alt={story.founder}
                 className="w-full h-full object-cover"
               />
@@ -291,7 +291,7 @@ export default function StoryDetailsPage() {
                     rounded-full
                     border
                     border-[var(--border-primary)]
-                    text-white
+                    text-[var(--text-primary)]
                     hover:border-red-500/40
                     transition-all
                   "
@@ -309,7 +309,7 @@ export default function StoryDetailsPage() {
                     rounded-full
                     border
                     border-[var(--border-primary)]
-                    text-white
+                    text-[var(--text-primary)]
                     hover:border-blue-500/40
                     transition-all
                   "
@@ -327,7 +327,7 @@ export default function StoryDetailsPage() {
                     rounded-full
                     border
                     border-[var(--border-primary)]
-                    text-white
+                    text-[var(--text-primary)]
                     hover:border-purple-500/40
                     transition-all
                   "
