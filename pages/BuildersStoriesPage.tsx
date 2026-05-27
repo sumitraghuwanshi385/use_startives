@@ -27,48 +27,51 @@ export default function BuildersStoriesPage() {
           <div
             className="
               absolute
-              top-[-200px]
+              top-[-220px]
               left-1/2
               -translate-x-1/2
-              w-[700px]
-              h-[700px]
+              w-[750px]
+              h-[750px]
               rounded-full
               blur-3xl
               opacity-20
               bg-gradient-to-br
-              from-green-500
-              via-emerald-400
-              to-cyan-500
+              from-red-500
+              via-fuchsia-500
+              to-blue-500
             "
           />
         </div>
 
         <div className="max-w-7xl mx-auto px-5 md:px-8 relative z-10">
-          
+
           {/* TEXT */}
           <div className="max-w-4xl">
-            
+
+            {/* PILL */}
             <div
               className="
                 inline-flex
                 items-center
                 gap-2
-                px-4
+                px-5
                 py-2
                 rounded-full
-                border border-green-500/20
-                bg-green-500/10
-                backdrop-blur-md
-                mb-5
+                border
+                border-red-500/20
+                bg-white/5
+                backdrop-blur-xl
+                shadow-[0_0_30px_rgba(239,68,68,0.12)]
+                mb-3
               "
             >
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
 
               <p
                 className="
                   uppercase
-                  tracking-[0.28em]
-                  text-green-400
+                  tracking-[0.24em]
+                  text-red-400
                   text-[10px]
                   md:text-xs
                   font-bold
@@ -78,6 +81,7 @@ export default function BuildersStoriesPage() {
               </p>
             </div>
 
+            {/* HEADER */}
             <h1
               className="
                 text-4xl
@@ -94,9 +98,9 @@ export default function BuildersStoriesPage() {
               <span
                 className="
                   bg-gradient-to-r
-                  from-green-400
-                  via-emerald-300
-                  to-cyan-400
+                  from-red-500
+                  via-fuchsia-400
+                  to-blue-500
                   bg-clip-text
                   text-transparent
                 "
@@ -105,10 +109,11 @@ export default function BuildersStoriesPage() {
               </span>
             </h1>
 
+            {/* DESCRIPTION */}
             <p
               className="
                 mt-4
-                md:mt-5
+                md:mt-4
                 text-sm
                 md:text-lg
                 text-[var(--text-secondary)]
@@ -124,17 +129,19 @@ export default function BuildersStoriesPage() {
 
             {/* STATS */}
             <div className="flex flex-wrap gap-3 mt-7">
-              
+
               <div
                 className="
                   px-5 py-3
-                  rounded-2xl
+                  rounded-3xl
                   bg-[var(--component-background)]
                   border border-[var(--border-primary)]
-                  backdrop-blur-md
+                  backdrop-blur-xl
+                  shadow-lg
                 "
               >
                 <p className="text-2xl font-black">50+</p>
+
                 <p className="text-xs text-[var(--text-secondary)] mt-1">
                   Founder Stories
                 </p>
@@ -143,13 +150,15 @@ export default function BuildersStoriesPage() {
               <div
                 className="
                   px-5 py-3
-                  rounded-2xl
+                  rounded-3xl
                   bg-[var(--component-background)]
                   border border-[var(--border-primary)]
-                  backdrop-blur-md
+                  backdrop-blur-xl
+                  shadow-lg
                 "
               >
                 <p className="text-2xl font-black">$10M+</p>
+
                 <p className="text-xs text-[var(--text-secondary)] mt-1">
                   Combined Revenue
                 </p>
@@ -158,13 +167,15 @@ export default function BuildersStoriesPage() {
               <div
                 className="
                   px-5 py-3
-                  rounded-2xl
+                  rounded-3xl
                   bg-[var(--component-background)]
                   border border-[var(--border-primary)]
-                  backdrop-blur-md
+                  backdrop-blur-xl
+                  shadow-lg
                 "
               >
                 <p className="text-2xl font-black">Bootstrapped</p>
+
                 <p className="text-xs text-[var(--text-secondary)] mt-1">
                   Real Internet Businesses
                 </p>
