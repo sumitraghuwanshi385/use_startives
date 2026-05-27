@@ -37,14 +37,13 @@ export default function StoryDetailsPage() {
       <section
         className="
           relative
-          h-auto
-          min-h-[760px]
-          md:min-h-[880px]
+          min-h-[720px]
+          md:min-h-[860px]
           overflow-hidden
         "
       >
 
-        {/* BG IMAGE */}
+        {/* IMAGE */}
         <img
           src={story.image}
           alt={story.title}
@@ -57,15 +56,16 @@ export default function StoryDetailsPage() {
           "
         />
 
-        {/* OVERLAYS */}
-        <div className="absolute inset-0 bg-black/65" />
+        {/* DARK OVERLAY */}
+        <div className="absolute inset-0 bg-black/70" />
 
+        {/* GRADIENT */}
         <div
           className="
             absolute
             inset-0
             bg-gradient-to-b
-            from-black/40
+            from-black/30
             via-black/55
             to-[var(--background-primary)]
           "
@@ -75,17 +75,16 @@ export default function StoryDetailsPage() {
         <div
           className="
             absolute
-            top-0
+            top-[-120px]
             left-1/2
             -translate-x-1/2
-            w-[700px]
-            h-[700px]
+            w-[650px]
+            h-[650px]
             rounded-full
             blur-3xl
             opacity-20
             bg-gradient-to-br
             from-red-500
-            via-purple-500
             to-blue-500
           "
         />
@@ -101,11 +100,11 @@ export default function StoryDetailsPage() {
             md:px-8
             pt-28
             md:pt-36
-            pb-20
+            pb-16
           "
         >
 
-          {/* CATEGORY */}
+          {/* GLASS CATEGORY */}
           <div
             className="
               inline-flex
@@ -115,9 +114,10 @@ export default function StoryDetailsPage() {
               py-2
               rounded-full
               border
-              border-white/10
-              bg-white/10
-              backdrop-blur-xl
+              border-white/20
+              bg-white/15
+              backdrop-blur-2xl
+              shadow-[0_10px_40px_rgba(0,0,0,0.25)]
               mb-6
             "
           >
@@ -144,14 +144,15 @@ export default function StoryDetailsPage() {
             >
               {story.category}
             </span>
+
           </div>
 
           {/* TITLE */}
           <h1
             className="
-              text-[42px]
-              sm:text-[54px]
-              md:text-[78px]
+              text-[34px]
+              sm:text-[52px]
+              md:text-[72px]
               font-black
               leading-[0.92]
               tracking-[-0.06em]
@@ -167,10 +168,10 @@ export default function StoryDetailsPage() {
             className="
               mt-6
               text-[17px]
-              md:text-[22px]
-              text-white/80
+              md:text-[21px]
+              text-white/85
               max-w-3xl
-              leading-[1.8]
+              leading-[1.9]
             "
           >
             {story.summary}
@@ -180,22 +181,27 @@ export default function StoryDetailsPage() {
           <div className="flex flex-wrap gap-3 mt-8">
 
             {story.stats.map((item: string, index: number) => (
+
               <div
                 key={index}
                 className="
-                  px-5
-                  py-2.5
+                  px-4
+                  py-2
                   rounded-full
-                  bg-white/10
+                  bg-white/15
                   border
-                  border-white/10
-                  backdrop-blur-xl
-                  text-sm
+                  border-white/20
+                  backdrop-blur-2xl
+                  shadow-[0_8px_30px_rgba(0,0,0,0.18)]
+                  text-[13px]
+                  md:text-sm
+                  font-medium
                   text-white
                 "
               >
                 {item}
               </div>
+
             ))}
 
           </div>
@@ -204,7 +210,7 @@ export default function StoryDetailsPage() {
       </section>
 
       {/* MAIN */}
-      <section className="max-w-6xl mx-auto px-5 md:px-8 py-14">
+      <section className="max-w-6xl mx-auto px-5 md:px-8 py-10">
 
         {/* FOUNDER CARD */}
         <div
@@ -212,9 +218,10 @@ export default function StoryDetailsPage() {
             border
             border-[var(--border-primary)]
             bg-[var(--component-background)]
-            rounded-[32px]
+            rounded-[28px]
             p-5
-            md:p-7
+            md:p-6
+            max-w-4xl
           "
         >
 
@@ -225,18 +232,18 @@ export default function StoryDetailsPage() {
               md:flex-row
               md:items-start
               md:justify-between
-              gap-8
+              gap-6
             "
           >
 
             {/* LEFT */}
-            <div className="flex gap-5">
+            <div className="flex gap-4">
 
               {/* DP */}
               <div
                 className="
-                  w-20
-                  h-20
+                  w-16
+                  h-16
                   rounded-full
                   overflow-hidden
                   border
@@ -254,14 +261,19 @@ export default function StoryDetailsPage() {
               {/* INFO */}
               <div>
 
-                <p className="text-sm text-[var(--text-secondary)]">
+                <p
+                  className="
+                    text-sm
+                    text-[var(--text-secondary)]
+                  "
+                >
                   Founder
                 </p>
 
                 <h2
                   className="
                     text-3xl
-                    md:text-5xl
+                    md:text-4xl
                     font-black
                     tracking-[-0.05em]
                     mt-1
@@ -272,26 +284,26 @@ export default function StoryDetailsPage() {
 
                 <p
                   className="
-                    mt-4
+                    mt-3
                     text-[15px]
-                    md:text-[17px]
+                    md:text-[16px]
                     leading-8
                     text-[var(--text-secondary)]
-                    max-w-3xl
+                    max-w-2xl
                   "
                 >
                   {story.founderBio}
                 </p>
 
                 {/* SOCIALS */}
-                <div className="flex flex-wrap gap-3 mt-6">
+                <div className="flex flex-wrap gap-3 mt-5">
 
                   <a
                     href={story.founderTwitter}
                     target="_blank"
                     className="
-                      px-5
-                      py-2.5
+                      px-4
+                      py-2
                       rounded-full
                       border
                       border-[var(--border-primary)]
@@ -307,8 +319,8 @@ export default function StoryDetailsPage() {
                     href={story.founderLinkedin}
                     target="_blank"
                     className="
-                      px-5
-                      py-2.5
+                      px-4
+                      py-2
                       rounded-full
                       border
                       border-[var(--border-primary)]
@@ -324,8 +336,8 @@ export default function StoryDetailsPage() {
                     href={story.founderWebsite}
                     target="_blank"
                     className="
-                      px-5
-                      py-2.5
+                      px-4
+                      py-2
                       rounded-full
                       border
                       border-[var(--border-primary)]
@@ -339,37 +351,36 @@ export default function StoryDetailsPage() {
 
                 </div>
 
+                {/* BUTTON */}
+                <div className="mt-6">
+
+                  <a
+                    href={story.website}
+                    target="_blank"
+                    className="
+                      inline-flex
+                      items-center
+                      justify-center
+                      px-6
+                      py-3
+                      rounded-full
+                      bg-gradient-to-r
+                      from-red-500
+                      to-blue-500
+                      text-white
+                      font-semibold
+                      text-sm
+                      hover:scale-[1.03]
+                      transition-all
+                      shadow-lg
+                    "
+                  >
+                    Visit Website
+                  </a>
+
+                </div>
+
               </div>
-
-            </div>
-
-            {/* BUTTON */}
-            <div>
-
-              <a
-                href={story.website}
-                target="_blank"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  px-7
-                  py-3.5
-                  rounded-full
-                  bg-gradient-to-r
-                  from-red-500
-                  via-pink-500
-                  to-blue-500
-                  text-white
-                  font-semibold
-                  text-sm
-                  hover:scale-[1.03]
-                  transition-all
-                  shadow-lg
-                "
-              >
-                Visit Website
-              </a>
 
             </div>
 
@@ -377,32 +388,8 @@ export default function StoryDetailsPage() {
 
         </div>
 
-        {/* DIVIDER */}
-        <div className="my-14 flex items-center gap-4">
-
-          <div
-            className="
-              w-16
-              h-[3px]
-              rounded-full
-              bg-gradient-to-r
-              from-red-500
-              to-blue-500
-            "
-          />
-
-          <div
-            className="
-              flex-1
-              h-px
-              bg-[var(--border-primary)]
-            "
-          />
-
-        </div>
-
         {/* STORY */}
-        <div className="max-w-4xl">
+        <div className="max-w-4xl mt-16">
 
           <div className="space-y-16">
 
@@ -459,6 +446,7 @@ export default function StoryDetailsPage() {
         </div>
 
       </section>
+
     </div>
   );
 }
