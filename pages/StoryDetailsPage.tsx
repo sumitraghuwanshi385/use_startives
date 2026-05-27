@@ -19,7 +19,7 @@ export default function StoryDetailsPage() {
     <div className="bg-[var(--background-primary)] text-[var(--text-primary)] transition-colors duration-300">
 
       {/* HERO */}
-      <section className="relative min-h-[760px] md:min-h-[920px] overflow-hidden">
+      <section className="relative min-h-[720px] md:min-h-[860px] overflow-hidden">
 
         {/* BG IMAGE */}
         <img
@@ -54,7 +54,7 @@ export default function StoryDetailsPage() {
             h-[700px]
             rounded-full
             blur-3xl
-            opacity-20
+            opacity-15
             bg-gradient-to-br
             from-red-500
             to-blue-500
@@ -72,13 +72,13 @@ export default function StoryDetailsPage() {
             md:px-8
             pt-12
             md:pt-16
-            pb-16
+            pb-8
           "
         >
 
           {/* BACK BUTTON */}
           <Link
-            to="/builderstories"
+            to="/builders"
             className="
               inline-flex
               items-center
@@ -94,7 +94,7 @@ export default function StoryDetailsPage() {
               text-sm
               hover:bg-white/15
               transition-all
-              mb-6
+              mb-5
             "
           >
             <ArrowLeft size={16} />
@@ -106,16 +106,15 @@ export default function StoryDetailsPage() {
             className="
               text-[34px]
               sm:text-[56px]
-              md:text-[78px]
+              md:text-[76px]
               font-black
               leading-[0.92]
               tracking-[-0.06em]
               text-transparent
               bg-clip-text
               bg-gradient-to-r
-              from-red-500
-              via-pink-500
-              to-blue-500
+              from-red-400
+              to-blue-400
               max-w-5xl
             "
           >
@@ -136,8 +135,8 @@ export default function StoryDetailsPage() {
             {story.summary}
           </p>
 
-          {/* CATEGORY + MINI STATS */}
-          <div className="flex flex-wrap gap-2 mt-8">
+          {/* PILLS */}
+          <div className="flex flex-wrap gap-2 mt-7">
 
             {/* CATEGORY */}
             <div
@@ -147,12 +146,11 @@ export default function StoryDetailsPage() {
                 rounded-full
                 bg-white/15
                 border
-                border-white/20
+                border-white/15
                 backdrop-blur-2xl
                 text-[11px]
                 md:text-[12px]
                 font-bold
-                shadow-[0_8px_25px_rgba(0,0,0,0.25)]
               "
             >
               <span
@@ -160,9 +158,8 @@ export default function StoryDetailsPage() {
                   text-transparent
                   bg-clip-text
                   bg-gradient-to-r
-                  from-red-500
-                  via-pink-500
-                  to-blue-500
+                  from-red-400
+                  to-blue-400
                 "
               >
                 {story.category}
@@ -171,7 +168,6 @@ export default function StoryDetailsPage() {
 
             {/* STATS */}
             {story.stats.map((item: string, index: number) => (
-
               <div
                 key={index}
                 className="
@@ -180,12 +176,11 @@ export default function StoryDetailsPage() {
                   rounded-full
                   bg-white/15
                   border
-                  border-white/20
+                  border-white/15
                   backdrop-blur-2xl
                   text-[11px]
                   md:text-[12px]
                   font-bold
-                  shadow-[0_8px_25px_rgba(0,0,0,0.25)]
                 "
               >
                 <span
@@ -193,15 +188,13 @@ export default function StoryDetailsPage() {
                     text-transparent
                     bg-clip-text
                     bg-gradient-to-r
-                    from-red-500
-                    via-pink-500
-                    to-blue-500
+                    from-red-400
+                    to-blue-400
                   "
                 >
                   {item}
                 </span>
               </div>
-
             ))}
 
           </div>
@@ -210,10 +203,10 @@ export default function StoryDetailsPage() {
       </section>
 
       {/* MAIN */}
-      <section className="max-w-6xl mx-auto px-5 md:px-8 py-10">
+      <section className="max-w-6xl mx-auto px-5 md:px-8 pt-5 pb-10">
 
-        {/* FULL DIVIDER */}
-        <div className="w-full h-px bg-white/10 mb-12" />
+        {/* SINGLE DIVIDER */}
+        <div className="w-full h-px bg-white/10 mb-8" />
 
         {/* FOUNDER */}
         <div
@@ -388,7 +381,7 @@ export default function StoryDetailsPage() {
         </div>
 
         {/* QUICK STATS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 mb-14">
 
           <div
             className="
