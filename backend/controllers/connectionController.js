@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const Notification = require('../models/Notification');
-const sendEmail = require('../utils/sendMail');
+const sendEmail = require('../utils/sendEmail');
 
 // @desc    Send Connection Request
 // @route   POST /api/connections/request/:id
