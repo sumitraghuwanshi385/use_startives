@@ -38,8 +38,8 @@ export default function StoryDetailsPage() {
       <section
         className="
           relative
-          min-h-[720px]
-          md:min-h-[860px]
+          min-h-[760px]
+          md:min-h-[900px]
           overflow-hidden
         "
       >
@@ -57,7 +57,7 @@ export default function StoryDetailsPage() {
           "
         />
 
-        {/* OVERLAYS */}
+        {/* OVERLAY */}
         <div className="absolute inset-0 bg-black/70" />
 
         <div
@@ -104,30 +104,33 @@ export default function StoryDetailsPage() {
           "
         >
 
-          {/* BACK BUTTON */}
-          <Link
-            to="/stories"
-            className="
-              inline-flex
-              items-center
-              gap-2
-              px-4
-              py-2
-              rounded-full
-              border
-              border-white/15
-              bg-white/10
-              backdrop-blur-2xl
-              text-white
-              text-sm
-              mb-5
-              hover:bg-white/15
-              transition-all
-            "
-          >
-            <ArrowLeft size={16} />
-            Back
-          </Link>
+          {/* BACK */}
+          <div className="mb-7">
+
+            <Link
+              to="/stories"
+              className="
+                inline-flex
+                items-center
+                gap-2
+                px-4
+                py-2
+                rounded-full
+                border
+                border-white/15
+                bg-white/10
+                backdrop-blur-2xl
+                text-white
+                text-sm
+                hover:bg-white/15
+                transition-all
+              "
+            >
+              <ArrowLeft size={16} />
+              Back
+            </Link>
+
+          </div>
 
           {/* CATEGORY */}
           <div
@@ -176,17 +179,12 @@ export default function StoryDetailsPage() {
           <h1
             className="
               text-[34px]
-              sm:text-[52px]
+              sm:text-[54px]
               md:text-[72px]
               font-black
               leading-[0.92]
               tracking-[-0.06em]
-              text-transparent
-              bg-clip-text
-              bg-gradient-to-r
-              from-red-400
-              via-white
-              to-blue-400
+              text-white
               max-w-5xl
             "
           >
@@ -215,17 +213,21 @@ export default function StoryDetailsPage() {
               <div
                 key={index}
                 className="
-                  px-3.5
+                  px-3
                   py-1.5
                   rounded-full
                   bg-white/20
                   border
                   border-white/20
                   backdrop-blur-2xl
-                  text-[12px]
-                  md:text-[13px]
+                  text-[11px]
+                  md:text-[12px]
                   font-medium
-                  text-white
+                  text-transparent
+                  bg-clip-text
+                  bg-gradient-to-r
+                  from-red-200
+                  to-blue-200
                   shadow-[0_8px_25px_rgba(0,0,0,0.2)]
                 "
               >
@@ -272,6 +274,11 @@ export default function StoryDetailsPage() {
             >
               {story.revenue}
             </h3>
+
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              PhotoAI scaled rapidly through creator sharing loops,
+              public startup distribution, and strong AI product timing.
+            </p>
           </div>
 
           <div
@@ -301,6 +308,12 @@ export default function StoryDetailsPage() {
             >
               {story.growth}
             </h3>
+
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              The platform attracted creators, founders,
+              influencers, and internet users looking for
+              professional AI-generated identity photos.
+            </p>
           </div>
 
           <div
@@ -330,6 +343,12 @@ export default function StoryDetailsPage() {
             >
               {story.timeline}
             </h3>
+
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              Danny moved aggressively during the AI boom
+              and launched quickly before the market became
+              overcrowded with competitors.
+            </p>
           </div>
 
           <div
@@ -359,11 +378,17 @@ export default function StoryDetailsPage() {
             >
               {story.foundedYear}
             </h3>
+
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+              The startup emerged during peak generative AI adoption
+              when creators and professionals wanted better
+              digital branding online.
+            </p>
           </div>
 
         </div>
 
-        {/* FOUNDER CARD */}
+        {/* FOUNDER */}
         <div
           className="
             border
@@ -514,128 +539,6 @@ export default function StoryDetailsPage() {
 
         </div>
 
-        {/* EXTRA SECTION */}
-        <div className="grid md:grid-cols-2 gap-5 mt-10">
-
-          {/* TECH STACK */}
-          <div
-            className="
-              rounded-[28px]
-              border
-              border-[var(--border-primary)]
-              bg-[var(--component-background)]
-              p-6
-            "
-          >
-
-            <div className="flex items-center gap-3 mb-5">
-
-              <div
-                className="
-                  w-10
-                  h-[3px]
-                  rounded-full
-                  bg-gradient-to-r
-                  from-red-500
-                  to-blue-500
-                "
-              />
-
-              <h3 className="text-2xl font-black">
-                Tech Stack
-              </h3>
-
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-
-              {story.techStack?.map((item: string, index: number) => (
-                <div
-                  key={index}
-                  className="
-                    px-4
-                    py-2
-                    rounded-full
-                    border
-                    border-[var(--border-primary)]
-                    bg-[var(--background-secondary)]
-                    text-sm
-                  "
-                >
-                  {item}
-                </div>
-              ))}
-
-            </div>
-
-          </div>
-
-          {/* GROWTH CHANNELS */}
-          <div
-            className="
-              rounded-[28px]
-              border
-              border-[var(--border-primary)]
-              bg-[var(--component-background)]
-              p-6
-            "
-          >
-
-            <div className="flex items-center gap-3 mb-5">
-
-              <div
-                className="
-                  w-10
-                  h-[3px]
-                  rounded-full
-                  bg-gradient-to-r
-                  from-red-500
-                  to-blue-500
-                "
-              />
-
-              <h3 className="text-2xl font-black">
-                Growth Channels
-              </h3>
-
-            </div>
-
-            <div className="space-y-3">
-
-              {story.growthChannels?.map((item: string, index: number) => (
-                <div
-                  key={index}
-                  className="
-                    flex
-                    items-center
-                    gap-3
-                    text-[15px]
-                    text-[var(--text-secondary)]
-                  "
-                >
-
-                  <div
-                    className="
-                      w-2
-                      h-2
-                      rounded-full
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                    "
-                  />
-
-                  {item}
-
-                </div>
-              ))}
-
-            </div>
-
-          </div>
-
-        </div>
-
         {/* STORY */}
         <div className="max-w-4xl mt-16">
 
@@ -687,6 +590,90 @@ export default function StoryDetailsPage() {
 
               </div>
 
+            ))}
+
+          </div>
+
+        </div>
+
+        {/* GROWTH CHANNELS */}
+        <div
+          className="
+            rounded-[28px]
+            border
+            border-[var(--border-primary)]
+            bg-[var(--component-background)]
+            p-6
+            mt-20
+            max-w-4xl
+          "
+        >
+
+          <div className="flex items-center gap-3 mb-8">
+
+            <div
+              className="
+                w-10
+                h-[3px]
+                rounded-full
+                bg-gradient-to-r
+                from-red-500
+                to-blue-500
+              "
+            />
+
+            <h3 className="text-2xl font-black">
+              Growth Channels
+            </h3>
+
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+
+            {story.growthChannels?.map((item: string, index: number) => (
+              <div
+                key={index}
+                className="
+                  rounded-2xl
+                  border
+                  border-[var(--border-primary)]
+                  p-5
+                  bg-[var(--background-secondary)]
+                "
+              >
+
+                <div className="flex items-center gap-3 mb-3">
+
+                  <div
+                    className="
+                      w-2
+                      h-2
+                      rounded-full
+                      bg-gradient-to-r
+                      from-red-500
+                      to-blue-500
+                    "
+                  />
+
+                  <h4 className="font-semibold">
+                    {item}
+                  </h4>
+
+                </div>
+
+                <p
+                  className="
+                    text-sm
+                    leading-7
+                    text-[var(--text-secondary)]
+                  "
+                >
+                  This channel played a major role in helping
+                  PhotoAI reach global internet audiences and
+                  attract creator-focused users organically.
+                </p>
+
+              </div>
             ))}
 
           </div>
