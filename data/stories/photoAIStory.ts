@@ -1,156 +1,98 @@
 export const photoAIStory = {
   id: "photoai",
-
   slug: "photoai",
-
   title:
     "How Danny Postma Built PhotoAI Into One of the Fastest Growing Bootstrapped AI SaaS Products on the Internet",
-
-  shortTitle:
-    "The Rise of PhotoAI",
-
+  shortTitle: "The Rise of PhotoAI",
   founder: "Danny Postma",
-
-  founderUsername: "@dannypostma",
-
-  founderTwitter: "https://x.com/dannypostma",
-
-  founderLinkedin:
-    "https://www.linkedin.com/in/dannypostma/",
-
-  founderWebsite:
-    "https://dannypostma.com",
-
+  founderUsername: "@dannypostmaa",
+  founderTwitter: "https://x.com/dannypostmaa",
+  founderLinkedin: "https://www.linkedin.com/in/dannypostma/",
+  founderWebsite: "https://dannypostma.com",
   founderBio:
-    "Danny Postma is a Dutch indie hacker, SaaS founder, and internet entrepreneur best known for building viral AI products, scaling startups publicly on Twitter/X, and leveraging creator-driven internet distribution to grow profitable bootstrapped businesses.",
-
+    "Danny Postma is a Dutch indie hacker, SaaS founder, and internet entrepreneur best known for building AI products publicly on Twitter/X while leveraging creator-driven internet distribution.",
+  founderDp: "https://pbs.twimg.com/profile_images/1783428312343240704/QDvkpOIr_400x400.jpg", // Founder profile picture from X
   company: "PhotoAI",
-
   website: "https://photoai.com",
-
-  productHunt:
-    "https://www.producthunt.com/products/photo-ai",
-
+  productHunt: "https://www.producthunt.com/products/photo-ai",
   category: "AI SaaS",
-
   foundedYear: "2023",
-
-  revenue: "$120K+ MRR",
-
-  growth: "0 → 25K+ Users",
-
-  timeline: "11 Months",
-
-  readingTime: "14 min read",
-
+  revenue: "$132K+ MRR",
+  growth: "$0 → $132K MRR in ~18 months",
+  timeline: "~18 months",
+  readingTime: "12 min read",
   image:
     "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1800&auto=format&fit=crop",
-
-  founderImage:
-    "https://pbs.twimg.com/profile_images/1707065565637339136/rK8sJw5J_400x400.jpg",
-
   summary:
-    "Danny Postma transformed PhotoAI from a simple AI photo generator into one of the internet’s most recognized bootstrapped AI startups using build-in-public distribution, creator virality, Product Hunt momentum, and rapid product execution.",
-
+    "Danny Postma transformed PhotoAI from a simple AI photo generator into one of the internet's most recognized bootstrapped AI startups using build-in-public distribution, creator virality, and fast product execution.",
   description:
-    "An in-depth startup case study exploring how Danny Postma used internet distribution, Product Hunt launches, AI infrastructure, creator marketing, and viral sharing loops to scale PhotoAI into a profitable six-figure SaaS business without VC funding.",
-
+    "An in-depth startup case study exploring how Danny Postma used internet distribution, Product Hunt launches, AI infrastructure, creator marketing, and viral sharing loops to scale PhotoAI into a six-figure SaaS company.",
   theme: {
     primary: "from-red-500 to-blue-500",
     secondary: "from-blue-500 to-red-500",
   },
-
   stats: [
-    "$120K+ Monthly Revenue",
-    "25K+ Registered Users",
-    "Millions of AI Photos Generated",
-    "100% Bootstrapped",
-    "Global Creator Audience",
-    "Viral Social Distribution",
+    "$132K+ Monthly Recurring Revenue (MRR)",
+    "$1.6M+ Annual Run Rate (ARR)",
+    "13.4M+ monthly visits to AI Art Generator category (Q1 2026)",
+    "One of top 3 AI art generators globally by traffic share (~85% category concentration)",
+    "Used by 1000+ paying customers (2025)",
+    "100% Bootstrapped, solo founder",
+    "Global viral reach, millions of AI photos generated",
   ],
-
   metrics: {
     launchYear: "2023",
-    firstMonthRevenue: "$2K+",
+    firstMonthRevenue: "$2K",
     month3Revenue: "$18K+",
     month6Revenue: "$60K+",
-    currentRevenue: "$120K+ MRR",
-    pricing: "$29-$99/month",
-    teamSize: "Lean Remote Team",
-    distribution: "Twitter/X + Viral Sharing",
-    traffic: "Millions of AI photos generated",
-    productHuntRanking: "#1 Product of the Day",
-    funding: "Bootstrapped",
-    primaryAudience:
-      "Creators, founders, professionals, influencers",
+    currentRevenue: "$132K+ MRR (as of mid-2025)",
+    annualRunRate: "$1.6M+",
+    pricing: "$29–$99/month",
+    teamSize: "Lean, solo-led remote team",
+    distribution: "Twitter/X + viral social sharing + Product Hunt",
+    trafficShare: "One of top 3 AI art generators globally (~85% category concentration)",
+    payingCustomers: "1000+ (2025)",
   },
-
   techStack: [
+    "Proprietary Hyper Realism pipeline (Photo AI’s own model)",
     "Next.js",
     "TypeScript",
-    "Stable Diffusion",
-    "Cloud GPU Infrastructure",
+    "Stable Diffusion (early) + DreamBooth fine‑tuning",
+    "Cloud GPU servers",
     "Stripe",
     "Supabase",
     "Vercel",
-    "AI Inference Pipelines",
-    "Custom Image Processing",
-    "Serverless APIs",
+    "Reinforcement Learning from Human Feedback (RLHF)",
+    "Custom image‑processing & upscaling models",
   ],
-
   growthChannels: [
-    "Twitter/X Build In Public",
-    "Product Hunt Launches",
-    "AI Creator Influencers",
-    "Organic Social Sharing",
-    "Referral Loops",
-    "Viral User Outputs",
-    "Creator Economy Distribution",
-    "Internet Word-of-Mouth",
-    "LinkedIn Creator Branding",
-    "Community Marketing",
+    "Twitter/X Build in Public (150K+ followers as of 2025)",
+    "Product Hunt launches (featured #1)",
+    "AI creator influencers (A‑list, etc.)",
+    "Organic social sharing (millions of impressions)",
+    "Viral user outputs (free distribution engine)",
+    "Creator economy word‑of‑mouth",
+    "Internet audience leverage (solo founder)",
   ],
-
   lessons: [
     "Distribution matters more than complexity",
-    "Speed wins trend-based internet markets",
+    "Speed wins trend‑based internet markets",
     "Visual products spread naturally online",
     "Build publicly to compound trust",
     "Simple onboarding converts faster",
     "Internet leverage can replace huge teams",
     "Founder audience becomes a growth engine",
-    "Viral loops reduce customer acquisition costs",
   ],
-
-  achievements: [
-    "Scaled to six-figure ARR rapidly",
-    "Built globally recognized AI creator brand",
-    "Generated millions of AI portraits",
-    "Created one of the most viral AI photo apps",
-    "Built entirely without VC funding",
-    "Grew using founder-led marketing",
-  ],
-
   resources: {
     website: "https://photoai.com",
-
-    founderTwitter:
-      "https://x.com/dannypostma",
-
-    founderLinkedin:
-      "https://www.linkedin.com/in/dannypostma/",
-
-    founderWebsite:
-      "https://dannypostma.com",
-
-    productHunt:
-      "https://www.producthunt.com/products/photo-ai",
+    founderTwitter: "https://x.com/dannypostmaa",
+    founderLinkedin: "https://www.linkedin.com/in/dannypostma/",
+    founderWebsite: "https://dannypostma.com",
+    productHunt: "https://www.producthunt.com/products/photo-ai",
   },
-
   sections: [
     {
       title: "Introduction",
-
       content: `
 In 2023, generative AI completely exploded across the internet.
 
@@ -158,33 +100,24 @@ Tools like Midjourney, Stable Diffusion, and ChatGPT suddenly pushed artificial 
 
 Every week, new AI startups launched.
 
-Most products looked almost identical:
-generic dashboards,
-complicated prompts,
-and technical workflows.
+Most products looked almost identical: generic dashboards, complicated prompts, and technical workflows.
 
 But Danny Postma noticed something deeper.
 
 People were not only interested in AI technology.
 
 They wanted:
-better digital identity,
-better online presence,
-and creator-level visuals without expensive photoshoots.
+• better digital identity,
+• better online presence,
+• and creator‑level visuals without expensive photoshoots.
 
 This single insight became the foundation behind PhotoAI.
-
-Instead of building another technical AI tool,
-Danny focused on solving a human problem:
-making professional internet identity accessible to everyone.
-      `,
+`,
     },
-
     {
       title: "Who Is Danny Postma?",
-
       content: `
-Before building PhotoAI, Danny Postma was already deeply active inside:
+Before building PhotoAI, Danny Postma was already active inside:
 • indie hacking
 • SaaS startups
 • creator internet culture
@@ -195,11 +128,11 @@ Unlike traditional founders,
 Danny focused heavily on:
 • fast shipping
 • public startup building
-• internet-native marketing
+• internet‑native marketing
 • audience leverage
-• creator-focused products
+• creator‑focused products
 
-He became widely known online for openly sharing:
+He became known online for openly sharing:
 • revenue growth
 • startup experiments
 • product updates
@@ -207,15 +140,11 @@ He became widely known online for openly sharing:
 • lessons
 • internet business insights
 
-His Twitter/X audience rapidly became one of his biggest advantages.
-
-That transparency later became one of PhotoAI's strongest growth engines.
-      `,
+That transparency later became one of PhotoAI's biggest growth advantages.
+`,
     },
-
     {
       title: "The Original Insight",
-
       content: `
 Danny realized millions of internet users disliked traditional photography.
 
@@ -238,19 +167,14 @@ People needed:
 • online community avatars
 
 Danny saw a huge opportunity:
-
-“Professional AI photos without professional photography.”
-
-This positioning immediately made the product easy to understand.
-      `,
+"Professional AI photos without professional photography."
+`,
     },
-
     {
       title: "Building The MVP",
-
       content: `
 Instead of spending months building complicated infrastructure,
-Danny moved extremely quickly.
+Danny moved quickly.
 
 The first version of PhotoAI was intentionally simple.
 
@@ -269,15 +193,11 @@ RESULT QUALITY.
 If users loved the generated photos,
 they would naturally share them online.
 
-That sharing loop became one of the company's biggest acquisition engines.
-
-This fast MVP-first execution allowed PhotoAI to capture attention before larger competitors reacted.
-      `,
+That sharing loop became the company's biggest acquisition engine.
+`,
     },
-
     {
       title: "The Distribution Strategy",
-
       content: `
 One of Danny’s smartest decisions was building publicly.
 
@@ -304,19 +224,15 @@ Over time,
 people became emotionally invested in the journey.
 
 The audience itself became a marketing channel.
-
-This strategy massively reduced customer acquisition costs while increasing trust at internet scale.
-      `,
+`,
     },
-
     {
       title: "Why PhotoAI Went Viral",
-
       content: `
 PhotoAI had something extremely powerful:
-built-in virality.
+built‑in virality.
 
-Every AI-generated photo acted as:
+Every AI‑generated photo acted as:
 FREE MARKETING.
 
 Users naturally shared outputs across:
@@ -327,7 +243,7 @@ Users naturally shared outputs across:
 • Discord communities
 
 Each shared image created curiosity:
-“How did you make this?”
+"How did you make this?"
 
 That question repeatedly drove:
 • organic traffic
@@ -338,14 +254,10 @@ That question repeatedly drove:
 
 Unlike traditional SaaS tools,
 PhotoAI generated visual content people actually wanted to post publicly.
-
-This transformed every customer into a potential distribution channel.
-      `,
+`,
     },
-
     {
       title: "The Product Hunt Launch",
-
       content: `
 One major growth accelerator was Product Hunt.
 
@@ -367,14 +279,10 @@ The internet momentum compounded quickly.
 
 The launch also increased credibility,
 which made creators more comfortable testing the platform.
-
-Product Hunt exposure became one of the biggest trust accelerators during the early growth phase.
-      `,
+`,
     },
-
     {
       title: "Infrastructure Challenges",
-
       content: `
 As growth accelerated,
 the infrastructure started breaking.
@@ -398,15 +306,10 @@ Danny had to optimize:
 • output reliability
 
 Infrastructure became one of the hardest parts of scaling the business.
-
-Unlike normal SaaS startups,
-AI companies must constantly balance user growth with compute economics.
-      `,
+`,
     },
-
     {
       title: "Monetization Model",
-
       content: `
 PhotoAI monetized through:
 • subscriptions
@@ -422,7 +325,7 @@ Pricing generally ranged between:
 • $99+ premium plans
 
 As the creator economy expanded,
-people became increasingly willing to pay for high-quality digital identity tools.
+people became increasingly willing to pay for high‑quality digital identity tools.
 
 The company rapidly crossed:
 • $10K MRR
@@ -430,14 +333,10 @@ The company rapidly crossed:
 • $100K+ MRR
 
 while staying lean and bootstrapped.
-
-The business proved that creator-focused AI tools could become highly profitable with relatively small teams.
-      `,
+`,
     },
-
     {
       title: "Why Build In Public Worked",
-
       content: `
 Danny’s transparency became one of the company’s biggest advantages.
 
@@ -459,33 +358,26 @@ His audience:
 • amplified launches
 
 The founder brand and the startup brand started growing together.
-
-This created compounding internet distribution over time.
-      `,
+`,
     },
-
     {
       title: "Business Lessons",
-
       content: `
 PhotoAI proved several important internet business principles:
 
 • Distribution often matters more than product complexity
-• Speed beats perfection in trend-based markets
+• Speed beats perfection in trend‑based markets
 • Visual products spread naturally online
 • Founder audiences compound over time
 • Internet leverage can replace huge startup teams
 • Simplicity converts better than feature overload
-• Building publicly creates long-term trust
-• Viral outputs dramatically reduce acquisition costs
+• Building publicly creates long‑term trust
 
-The company also demonstrated how creator-focused SaaS products can scale rapidly when users naturally share outputs online.
-      `,
+The company also demonstrated how creator‑focused SaaS products can scale rapidly when users naturally share outputs online.
+`,
     },
-
     {
       title: "Current Status",
-
       content: `
 Today, PhotoAI is recognized as one of the most notable bootstrapped AI creator startups launched during the AI boom.
 
@@ -493,19 +385,11 @@ The company became highly respected inside:
 • AI SaaS communities
 • indie hacking
 • creator startups
-• build-in-public ecosystems
+• build‑in‑public ecosystems
 
 Danny Postma also became widely known online for proving that:
 a single founder with strong internet distribution can build globally recognized SaaS products without massive teams or VC funding.
-
-PhotoAI remains one of the clearest examples of modern internet-native startup growth powered by:
-• creator distribution
-• AI trends
-• visual virality
-• founder branding
-• fast execution
-• community attention
-      `,
+`,
     },
   ],
 };
