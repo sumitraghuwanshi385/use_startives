@@ -46,10 +46,10 @@ export const carrdStory = {
   readingTime: "22 min read",
 
   image:
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1800&auto=format&fit=crop",
+    "https://i.postimg.cc/gct767yX/Screenshot-2026-05-28-19-29-22-17-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://pbs.twimg.com/profile_images/1577728288776298496/K5n4m2JQ_400x400.jpg",
+    "https://i.postimg.cc/05X4J4G7/0-87Fw-Dgy5WSOh-XGIO.webp",
 
   summary:
     "AJ transformed Carrd from a tiny side project into one of the internet’s most beloved minimalist website builders by focusing on simplicity, affordability, creator usability, and elegant internet-native design.",
