@@ -46,10 +46,10 @@ export const levelsFYIStory = {
   readingTime: "24 min read",
 
   image:
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1800&auto=format&fit=crop",
+    "https://i.postimg.cc/Px3w2Y2G/Screenshot-2026-05-28-19-21-50-18-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://media.licdn.com/dms/image/v2/D5603AQH3wQWQxJ7Fzg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1693527211469?e=2147483647&v=beta&t=xjvMEdl9J6tJ-jv4iP0Q4z4gM0KqM8q6Y7XJ0mT6B7M",
+    "https://i.postimg.cc/cH2QdfY3/images-(3).jpg",
 
   summary:
     "Levels.fyi transformed salary transparency in tech by building a trusted, community-driven compensation platform that helped millions of engineers understand salaries, stock grants, promotions, and career levels across major technology companies.",
