@@ -75,10 +75,11 @@ export default function StoryCard({ story }: Props) {
               px-3
               py-1
               rounded-full
-              text-[10px]
+              text-[9px]
+              md:text-[10px]
               uppercase
-              font-bold
-              tracking-[0.18em]
+              font-semibold
+              tracking-[0.14em]
               border
               border-red-500/20
               bg-black/40
@@ -176,28 +177,59 @@ export default function StoryCard({ story }: Props) {
             flex
             items-center
             justify-between
+            gap-4
           "
         >
-          <div>
-            <p
-              className="
-                text-sm
-                font-bold
-                text-[var(--text-primary)]
-              "
-            >
-              {story.founder}
-            </p>
 
-            <p
+          {/* FOUNDER */}
+          <div className="flex items-center gap-3 min-w-0">
+
+            {/* IMAGE */}
+            <div
               className="
-                text-xs
-                text-[var(--text-secondary)]
-                mt-1
+                w-11
+                h-11
+                rounded-full
+                overflow-hidden
+                border
+                border-[var(--border-primary)]
+                shrink-0
               "
             >
-              {story.company}
-            </p>
+              <img
+                src={story.founderImage || story.image}
+                alt={story.founder}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* TEXT */}
+            <div className="min-w-0">
+
+              <p
+                className="
+                  text-sm
+                  font-bold
+                  text-[var(--text-primary)]
+                  truncate
+                "
+              >
+                {story.founder}
+              </p>
+
+              <p
+                className="
+                  text-xs
+                  text-[var(--text-secondary)]
+                  mt-1
+                  truncate
+                "
+              >
+                {story.company}
+              </p>
+
+            </div>
+
           </div>
 
           {/* BUTTON */}
@@ -215,10 +247,12 @@ export default function StoryCard({ story }: Props) {
               transition-all
               duration-300
               group-hover:scale-105
+              shrink-0
             "
           >
             Read Story →
           </div>
+
         </div>
       </div>
     </Link>
