@@ -46,10 +46,10 @@ export const beehiivStory = {
   readingTime: "24 min read",
 
   image:
-    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1800&auto=format&fit=crop",
+    "https://i.postimg.cc/sDcR8m7k/Screenshot-2026-05-28-19-17-48-92-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://pbs.twimg.com/profile_images/1661444777722570753/5M6P8b5M_400x400.jpg",
+    "https://i.postimg.cc/BvdWDVfc/images-(2).jpg",
 
   summary:
     "Beehiiv transformed newsletter publishing by building a creator-first media platform focused on audience growth, monetization, referrals, and modern publishing infrastructure for internet creators and media businesses.",
