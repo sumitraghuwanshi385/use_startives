@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Globe } from "lucide-react";
 
 interface Props {
   story: any;
@@ -67,46 +68,59 @@ export default function StoryCard({ story }: Props) {
           "
         />
 
-        {/* CATEGORY + REVENUE */}
-        <div className="absolute top-4 left-4 z-20 flex flex-wrap gap-2">
-
-          <span
-            className="
-              px-3
-              py-1
-              rounded-full
-              text-[9px]
-              md:text-[10px]
-              uppercase
-              font-semibold
-              tracking-[0.14em]
-              border
-              border-red-500/20
-              bg-black/40
-              backdrop-blur-xl
-              text-red-400
-            "
-          >
-            {story.category}
-          </span>
-
-          <span
-            className="
-              px-3
-              py-1
-              rounded-full
-              text-[10px]
-              font-semibold
-              border
-              border-blue-500/20
-              bg-black/40
-              backdrop-blur-xl
-              text-blue-400
-            "
-          >
-            {story.revenue}
-          </span>
+        {/* READ TIME */}
+        <div
+          className="
+            absolute
+            top-4
+            left-4
+            z-20
+            px-3
+            py-1.5
+            rounded-full
+            bg-black/35
+            backdrop-blur-xl
+            border
+            border-white/10
+            text-white
+            text-[10px]
+            font-semibold
+            tracking-wide
+          "
+        >
+          {story.readingTime}
         </div>
+
+        {/* WEBSITE ICON */}
+        <a
+          href={story.website}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="
+            absolute
+            top-4
+            right-4
+            z-20
+            w-10
+            h-10
+            rounded-full
+            bg-black/35
+            backdrop-blur-xl
+            border
+            border-white/10
+            flex
+            items-center
+            justify-center
+            text-white
+            hover:scale-110
+            hover:border-blue-500/40
+            transition-all
+          "
+        >
+          <Globe size={18} />
+        </a>
+
       </div>
 
       {/* CONTENT */}
