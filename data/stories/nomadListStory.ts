@@ -46,10 +46,10 @@ export const nomadListStory = {
   readingTime: "20 min read",
 
   image:
-    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1800&auto=format&fit=crop",
+    "https://i.postimg.cc/0NN5Z34Z/Screenshot-2026-05-28-19-13-58-95-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://pbs.twimg.com/profile_images/1638240946512123905/8kAXA4q7_400x400.jpg",
+    "https://i.postimg.cc/g2Hrg32h/images-(1).jpg",
 
   summary:
     "Pieter Levels transformed Nomad List from a simple spreadsheet about digital nomad cities into one of the world’s most recognized remote work communities by leveraging internet trends, bootstrapped execution, community-driven growth, public building, and audience-first distribution.",
