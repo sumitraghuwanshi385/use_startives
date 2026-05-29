@@ -46,10 +46,10 @@ export const bannerbearStory = {
   readingTime: "21 min read",
 
   image:
-    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1800&auto=format&fit=crop",
+    "https://i.postimg.cc/rp5gTHd8/Screenshot-2026-05-29-23-15-08-47-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://pbs.twimg.com/profile_images/1508663716493494273/1jMBy4zY_400x400.jpg",
+    "https://i.postimg.cc/pdKkvS9p/1531801947383.jpg",
 
   summary:
     "Jon Yongfook transformed Bannerbear from a niche API tool into one of the most respected bootstrapped developer SaaS businesses on the internet by combining build-in-public marketing, content-driven growth, developer-focused distribution, SEO, and relentless long-term execution.",
