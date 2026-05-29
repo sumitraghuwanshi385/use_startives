@@ -46,10 +46,10 @@ export const transistorStory = {
   readingTime: "18 min read",
 
   image:
-    "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1800&auto=format&fit=crop",
+    "https://i.postimg.cc/SK91ssPk/Screenshot-2026-05-29-23-15-14-51-40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
 
   founderImage:
-    "https://pbs.twimg.com/profile_images/1588941957577072640/yS8BqQ2k_400x400.jpg",
+    "https://i.postimg.cc/9QKNCTLC/images-(1).jpg",
 
   summary:
     "Justin Jackson and Jon Buda built Transistor.fm by focusing on creators instead of startup hype. Through transparency, customer obsession, content marketing, and long-term execution, they turned a simple podcast hosting platform into a profitable multi-million dollar SaaS business.",
