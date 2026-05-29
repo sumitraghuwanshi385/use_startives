@@ -3,6 +3,8 @@ import { nomadListStory } from "./stories/nomadListStory";
 import { beehiivStory } from "./stories/beehiivStory";
 import { levelsFYIStory } from "./stories/levelsFYIStory";
 import { carrdStory } from "./stories/carrdStory";
+import { bannerbearStory } from "./stories/bannerbearStory";
+
 
 export const stories = [
   photoAIStory,
@@ -10,4 +12,6 @@ export const stories = [
   beehiivStory,
   levelsFYIStory,
 carrdStory,
+bannerbearStory,
+
 ];
