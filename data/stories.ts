@@ -4,6 +4,8 @@ import { beehiivStory } from "./stories/beehiivStory";
 import { levelsFYIStory } from "./stories/levelsFYIStory";
 import { carrdStory } from "./stories/carrdStory";
 import { bannerbearStory } from "./stories/bannerbearStory";
+import { transistorStory } from "./stories/transistorStory";
+
 
 
 export const stories = [
@@ -13,5 +15,6 @@ export const stories = [
   levelsFYIStory,
 carrdStory,
 bannerbearStory,
+transistorStory,
 
 ];
