@@ -6,7 +6,7 @@ const StarverseFloatingButton: React.FC = () => {
 
   return (
     <>
-      {/* Premium Keyframes with scaled down transforms and fine-tuned timing */}
+      {/* Premium Keyframes with crisp micro-blur and precise timing */}
       <style>{`
         @keyframes textSequence {
           0%, 20% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
@@ -63,38 +63,45 @@ const StarverseFloatingButton: React.FC = () => {
           outline-none
         "
       >
-        {/* Hyper-Premium Ambient Cosmic Glow - Uniform in Light & Dark */}
+        {/* FIXED: Hyper-Premium Glow optimized to blend perfectly in both light and dark backgrounds */}
         <div
           className="
             absolute
             inset-[-19px]
             rounded-full
             bg-gradient-to-tr
-            from-cyan-500/30
-            via-indigo-500/25
-            to-purple-500/35
+            from-cyan-500/40
+            via-indigo-500/35
+            to-purple-600/45
+            dark:from-cyan-500/30
+            dark:via-indigo-500/25
+            dark:to-purple-500/35
             blur-xl
-            opacity-80
+            opacity-90
+            dark:opacity-80
             group-hover:opacity-100
             group-hover:scale-110
             transition-all
             duration-700
-            mix-blend-screen
+            mix-blend-multiply
+            dark:mix-blend-screen
             pointer-events-none
           "
         />
 
-        {/* Outer Ring 1 (Celestial Orbit) */}
+        {/* Outer Ring 1 (Celestial Orbit) - Enhanced border weight for white mode pop */}
         <div
           className="
             absolute
             inset-0
             rounded-full
             border
-            border-cyan-400/30
-            shadow-[0_0_12px_rgba(34,211,238,0.15)]
+            border-cyan-500/40
+            dark:border-cyan-400/30
+            shadow-[0_0_14px_rgba(34,211,238,0.25)]
             animate-[spin_20s_linear_infinite]
-            group-hover:border-cyan-400/50
+            group-hover:border-cyan-500/60
+            dark:group-hover:border-cyan-400/50
             transition-colors
             duration-500
           "
@@ -107,11 +114,12 @@ const StarverseFloatingButton: React.FC = () => {
             inset-[4px]
             rounded-full
             border
-            border-indigo-500/20
+            border-indigo-500/25
+            dark:border-indigo-500/20
           "
         />
 
-        {/* The Core Globe Glass Sphere - FIXED: Hardcoded dark background stays dark in light/white mode */}
+        {/* The Core Globe Glass Sphere - Locked to dark cosmic space style */}
         <div
           className="
             relative
@@ -131,8 +139,8 @@ const StarverseFloatingButton: React.FC = () => {
             backdrop-blur-xl
             transition-all
             duration-500
-            shadow-[0_0_24px_rgba(59,130,246,0.3),inset_0_2px_6px_rgba(255,255,255,0.3),inset_0_-6px_10px_rgba(0,0,0,0.9),inset_0_0_10px_rgba(34,211,238,0.4)]
-            group-hover:shadow-[0_0_32px_rgba(34,211,238,0.5),inset_0_2px_8px_rgba(255,255,255,0.4),inset_0_-3px_10px_rgba(0,0,0,0.7),inset_0_0_16px_rgba(147,51,234,0.5)]
+            shadow-[0_4px_15px_rgba(0,0,0,0.4),0_0_24px_rgba(59,130,246,0.35),inset_0_2px_6px_rgba(255,255,255,0.3),inset_0_-6px_10px_rgba(0,0,0,0.9),inset_0_0_10px_rgba(34,211,238,0.4)]
+            group-hover:shadow-[0_6px_20px_rgba(0,0,0,0.45),0_0_32px_rgba(34,211,238,0.55),inset_0_2px_8px_rgba(255,255,255,0.4),inset_0_-3px_10px_rgba(0,0,0,0.7),inset_0_0_16px_rgba(147,51,234,0.5)]
             group-hover:border-white/30
           "
         >
@@ -184,7 +192,7 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* Unique High-End Custom Typography Layout Container (-15% Text Sizing Adjusted) */}
+          {/* Premium High-End Font Carousel Layout */}
           <div className="relative z-10 w-full h-full flex items-center justify-center font-mono tracking-tighter font-[900] select-none">
             {/* FIND */}
             <span className="animate-seq-1 absolute text-[8px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
@@ -201,9 +209,9 @@ const StarverseFloatingButton: React.FC = () => {
               Grow
             </span>
 
-            {/* STARTVERSE! - Fixed string and applied matching high-premium glowing look */}
-            <span className="animate-seq-4 absolute text-[5.8px] uppercase tracking-normal text-cyan-100 filter drop-shadow-[0_0_6px_rgba(34,211,238,0.85)]">
-              Startverse!
+            {/* EXPLORE! - Replaced Startverse! and updated glow structure */}
+            <span className="animate-seq-4 absolute text-[7.5px] uppercase tracking-wide text-cyan-100 filter drop-shadow-[0_0_6px_rgba(34,211,238,0.85)]">
+              Explore
             </span>
           </div>
 
@@ -246,7 +254,7 @@ const StarverseFloatingButton: React.FC = () => {
             duration-500
             ease-[cubic-bezier(0.34,1.56,0.64,1)]
             pointer-events-none
-            bg-white/90
+            bg-white/95
             dark:bg-slate-950/80
             backdrop-blur-xl
             border
@@ -254,7 +262,7 @@ const StarverseFloatingButton: React.FC = () => {
             dark:border-white/10
             text-slate-800
             dark:text-cyan-100
-            shadow-[0_8px_24px_rgba(0,0,0,0.08),0_0_12px_rgba(0,0,0,0.02)]
+            shadow-[0_8px_24px_rgba(0,0,0,0.12),0_0_12px_rgba(0,0,0,0.04)]
             dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(34,211,238,0.1)]
             flex
             items-center
@@ -264,7 +272,7 @@ const StarverseFloatingButton: React.FC = () => {
           <span className="bg-gradient-to-r from-slate-900 to-slate-700 dark:from-cyan-400 dark:to-indigo-400 bg-clip-text text-transparent">
             Explore Starverse
           </span>
-          <span className="text-xs filter drop-shadow-[0_0_2px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">🌍</span>
+          <span className="text-xs filter drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">🌍</span>
         </div>
       </button>
     </>
