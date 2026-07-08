@@ -45,7 +45,7 @@ const StarverseFloatingButton: React.FC = () => {
   // FIXED: Changed secondary position from 86px to exact bottom-[72px] as requested
   const positionClass = isPrimaryMarketplacePage 
     ? "bottom-[106px] right-4" 
-    : "bottom-[72px] right-4";  
+    : "bottom-[69px] right-4";  
 
   return (
     <>
