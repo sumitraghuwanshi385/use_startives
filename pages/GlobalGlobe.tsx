@@ -92,6 +92,21 @@ const [webglSupported, setWebglSupported] = useState(true);
     return () => observer.disconnect();
   }, []);
 
+// 🔥 LOCK PAGE SCROLL
+useEffect(() => {
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.height = "100dvh";
+  document.documentElement.style.height = "100dvh";
+
+  return () => {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+    document.body.style.height = "";
+    document.documentElement.style.height = "";
+  };
+}, []);
+
   // 🔥 FETCH USERS SAFE — deduplicate by id, use profile country
   useEffect(() => {
     const fetchUsers = async () => {
@@ -211,6 +226,15 @@ u.profilePictureUrl &&
   }, 200);
 }, []);
 
+useEffect(() => {
+  return () => {
+    try {
+      globeInstance.current?.pauseAnimation?.();
+      globeInstance.current = null;
+    } catch {}
+  };
+}, []);
+
   // 🔥 UPDATE USERS (NO RECREATE)
   useEffect(() => {
     if (!globeInstance.current || !isReady) return;
@@ -327,9 +351,16 @@ useEffect(() => {
 
   return (
     <div
-      className="relative w-full h-screen overflow-hidden"
-      style={{ backgroundColor: isDark ? "#000" : "#fff" }}
-    >
+  className="fixed inset-0 overflow-hidden"
+  style={{
+    backgroundColor: isDark ? "#000" : "#fff",
+    width: "100vw",
+    height: "100dvh",
+    touchAction: "none",
+overscrollBehavior: "none",
+WebkitOverflowScrolling: "auto",
+  }}
+>
       {/* DOT BG */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
@@ -344,9 +375,9 @@ useEffect(() => {
       {/* GLOBE */}
       {webglSupported ? (
   <div
-    ref={globeRef}
-    className="w-full h-full relative z-10"
-  />
+  ref={globeRef}
+  className="absolute inset-0 z-10"
+/>
 ) : (
   <div className="absolute inset-0 flex items-center justify-center z-50">
     <div
@@ -380,9 +411,12 @@ useEffect(() => {
 
       {/* HEADER FIXED — stable, no bounce */}
       <div
-        className="absolute top-5 left-0 right-0 z-50 flex flex-col items-center pointer-events-none"
-        style={{ transform: "none" }}
-      >
+  className="fixed left-0 right-0 z-50 flex flex-col items-center pointer-events-none"
+  style={{
+    top: "72px",
+    transform: "translateZ(0)",
+  }}
+>
         <div
           style={{
             position: "relative",
