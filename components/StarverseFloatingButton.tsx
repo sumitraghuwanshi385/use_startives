@@ -1,8 +1,51 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const StarverseFloatingButton: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // 1. EXACT PATHS TO HIDE COMPLETELY (In pages par bilkul nahi dikhega)
+  const hideOnPages = [
+    "/profile",               // my profile
+    "/profile/edit",          // profile edit
+    "/post-idea",             // post idea page
+    "/submit-asset",          // post asset page
+    "/login",                 // before login - login page
+    "/signup",                // before login - signup page
+    "/forgot-password",       // before login pages
+    "/new-password",
+    "/verify-email",
+    "/messages",              // messenger page
+    "/connections",           // connections page
+    "/my-applications",       // application list page
+    "/saved-projects",        // wishlist / saved projects page
+    "/about",                 // about us placeholder route
+    "/privacy-policy",        // privacy policy placeholder route
+    "/sponsorship",           // sponsorship placeholder route
+    "/contact-us",            // contact us form page
+    "/globe"                  // main immersive globe page itself
+  ];
+
+  // Dynamic route helper matches like dynamic user IDs / profile checking: /user/:id or /idea/:id
+  const isDynamicHiddenRoute = 
+    currentPath.startsWith("/user/") || 
+    currentPath.startsWith("/idea/") || 
+    currentPath.startsWith("/asset/") || 
+    currentPath.startsWith("/team/");
+
+  if (hideOnPages.includes(currentPath) || isDynamicHiddenRoute) {
+    return null; // Instantly hides component
+  }
+
+  // 2. EXACT MATCHES FOR HIGHER POSITION (Discover projects list and assets blueprint market)
+  const isPrimaryMarketplacePage = currentPath === "/projects" || currentPath === "/blueprint";
+
+  // Position toggler class
+  const positionClass = isPrimaryMarketplacePage 
+    ? "bottom-[106px] right-4"  // Screen-shot base position
+    : "bottom-[24px] right-4";   // Safely tucked lower on remaining pages
 
   return (
     <>
@@ -53,10 +96,8 @@ const StarverseFloatingButton: React.FC = () => {
       <button
         onClick={() => navigate("/globe")}
         aria-label="Open Starverse"
-        className="
+        className={`
           fixed
-          right-4
-          bottom-[106px]
           z-[9999]
           group
           flex
@@ -73,7 +114,8 @@ const StarverseFloatingButton: React.FC = () => {
           bg-transparent
           border-none
           outline-none
-        "
+          ${positionClass}
+        `}
       >
         {/* Subtle Refined Ambient Underglow */}
         <div
@@ -108,7 +150,6 @@ const StarverseFloatingButton: React.FC = () => {
         />
 
         {/* 3 ROTATING PEOPLE / NETWORK NODES */}
-        {/* Person Node 1 */}
         <div className="absolute animate-people-1 pointer-events-none z-30">
           <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[1px] shadow-[0_0_5px_rgba(34,211,238,0.5)] flex items-center justify-center">
             <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -117,7 +158,6 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* Person Node 2 */}
         <div className="absolute animate-people-2 pointer-events-none z-30">
           <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 p-[1px] shadow-[0_0_5px_rgba(168,85,247,0.5)] flex items-center justify-center">
             <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -126,7 +166,6 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* Person Node 3 */}
         <div className="absolute animate-people-3 pointer-events-none z-30">
           <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 p-[1px] shadow-[0_0_5px_rgba(52,211,153,0.5)] flex items-center justify-center">
             <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -135,7 +174,7 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* FIXED UNIFIED GLOBE: Bright & vibrant design forced for both Light & Dark modes */}
+        {/* UNIFIED GLOBE SURFACE LAYER (Forces light styling for maximum luminance visibility across layouts) */}
         <div
           className="
             relative
@@ -159,7 +198,7 @@ const StarverseFloatingButton: React.FC = () => {
             group-hover:border-white
           "
         >
-          {/* Organic Earth/Continental vector outlines */}
+          {/* Organic Continental Vectors */}
           <div className="absolute inset-0 opacity-40 mix-blend-screen scale-110 pointer-events-none">
             <svg className="w-full h-full text-white fill-current animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100">
               <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
@@ -168,7 +207,7 @@ const StarverseFloatingButton: React.FC = () => {
             </svg>
           </div>
 
-          {/* Core Lens Curvature specularity highlight */}
+          {/* Lens curvature specular highlight */}
           <div
             className="
               absolute
@@ -188,26 +227,21 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* FIXED: Poppins Font Layout with 7% Size Reduction */}
+          {/* Poppins Scaled 7% Compressed Loop Core */}
           <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins tracking-tight uppercase select-none">
-            {/* FIND */}
             <span className="animate-seq-1 absolute text-[8.8px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Find
             </span>
-
-            {/* CONNECT */}
             <span className="animate-seq-2 absolute text-[7.9px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Connect
             </span>
-
-            {/* GROW */}
             <span className="animate-seq-3 absolute text-[8.8px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Grow
             </span>
           </div>
         </div>
 
-        {/* Clean Minimalist Tooltip */}
+        {/* Dynamic Micro Glass Tooltip */}
         <div
           className="
             absolute
