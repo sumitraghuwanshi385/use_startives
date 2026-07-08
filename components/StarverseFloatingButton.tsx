@@ -6,35 +6,45 @@ const StarverseFloatingButton: React.FC = () => {
 
   return (
     <>
-      {/* Premium Keyframes with crisp micro-blur and precise timing */}
+      {/* Premium Cinematic Cosmic Animations */}
       <style>{`
         @keyframes textSequence {
-          0%, 20% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          3%, 17% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          23%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          0%, 20% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
+          3%, 17% { opacity: 1; transform: scale(1) translateY(0px); filter: blur(0px); }
+          23%, 100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
         }
         @keyframes textSequenceTwo {
-          0%, 20% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          23%, 43% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          26%, 40% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          46%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          0%, 20% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
+          23%, 43% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
+          26%, 40% { opacity: 1; transform: scale(1) translateY(0px); filter: blur(0px); }
+          46%, 100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
         }
         @keyframes textSequenceThree {
-          0%, 43% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          46%, 66% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          49%, 63% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          66%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          0%, 43% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
+          46%, 66% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
+          49%, 63% { opacity: 1; transform: scale(1) translateY(0px); filter: blur(0px); }
+          66%, 100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
         }
         @keyframes textSequenceFour {
-          0%, 66% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          69%, 89% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          72%, 86% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          89%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          0%, 66% { opacity: 0; transform: scale(0.82) translateY(1px); filter: blur(2px); }
+          69%, 89% { opacity: 0; transform: scale(0.82) translateY(1px); filter: blur(2px); }
+          72%, 86% { opacity: 1; transform: scale(1) translateY(0px); filter: blur(0px); }
+          89%, 100% { opacity: 0; transform: scale(0.82) translateY(1px); filter: blur(2px); }
         }
-        .animate-seq-1 { animation: textSequence 8s infinite ease-in-out; }
-        .animate-seq-2 { animation: textSequenceTwo 8s infinite ease-in-out; }
-        .animate-seq-3 { animation: textSequenceThree 8s infinite ease-in-out; }
-        .animate-seq-4 { animation: textSequenceFour 8s infinite ease-in-out; }
+        @keyframes orbitNode {
+          0% { transform: rotate(0deg) translateX(29px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(29px) rotate(-360deg); }
+        }
+        @keyframes superNovaPulse {
+          0%, 100% { transform: scale(1); opacity: 0.85; filter: saturate(1.2) blur(16px); }
+          50% { transform: scale(1.08); opacity: 1; filter: saturate(1.6) blur(20px); }
+        }
+        .animate-seq-1 { animation: textSequence 8s infinite cubic-bezier(0.25, 1, 0.5, 1); }
+        .animate-seq-2 { animation: textSequenceTwo 8s infinite cubic-bezier(0.25, 1, 0.5, 1); }
+        .animate-seq-3 { animation: textSequenceThree 8s infinite cubic-bezier(0.25, 1, 0.5, 1); }
+        .animate-seq-4 { animation: textSequenceFour 8s infinite cubic-bezier(0.25, 1, 0.5, 1); }
+        .animate-orbit-node { animation: orbitNode 12s linear infinite; }
+        .animate-cosmic-glow { animation: superNovaPulse 4s ease-in-out infinite; }
       `}</style>
 
       <button
@@ -54,7 +64,6 @@ const StarverseFloatingButton: React.FC = () => {
           rounded-full
           transition-all
           duration-700
-          ease-[cubic-bezier(0.34,1.56,0.64,1)]
           hover:scale-110
           cursor-pointer
           select-none
@@ -63,127 +72,147 @@ const StarverseFloatingButton: React.FC = () => {
           outline-none
         "
       >
-        {/* FIXED: Hyper-Premium Glow optimized to blend perfectly in both light and dark backgrounds */}
+        {/* FIXED UNIFORM GLOW: High intensity deep cosmic corona aura that pierces through light mode backgrounds */}
         <div
           className="
             absolute
-            inset-[-19px]
+            inset-[-22px]
             rounded-full
             bg-gradient-to-tr
-            from-cyan-500/40
-            via-indigo-500/35
-            to-purple-600/45
-            dark:from-cyan-500/30
-            dark:via-indigo-500/25
-            dark:to-purple-500/35
-            blur-xl
-            opacity-90
-            dark:opacity-80
+            from-cyan-400
+            via-indigo-500
+            to-purple-600
+            opacity-95
             group-hover:opacity-100
-            group-hover:scale-110
+            group-hover:scale-105
             transition-all
             duration-700
-            mix-blend-multiply
-            dark:mix-blend-screen
+            mix-blend-initial
+            shadow-[0_0_50px_rgba(34,211,238,0.55),0_0_100px_rgba(99,102,241,0.3)]
+            pointer-events-none
+            animate-cosmic-glow
+          "
+        />
+
+        {/* Orbit Path Track 1 (Tilted Saturn Style Ring Component) */}
+        <div
+          className="
+            absolute
+            w-[74px]
+            h-[30px]
+            rounded-full
+            border-t-2
+            border-b
+            border-cyan-400/40
+            dark:border-cyan-300/30
+            rotate-[-28deg]
+            pointer-events-none
+            transform
+            scale-90
+            group-hover:scale-105
+            transition-all
+            duration-700
+          "
+        />
+
+        {/* Outer Solar Orbit Line (Main Ring) */}
+        <div
+          className="
+            absolute
+            inset-[-1px]
+            rounded-full
+            border
+            border-white/40
+            dark:border-cyan-400/20
+            shadow-[0_0_15px_rgba(255,255,255,0.4),0_0_3px_rgba(34,211,238,0.3)]
+            animate-[spin_25s_linear_infinite]
             pointer-events-none
           "
         />
 
-        {/* Outer Ring 1 (Celestial Orbit) - Enhanced border weight for white mode pop */}
-        <div
+        {/* Live Satellite/Planet Orbit Node */}
+        <div 
           className="
             absolute
-            inset-0
+            w-2
+            h-2
             rounded-full
-            border
-            border-cyan-500/40
-            dark:border-cyan-400/30
-            shadow-[0_0_14px_rgba(34,211,238,0.25)]
-            animate-[spin_20s_linear_infinite]
-            group-hover:border-cyan-500/60
-            dark:group-hover:border-cyan-400/50
-            transition-colors
-            duration-500
+            bg-gradient-to-r
+            from-amber-300
+            to-cyan-300
+            shadow-[0_0_8px_#22d3ee,0_0_2px_#fff]
+            animate-orbit-node
+            pointer-events-none
+            z-30
           "
         />
 
-        {/* Outer Ring 2 (Counter-Rotating Ring Decorative) */}
-        <div
-          className="
-            absolute
-            inset-[4px]
-            rounded-full
-            border
-            border-indigo-500/25
-            dark:border-indigo-500/20
-          "
-        />
-
-        {/* The Core Globe Glass Sphere - Locked to dark cosmic space style */}
+        {/* Deep Space Core Sphere (Glass finish with extreme inner galaxy shadows) */}
         <div
           className="
             relative
-            w-[46px]
-            h-[46px]
+            w-[48px]
+            h-[48px]
             rounded-full
             overflow-hidden
             border
-            border-white/20
+            border-white/40
             bg-gradient-to-b
             from-slate-950
-            via-blue-950
-            to-neutral-950
+            via-indigo-950
+            to-black
             flex
             items-center
             justify-center
-            backdrop-blur-xl
+            backdrop-blur-2xl
             transition-all
             duration-500
-            shadow-[0_4px_15px_rgba(0,0,0,0.4),0_0_24px_rgba(59,130,246,0.35),inset_0_2px_6px_rgba(255,255,255,0.3),inset_0_-6px_10px_rgba(0,0,0,0.9),inset_0_0_10px_rgba(34,211,238,0.4)]
-            group-hover:shadow-[0_6px_20px_rgba(0,0,0,0.45),0_0_32px_rgba(34,211,238,0.55),inset_0_2px_8px_rgba(255,255,255,0.4),inset_0_-3px_10px_rgba(0,0,0,0.7),inset_0_0_16px_rgba(147,51,234,0.5)]
-            group-hover:border-white/30
+            shadow-[0_4px_20px_rgba(0,0,0,0.65),0_0_30px_rgba(34,211,238,0.45),inset_0_3px_8px_rgba(255,255,255,0.45),inset_0_-8px_12px_rgba(0,0,0,0.95),inset_0_0_12px_rgba(6,182,212,0.5)]
+            group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.75),0_0_40px_rgba(147,51,234,0.6),inset_0_3px_10px_rgba(255,255,255,0.55),inset_0_-4px_12px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(168,85,247,0.6)]
+            group-hover:border-white/60
           "
         >
-          {/* Deep Cyber Matrix Grid Texture */}
+          {/* Constellation Starfield Pattern Overlay */}
           <div
             className="
               absolute
               inset-0
-              opacity-25
-              bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)]
-              bg-[size:5px_5px]
-              animate-[spin_30s_linear_infinite]
+              opacity-40
+              bg-[radial-gradient(#fff_1px,transparent_1px),radial-gradient(#fff_1px,transparent_1px)]
+              bg-[size:6px_6px]
+              bg-[position:0_0,3px_3px]
+              animate-[spin_60s_linear_infinite]
             "
           />
 
-          {/* Dynamic Inner Atmospheric Aurora Bloom */}
+          {/* Magnetic Fields Nebular Flow */}
           <div
             className="
               absolute
-              inset-0
+              inset-[-5px]
               rounded-full
-              bg-gradient-to-tr
-              from-emerald-500/10
-              via-cyan-500/20
-              to-purple-600/30
+              bg-gradient-to-bl
+              from-violet-600/25
+              via-cyan-500/35
+              to-emerald-500/15
               mix-blend-color-dodge
               animate-pulse
-              duration-3000
+              duration-2000
             "
           />
 
-          {/* 3D Glass Curve Highlight */}
+          {/* 3D Glass Surface Convex Specular Arc (Real lens curvature) */}
           <div
             className="
               absolute
               top-0.5
               left-1/2
               -translate-x-1/2
-              w-[85%]
-              h-[40%]
+              w-[90%]
+              h-[45%]
               rounded-full
               bg-gradient-to-b
-              from-white/35
+              from-white/50
               to-transparent
               filter
               blur-[0.5px]
@@ -192,58 +221,58 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* Premium High-End Font Carousel Layout */}
-          <div className="relative z-10 w-full h-full flex items-center justify-center font-mono tracking-tighter font-[900] select-none">
+          {/* Hyper-Elite Condensed Typography Track Matrix */}
+          <div className="relative z-10 w-full h-full flex items-center justify-center font-sans font-[1000] tracking-tight select-none">
             {/* FIND */}
-            <span className="animate-seq-1 absolute text-[8px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
+            <span className="animate-seq-1 absolute text-[8.5px] uppercase text-cyan-50 filter drop-shadow-[0_0_4px_rgba(34,211,238,0.7)]">
               Find
             </span>
 
             {/* CONNECT */}
-            <span className="animate-seq-2 absolute text-[7px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
+            <span className="animate-seq-2 absolute text-[7.5px] uppercase text-indigo-50 filter drop-shadow-[0_0_4px_rgba(129,140,248,0.7)]">
               Connect
             </span>
 
             {/* GROW */}
-            <span className="animate-seq-3 absolute text-[8px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
+            <span className="animate-seq-3 absolute text-[8.5px] uppercase text-purple-50 filter drop-shadow-[0_0_4px_rgba(192,132,252,0.7)]">
               Grow
             </span>
 
-            {/* EXPLORE! - Replaced Startverse! and updated glow structure */}
-            <span className="animate-seq-4 absolute text-[7.5px] uppercase tracking-wide text-cyan-100 filter drop-shadow-[0_0_6px_rgba(34,211,238,0.85)]">
-              Explore
+            {/* EXPLORE! */}
+            <span className="animate-seq-4 absolute text-[7.8px] uppercase tracking-normal text-white filter drop-shadow-[0_0_6px_rgba(255,255,255,0.9)]">
+              Explore!
             </span>
           </div>
 
-          {/* Subtle Dynamic Backing Shimmer */}
+          {/* Central Core Thermal Shimmer */}
           <div
             className="
               absolute
-              w-5
-              h-5
+              w-4
+              h-4
               rounded-full
-              bg-cyan-400/30
-              blur-md
+              bg-white/20
+              blur-sm
               z-0
             "
           />
         </div>
 
-        {/* Adaptive Glassmorphic Tooltip */}
+        {/* Glassmorphic Cyber Tooltip Menu */}
         <div
           className="
             absolute
-            right-[72px]
+            right-[74px]
             whitespace-nowrap
-            px-3.5
-            py-1.5
+            px-4
+            py-2
             rounded-xl
             text-[11px]
             font-bold
             tracking-wide
             uppercase
             opacity-0
-            scale-90
+            scale-95
             translate-x-3
             blur-sm
             group-hover:opacity-100
@@ -252,27 +281,22 @@ const StarverseFloatingButton: React.FC = () => {
             group-hover:blur-0
             transition-all
             duration-500
-            ease-[cubic-bezier(0.34,1.56,0.64,1)]
             pointer-events-none
-            bg-white/95
-            dark:bg-slate-950/80
+            bg-slate-950/90
             backdrop-blur-xl
             border
-            border-slate-200
-            dark:border-white/10
-            text-slate-800
-            dark:text-cyan-100
-            shadow-[0_8px_24px_rgba(0,0,0,0.12),0_0_12px_rgba(0,0,0,0.04)]
-            dark:shadow-[0_8px_24px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(34,211,238,0.1)]
+            border-white/20
+            text-cyan-100
+            shadow-[0_12px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.15),0_0_15px_rgba(34,211,238,0.25)]
             flex
             items-center
             gap-2
           "
         >
-          <span className="bg-gradient-to-r from-slate-900 to-slate-700 dark:from-cyan-400 dark:to-indigo-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
             Explore Starverse
           </span>
-          <span className="text-xs filter drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">🌍</span>
+          <span className="text-xs filter drop-shadow-[0_0_4px_rgba(34,211,238,0.5)]">🌌</span>
         </div>
       </button>
     </>
