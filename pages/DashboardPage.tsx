@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { User } from '../types'; 
 import { 
   IdeaStarIcon,
@@ -249,9 +249,6 @@ const AboutStartivesBox: React.FC = () => {
 };
 
 const DashboardPage: React.FC = () => {
-
-const navigate = useNavigate();
-
   const { 
   currentUser, 
   startupIdeas, 
@@ -389,110 +386,14 @@ return validIdeas.length;
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
         <div className="w-full">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-             <div className="relative">
-  <h1 className="text-4xl font-startives-brand text-[var(--text-primary)] tracking-tighter">
-    Dashboard
-  </h1>
-
-  <p className="text-lg text-[var(--text-secondary)] font-medium font-poppins">
-    Greetings, {currentUser?.name.split(' ')[0]}. What are you building today?
-  </p>
-
-  {/* STARVERSE FLOATING GLOBE */}
-  <button
-    onClick={() => navigate("/starverse")}
-    className="
-      absolute
-      -top-1
-      right-0
-      w-11
-      h-11
-      rounded-full
-      flex
-      items-center
-      justify-center
-      group
-      transition-all
-      duration-500
-      hover:scale-110
-    "
-    aria-label="Open Starverse"
-  >
-    {/* Outer glow */}
-    <div
-      className="
-        absolute
-        inset-0
-        rounded-full
-        bg-gradient-to-r
-        from-blue-500/20
-        to-cyan-500/20
-        blur-lg
-        animate-pulse
-      "
-    />
-
-    {/* Rotating orbit */}
-    <div
-      className="
-        absolute
-        inset-0
-        rounded-full
-        border
-        border-blue-500/30
-        animate-[spin_8s_linear_infinite]
-      "
-    />
-
-    {/* Second orbit */}
-    <div
-      className="
-        absolute
-        inset-[4px]
-        rounded-full
-        border
-        border-cyan-400/30
-        animate-[spin_5s_linear_infinite_reverse]
-      "
-    />
-
-    {/* Glass circle */}
-    <div
-      className="
-        relative
-        z-10
-        w-9
-        h-9
-        rounded-full
-        backdrop-blur-xl
-        bg-white/10
-        border
-        border-white/10
-        flex
-        items-center
-        justify-center
-      "
-    >
-      <GlobeModernIcon className="w-5 h-5 text-cyan-400 group-hover:text-white transition-colors" />
-    </div>
-
-    {/* Live indicator */}
-    <div
-      className="
-        absolute
-        top-0
-        right-0
-        w-2.5
-        h-2.5
-        rounded-full
-        bg-emerald-400
-        animate-pulse
-        z-20
-      "
-    />
-  </button>
-</div>
-
+              <div>
+                  <h1 className="text-4xl font-startives-brand text-[var(--text-primary)] tracking-tighter">
+                    Dashboard
+                  </h1>
+                  <p className="text-lg text-[var(--text-secondary)] font-medium font-poppins">
+                    Greetings, {currentUser?.name.split(' ')[0]}. What are you building today?
+                  </p>
+              </div>
               <div className="flex flex-row gap-4 mt-2 w-full md:w-auto md:min-w-[380px]">
                   <Link 
                     to="/profile" 
