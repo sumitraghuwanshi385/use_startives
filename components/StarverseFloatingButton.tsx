@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobeModernIcon } from "../constants";
+// Note: Changed to Network icon for a clean, premium "Connecting / People / Globe" concept. 
+// Swap with your specific design library import path if needed.
+import { Network } from "lucide-react"; 
 
 const StarverseFloatingButton: React.FC = () => {
   const navigate = useNavigate();
@@ -11,15 +13,15 @@ const StarverseFloatingButton: React.FC = () => {
       aria-label="Open Starverse"
       className="
         fixed
-        right-5
-        bottom-[140px]
+        right-4
+        bottom-[106px]
         z-[9999]
         group
         flex
         items-center
         justify-center
-        w-[72px]
-        h-[72px]
+        w-[58px]
+        h-[58px]
         rounded-full
         transition-all
         duration-700
@@ -34,13 +36,13 @@ const StarverseFloatingButton: React.FC = () => {
       <div
         className="
           absolute
-          inset-[-24px]
+          inset-[-19px]
           rounded-full
           bg-gradient-to-tr
           from-cyan-500/30
           via-indigo-500/25
           to-purple-500/35
-          blur-2xl
+          blur-xl
           opacity-80
           group-hover:opacity-100
           group-hover:scale-110
@@ -59,7 +61,7 @@ const StarverseFloatingButton: React.FC = () => {
           rounded-full
           border
           border-cyan-400/30
-          shadow-[0_0_15px_rgba(34,211,238,0.15)]
+          shadow-[0_0_12px_rgba(34,211,238,0.15)]
           animate-[spin_20s_linear_infinite]
           group-hover:border-cyan-400/50
           transition-colors
@@ -71,7 +73,7 @@ const StarverseFloatingButton: React.FC = () => {
       <div
         className="
           absolute
-          inset-[5px]
+          inset-[4px]
           rounded-full
           border
           border-indigo-500/20
@@ -86,7 +88,7 @@ const StarverseFloatingButton: React.FC = () => {
       <div
         className="
           absolute
-          inset-[-6px]
+          inset-[-5px]
           rounded-full
           border
           border-purple-500/10
@@ -94,41 +96,12 @@ const StarverseFloatingButton: React.FC = () => {
         "
       />
 
-      {/* Premium Orbiting Satellite / Node Sparkle */}
-      <div
-        className="
-          absolute
-          inset-[-6px]
-          rounded-full
-          animate-[spin_6s_cubic-bezier(0.4,0,0.2,1)_infinite]
-          pointer-events-none
-        "
-      >
-        <div
-          className="
-            absolute
-            top-0
-            left-1/2
-            -translate-x-1/2
-            -translate-y-1/2
-            w-2
-            h-2
-            rounded-full
-            bg-white
-            shadow-[0_0_12px_#fff,0_0_4px_rgba(34,211,238,0.8)]
-            group-hover:scale-125
-            transition-transform
-            duration-300
-          "
-        />
-      </div>
-
       {/* The Core Globe Glass Sphere */}
       <div
         className="
           relative
-          w-[58px]
-          h-[58px]
+          w-[46px]
+          h-[46px]
           rounded-full
           overflow-hidden
           border
@@ -143,8 +116,8 @@ const StarverseFloatingButton: React.FC = () => {
           backdrop-blur-xl
           transition-all
           duration-500
-          shadow-[0_0_30px_rgba(59,130,246,0.3),inset_0_2px_8px_rgba(255,255,255,0.3),inset_0_-8px_12px_rgba(0,0,0,0.9),inset_0_0_12px_rgba(34,211,238,0.4)]
-          group-hover:shadow-[0_0_40px_rgba(34,211,238,0.5),inset_0_2px_10px_rgba(255,255,255,0.4),inset_0_-4px_12px_rgba(0,0,0,0.7),inset_0_0_20px_rgba(147,51,234,0.5)]
+          shadow-[0_0_24px_rgba(59,130,246,0.3),inset_0_2px_6px_rgba(255,255,255,0.3),inset_0_-6px_10px_rgba(0,0,0,0.9),inset_0_0_10px_rgba(34,211,238,0.4)]
+          group-hover:shadow-[0_0_32px_rgba(34,211,238,0.5),inset_0_2px_8px_rgba(255,255,255,0.4),inset_0_-3px_10px_rgba(0,0,0,0.7),inset_0_0_16px_rgba(147,51,234,0.5)]
           group-hover:border-white/30
         "
       >
@@ -155,7 +128,7 @@ const StarverseFloatingButton: React.FC = () => {
             inset-0
             opacity-25
             bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)]
-            bg-[size:6px_6px]
+            bg-[size:5px_5px]
             animate-[spin_45s_linear_infinite]
           "
         />
@@ -196,7 +169,7 @@ const StarverseFloatingButton: React.FC = () => {
           "
         />
 
-        {/* Central Icon Element with Fluid Micro-Interactions */}
+        {/* Central Connecting Icon Element with Fluid Micro-Interactions */}
         <div
           className="
             relative
@@ -208,13 +181,13 @@ const StarverseFloatingButton: React.FC = () => {
             group-hover:scale-105
             group-hover:rotate-[360deg]
             filter
-            drop-shadow-[0_0_10px_rgba(103,232,249,0.6)]
+            drop-shadow-[0_0_8px_rgba(103,232,249,0.6)]
           "
         >
-          <GlobeModernIcon
+          <Network
             className="
-              w-[34px]
-              h-[34px]
+              w-[24px]
+              h-[24px]
               text-cyan-100
               group-hover:text-white
               transition-colors
@@ -227,8 +200,8 @@ const StarverseFloatingButton: React.FC = () => {
         <div
           className="
             absolute
-            w-6
-            h-6
+            w-5
+            h-5
             rounded-full
             bg-cyan-400/30
             blur-md
@@ -240,28 +213,22 @@ const StarverseFloatingButton: React.FC = () => {
         />
       </div>
 
-      {/* Sleek Minimalist Live Pulse Status Node */}
-      <div className="absolute top-0.5 right-0.5 z-30 flex h-3 w-3">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-400 border border-slate-950 shadow-[0_0_8px_rgba(52,211,153,0.7)]"></span>
-      </div>
-
       {/* Cyberpunk Glassmorphic Tooltip */}
       <div
         className="
           absolute
-          right-[86px]
+          right-[72px]
           whitespace-nowrap
-          px-4
-          py-2
+          px-3.5
+          py-1.5
           rounded-xl
-          text-xs
+          text-[11px]
           font-bold
           tracking-wide
           uppercase
           opacity-0
           scale-90
-          translate-x-4
+          translate-x-3
           blur-sm
           group-hover:opacity-100
           group-hover:scale-100
@@ -276,7 +243,7 @@ const StarverseFloatingButton: React.FC = () => {
           border
           border-white/10
           text-cyan-100
-          shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1),0_0_15px_rgba(34,211,238,0.1)]
+          shadow-[0_8px_24px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(34,211,238,0.1)]
           flex
           items-center
           gap-2
@@ -285,7 +252,7 @@ const StarverseFloatingButton: React.FC = () => {
         <span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">
           Explore Starverse
         </span>
-        <span className="text-sm filter drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">🌍</span>
+        <span className="text-xs filter drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">🌍</span>
       </div>
     </button>
   );
