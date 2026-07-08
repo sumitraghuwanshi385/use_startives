@@ -6,15 +6,9 @@ const StarverseFloatingButton: React.FC = () => {
 
   return (
     <>
-      {/* Real Nohemi Font Integration & 3-Step Timed Loops */}
+      {/* Poppins Font Integration & Refined 3-Step Timed Loops */}
       <style>{`
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/log/font.css'); /* Fallback asset channel wrapper if needed */
-        @font-face {
-          font-family: 'Nohemi';
-          src: url('https://fonts.cdnfonts.com/s/94396/Nohemi-Black.woff') format('woff');
-          font-weight: 900;
-          font-style: normal;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
 
         @keyframes textSequence {
           0%, 28% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
@@ -44,9 +38,9 @@ const StarverseFloatingButton: React.FC = () => {
           100% { transform: rotate(600deg) translateX(25px) rotate(-600deg); }
         }
 
-        .font-nohemi {
-          font-family: 'Nohemi', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 900;
+        .font-poppins {
+          font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-weight: 800;
         }
         .animate-seq-1 { animation: textSequence 6s infinite cubic-bezier(0.34, 1.56, 0.64, 1); }
         .animate-seq-2 { animation: textSequenceTwo 6s infinite cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -108,7 +102,6 @@ const StarverseFloatingButton: React.FC = () => {
             rounded-full
             border
             border-cyan-400/30
-            dark:border-cyan-400/20
             shadow-[0_0_8px_rgba(34,211,238,0.1)]
             pointer-events-none
           "
@@ -142,7 +135,7 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* FIXED: High-brightness Globe Sphere core designed for white mode pop */}
+        {/* FIXED UNIFIED GLOBE: Bright & vibrant design forced for both Light & Dark modes */}
         <div
           className="
             relative
@@ -156,9 +149,6 @@ const StarverseFloatingButton: React.FC = () => {
             from-cyan-400
             via-indigo-500
             to-slate-900
-            dark:from-slate-950
-            dark:via-blue-950
-            dark:to-neutral-950
             flex
             items-center
             justify-center
@@ -169,7 +159,7 @@ const StarverseFloatingButton: React.FC = () => {
             group-hover:border-white
           "
         >
-          {/* Real organic Earth/Continental vector outlines */}
+          {/* Organic Earth/Continental vector outlines */}
           <div className="absolute inset-0 opacity-40 mix-blend-screen scale-110 pointer-events-none">
             <svg className="w-full h-full text-white fill-current animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100">
               <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
@@ -198,20 +188,20 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* FIXED: Nohemi Font Layout Vector Core without "Explore!" */}
-          <div className="relative z-10 w-full h-full flex items-center justify-center font-nohemi tracking-tight uppercase select-none">
+          {/* FIXED: Poppins Font Layout with 7% Size Reduction */}
+          <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins tracking-tight uppercase select-none">
             {/* FIND */}
-            <span className="animate-seq-1 absolute text-[9.5px] text-white font-[900] filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+            <span className="animate-seq-1 absolute text-[8.8px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Find
             </span>
 
             {/* CONNECT */}
-            <span className="animate-seq-2 absolute text-[8.5px] text-white font-[900] filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+            <span className="animate-seq-2 absolute text-[7.9px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Connect
             </span>
 
             {/* GROW */}
-            <span className="animate-seq-3 absolute text-[9.5px] text-white font-[900] filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+            <span className="animate-seq-3 absolute text-[8.8px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Grow
             </span>
           </div>
@@ -255,7 +245,7 @@ const StarverseFloatingButton: React.FC = () => {
             gap-2
           "
         >
-          <span className="font-nohemi bg-gradient-to-r from-slate-900 to-slate-700 dark:from-cyan-400 dark:to-indigo-400 bg-clip-text text-transparent">
+          <span className="font-poppins bg-gradient-to-r from-slate-900 to-slate-700 dark:from-cyan-400 dark:to-indigo-400 bg-clip-text text-transparent">
             Explore Starverse
           </span>
           <span className="text-xs">🌍</span>
