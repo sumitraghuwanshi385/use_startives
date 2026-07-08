@@ -6,33 +6,30 @@ const StarverseFloatingButton: React.FC = () => {
 
   return (
     <>
-      {/* Injecting custom keyframe loop for the text sequence right inside the file */}
+      {/* Premium Keyframes with scaled down transforms and fine-tuned timing */}
       <style>{`
         @keyframes textSequence {
-          0%, 20% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
+          0%, 20% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
           3%, 17% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          23%, 43% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
-          46%, 66% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
-          69%, 89% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
-          92%, 100% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
+          23%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
         }
         @keyframes textSequenceTwo {
-          0%, 20% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
-          23%, 43% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
+          0%, 20% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          23%, 43% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
           26%, 40% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          46%, 66% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
-          69%, 89% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
-          92%, 100% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
+          46%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
         }
         @keyframes textSequenceThree {
-          0%, 43% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
+          0%, 43% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          46%, 66% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
           49%, 63% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          66%, 100% { opacity: 0; transform: scale(0.85); filter: blur(3px); }
+          66%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
         }
         @keyframes textSequenceFour {
           0%, 66% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
-          72%, 93% { opacity: 1; transform: scale(1); filter: blur(0px); }
-          96%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          69%, 89% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
+          72%, 86% { opacity: 1; transform: scale(1); filter: blur(0px); }
+          89%, 100% { opacity: 0; transform: scale(0.82); filter: blur(3px); }
         }
         .animate-seq-1 { animation: textSequence 8s infinite ease-in-out; }
         .animate-seq-2 { animation: textSequenceTwo 8s infinite ease-in-out; }
@@ -66,7 +63,7 @@ const StarverseFloatingButton: React.FC = () => {
           outline-none
         "
       >
-        {/* Hyper-Premium Ambient Cosmic Glow */}
+        {/* Hyper-Premium Ambient Cosmic Glow - Uniform in Light & Dark */}
         <div
           className="
             absolute
@@ -114,7 +111,7 @@ const StarverseFloatingButton: React.FC = () => {
           "
         />
 
-        {/* The Core Globe Glass Sphere - Locked to premium space backgrounds in all display variants */}
+        {/* The Core Globe Glass Sphere - FIXED: Hardcoded dark background stays dark in light/white mode */}
         <div
           className="
             relative
@@ -139,7 +136,7 @@ const StarverseFloatingButton: React.FC = () => {
             group-hover:border-white/30
           "
         >
-          {/* Deep Cyber Matrix/Grid Layer for continuous rotating background texture */}
+          {/* Deep Cyber Matrix Grid Texture */}
           <div
             className="
               absolute
@@ -167,7 +164,7 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* 3D Curvature Top Specular Highlight (Glass Shine) */}
+          {/* 3D Glass Curve Highlight */}
           <div
             className="
               absolute
@@ -187,30 +184,30 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* Rich Font Text Carousel Layer Container */}
-          <div className="relative z-10 w-full h-full flex items-center justify-center font-[system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,sans-serif] select-none">
-            {/* FIND (-10% sizing adjusted) */}
-            <span className="animate-seq-1 absolute text-[9px] font-black uppercase tracking-wider text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
+          {/* Unique High-End Custom Typography Layout Container (-15% Text Sizing Adjusted) */}
+          <div className="relative z-10 w-full h-full flex items-center justify-center font-mono tracking-tighter font-[900] select-none">
+            {/* FIND */}
+            <span className="animate-seq-1 absolute text-[8px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
               Find
             </span>
 
-            {/* CONNECT (-10% sizing adjusted) */}
-            <span className="animate-seq-2 absolute text-[8px] font-black uppercase tracking-wider text-indigo-200 filter drop-shadow-[0_0_5px_rgba(165,180,252,0.6)]">
+            {/* CONNECT */}
+            <span className="animate-seq-2 absolute text-[7px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
               Connect
             </span>
 
-            {/* GROW (-10% sizing adjusted) */}
-            <span className="animate-seq-3 absolute text-[9px] font-black uppercase tracking-wider text-purple-200 filter drop-shadow-[0_0_5px_rgba(216,180,254,0.6)]">
+            {/* GROW */}
+            <span className="animate-seq-3 absolute text-[8px] uppercase text-cyan-100 filter drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">
               Grow
             </span>
 
-            {/* STARVERSE (-10% sizing adjusted to 6.8px with pure Red-to-Blue custom gradient text layout) */}
-            <span className="animate-seq-4 absolute text-[6.8px] font-[900] uppercase tracking-[0.06em] bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent filter drop-shadow-[0_0_3px_rgba(239,68,68,0.3)]">
-              Starverse
+            {/* STARTVERSE! - Fixed string and applied matching high-premium glowing look */}
+            <span className="animate-seq-4 absolute text-[5.8px] uppercase tracking-normal text-cyan-100 filter drop-shadow-[0_0_6px_rgba(34,211,238,0.85)]">
+              Startverse!
             </span>
           </div>
 
-          {/* Subtle Under-icon Shimmer */}
+          {/* Subtle Dynamic Backing Shimmer */}
           <div
             className="
               absolute
