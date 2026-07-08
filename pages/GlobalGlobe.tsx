@@ -4,6 +4,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Pause, RotateCcw, X, Info, Shield, MapPin, Globe2 } from "lucide-react";
 
+function isWebGLAvailable() {
+  try {
+    const canvas = document.createElement("canvas");
+
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") ||
+        canvas.getContext("experimental-webgl"))
+    );
+  } catch {
+    return false;
+  }
+}
+
 // ─── Country label data (major countries with coords) ───────────────────────
 const COUNTRY_LABELS = [
   { label: "India", lat: 20.5937, lng: 78.9629 },
@@ -60,6 +74,7 @@ const GlobalGlobe: React.FC = () => {
   const [showInfoPopup, setShowInfoPopup] = useState(false);
   const [findMeLoading, setFindMeLoading] = useState(false);
   const [locationEnabled, setLocationEnabled] = useState(false);
+const [webglSupported, setWebglSupported] = useState(true);
 
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark")
@@ -114,9 +129,9 @@ const GlobalGlobe: React.FC = () => {
         // Only include users with real coords AND a real profile picture
         const filtered = valid.filter(
           (u: any) =>
-            u.lat &&
-            u.lng &&
-            u.profilePictureUrl &&
+            u.lat != null &&
+u.lng != null &&
+u.profilePictureUrl &&
             !u.profilePictureUrl.includes("pravatar") &&
             !u.profilePictureUrl.includes("default") &&
             !u.profilePictureUrl.includes("placeholder")
@@ -132,11 +147,17 @@ const GlobalGlobe: React.FC = () => {
 
   // 🔥 INIT GLOBE ONCE (ULTRA SAFE)
   useEffect(() => {
-    if (!globeRef.current || globeInstance.current) return;
+  if (!globeRef.current || globeInstance.current) return;
 
-    setTimeout(() => {
-      if (!globeRef.current) return;
+  if (!isWebGLAvailable()) {
+    setWebglSupported(false);
+    return;
+  }
 
+  setTimeout(() => {
+    if (!globeRef.current) return;
+
+    try {
       const globe = Globe()(globeRef.current)
         .globeImageUrl(
           isDark
@@ -148,7 +169,6 @@ const GlobalGlobe: React.FC = () => {
       globe.controls().autoRotate = true;
       globe.controls().autoRotateSpeed = 0.6;
 
-      // 🌍 Country labels rendered on globe surface
       globe
         .labelsData(COUNTRY_LABELS)
         .labelLat("lat")
@@ -162,20 +182,34 @@ const GlobalGlobe: React.FC = () => {
       globeInstance.current = globe;
       setIsReady(true);
 
-      // 🔥 Restore last saved location from localStorage — persists across logout/login
       try {
-        const saved = localStorage.getItem("starverse_last_location");
+        const saved = localStorage.getItem(
+          "starverse_last_location"
+        );
+
         if (saved) {
           const { lat, lng } = JSON.parse(saved);
+
           if (lat && lng) {
             setTimeout(() => {
-              globe.pointOfView({ lat, lng, altitude: 1.4 }, 1000);
+              globe.pointOfView(
+                {
+                  lat,
+                  lng,
+                  altitude: 1.4,
+                },
+                1000
+              );
             }, 600);
           }
         }
       } catch (_) {}
-    }, 200);
-  }, []);
+    } catch (err) {
+      console.error("WebGL Error:", err);
+      setWebglSupported(false);
+    }
+  }, 200);
+}, []);
 
   // 🔥 UPDATE USERS (NO RECREATE)
   useEffect(() => {
@@ -244,6 +278,15 @@ const GlobalGlobe: React.FC = () => {
     }
   }, [autoRotate]);
 
+useEffect(() => {
+  return () => {
+    try {
+      globeInstance.current?.pauseAnimation?.();
+      globeInstance.current = null;
+    } catch {}
+  };
+}, []);
+
   // 🔥 FIND ME TOGGLE — saves location to localStorage, persists across logout/login
   const handleLocationToggle = () => {
     if (locationEnabled) {
@@ -299,7 +342,41 @@ const GlobalGlobe: React.FC = () => {
       />
 
       {/* GLOBE */}
-      <div ref={globeRef} className="w-full h-full relative z-10" />
+      {webglSupported ? (
+  <div
+    ref={globeRef}
+    className="w-full h-full relative z-10"
+  />
+) : (
+  <div className="absolute inset-0 flex items-center justify-center z-50">
+    <div
+      className="p-6 rounded-3xl text-center backdrop-blur-xl border"
+      style={{
+        background: isDark
+          ? "rgba(0,0,0,0.8)"
+          : "rgba(255,255,255,0.95)",
+      }}
+    >
+      <Globe2
+        size={42}
+        className="mx-auto mb-4 text-blue-500"
+      />
+
+      <h2 className="font-bold text-lg">
+        Startverse isn't supported
+      </h2>
+
+      <p
+        className="text-sm mt-2"
+        style={{
+          color: isDark ? "#aaa" : "#666",
+        }}
+      >
+        Your browser doesn't support WebGL.
+      </p>
+    </div>
+  </div>
+)}
 
       {/* HEADER FIXED — stable, no bounce */}
       <div
