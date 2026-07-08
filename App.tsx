@@ -39,6 +39,7 @@ import ContactUsPage from './pages/ContactUsPage';
 import SearchPage from './pages/SearchPage';
 import { useAppContext } from './contexts/AppContext';
 import FloatingActionMenu from './components/FloatingActionMenu';
+import StarverseFloatingButton from './components/StarverseFloatingButton';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GlobalGlobe from './pages/GlobalGlobe';
 import BuildersStoriesPage from "./pages/BuildersStoriesPage";
@@ -120,6 +121,12 @@ useEffect(() => {
     ...staticPages
   ];
   
+const hideStarverseButton =
+  location.pathname === '/globe' ||
+  location.pathname === '/starverse' ||
+  location.pathname === '/login' ||
+  location.pathname === '/signup';
+
   const isEditing = (location.pathname.includes('/edit') && location.pathname.includes('/project/')) || (location.pathname.includes('/edit') && location.pathname.includes('/asset/'));
   const showFAB = currentUser && 
     !hideFABRoutes.includes(location.pathname) && 
@@ -200,6 +207,9 @@ useEffect(() => {
 {currentUser && !isChatOpen && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
 
 <FloatingActionMenu />
+{currentUser && !hideStarverseButton && (
+  <StarverseFloatingButton />
+)}
     </div>
         </GoogleOAuthProvider>
   );
