@@ -6,29 +6,30 @@ const StarverseFloatingButton: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // 1. EXACT PATHS TO HIDE COMPLETELY (In pages par bilkul nahi dikhega)
+  // 1. EXACT ROUTES TO HIDE COMPLETELY (In pages par bilkul nahi dikhega)
   const hideOnPages = [
-    "/profile",               // my profile
-    "/profile/edit",          // profile edit
-    "/post-idea",             // post idea page
-    "/submit-asset",          // post asset page
-    "/login",                 // before login - login page
-    "/signup",                // before login - signup page
-    "/forgot-password",       // before login pages
-    "/new-password",
-    "/verify-email",
-    "/messages",              // messenger page
-    "/connections",           // connections page
-    "/my-applications",       // application list page
-    "/saved-projects",        // wishlist / saved projects page
-    "/about",                 // about us placeholder route
-    "/privacy-policy",        // privacy policy placeholder route
-    "/sponsorship",           // sponsorship placeholder route
-    "/contact-us",            // contact us form page
-    "/globe"                  // main immersive globe page itself
+    "/profile",               // My profile
+    "/profile/edit",          // Profile edit
+    "/my-projects",           // FIXED: Added exact path to hide on My Projects page completely
+    "/post-idea",             // Post idea page
+    "/submit-asset",          // Post asset page
+    "/login",                 // Login page
+    "/signup",                // Signup page
+    "/forgot-password",       // Forgot password page
+    "/new-password",          // New password page
+    "/verify-email",          // Email verification
+    "/messages",              // Messenger page
+    "/connections",           // Connections page
+    "/my-applications",       // Application list page
+    "/saved-projects",        // Saved/Wishlist projects page
+    "/about",                 // About us placeholder route
+    "/privacy-policy",        // Privacy policy placeholder route
+    "/sponsorship",           // Sponsorship placeholder route
+    "/contact-us",            // Contact us form page
+    "/globe"                  // Main globe canvas page itself
   ];
 
-  // Dynamic route helper matches like dynamic user IDs / profile checking: /user/:id or /idea/:id
+  // Dynamic route safety check (e.g., dynamic user profiles, idea details, asset details, team details)
   const isDynamicHiddenRoute = 
     currentPath.startsWith("/user/") || 
     currentPath.startsWith("/idea/") || 
@@ -36,22 +37,22 @@ const StarverseFloatingButton: React.FC = () => {
     currentPath.startsWith("/team/");
 
   if (hideOnPages.includes(currentPath) || isDynamicHiddenRoute) {
-    return null; // Instantly hides component
+    return null; // Instantly destroys/hides the button on specified pages
   }
 
-  // 2. EXACT MATCHES FOR HIGHER POSITION (Discover projects list and assets blueprint market)
+  // 2. DISCOVER PROJECTS AND MARKETPLACE POSITIONS (Best screenshot spot)
   const isPrimaryMarketplacePage = currentPath === "/projects" || currentPath === "/blueprint";
 
-  // Position toggler class
+  // FIXED: Adjusted secondary position to bottom-[86px] so it safely floats above the bottom navigation bar without touching it
   const positionClass = isPrimaryMarketplacePage 
-    ? "bottom-[106px] right-4"  // Screen-shot base position
-    : "bottom-[24px] right-4";   // Safely tucked lower on remaining pages
+    ? "bottom-[106px] right-4" 
+    : "bottom-[86px] right-4";  
 
   return (
     <>
-      {/* Poppins Font Integration & Refined 3-Step Timed Loops */}
+      {/* Poppins Font Integration & Timed Orbit System loops */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=800&display=swap');
 
         @keyframes textSequence {
           0%, 28% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
@@ -174,7 +175,7 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* UNIFIED GLOBE SURFACE LAYER (Forces light styling for maximum luminance visibility across layouts) */}
+        {/* UNIFIED LUMINESCENT GLOBE LAYER */}
         <div
           className="
             relative
@@ -198,7 +199,7 @@ const StarverseFloatingButton: React.FC = () => {
             group-hover:border-white
           "
         >
-          {/* Organic Continental Vectors */}
+          {/* Real organic Earth vector lines */}
           <div className="absolute inset-0 opacity-40 mix-blend-screen scale-110 pointer-events-none">
             <svg className="w-full h-full text-white fill-current animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100">
               <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
@@ -207,7 +208,7 @@ const StarverseFloatingButton: React.FC = () => {
             </svg>
           </div>
 
-          {/* Lens curvature specular highlight */}
+          {/* Curved shiny reflection mask */}
           <div
             className="
               absolute
@@ -227,7 +228,7 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* Poppins Scaled 7% Compressed Loop Core */}
+          {/* Poppins Scaled 7% Core Loop Without Explore */}
           <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins tracking-tight uppercase select-none">
             <span className="animate-seq-1 absolute text-[8.8px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Find
@@ -241,7 +242,7 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* Dynamic Micro Glass Tooltip */}
+        {/* Clean Glass Tooltip Popover */}
         <div
           className="
             absolute
