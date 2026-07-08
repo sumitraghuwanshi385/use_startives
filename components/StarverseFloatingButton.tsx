@@ -6,30 +6,29 @@ const StarverseFloatingButton: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // 1. EXACT ROUTES TO HIDE COMPLETELY (In pages par bilkul nahi dikhega)
+  // 1. EXACT ROUTES TO HIDE COMPLETELY
   const hideOnPages = [
-    "/profile",               // My profile
-    "/profile/edit",          // Profile edit
-    "/my-projects",           // FIXED: Added exact path to hide on My Projects page completely
-    "/post-idea",             // Post idea page
-    "/submit-asset",          // Post asset page
-    "/login",                 // Login page
-    "/signup",                // Signup page
-    "/forgot-password",       // Forgot password page
-    "/new-password",          // New password page
-    "/verify-email",          // Email verification
-    "/messages",              // Messenger page
-    "/connections",           // Connections page
-    "/my-applications",       // Application list page
-    "/saved-projects",        // Saved/Wishlist projects page
-    "/about",                 // About us placeholder route
-    "/privacy-policy",        // Privacy policy placeholder route
-    "/sponsorship",           // Sponsorship placeholder route
-    "/contact-us",            // Contact us form page
-    "/globe"                  // Main globe canvas page itself
+    "/profile",
+    "/profile/edit",
+    "/my-projects",
+    "/post-idea",
+    "/submit-asset",
+    "/login",
+    "/signup",
+    "/forgot-password",
+    "/new-password",
+    "/verify-email",
+    "/messages",
+    "/connections",
+    "/my-applications",
+    "/saved-projects",
+    "/about",
+    "/privacy-policy",
+    "/sponsorship",
+    "/contact-us",
+    "/globe"
   ];
 
-  // Dynamic route safety check (e.g., dynamic user profiles, idea details, asset details, team details)
   const isDynamicHiddenRoute = 
     currentPath.startsWith("/user/") || 
     currentPath.startsWith("/idea/") || 
@@ -37,20 +36,20 @@ const StarverseFloatingButton: React.FC = () => {
     currentPath.startsWith("/team/");
 
   if (hideOnPages.includes(currentPath) || isDynamicHiddenRoute) {
-    return null; // Instantly destroys/hides the button on specified pages
+    return null;
   }
 
-  // 2. DISCOVER PROJECTS AND MARKETPLACE POSITIONS (Best screenshot spot)
+  // 2. POSITION CONTROLLER
   const isPrimaryMarketplacePage = currentPath === "/projects" || currentPath === "/blueprint";
 
-  // FIXED: Adjusted secondary position to bottom-[86px] so it safely floats above the bottom navigation bar without touching it
+  // FIXED: Changed secondary position from 86px to exact bottom-[72px] as requested
   const positionClass = isPrimaryMarketplacePage 
     ? "bottom-[106px] right-4" 
-    : "bottom-[86px] right-4";  
+    : "bottom-[72px] right-4";  
 
   return (
     <>
-      {/* Poppins Font Integration & Timed Orbit System loops */}
+      {/* Poppins Font Integration & Orbit Keyframes */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=800&display=swap');
 
@@ -118,39 +117,26 @@ const StarverseFloatingButton: React.FC = () => {
           ${positionClass}
         `}
       >
-        {/* Subtle Refined Ambient Underglow */}
+        {/* FIXED: Replaced standard ambient light with a high-end Red-to-Blue premium glow engine */}
         <div
           className="
             absolute
-            inset-[-5px]
+            inset-[-4px]
             rounded-full
             bg-gradient-to-tr
-            from-cyan-300/30
-            via-indigo-400/20
-            to-purple-400/30
+            from-rose-500/40
+            via-purple-500/20
+            to-blue-600/40
             blur-md
-            opacity-70
-            group-hover:opacity-90
+            opacity-80
+            group-hover:opacity-100
             transition-all
             duration-500
             pointer-events-none
           "
         />
 
-        {/* Clean Outer Celestial Orbit Line */}
-        <div
-          className="
-            absolute
-            inset-[-1px]
-            rounded-full
-            border
-            border-cyan-400/30
-            shadow-[0_0_8px_rgba(34,211,238,0.1)]
-            pointer-events-none
-          "
-        />
-
-        {/* 3 ROTATING PEOPLE / NETWORK NODES */}
+        {/* 3 ROTATING PEOPLE / COMMUNITY SYSTEM NODES */}
         <div className="absolute animate-people-1 pointer-events-none z-30">
           <div className="w-3 h-3 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[1px] shadow-[0_0_5px_rgba(34,211,238,0.5)] flex items-center justify-center">
             <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -175,7 +161,7 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* UNIFIED LUMINESCENT GLOBE LAYER */}
+        {/* CORE GLOBE CANVASES (FIXED: Border lines removed completely from all layout formats) */}
         <div
           className="
             relative
@@ -183,8 +169,6 @@ const StarverseFloatingButton: React.FC = () => {
             h-[46px]
             rounded-full
             overflow-hidden
-            border
-            border-white/80
             bg-gradient-to-b
             from-cyan-400
             via-indigo-500
@@ -196,11 +180,10 @@ const StarverseFloatingButton: React.FC = () => {
             transition-all
             duration-500
             shadow-[0_4px_14px_rgba(0,0,0,0.3),inset_0_2px_4px_rgba(255,255,255,0.6),inset_0_-4px_8px_rgba(0,0,0,0.4)]
-            group-hover:border-white
           "
         >
-          {/* Real organic Earth vector lines */}
-          <div className="absolute inset-0 opacity-40 mix-blend-screen scale-110 pointer-events-none">
+          {/* FIXED: Organic Earth Map Canvas - 20% dimmer path active inside dark mode layout theme structure */}
+          <div className="absolute inset-0 opacity-40 dark:opacity-[0.16] mix-blend-screen scale-110 pointer-events-none transition-all duration-300">
             <svg className="w-full h-full text-white fill-current animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100">
               <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
               <path d="M40,15 Q50,20 55,10 T75,18 T65,28 Z" />
@@ -208,7 +191,7 @@ const StarverseFloatingButton: React.FC = () => {
             </svg>
           </div>
 
-          {/* Curved shiny reflection mask */}
+          {/* Curved shiny reflection shell overlay */}
           <div
             className="
               absolute
@@ -228,7 +211,7 @@ const StarverseFloatingButton: React.FC = () => {
             "
           />
 
-          {/* Poppins Scaled 7% Core Loop Without Explore */}
+          {/* Poppins Scaled 7% Core Loop */}
           <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins tracking-tight uppercase select-none">
             <span className="animate-seq-1 absolute text-[8.8px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               Find
@@ -242,7 +225,7 @@ const StarverseFloatingButton: React.FC = () => {
           </div>
         </div>
 
-        {/* Clean Glass Tooltip Popover */}
+        {/* Clean Glass Popover Tooltip */}
         <div
           className="
             absolute
