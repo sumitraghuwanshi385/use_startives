@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
-import { Milestone } from 'lucide-react';
+import { Medal } from 'lucide-react';
 import { 
   IdeaStarIcon,
   ChevronRightIcon,
@@ -144,7 +144,7 @@ const BuildersStoriesShortcut: React.FC = () => {
             <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
             <div className="flex items-center gap-4 relative">
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-transform duration-500 border border-amber-500/10">
-                    <Milestone className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                    <Medal className="w-5 h-5 text-amber-500 dark:text-amber-400" />
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-amber-500 transition-colors tracking-tight font-poppins">Builders Stories</h3>
