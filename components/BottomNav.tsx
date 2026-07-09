@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   ChatBubbleLeftRightIcon,
-  BoltIcon // Dashboard market/asset icon
+  ShoppingBagIcon // 🔥 Dashboard ka same shopping bag icon yahan use kar liya
 } from "../constants";
 
 const BottomNav = () => {
@@ -31,10 +31,10 @@ const BottomNav = () => {
     // ROCKET ICON (Projects)
     { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
 
-    // FIXED: Replaced Starverse with Marketplace using the Dashboard BoltIcon
-    { name: "Marketplace", icon: BoltIcon, path: "/blueprint", type: "custom" },
+    // 🔥 FIXED: Marketplace me ab wahi badhiya ShoppingBagIcon render hoga
+    { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
 
-    // STARTALKS (Using Message icon variant)
+    // STARTALKS 
     { name: "Startalks", icon: ChatBubbleLeftRightIcon, path: "/startalks", type: "custom" },
     
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
@@ -45,7 +45,6 @@ const BottomNav = () => {
       <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
         {navItems.map((item, index) => {
-          // Precise path matching logic
           const isActive = location.pathname.startsWith(item.path);
           const IconComponent = item.icon;
 
