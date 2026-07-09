@@ -1,9 +1,10 @@
-import { Home, Globe, Rocket } from "lucide-react";
+import React from "react";
+import { Home, Rocket } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   ChatBubbleLeftRightIcon,
-  BoltIcon
+  BoltIcon // Dashboard market/asset icon
 } from "../constants";
 
 const BottomNav = () => {
@@ -26,14 +27,16 @@ const BottomNav = () => {
 
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
-
-    // 🔥 UPDATED → ROCKET ICON
+    
+    // ROCKET ICON (Projects)
     { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
 
-    // 🔥 NEW → STARVERSE
-    { name: "Starverse", icon: Globe, path: "/globe", type: "lucide" },
+    // FIXED: Replaced Starverse with Marketplace using the Dashboard BoltIcon
+    { name: "Marketplace", icon: BoltIcon, path: "/blueprint", type: "custom" },
 
-    { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "custom" },
+    // STARTALKS (Using Message icon variant)
+    { name: "Startalks", icon: ChatBubbleLeftRightIcon, path: "/startalks", type: "custom" },
+    
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
 
@@ -42,8 +45,8 @@ const BottomNav = () => {
       <div className="bg-[var(--component-background)] border-t border-[var(--border-primary)] px-3 py-3 flex justify-between items-center">
 
         {navItems.map((item, index) => {
+          // Precise path matching logic
           const isActive = location.pathname.startsWith(item.path);
-
           const IconComponent = item.icon;
 
           return (
