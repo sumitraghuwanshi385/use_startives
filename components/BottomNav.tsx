@@ -29,7 +29,7 @@ const BottomNav = () => {
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
     { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
     
-    // CENTER SPECIAL ITEM: STARVERSE (Globe Component)
+    // CENTER STARVERSE (Globe Configuration System)
     { name: "Starverse", icon: null, path: "/globe", type: "starverse" },
 
     { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "custom" },
@@ -38,7 +38,7 @@ const BottomNav = () => {
 
   return (
     <>
-      {/* Absolute Node Orbit Positions & Text Loop Animations */}
+      {/* Structural Font Weight Filters & Absolute Positioning Vectors */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=800&display=swap');
         
@@ -58,18 +58,18 @@ const BottomNav = () => {
           100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(1px); }
         }
         
-        /* Fixed orbit path mapping at exactly 25px radius for 50px globe */
+        /* Fixed translation node to exactly 26.5px to split center of the 52px globe button */
         @keyframes orbitAlpha {
-          0% { transform: rotate(0deg) translateX(25px) rotate(0deg); }
-          100% { transform: rotate(360deg) translateX(25px) rotate(-360deg); }
+          0% { transform: rotate(0deg) translateX(26.5px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(26.5px) rotate(-360deg); }
         }
         @keyframes orbitBeta {
-          0% { transform: rotate(120deg) translateX(25px) rotate(-120deg); }
-          100% { transform: rotate(480deg) translateX(25px) rotate(-480deg); }
+          0% { transform: rotate(120deg) translateX(26.5px) rotate(-120deg); }
+          100% { transform: rotate(480deg) translateX(26.5px) rotate(-480deg); }
         }
         @keyframes orbitGamma {
-          0% { transform: rotate(240deg) translateX(25px) rotate(-240deg); }
-          100% { transform: rotate(600deg) translateX(25px) rotate(-600deg); }
+          0% { transform: rotate(240deg) translateX(26.5px) rotate(-240deg); }
+          100% { transform: rotate(600deg) translateX(26.5px) rotate(-600deg); }
         }
         @keyframes spinEarth {
           0% { transform: rotate(0deg); }
@@ -86,28 +86,28 @@ const BottomNav = () => {
         .animate-people-3 { animation: orbitGamma 14s linear infinite; }
       `}</style>
 
-      {/* Main Base Wrapper */}
-      <div className="fixed bottom-0 left-0 w-full z-[999] select-none bg-transparent">
+      {/* Main Base Wrapper Viewport Layout */}
+      <div className="fixed bottom-0 left-0 w-full z-[999] select-none bg-transparent pt-3">
 
-        {/* MAIN NAVIGATION BAR FRAME (Divider border top line shifted down to cross center axis) */}
+        {/* MAIN NAVIGATION BAR FRAME (Divider shifted lower to target exactly half height of the globe) */}
         <div className="relative bg-[var(--component-background)] border-t border-[var(--border-primary)] px-2 py-2 flex justify-between items-end h-[66px] z-10 overflow-visible">
           
           {navItems.map((item, index) => {
             const isActive = location.pathname.startsWith(item.path);
 
-            // 1. CENTER PERFECT GLOBE ALIGNMENT (50% UP / 50% DOWN)
+            // 1. CENTER ALIGNED GLOBE (HALF ABOVE / HALF BELOW THE DIVIDER)
             if (item.type === "starverse") {
               return (
                 <div key={index} className="relative flex flex-col items-center justify-end flex-1 h-full pb-1 overflow-visible">
                   
-                  {/* Floating Absolute Center Anchor */}
-                  <div className="absolute top-[-25px] w-[58px] h-[58px] flex items-center justify-center overflow-visible z-20 bg-transparent">
+                  {/* Floating base box container absolute anchoring centered perfectly on divider line */}
+                  <div className="absolute top-[-26px] w-[60px] h-[60px] flex items-center justify-center overflow-visible z-20 bg-transparent">
                     
-                    {/* Soft background aura behind the globe core */}
+                    {/* Soft ambient background radial aura ring */}
                     <div className="absolute inset-0 rounded-full bg-indigo-500/10 blur-sm pointer-events-none" />
                     
-                    {/* Rotating People Tokens (Perfectly 50% Inside / 50% Outside Track Line) */}
-                    <div className="absolute animate-people-1 pointer-events-none z-30">
+                    {/* Rotating Network Nodes (50% Outside Tracking Track Line) */}
+                    <div className="absolute animate-people-1 pointer-events-none z-40">
                       <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[0.5px] shadow-[0_0_4px_rgba(34,211,238,0.5)] flex items-center justify-center">
                         <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16w-2v-2c0-2.66-5.33-4-8-4z" />
@@ -115,7 +115,7 @@ const BottomNav = () => {
                       </div>
                     </div>
 
-                    <div className="absolute animate-people-2 pointer-events-none z-30">
+                    <div className="absolute animate-people-2 pointer-events-none z-40">
                       <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 p-[0.5px] shadow-[0_0_4px_rgba(168,85,247,0.5)] flex items-center justify-center">
                         <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16w-2v-2c0-2.66-5.33-4-8-4z" />
@@ -123,7 +123,7 @@ const BottomNav = () => {
                       </div>
                     </div>
 
-                    <div className="absolute animate-people-3 pointer-events-none z-30">
+                    <div className="absolute animate-people-3 pointer-events-none z-40">
                       <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 p-[0.5px] shadow-[0_0_4px_rgba(52,211,153,0.5)] flex items-center justify-center">
                         <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16w-2v-2c0-2.66-5.33-4-8-4z" />
@@ -131,33 +131,33 @@ const BottomNav = () => {
                       </div>
                     </div>
 
-                    {/* REDUCED GLOBE CORE (Exactly w-[50px] h-[50px] with zero visual clips) */}
+                    {/* 🔥 MODIFIED GLOBE CORE: Increased size to w-[52px] with overflow-hidden restricted solely inside circle boundaries */}
                     <button
                       onClick={() => navigate(item.path)}
-                      className="relative flex items-center justify-center w-[50px] h-[50px] rounded-full bg-gradient-to-b from-cyan-400 via-indigo-500 to-slate-900 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.35),inset_0_1.5px_3px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.4)] border border-white/10 overflow-hidden"
+                      className="relative flex items-center justify-center w-[52px] h-[52px] rounded-full bg-gradient-to-b from-cyan-400 via-indigo-500 to-slate-900 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.35),inset_0_1.5px_3px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.4)] border border-white/10 overflow-hidden"
                     >
-                      {/* Earth Grid Mesh Layer */}
-                      <div className="absolute inset-0 opacity-35 dark:opacity-[0.16] mix-blend-screen scale-110 pointer-events-none animate-earth-spin">
-                        <svg className="w-full h-full text-white fill-current" viewBox="0 0 100 100">
+                      {/* 🔥 FIXED: Earth Vector Grid completely centered and stretched to match circle geometry perfectly (No Cuts) */}
+                      <div className="absolute inset-0 opacity-40 dark:opacity-[0.18] mix-blend-screen scale-105 pointer-events-none animate-earth-spin flex items-center justify-center">
+                        <svg className="w-full h-full text-white fill-current object-cover" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
                           <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
                           <path d="M40,15 Q50,20 55,10 T75,18 T65,28 Z" />
                           <path d="M15,75 Q25,85 45,80 T65,85 T80,75 Z" />
                         </svg>
                       </div>
 
-                      {/* Top Spherical Reflection Gloss */}
+                      {/* Spherical Reflection Arc Light */}
                       <div className="absolute top-[0.5px] left-1/2 -translate-x-1/2 w-[85%] h-[35%] rounded-full bg-gradient-to-b from-white/50 to-transparent blur-[0.2px] pointer-events-none" />
 
-                      {/* Text Flow Cycles */}
+                      {/* Text Flow Cycle Engines */}
                       <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins text-white tracking-tighter uppercase select-none">
-                        <span className="animate-seq-1 absolute text-[9px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Find</span>
-                        <span className="animate-seq-2 absolute text-[8px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Connect</span>
-                        <span className="animate-seq-3 absolute text-[9px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Grow</span>
+                        <span className="animate-seq-1 absolute text-[9.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Find</span>
+                        <span className="animate-seq-2 absolute text-[8.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Connect</span>
+                        <span className="animate-seq-3 absolute text-[9.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Grow</span>
                       </div>
                     </button>
                   </div>
 
-                  {/* Label title perfectly leveled into base row alignment */}
+                  {/* Text labels leveled straight on horizontal ground baseline */}
                   <span
                     className={`text-[10px] font-semibold tracking-wide leading-none ${
                       isActive
@@ -171,7 +171,7 @@ const BottomNav = () => {
               );
             }
 
-            // 2. STANDARD RUNTIME SIDE ACTIONS
+            // 2. STANDARD ACTIONS
             const IconComponent = item.icon!;
             return (
               <button
