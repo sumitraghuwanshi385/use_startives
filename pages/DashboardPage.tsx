@@ -133,6 +133,35 @@ const MarketplaceShortcut: React.FC = () => {
     );
 };
 
+// --- Builders Stories Shortcut ---
+const BuildersStoriesShortcut: React.FC = () => {
+    return (
+        <Link 
+            to="/stories" 
+            className="group relative flex items-center justify-between p-4 bg-gradient-to-br from-amber-500/5 to-yellow-500/5 dark:from-amber-500/15 dark:to-yellow-500/15 rounded-2xl transition-all duration-300 hover:border-amber-500/30 overflow-hidden"
+        >
+            <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
+            <div className="flex items-center gap-4 relative">
+                <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-transform duration-500 border border-amber-500/10">
+                    <IdeaStarIcon className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                </div>
+                <div>
+                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-amber-500 transition-colors tracking-tight font-poppins">Builders Stories</h3>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Read Success Profiles</p>
+                </div>
+            </div>
+            
+            <div className="relative">
+                <span className="bg-amber-500 text-white text-[9px] font-bold px-4 py-1.5 rounded-full shadow-none group-hover:scale-105 transition-transform flex items-center gap-1 tracking-tight font-poppins uppercase">
+                    Visit
+                    <ChevronRightIcon className="w-2.5 h-2.5" />
+                </span>
+            </div>
+        </Link>
+    );
+};
+
+
 // --- Message Center ---
 const MessageCenter: React.FC = () => {
     return (
@@ -423,6 +452,8 @@ return validIdeas.length;
             <DiscoverProjectsShortcut />
             <MarketplaceShortcut />
             <MessageCenter />
+   <BuildersStoriesShortcut />
+
         </div>
         <div>
             <AboutStartivesBox />
