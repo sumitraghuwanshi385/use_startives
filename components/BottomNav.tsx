@@ -38,7 +38,7 @@ const BottomNav = () => {
 
   return (
     <>
-      {/* Poppins Font Integration & Exact Orbit Keyframes From Floating Code */}
+      {/* Poppins Font Integration & Updated Orbit Keyframes */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=800&display=swap');
 
@@ -57,17 +57,19 @@ const BottomNav = () => {
           71%, 90% { opacity: 1; transform: scale(1) translateY(0px); filter: blur(0px); }
           100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(2px); }
         }
+        
+        /* Radiated translation updated to 28.5px for smooth 55px core button wrapping */
         @keyframes orbitAlpha {
-          0% { transform: rotate(0deg) translateX(26px) rotate(0deg); }
-          100% { transform: rotate(360deg) translateX(26px) rotate(-360deg); }
+          0% { transform: rotate(0deg) translateX(28.5px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(28.5px) rotate(-360deg); }
         }
         @keyframes orbitBeta {
-          0% { transform: rotate(120deg) translateX(26px) rotate(-120deg); }
-          100% { transform: rotate(480deg) translateX(26px) rotate(-480deg); }
+          0% { transform: rotate(120deg) translateX(28.5px) rotate(-120deg); }
+          100% { transform: rotate(480deg) translateX(28.5px) rotate(-480deg); }
         }
         @keyframes orbitGamma {
-          0% { transform: rotate(240deg) translateX(26px) rotate(-240deg); }
-          100% { transform: rotate(600deg) translateX(26px) rotate(-600deg); }
+          0% { transform: rotate(240deg) translateX(28.5px) rotate(-240deg); }
+          100% { transform: rotate(600deg) translateX(28.5px) rotate(-600deg); }
         }
 
         .font-poppins {
@@ -91,62 +93,62 @@ const BottomNav = () => {
           {navItems.map((item, index) => {
             const isActive = location.pathname.startsWith(item.path);
 
-            // 1. STARVERSE GLOBE LOGIC WITH EXACT MATCHED FLOATING BUTTON STYLES
+            // 1. STARVERSE GLOBE LOGIC WITH FLOATING BUTTON UI STYLE
             if (item.type === "starverse") {
               return (
                 <div key={index} className="relative flex flex-col items-center justify-end flex-1 h-full pb-1 overflow-visible">
                   
                   {/* Absolute Center Anchor Box over Divider Line */}
-                  <div className="absolute top-0 -translate-y-1/2 w-[58px] h-[58px] flex items-center justify-center overflow-visible z-20 bg-transparent group">
+                  <div className="absolute top-0 -translate-y-1/2 w-[62px] h-[62px] flex items-center justify-center overflow-visible z-20 bg-transparent group">
                     
-                    {/* Premium Red-to-Blue Ambient Glow Engine Layer from Floating Component */}
+                    {/* Premium Red-to-Blue Ambient Glow Engine Layer */}
                     <div
                       className="
                         absolute
-                        inset-[-2px]
+                        inset-[-3px]
                         rounded-full
                         bg-gradient-to-tr
-                        from-rose-500/40
+                        from-rose-500/45
                         via-purple-500/20
-                        to-blue-600/40
+                        to-blue-600/45
                         blur-md
-                        opacity-90
+                        opacity-95
                         pointer-events-none
                       "
                     />
 
-                    {/* 3 ROTATING PEOPLE / COMMUNITY NODES */}
+                    {/* 3 ROTATING PEOPLE / COMMUNITY NODES (Size boosted to w-3.5 h-3.5) */}
                     <div className="absolute animate-people-1 pointer-events-none z-30">
-                      <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[1px] shadow-[0_0_5px_rgba(34,211,238,0.5)] flex items-center justify-center">
-                        <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <div className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[1px] shadow-[0_0_5px_rgba(34,211,238,0.6)] flex items-center justify-center">
+                        <svg className="w-[80%] h-[80%] text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16w-2v-2c0-2.66-5.33-4-8-4z" />
                         </svg>
                       </div>
                     </div>
 
                     <div className="absolute animate-people-2 pointer-events-none z-30">
-                      <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 p-[1px] shadow-[0_0_5px_rgba(168,85,247,0.5)] flex items-center justify-center">
-                        <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <div className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 p-[1px] shadow-[0_0_5px_rgba(168,85,247,0.6)] flex items-center justify-center">
+                        <svg className="w-[80%] h-[80%] text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16w-2v-2c0-2.66-5.33-4-8-4z" />
                         </svg>
                       </div>
                     </div>
 
                     <div className="absolute animate-people-3 pointer-events-none z-30">
-                      <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 p-[1px] shadow-[0_0_5px_rgba(52,211,153,0.5)] flex items-center justify-center">
-                        <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <div className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 p-[1px] shadow-[0_0_5px_rgba(52,211,153,0.6)] flex items-center justify-center">
+                        <svg className="w-[80%] h-[80%] text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16w-2v-2c0-2.66-5.33-4-8-4z" />
                         </svg>
                       </div>
                     </div>
 
-                    {/* CORE GLOBE CANVASES WITH EXACT BUTTON SIZE + INNER STYLES */}
+                    {/* CORE GLOBE CANVASES WITH +5% INCREASED BASE SIZE (w-[55px] h-[55px]) */}
                     <button
                       onClick={() => navigate(item.path)}
                       className="
                         relative
-                        w-[52px]
-                        h-[52px]
+                        w-[55px]
+                        h-[55px]
                         rounded-full
                         overflow-hidden
                         bg-gradient-to-b
@@ -166,7 +168,7 @@ const BottomNav = () => {
                         shadow-[0_4px_14px_rgba(0,0,0,0.3),inset_0_2px_4px_rgba(255,255,255,0.6),inset_0_-4px_8px_rgba(0,0,0,0.4)]
                       "
                     >
-                      {/* Organic Earth Map Canvas from Floating Code (Seamless Fill) */}
+                      {/* Organic Earth Map Canvas (Seamless Fill) */}
                       <div className="absolute inset-0 opacity-40 dark:opacity-[0.16] mix-blend-screen scale-110 pointer-events-none transition-all duration-300">
                         <svg className="w-full h-full text-white fill-current animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100">
                           <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
@@ -195,15 +197,15 @@ const BottomNav = () => {
                         "
                       />
 
-                      {/* Poppins Core Text Loop */}
+                      {/* Poppins Core Text Loop (Rescaled proportionally for 55px button) */}
                       <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins tracking-tight uppercase select-none">
-                        <span className="animate-seq-1 absolute text-[9.5px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                        <span className="animate-seq-1 absolute text-[10px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
                           Find
                         </span>
-                        <span className="animate-seq-2 absolute text-[8.5px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                        <span className="animate-seq-2 absolute text-[9px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
                           Connect
                         </span>
-                        <span className="animate-seq-3 absolute text-[9.5px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                        <span className="animate-seq-3 absolute text-[10px] text-white filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
                           Grow
                         </span>
                       </div>
