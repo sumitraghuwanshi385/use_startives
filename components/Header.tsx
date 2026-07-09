@@ -181,8 +181,8 @@ const handleBellClick = async () => {
   // Desktop Nav Links
   const navLinks = [
     { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Startalks', path: '/startalks' },
-    { name: 'Messenger', path: '/messages' },
+    { name: 'Marketplace', path: '/builders' },
+    { name: 'Builder Stories', path: '/builders' },
 { name: 'Starverse', path: '/globe' },
   ];
 
