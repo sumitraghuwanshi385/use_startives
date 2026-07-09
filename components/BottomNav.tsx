@@ -4,7 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   ChatBubbleLeftRightIcon,
-  ShoppingBagIcon // 🔥 Dashboard ka same shopping bag icon yahan use kar liya
+  ShoppingBagIcon,
+  BoltIcon // 🔥 Startalks ke liye BoltIcon yahan imported hai
 } from "../constants";
 
 const BottomNav = () => {
@@ -31,11 +32,11 @@ const BottomNav = () => {
     // ROCKET ICON (Projects)
     { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
 
-    // 🔥 FIXED: Marketplace me ab wahi badhiya ShoppingBagIcon render hoga
+    // MARKETPLACE (Shopping Bag Icon)
     { name: "Marketplace", icon: ShoppingBagIcon, path: "/blueprint", type: "custom" },
 
-    // STARTALKS 
-    { name: "Startalks", icon: ChatBubbleLeftRightIcon, path: "/startalks", type: "custom" },
+    // 🔥 FIXED: Startalks par ab wahi pehle wala BoltIcon (⚡) render hoga
+    { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "custom" },
     
     { name: "Messages", icon: ChatBubbleLeftRightIcon, path: "/messages", type: "custom" }
   ];
