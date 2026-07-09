@@ -2,7 +2,6 @@ import React from "react";
 import { Home, Rocket } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// 🔥 Purani constants aur icons imports
 import {
   ChatBubbleLeftRightIcon,
   BoltIcon
@@ -26,12 +25,11 @@ const BottomNav = () => {
     return null;
   }
 
-  // 5-Item balanced layout setup (Index 2 par exact center me Starverse h)
   const navItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
     { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
     
-    // CENTER SPECIAL ITEM: STARVERSE
+    // CENTER HERO: STARVERSE (Globe)
     { name: "Starverse", icon: null, path: "/globe", type: "starverse" },
 
     { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "custom" },
@@ -40,7 +38,7 @@ const BottomNav = () => {
 
   return (
     <>
-      {/* Dynamic Font & Charging Glow Keyframes (Red to Blue Theme) */}
+      {/* Dynamic Font, Animations & Scaled Node Orbit System */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=800&display=swap');
         
@@ -63,17 +61,18 @@ const BottomNav = () => {
           71%, 90% { opacity: 1; transform: scale(1) translateY(0px); filter: blur(0px); }
           100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(1px); }
         }
+        /* Expanded orbit to perfectly match the bigger globe size */
         @keyframes orbitAlpha {
-          0% { transform: rotate(0deg) translateX(24px) rotate(0deg); }
-          100% { transform: rotate(360deg) translateX(24px) rotate(-360deg); }
+          0% { transform: rotate(0deg) translateX(28px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(28px) rotate(-360deg); }
         }
         @keyframes orbitBeta {
-          0% { transform: rotate(120deg) translateX(24px) rotate(-120deg); }
-          100% { transform: rotate(480deg) translateX(24px) rotate(-480deg); }
+          0% { transform: rotate(120deg) translateX(28px) rotate(-120deg); }
+          100% { transform: rotate(480deg) translateX(28px) rotate(-480deg); }
         }
         @keyframes orbitGamma {
-          0% { transform: rotate(240deg) translateX(24px) rotate(-240deg); }
-          100% { transform: rotate(600deg) translateX(24px) rotate(-600deg); }
+          0% { transform: rotate(240deg) translateX(28px) rotate(-240deg); }
+          100% { transform: rotate(600deg) translateX(28px) rotate(-600deg); }
         }
         @keyframes spinEarth {
           0% { transform: rotate(0deg); }
@@ -93,33 +92,33 @@ const BottomNav = () => {
 
       <div className="fixed bottom-0 left-0 w-full z-[999] select-none">
         
-        {/* 🔥 Top Horizontal Border Charging Glow Line (Red to Blue) */}
+        {/* Top Horizontal Border Charging Glow Line */}
         <div className="absolute top-[-2px] left-0 w-full h-[2px] bg-gradient-to-r from-rose-500 via-purple-500 to-blue-600 animate-glow-line opacity-90" />
         
-        {/* Curved Backdrop Dome behind the Globe */}
-        <div className="absolute top-[-16px] left-1/2 -translate-x-1/2 w-[74px] h-[37px] bg-[var(--component-background)] border-t border-[var(--border-primary)] rounded-t-full z-0 pointer-events-none" />
+        {/* BIGGER Backdrop Dome shell to cover left-right whitespace */}
+        <div className="absolute top-[-22px] left-1/2 -translate-x-1/2 w-[84px] h-[42px] bg-[var(--component-background)] border-t border-[var(--border-primary)] rounded-t-full z-0 pointer-events-none" />
         
-        {/* Ambient background aura under the curve */}
-        <div className="absolute top-[-18px] left-1/2 -translate-x-1/2 w-[76px] h-[38px] bg-gradient-to-t from-transparent to-purple-500/15 blur-sm rounded-t-full pointer-events-none" />
+        {/* Ambient aura under the curve */}
+        <div className="absolute top-[-24px] left-1/2 -translate-x-1/2 w-[86px] h-[43px] bg-gradient-to-t from-transparent to-purple-500/15 blur-sm rounded-t-full pointer-events-none" />
 
-        {/* MAIN NAVIGATION CONTAINER FRAME */}
+        {/* MAIN NAVIGATION BAR FRAME */}
         <div className="relative bg-[var(--component-background)] border-t border-[var(--border-primary)] px-2 py-2 flex justify-between items-end h-[66px] z-10">
           
           {navItems.map((item, index) => {
             const isActive = location.pathname.startsWith(item.path);
 
-            // 1. CENTER FLOATING STARVERSE GENERATOR
+            // 1. CENTER BIGGER FLOATING STARVERSE GLOBE
             if (item.type === "starverse") {
               return (
-                <div key={index} className="relative flex flex-col items-center justify-center flex-1 h-full">
+                <div key={index} className="relative flex flex-col items-center justify-end flex-1 h-full pb-1">
                   
-                  {/* Floating Action Box */}
-                  <div className="absolute top-[-38px] w-[52px] h-[52px] flex items-center justify-center">
+                  {/* Floating Action Box (Shifted slightly higher for bigger size) */}
+                  <div className="absolute top-[-44px] w-[62px] h-[62px] flex items-center justify-center">
                     
-                    {/* Red to Blue Gradient Charging Outer Radial Ring Aura */}
-                    <div className="absolute inset-[-3px] rounded-full bg-gradient-to-tr from-rose-500/40 via-purple-500/20 to-blue-600/40 blur-sm opacity-90 pointer-events-none" />
+                    {/* Glow Ring */}
+                    <div className="absolute inset-[-4px] rounded-full bg-gradient-to-tr from-rose-500/40 via-purple-500/20 to-blue-600/40 blur-sm opacity-90 pointer-events-none" />
                     
-                    {/* --- 3 ROTATING NETWORK NODES (Brought straight from original file) --- */}
+                    {/* 3 Rotating Network Nodes */}
                     <div className="absolute animate-people-1 pointer-events-none z-30">
                       <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[0.5px] shadow-[0_0_4px_rgba(34,211,238,0.5)] flex items-center justify-center">
                         <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -144,12 +143,12 @@ const BottomNav = () => {
                       </div>
                     </div>
 
-                    {/* MAIN CORE GLOBE BUTTON */}
+                    {/* BIGGER GLOBE BUTTON (w-[54px] h-[54px] covers all space beautifully) */}
                     <button
                       onClick={() => navigate(item.path)}
-                      className="relative flex items-center justify-center w-[44px] h-[44px] rounded-full bg-gradient-to-b from-cyan-400 via-indigo-500 to-slate-900 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.35),inset_0_1.5px_3px_rgba(255,255,255,0.5),inset_0_-3px_6px_rgba(0,0,0,0.4)] border border-white/10 overflow-hidden"
+                      className="relative flex items-center justify-center w-[54px] h-[54px] rounded-full bg-gradient-to-b from-cyan-400 via-indigo-500 to-slate-900 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.35),inset_0_1.5px_3px_rgba(255,255,255,0.5),inset_0_-3px_6px_rgba(0,0,0,0.4)] border border-white/10 overflow-hidden"
                     >
-                      {/* Organic Vector Earth Layout (Dimmed 20% on Dark Mode structure natively) */}
+                      {/* Earth Vector (Dimmed in Dark Mode) */}
                       <div className="absolute inset-0 opacity-35 dark:opacity-[0.16] mix-blend-screen scale-110 pointer-events-none animate-earth-spin">
                         <svg className="w-full h-full text-white fill-current" viewBox="0 0 100 100">
                           <path d="M20,45 Q25,35 35,40 T55,30 T70,45 T85,40 T75,65 T50,60 T30,70 Z" />
@@ -158,21 +157,21 @@ const BottomNav = () => {
                         </svg>
                       </div>
 
-                      {/* Glossy Upper Light Curve */}
+                      {/* Glossy Reflection */}
                       <div className="absolute top-[0.5px] left-1/2 -translate-x-1/2 w-[85%] h-[35%] rounded-full bg-gradient-to-b from-white/60 to-transparent blur-[0.2px] pointer-events-none" />
 
-                      {/* Dynamic Text Loop Mechanism (Find -> Connect -> Grow) */}
+                      {/* Text loop */}
                       <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins text-white tracking-tighter uppercase select-none">
-                        <span className="animate-seq-1 absolute text-[8.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Find</span>
-                        <span className="animate-seq-2 absolute text-[7.6px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Connect</span>
-                        <span className="animate-seq-3 absolute text-[8.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Grow</span>
+                        <span className="animate-seq-1 absolute text-[9.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Find</span>
+                        <span className="animate-seq-2 absolute text-[8.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Connect</span>
+                        <span className="animate-seq-3 absolute text-[9.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Grow</span>
                       </div>
                     </button>
                   </div>
 
-                  {/* Label Title below Globe */}
+                  {/* FIXED: Label perfectly aligned with other text items at the exact bottom line */}
                   <span
-                    className={`text-[10px] font-semibold tracking-wide mt-auto mb-[2px] ${
+                    className={`text-[10px] font-semibold tracking-wide leading-none ${
                       isActive
                         ? "bg-gradient-to-r from-rose-500 to-blue-500 bg-clip-text text-transparent"
                         : "text-[var(--text-muted)]"
@@ -184,13 +183,13 @@ const BottomNav = () => {
               );
             }
 
-            // 2. STANDARD SIDE NAVIGATION BUTTONS
+            // 2. STANDARD BUTTONS (Perfect alignment)
             const IconComponent = item.icon!;
             return (
               <button
                 key={index}
                 onClick={() => navigate(item.path)}
-                className="flex flex-col items-center justify-center flex-1 h-full py-1"
+                className="flex flex-col items-center justify-end flex-1 h-full pb-1"
               >
                 <IconComponent
                   className={`w-[22px] h-[22px] mb-[4px] transition-all duration-200 ${
