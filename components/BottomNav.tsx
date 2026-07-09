@@ -29,7 +29,7 @@ const BottomNav = () => {
     { name: "Dashboard", icon: Home, path: "/dashboard", type: "lucide" },
     { name: "Projects", icon: Rocket, path: "/projects", type: "lucide" },
     
-    // CENTER STARVERSE GLOBE
+    // CENTER STARVERSE ACTION ITEM
     { name: "Starverse", icon: null, path: "/globe", type: "starverse" },
 
     { name: "Startalks", icon: BoltIcon, path: "/startalks", type: "custom" },
@@ -38,7 +38,7 @@ const BottomNav = () => {
 
   return (
     <>
-      {/* Precision Orbit Tracker & Clean Font Smoothers */}
+      {/* Precision Orbit Tracker Math Matrix & Content Looping Engines */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=800&display=swap');
         
@@ -58,18 +58,18 @@ const BottomNav = () => {
           100% { opacity: 0; transform: scale(0.85) translateY(1px); filter: blur(1px); }
         }
         
-        /* 26px precise translation sets orbit exactly along the 52px button border center */
+        /* Fixed tracking at exactly 28px radius coordinates for 56px button symmetry */
         @keyframes orbitAlpha {
-          0% { transform: rotate(0deg) translateX(26px) rotate(0deg); }
-          100% { transform: rotate(360deg) translateX(26px) rotate(-360deg); }
+          0% { transform: rotate(0deg) translateX(28px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(28px) rotate(-360deg); }
         }
         @keyframes orbitBeta {
-          0% { transform: rotate(120deg) translateX(26px) rotate(-120deg); }
-          100% { transform: rotate(480deg) translateX(26px) rotate(-480deg); }
+          0% { transform: rotate(120deg) translateX(28px) rotate(-120deg); }
+          100% { transform: rotate(480deg) translateX(28px) rotate(-480deg); }
         }
         @keyframes orbitGamma {
-          0% { transform: rotate(240deg) translateX(26px) rotate(-240deg); }
-          100% { transform: rotate(600deg) translateX(26px) rotate(-600deg); }
+          0% { transform: rotate(240deg) translateX(28px) rotate(-240deg); }
+          100% { transform: rotate(600deg) translateX(28px) rotate(-600deg); }
         }
         @keyframes spinEarth {
           0% { transform: rotate(0deg); }
@@ -86,27 +86,27 @@ const BottomNav = () => {
         .animate-people-3 { animation: orbitGamma 14s linear infinite; }
       `}</style>
 
-      {/* Main Base Outer Shell */}
+      {/* Main Base Layout Component Wrapper */}
       <div className="fixed bottom-0 left-0 w-full z-[999] select-none bg-transparent">
 
-        {/* MAIN NAVIGATION BAR FRAME */}
+        {/* MAIN NAVIGATION BAR FRAME (Divider line intersects perfect horizontal globe grid axis) */}
         <div className="relative bg-[var(--component-background)] border-t border-[var(--border-primary)] px-2 py-2 flex justify-between items-end h-[66px] z-10 overflow-visible">
           
           {navItems.map((item, index) => {
             const isActive = location.pathname.startsWith(item.path);
 
-            // 1. MATHEMATICALLY CENTERED HERO GLOBE (0% CUTS, TRUE AXIS)
+            // 1. CENTER IMMERSIVE GLOBE (PROPORTIONALLY BALANCED & 100% COVERED)
             if (item.type === "starverse") {
               return (
                 <div key={index} className="relative flex flex-col items-center justify-end flex-1 h-full pb-1 overflow-visible">
                   
-                  {/* 🔥 FIXED: top-0 combined with -translate-y-1/2 forces the divider line to sit exactly in the dead middle of the globe */}
-                  <div className="absolute top-0 -translate-y-1/2 w-[58px] h-[58px] flex items-center justify-center overflow-visible z-20 bg-transparent">
+                  {/* Anchor Box positioned dead-center relative to the navigation bar's top border horizon */}
+                  <div className="absolute top-0 -translate-y-1/2 w-[64px] h-[64px] flex items-center justify-center overflow-visible z-20 bg-transparent">
                     
-                    {/* Ambient Glow Aura */}
+                    {/* Radial Atmosphere Glow Ring */}
                     <div className="absolute inset-1 rounded-full bg-indigo-500/10 blur-sm pointer-events-none" />
                     
-                    {/* Rotating People Track (50% In / 50% Out) */}
+                    {/* Rotating Tokens Track (50% Inside / 50% Outside Layout Alignment) */}
                     <div className="absolute animate-people-1 pointer-events-none z-40">
                       <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[0.5px] shadow-[0_0_4px_rgba(34,211,238,0.6)] flex items-center justify-center">
                         <svg className="w-full h-full text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -131,33 +131,36 @@ const BottomNav = () => {
                       </div>
                     </div>
 
-                    {/* 🔥 FIXED: Globe sizing optimized to stable w-[52px] with solid fluid render layers */}
+                    {/* 🔥 MODIFIED: Increased size by exactly +7% up to precise w-[56px] h-[56px] */}
                     <button
                       onClick={() => navigate(item.path)}
-                      className="relative flex items-center justify-center w-[52px] h-[52px] rounded-full bg-gradient-to-b from-cyan-400 via-indigo-600 to-slate-900 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_4px_10px_rgba(0,0,0,0.35),inset_0_1.5px_3px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.5)] border border-white/15 overflow-hidden"
+                      className="relative flex items-center justify-center w-[56px] h-[56px] rounded-full bg-gradient-to-b from-cyan-400 via-indigo-600 to-slate-950 transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_4px_10px_rgba(0,0,0,0.35),inset_0_1.5px_3px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.5)] border border-white/15 overflow-hidden"
                     >
-                      {/* 🔥 FIXED BG: Pure grid mask container centered perfectly, removing any up/down cutting artifact lines */}
+                      {/* 🔥 FIXED BG GLITCH: Stretched background layers to 105% to eliminate empty black/blue space margins completely */}
+                      <div className="absolute inset-[-1px] bg-gradient-to-b from-cyan-400 via-indigo-600 to-slate-900 pointer-events-none rounded-full" />
+
+                      {/* Map Mesh Overlay Vector */}
                       <div className="absolute inset-0 opacity-40 dark:opacity-[0.18] mix-blend-screen pointer-events-none animate-earth-spin flex items-center justify-center">
-                        <svg className="w-[90%] h-[90%] text-white fill-current" viewBox="0 0 100 100">
+                        <svg className="w-[92%] h-[92%] text-white fill-current scale-105" viewBox="0 0 100 100">
                           <path d="M15,45 Q25,32 38,40 T58,28 T74,45 T88,38 T78,68 T52,62 T28,72 Z" />
                           <path d="M38,12 Q48,18 54,8 T76,16 T64,26 Z" />
                           <path d="M12,72 Q22,82 42,78 T64,82 T82,72 Z" />
                         </svg>
                       </div>
 
-                      {/* Gloss Overlay */}
+                      {/* Top Spherical Highlight Glass Shard */}
                       <div className="absolute top-[0.5px] left-1/2 -translate-x-1/2 w-[85%] h-[35%] rounded-full bg-gradient-to-b from-white/45 to-transparent blur-[0.2px] pointer-events-none" />
 
-                      {/* Sequence Captions */}
+                      {/* Loop Text Layers */}
                       <div className="relative z-10 w-full h-full flex items-center justify-center font-poppins text-white tracking-tighter uppercase select-none">
-                        <span className="animate-seq-1 absolute text-[9.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Find</span>
-                        <span className="animate-seq-2 absolute text-[8.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Connect</span>
-                        <span className="animate-seq-3 absolute text-[9.5px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Grow</span>
+                        <span className="animate-seq-1 absolute text-[10px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Find</span>
+                        <span className="animate-seq-2 absolute text-[9px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Connect</span>
+                        <span className="animate-seq-3 absolute text-[10px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Grow</span>
                       </div>
                     </button>
                   </div>
 
-                  {/* Horizontal Baseline Anchor Title */}
+                  {/* Ground Baseline Row Navigation Labels */}
                   <span
                     className={`text-[10px] font-semibold tracking-wide leading-none ${
                       isActive
@@ -171,7 +174,7 @@ const BottomNav = () => {
               );
             }
 
-            // 2. STANDARD RUNTIME BUTTON ACTIONS
+            // 2. STANDARD INLINE LINK SELECTIONS
             const IconComponent = item.icon!;
             return (
               <button
