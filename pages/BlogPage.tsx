@@ -71,41 +71,41 @@ const BlogPage: React.FC = () => {
   );
 
   return (
-    <div className="w-full bg-[var(--background-secondary)] font-poppins pb-16">
+    <div className="w-full bg-[var(--background-secondary)] font-poppins pb-12">
       
-      {/* 🌟 1. HERO HEADER SECTION (Zero Top/Bottom Padding for Minimalist Interface) */}
-      <div className="w-full pt-0 pb-1 px-4 border-b border-[var(--border-primary)] text-center">
+      {/* 🌟 1. HERO HEADER SECTION (Zero padding layouts) */}
+      <div className="w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
-          {/* Blogs Badge with Ambient Glow and Floating Micro Elements */}
-          <div className="relative my-0.5 px-10 py-1 flex items-center justify-center isolation-auto">
+          {/* Blogs Title Container - Zero Vertical Margin */}
+          <div className="relative my-0 py-0 flex items-center justify-center isolation-auto">
             
             {/* Left Side Floating Tag */}
-            <span className="hidden sm:inline-block absolute left-[-40px] top-2 text-[9px] font-black tracking-wider text-red-400 bg-red-500/5 px-2 py-0.5 border border-red-500/10 rounded-md animate-bounce [animation-duration:3s] select-none">
+            <span className="hidden sm:inline-block absolute left-[-45px] top-1.5 text-[9px] font-black tracking-wider text-red-400 bg-red-500/5 px-2 py-0.5 border border-red-500/10 rounded-md animate-bounce [animation-duration:3s] select-none">
               #newsz
             </span>
 
-            {/* Ambient Background Radial Mesh for Rich Aesthetic */}
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-purple-500/5 to-blue-500/10 blur-xl rounded-full pointer-events-none scale-75"></div>
+            {/* Ambient Background Radial Glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-blue-500/10 blur-xl rounded-full pointer-events-none scale-75"></div>
             
-            {/* Red to Blue Sharp Matching Gradient Text */}
-            <span className="text-4xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 uppercase select-none relative z-10">
+            {/* Strict Red-to-Blue Only Gradient (No Purple/Pink) */}
+            <span className="text-4xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase select-none relative z-10">
               Blogs
             </span>
 
             {/* Right Side Floating Tag */}
-            <span className="hidden sm:inline-block absolute right-[-45px] top-3 text-[9px] font-black tracking-wider text-blue-400 bg-blue-500/5 px-2 py-0.5 border border-blue-500/10 rounded-md animate-bounce [animation-duration:4s] select-none">
+            <span className="hidden sm:inline-block absolute right-[-50px] top-2 text-[9px] font-black tracking-wider text-blue-400 bg-blue-500/5 px-2 py-0.5 border border-blue-500/10 rounded-md animate-bounce [animation-duration:4s] select-none">
               #talksz
             </span>
           </div>
 
-          {/* Description Paragraph (Margin top reduced by 20%) */}
+          {/* Description Paragraph (Direct tight layout alignment) */}
           <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight mt-0">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
 
           {/* 📱 SOCIAL BOX COMPONENT */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3 max-w-xl w-full mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-2.5 mb-2 max-w-xl w-full mx-auto">
             {/* Twitter/X Box */}
             <a 
               href="https://x.com/usestartives" 
@@ -143,7 +143,7 @@ const BlogPage: React.FC = () => {
       </div>
 
       {/* Grid Content Layout Container */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-2">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-3">
         
         {/* 🎯 2. SEARCH ARCHIVE */}
         <div className="max-w-md mx-auto relative mb-5">
@@ -189,10 +189,10 @@ const BlogPage: React.FC = () => {
               ))}
             </div>
 
-            {/* 🏁 4. BLINKIT-STYLE BRANDED FOOTER SECTION (Shadow Neutral Text) */}
-            <div className="w-full flex justify-center items-center pt-20 pb-4 select-none">
+            {/* 🏁 4. THE END FOOTER (Padding Up and Down fully reduced) */}
+            <div className="w-full flex justify-center items-center pt-10 pb-0 select-none">
               <div className="text-center">
-                <span className="text-4xl sm:text-5xl font-black tracking-tighter text-neutral-300/60 dark:text-neutral-800/50 font-poppins block uppercase pointer-events-none transition-colors">
+                <span className="text-4xl sm:text-5xl font-black tracking-tighter text-neutral-300/60 dark:text-neutral-800/40 font-poppins block uppercase pointer-events-none transition-colors">
                   the end
                 </span>
               </div>
