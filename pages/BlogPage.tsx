@@ -73,19 +73,26 @@ const BlogPage: React.FC = () => {
   return (
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-24">
       
-      {/* 🌟 1. HERO HEADER SECTION (Padding set to absolute minimal, Text pushed up closer to navbar) */}
-      <div className="w-full pt-0 pb-3 px-4 border-b border-[var(--border-primary)] text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* Tag increased by 20% to text-[16px] */}
-          <span className="text-[16px] font-black tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase block pt-1">
-            Blogs
-          </span>
-          <h1 className="text-2xl sm:text-[44px] font-extrabold text-[var(--text-primary)] tracking-tight mt-0.5 max-w-3xl mx-auto leading-tight">
+      {/* 🌟 1. HERO HEADER SECTION (Zero Top Padding to Move Everything Up) */}
+      <div className="w-full pt-0 pb-3 px-4 border-b border-[var(--border-primary)] text-center -mt-1">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
+          
+          {/* Huge Blogs Word with Red-to-Blue Gradient and Stylish Market-style Underline */}
+          <div className="inline-block relative mb-3 pt-1">
+            <span className="text-3xl sm:text-5xl font-black tracking-normal text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 uppercase block">
+              Blogs
+            </span>
+            {/* Stylish Underline Marker */}
+            <div className="w-full h-[4px] mt-0.5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 opacity-95"></div>
+          </div>
+
+          {/* Description Text */}
+          <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
 
           {/* 📱 SOCIAL BOX COMPONENT */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3.5 max-w-xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-4 max-w-xl w-full mx-auto">
             {/* Twitter/X Box */}
             <a 
               href="https://x.com/usestartives" 
@@ -122,11 +129,11 @@ const BlogPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Spacing reduced from mt-6 to mt-4 to draw elements up */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-4">
+      {/* Spacing reduced further to snap elements together tightly */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-3">
         
         {/* 🎯 2. SEARCH ARCHIVE */}
-        <div className="max-w-md mx-auto relative mb-8">
+        <div className="max-w-md mx-auto relative mb-6">
           <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
