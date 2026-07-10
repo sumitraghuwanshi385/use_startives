@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Search } from 'lucide-react';
+import { ChevronRight, Search, Twitter, Instagram } from 'lucide-react';
 
 // --- Startives Optimized Real-World Blog Data (Strictly 2026) ---
 export const blogPosts = [
@@ -30,7 +30,7 @@ export const blogPosts = [
     title: "Navigating Product-Market Fit: Tactical Blueprints for Early Stage Devs",
     excerpt: "With raw validation loops, community building, and focus on minimum viable experiences, build things that people actually track and use.",
     date: "JUN 15, 2026",
-    image: "https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=400&q=80"
+    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" // Matched accurate wireframe/dashboard vector product-market fit theme
   },
   {
     id: "5",
@@ -58,7 +58,7 @@ export const blogPosts = [
     title: "Building Scalable AI Agents: Architecture Patterns for Modern Application Infrastructure",
     excerpt: "Stop wasting API credits. Learn how context window caching, vector database optimization, and semantic routing layer strategies save costs.",
     date: "MAR 09, 2026",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80"
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" // Perfect AI infrastructure gradient/neural flow abstract matches image 1 logic
   }
 ];
 
@@ -73,33 +73,69 @@ const BlogPage: React.FC = () => {
   return (
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-24">
       
-      {/* 🌟 1. CLEAN HERO HEADER SECTION (Minimalist, No Effects, Super Tight Padding) */}
-      <div className="w-full pt-4 pb-6 px-4 border-b border-[var(--border-primary)] text-center">
+      {/* 🌟 1. SUPER TIGHT HERO HEADER SECTION (Paddings Reduced, Text Sizes Increased by 20%) */}
+      <div className="w-full pt-2 pb-4 px-4 border-b border-[var(--border-primary)] text-center">
         <div className="max-w-4xl mx-auto">
-          <span className="text-[11px] font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase">
+          <span className="text-[13.5px] font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase">
             Blogs
           </span>
-          <h1 className="text-xl sm:text-4xl font-extrabold text-[var(--text-primary)] tracking-tight mt-1 max-w-3xl mx-auto leading-tight">
+          <h1 className="text-2xl sm:text-[44px] font-extrabold text-[var(--text-primary)] tracking-tight mt-0.5 max-w-3xl mx-auto leading-tight">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
+
+          {/* 📱 SOCIAL BOX COMPONENT (3rd Image Rich UI Clone, Compact Grid) */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 max-w-xl mx-auto">
+            {/* Twitter/X Box */}
+            <a 
+              href="https://x.com/usestartives" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 w-full sm:w-1/2 p-2 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-xl transition-all duration-200 hover:border-neutral-400 dark:hover:border-neutral-600 text-left"
+            >
+              <div className="p-2 bg-neutral-100 dark:bg-neutral-800 text-[var(--text-primary)] rounded-lg">
+                <Twitter className="w-4 h-4 fill-current stroke-none" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[var(--text-primary)]">Twitter/x</h4>
+                <p className="text-[10px] text-[var(--text-muted)] font-medium">Latest updates.</p>
+              </div>
+            </a>
+
+            {/* Instagram Box */}
+            <a 
+              href="https://instagram.com/usestartives" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 w-full sm:w-1/2 p-2 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-xl transition-all duration-200 hover:border-neutral-400 dark:hover:border-neutral-600 text-left"
+            >
+              <div className="p-2 bg-neutral-100 dark:bg-neutral-800 text-[var(--text-primary)] rounded-lg">
+                <Instagram className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[var(--text-primary)]">Instagram</h4>
+                <p className="text-[10px] text-[var(--text-muted)] font-medium">Visual highlights.</p>
+              </div>
+            </a>
+          </div>
+
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-6">
         
         {/* 🎯 2. SEARCH ARCHIVE */}
-        <div className="max-w-md mx-auto relative mb-12">
+        <div className="max-w-md mx-auto relative mb-10">
           <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search resource archive..." 
-            className="w-full pl-10 pr-4 py-2.5 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full text-xs font-medium focus:outline-none focus:border-blue-500 transition-all shadow-xs text-[var(--text-primary)]"
+            className="w-full pl-10 pr-4 py-2 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full text-xs font-medium focus:outline-none focus:border-blue-500 transition-all shadow-xs text-[var(--text-primary)]"
           />
         </div>
 
-        {/* 🧱 3. UNIFIED GRID LIST SECTION (More Spacing Between Cards) */}
+        {/* 🧱 3. UNIFIED GRID LIST SECTION */}
         {filteredPosts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 sm:gap-10">
             {filteredPosts.map((post) => (
