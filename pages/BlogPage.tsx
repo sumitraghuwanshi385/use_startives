@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Search, Twitter, Instagram } from 'lucide-react';
+import { ChevronRight, Search, Twitter, Instagram, Newspaper, Users, BookOpen, Rocket } from 'lucide-react';
 
 // --- Startives Optimized Real-World Blog Data (Strictly 2026) ---
 export const blogPosts = [
@@ -73,33 +73,43 @@ const BlogPage: React.FC = () => {
   return (
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-12">
       
-      {/* 🌟 1. HERO HEADER SECTION (Zero padding layouts) */}
+      {/* 🌟 1. HERO HEADER SECTION */}
       <div className="w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
-          {/* Blogs Title Container - Zero Vertical Margin */}
-          <div className="relative my-0 py-0 flex items-center justify-center isolation-auto">
+          {/* Blogs Title Container with mb-3 to give elegant space from description */}
+          <div className="relative my-0 pt-1 mb-3 flex items-center justify-center isolation-auto gap-4">
             
-            {/* Left Side Floating Tag */}
-            <span className="hidden sm:inline-block absolute left-[-45px] top-1.5 text-[9px] font-black tracking-wider text-red-400 bg-red-500/5 px-2 py-0.5 border border-red-500/10 rounded-md animate-bounce [animation-duration:3s] select-none">
-              #newsz
-            </span>
+            {/* Left Side Floating Premium Icons Layout */}
+            <div className="hidden sm:flex items-center gap-2 absolute left-[-70px] top-1/2 -translate-y-1/2">
+              <div className="p-1.5 bg-red-500/5 border border-red-500/10 rounded-lg text-red-400 animate-bounce [animation-duration:2.5s] shadow-xs">
+                <Newspaper className="w-3.5 h-3.5" />
+              </div>
+              <div className="p-1.5 bg-red-500/5 border border-red-500/10 rounded-lg text-red-400 animate-bounce [animation-duration:3.2s] shadow-xs mt-3">
+                <Users className="w-3.5 h-3.5" />
+              </div>
+            </div>
 
             {/* Ambient Background Radial Glow */}
             <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-blue-500/10 blur-xl rounded-full pointer-events-none scale-75"></div>
             
-            {/* Strict Red-to-Blue Only Gradient (No Purple/Pink) */}
+            {/* Clean Red-to-Blue Matching Gradient Text */}
             <span className="text-4xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase select-none relative z-10">
               Blogs
             </span>
 
-            {/* Right Side Floating Tag */}
-            <span className="hidden sm:inline-block absolute right-[-50px] top-2 text-[9px] font-black tracking-wider text-blue-400 bg-blue-500/5 px-2 py-0.5 border border-blue-500/10 rounded-md animate-bounce [animation-duration:4s] select-none">
-              #talksz
-            </span>
+            {/* Right Side Floating Premium Icons Layout */}
+            <div className="hidden sm:flex items-center gap-2 absolute right-[-70px] top-1/2 -translate-y-1/2">
+              <div className="p-1.5 bg-blue-500/5 border border-blue-500/10 rounded-lg text-blue-400 animate-bounce [animation-duration:2.8s] shadow-xs mt-3">
+                <BookOpen className="w-3.5 h-3.5" />
+              </div>
+              <div className="p-1.5 bg-blue-500/5 border border-blue-500/10 rounded-lg text-blue-400 animate-bounce [animation-duration:3.5s] shadow-xs">
+                <Rocket className="w-3.5 h-3.5" />
+              </div>
+            </div>
           </div>
 
-          {/* Description Paragraph (Direct tight layout alignment) */}
+          {/* Description Paragraph with clean dynamic line spacing */}
           <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight mt-0">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
@@ -189,7 +199,7 @@ const BlogPage: React.FC = () => {
               ))}
             </div>
 
-            {/* 🏁 4. THE END FOOTER (Padding Up and Down fully reduced) */}
+            {/* 🏁 4. THE END FOOTER */}
             <div className="w-full flex justify-center items-center pt-10 pb-0 select-none">
               <div className="text-center">
                 <span className="text-4xl sm:text-5xl font-black tracking-tighter text-neutral-300/60 dark:text-neutral-800/40 font-poppins block uppercase pointer-events-none transition-colors">
