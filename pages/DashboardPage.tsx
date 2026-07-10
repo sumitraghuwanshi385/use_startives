@@ -219,8 +219,9 @@ const AboutStartivesBox: React.FC = () => {
                                 { name: 'About us', path: '/about' },
                                 { name: 'Privacy policy', path: '/privacy-policy' },
                                 { name: 'Contact us', path: '/contact-us' },
+{ name: 'Blogs', path: '/blog' },
                                 { name: 'For Sponsorship', path: '/sponsorship' }
-                            ].map((link) => (
+                           ].map((link) => (
                                 <li key={link.name}>
                                     <Link 
                                         to={link.path} 
