@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Search, Twitter, Instagram, Newspaper, Users, BookOpen, Rocket } from 'lucide-react';
+import { ChevronRight, Search, Twitter, Instagram, Newspaper, Cpu, Group, Rocket } from 'lucide-react';
 
 // --- Startives Optimized Real-World Blog Data (Strictly 2026) ---
 export const blogPosts = [
@@ -77,16 +77,16 @@ const BlogPage: React.FC = () => {
       <div className="w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
-          {/* Blogs Title Container with mb-3 to give elegant space from description */}
+          {/* Blogs Title Container */}
           <div className="relative my-0 pt-1 mb-3 flex items-center justify-center isolation-auto gap-4">
             
-            {/* Left Side Floating Premium Icons Layout */}
-            <div className="hidden sm:flex items-center gap-2 absolute left-[-70px] top-1/2 -translate-y-1/2">
-              <div className="p-1.5 bg-red-500/5 border border-red-500/10 rounded-lg text-red-400 animate-bounce [animation-duration:2.5s] shadow-xs">
+            {/* Left Side Floating Premium Circle Glass Icons */}
+            <div className="hidden sm:flex items-center gap-3 absolute left-[-80px] top-1/2 -translate-y-1/2">
+              <div className="p-2 bg-red-500/10 dark:bg-red-500/5 backdrop-blur-md border border-red-500/20 rounded-full text-red-400 animate-bounce [animation-duration:2.5s] shadow-sm">
                 <Newspaper className="w-3.5 h-3.5" />
               </div>
-              <div className="p-1.5 bg-red-500/5 border border-red-500/10 rounded-lg text-red-400 animate-bounce [animation-duration:3.2s] shadow-xs mt-3">
-                <Users className="w-3.5 h-3.5" />
+              <div className="p-2 bg-red-500/10 dark:bg-red-500/5 backdrop-blur-md border border-red-500/20 rounded-full text-red-400 animate-bounce [animation-duration:3.2s] shadow-sm mt-4">
+                <Cpu className="w-3.5 h-3.5" />
               </div>
             </div>
 
@@ -98,18 +98,18 @@ const BlogPage: React.FC = () => {
               Blogs
             </span>
 
-            {/* Right Side Floating Premium Icons Layout */}
-            <div className="hidden sm:flex items-center gap-2 absolute right-[-70px] top-1/2 -translate-y-1/2">
-              <div className="p-1.5 bg-blue-500/5 border border-blue-500/10 rounded-lg text-blue-400 animate-bounce [animation-duration:2.8s] shadow-xs mt-3">
-                <BookOpen className="w-3.5 h-3.5" />
+            {/* Right Side Floating Premium Circle Glass Icons */}
+            <div className="hidden sm:flex items-center gap-3 absolute right-[-80px] top-1/2 -translate-y-1/2">
+              <div className="p-2 bg-blue-500/10 dark:bg-blue-500/5 backdrop-blur-md border border-blue-500/20 rounded-full text-blue-400 animate-bounce [animation-duration:2.8s] shadow-sm mt-4">
+                <Group className="w-3.5 h-3.5" />
               </div>
-              <div className="p-1.5 bg-blue-500/5 border border-blue-500/10 rounded-lg text-blue-400 animate-bounce [animation-duration:3.5s] shadow-xs">
+              <div className="p-2 bg-blue-500/10 dark:bg-blue-500/5 backdrop-blur-md border border-blue-500/20 rounded-full text-blue-400 animate-bounce [animation-duration:3.5s] shadow-sm">
                 <Rocket className="w-3.5 h-3.5" />
               </div>
             </div>
           </div>
 
-          {/* Description Paragraph with clean dynamic line spacing */}
+          {/* Description Paragraph */}
           <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight mt-0">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
