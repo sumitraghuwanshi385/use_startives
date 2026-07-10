@@ -9,18 +9,14 @@ export const blogPosts = [
     title: "5 Tactical Frameworks to Align Equity and Vision with Your Tech Co-Founder",
     excerpt: "Diving deep into split structures, vesting schedules, and engineering culture milestones that modern builders need to scale their products effortlessly.",
     date: "JUL 10, 2026",
-    category: "FOUNDER GUIDES",
-    image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80",
-    isFeatured: true
+    image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "2",
     title: "How to Optimize Your Startup Profile on Startives to Attract Premium VCs",
     excerpt: "A complete walkthrough on positioning your pitch deck metrics, product prototypes, and builder stories to gain unfair visibility in front of active investors.",
     date: "JUL 06, 2026",
-    category: "GROWTH",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=600&q=80", // 👈 Fixed broken image link here
-    isFeatured: true
+    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "3",
@@ -59,7 +55,7 @@ export const blogPosts = [
   },
   {
     id: "8",
-    title: "Building Scalable AI Agents: Architecture Patters for Modern Application Infrastructure",
+    title: "Building Scalable AI Agents: Architecture Patterns for Modern Application Infrastructure",
     excerpt: "Stop wasting API credits. Learn how context window caching, vector database optimization, and semantic routing layer strategies save costs.",
     date: "MAR 09, 2026",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80"
@@ -74,75 +70,43 @@ const BlogPage: React.FC = () => {
     post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const featuredPosts = filteredPosts.filter(p => p.isFeatured);
-  const regularPosts = filteredPosts.filter(p => !p.isFeatured);
-
   return (
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-24">
       
-      {/* 🌟 1. HERO HEADER SECTION (Tighter Padding, No Mesh Grid Lines, Safe Ambient Glow) */}
-      <div className="relative w-full pt-6 pb-12 px-4 border-b border-[var(--border-primary)] bg-gradient-to-b from-neutral-50/50 via-transparent to-[var(--background-secondary)] dark:from-neutral-900/40 dark:via-transparent text-center overflow-hidden">
-        
-        <div className="relative z-10 max-w-4xl mx-auto">
+      {/* 🌟 1. CLEAN HERO HEADER SECTION (Minimalist, No Effects, Super Tight Padding) */}
+      <div className="w-full pt-4 pb-6 px-4 border-b border-[var(--border-primary)] text-center">
+        <div className="max-w-4xl mx-auto">
           <span className="text-[11px] font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase">
             Blogs
           </span>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-[var(--text-primary)] tracking-tight mt-1.5 max-w-3xl mx-auto leading-tight sm:leading-tight">
+          <h1 className="text-xl sm:text-4xl font-extrabold text-[var(--text-primary)] tracking-tight mt-1 max-w-3xl mx-auto leading-tight">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
         
-        {/* ⚡ 2. FEATURED TWO-COLUMN CARDS (Pulled up significantly closer to hero section) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 -mt-16 sm:-mt-20 relative z-20 mb-16">
-          {featuredPosts.map((post) => (
-            <Link to={`/blog/${post.id}`} key={post.id} className="group flex flex-col bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] hover:border-blue-500/30 transition-all duration-300 overflow-hidden shadow-md">
-              <div className="relative h-52 sm:h-60 overflow-hidden">
-                <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex items-end p-5 sm:p-6">
-                  <h3 className="text-white font-bold text-base sm:text-lg leading-snug line-clamp-2 group-hover:text-neutral-200 transition-colors">{post.title}</h3>
-                </div>
-              </div>
-              <div className="p-5 sm:p-6 flex-grow flex flex-col justify-between">
-                <div>
-                  <span className="text-[9px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 bg-neutral-100 dark:bg-neutral-800/80 px-2 py-0.5 rounded">
-                    {post.date}
-                  </span>
-                  <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium mt-3.5 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                </div>
-                <div className="mt-5 flex items-center gap-1 text-[10px] sm:text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase group-hover:gap-1.5 transition-all">
-                  Read Insights <ChevronRight className="w-3.5 h-3.5 text-blue-500" />
-                </div>
-              </div>
-            </Link>
-          ))}
+        {/* 🎯 2. SEARCH ARCHIVE */}
+        <div className="max-w-md mx-auto relative mb-12">
+          <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2" />
+          <input 
+            type="text" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search resource archive..." 
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full text-xs font-medium focus:outline-none focus:border-blue-500 transition-all shadow-xs text-[var(--text-primary)]"
+          />
         </div>
 
-        {/* 🎯 3. LATEST BLOGS SECTION HEADER */}
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] tracking-tight mb-4">Ecosystem Playbooks</h2>
-          <div className="max-w-md mx-auto relative px-4 sm:px-0">
-            <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-8 sm:left-4 top-1/2 -translate-y-1/2" />
-            <input 
-              type="text" 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search resource archive..." 
-              className="w-full pl-10 pr-4 py-2.5 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full text-xs font-medium focus:outline-none focus:border-blue-500 transition-all shadow-xs text-[var(--text-primary)]"
-            />
-          </div>
-        </div>
-
-        {/* 🧱 4. GRID LIST SECTION */}
-        {regularPosts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {regularPosts.map((post) => (
+        {/* 🧱 3. UNIFIED GRID LIST SECTION (More Spacing Between Cards) */}
+        {filteredPosts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 sm:gap-10">
+            {filteredPosts.map((post) => (
               <Link to={`/blog/${post.id}`} key={post.id} className="group flex flex-col justify-between transition-all duration-300">
                 <div>
                   <div className="relative h-48 rounded-2xl overflow-hidden mb-4 bg-neutral-100 dark:bg-neutral-900 border border-[var(--border-primary)] shadow-xs">
-                    {/* Top Edge Gradient Accent Line */}
+                    {/* Gradient Top Edge Accent */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                     <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
                   </div>
