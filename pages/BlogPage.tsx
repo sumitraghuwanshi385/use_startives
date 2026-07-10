@@ -73,26 +73,27 @@ const BlogPage: React.FC = () => {
   return (
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-24">
       
-      {/* 🌟 1. HERO HEADER SECTION (Zero Top Padding to Move Everything Up) */}
-      <div className="w-full pt-0 pb-3 px-4 border-b border-[var(--border-primary)] text-center -mt-1">
+      {/* 🌟 1. HERO HEADER SECTION (Paddings further reduced by 10% to eliminate whitespace) */}
+      <div className="w-full pt-0 pb-2 px-4 border-b border-[var(--border-primary)] text-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
-          {/* Huge Blogs Word with Red-to-Blue Gradient and Stylish Market-style Underline */}
-          <div className="inline-block relative mb-3 pt-1">
-            <span className="text-3xl sm:text-5xl font-black tracking-normal text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 uppercase block">
+          {/* Clean Massive Blogs Title with Gradient Glow Ambient BG Effect (No Underline) */}
+          <div className="relative my-1 px-6 py-1 flex items-center justify-center isolation-auto">
+            {/* SaaS Backlight Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-purple-500/5 to-blue-500/10 blur-xl rounded-full pointer-events-none scale-90 animate-pulse duration-[4000ms]"></div>
+            
+            <span className="text-4xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 uppercase select-none relative z-10">
               Blogs
             </span>
-            {/* Stylish Underline Marker */}
-            <div className="w-full h-[4px] mt-0.5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 opacity-95"></div>
           </div>
 
-          {/* Description Text */}
-          <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight">
+          {/* Description Paragraph with minimized margin-top */}
+          <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight mt-0.5">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
 
           {/* 📱 SOCIAL BOX COMPONENT */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-4 max-w-xl w-full mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3.5 max-w-xl w-full mx-auto">
             {/* Twitter/X Box */}
             <a 
               href="https://x.com/usestartives" 
@@ -129,7 +130,7 @@ const BlogPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Spacing reduced further to snap elements together tightly */}
+      {/* Grid Archive Container Section */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-3">
         
         {/* 🎯 2. SEARCH ARCHIVE */}
