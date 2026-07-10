@@ -30,7 +30,7 @@ export const blogPosts = [
     title: "Navigating Product-Market Fit: Tactical Blueprints for Early Stage Devs",
     excerpt: "With raw validation loops, community building, and focus on minimum viable experiences, build things that people actually track and use.",
     date: "JUN 15, 2026",
-    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" // Matched accurate wireframe/dashboard vector product-market fit theme
+    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: "5",
@@ -58,7 +58,7 @@ export const blogPosts = [
     title: "Building Scalable AI Agents: Architecture Patterns for Modern Application Infrastructure",
     excerpt: "Stop wasting API credits. Learn how context window caching, vector database optimization, and semantic routing layer strategies save costs.",
     date: "MAR 09, 2026",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" // Perfect AI infrastructure gradient/neural flow abstract matches image 1 logic
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80"
   }
 ];
 
@@ -73,18 +73,19 @@ const BlogPage: React.FC = () => {
   return (
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-24">
       
-      {/* 🌟 1. SUPER TIGHT HERO HEADER SECTION (Paddings Reduced, Text Sizes Increased by 20%) */}
-      <div className="w-full pt-2 pb-4 px-4 border-b border-[var(--border-primary)] text-center">
+      {/* 🌟 1. HERO HEADER SECTION (Padding set to absolute minimal, Text pushed up closer to navbar) */}
+      <div className="w-full pt-0 pb-3 px-4 border-b border-[var(--border-primary)] text-center">
         <div className="max-w-4xl mx-auto">
-          <span className="text-[13.5px] font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase">
+          {/* Tag increased by 20% to text-[16px] */}
+          <span className="text-[16px] font-black tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase block pt-1">
             Blogs
           </span>
           <h1 className="text-2xl sm:text-[44px] font-extrabold text-[var(--text-primary)] tracking-tight mt-0.5 max-w-3xl mx-auto leading-tight">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
 
-          {/* 📱 SOCIAL BOX COMPONENT (3rd Image Rich UI Clone, Compact Grid) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4 max-w-xl mx-auto">
+          {/* 📱 SOCIAL BOX COMPONENT */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3.5 max-w-xl mx-auto">
             {/* Twitter/X Box */}
             <a 
               href="https://x.com/usestartives" 
@@ -121,10 +122,11 @@ const BlogPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-6">
+      {/* Spacing reduced from mt-6 to mt-4 to draw elements up */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-4">
         
         {/* 🎯 2. SEARCH ARCHIVE */}
-        <div className="max-w-md mx-auto relative mb-10">
+        <div className="max-w-md mx-auto relative mb-8">
           <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
