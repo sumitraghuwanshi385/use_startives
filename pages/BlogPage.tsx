@@ -71,29 +71,41 @@ const BlogPage: React.FC = () => {
   );
 
   return (
-    <div className="w-full bg-[var(--background-secondary)] font-poppins pb-24">
+    <div className="w-full bg-[var(--background-secondary)] font-poppins pb-16">
       
-      {/* 🌟 1. HERO HEADER SECTION (Paddings further reduced by 10% to eliminate whitespace) */}
-      <div className="w-full pt-0 pb-2 px-4 border-b border-[var(--border-primary)] text-center">
+      {/* 🌟 1. HERO HEADER SECTION (Zero Top/Bottom Padding for Minimalist Interface) */}
+      <div className="w-full pt-0 pb-1 px-4 border-b border-[var(--border-primary)] text-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
-          {/* Clean Massive Blogs Title with Gradient Glow Ambient BG Effect (No Underline) */}
-          <div className="relative my-1 px-6 py-1 flex items-center justify-center isolation-auto">
-            {/* SaaS Backlight Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-purple-500/5 to-blue-500/10 blur-xl rounded-full pointer-events-none scale-90 animate-pulse duration-[4000ms]"></div>
+          {/* Blogs Badge with Ambient Glow and Floating Micro Elements */}
+          <div className="relative my-0.5 px-10 py-1 flex items-center justify-center isolation-auto">
             
+            {/* Left Side Floating Tag */}
+            <span className="hidden sm:inline-block absolute left-[-40px] top-2 text-[9px] font-black tracking-wider text-red-400 bg-red-500/5 px-2 py-0.5 border border-red-500/10 rounded-md animate-bounce [animation-duration:3s] select-none">
+              #newsz
+            </span>
+
+            {/* Ambient Background Radial Mesh for Rich Aesthetic */}
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 via-purple-500/5 to-blue-500/10 blur-xl rounded-full pointer-events-none scale-75"></div>
+            
+            {/* Red to Blue Sharp Matching Gradient Text */}
             <span className="text-4xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 uppercase select-none relative z-10">
               Blogs
             </span>
+
+            {/* Right Side Floating Tag */}
+            <span className="hidden sm:inline-block absolute right-[-45px] top-3 text-[9px] font-black tracking-wider text-blue-400 bg-blue-500/5 px-2 py-0.5 border border-blue-500/10 rounded-md animate-bounce [animation-duration:4s] select-none">
+              #talksz
+            </span>
           </div>
 
-          {/* Description Paragraph with minimized margin-top */}
-          <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight mt-0.5">
+          {/* Description Paragraph (Margin top reduced by 20%) */}
+          <h1 className="text-xl sm:text-[38px] font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto leading-tight mt-0">
             Our ideas and insights on <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">builders, co-founders, networks</span>, products, and much more.
           </h1>
 
           {/* 📱 SOCIAL BOX COMPONENT */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3.5 max-w-xl w-full mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-3 max-w-xl w-full mx-auto">
             {/* Twitter/X Box */}
             <a 
               href="https://x.com/usestartives" 
@@ -130,11 +142,11 @@ const BlogPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid Archive Container Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-3">
+      {/* Grid Content Layout Container */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-2">
         
         {/* 🎯 2. SEARCH ARCHIVE */}
-        <div className="max-w-md mx-auto relative mb-6">
+        <div className="max-w-md mx-auto relative mb-5">
           <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
@@ -147,34 +159,45 @@ const BlogPage: React.FC = () => {
 
         {/* 🧱 3. UNIFIED GRID LIST SECTION */}
         {filteredPosts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 sm:gap-10">
-            {filteredPosts.map((post) => (
-              <Link to={`/blog/${post.id}`} key={post.id} className="group flex flex-col justify-between transition-all duration-300">
-                <div>
-                  <div className="relative h-48 rounded-2xl overflow-hidden mb-4 bg-neutral-100 dark:bg-neutral-900 border border-[var(--border-primary)] shadow-xs">
-                    {/* Gradient Top Edge Accent */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
-                    <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
-                  </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 sm:gap-10">
+              {filteredPosts.map((post) => (
+                <Link to={`/blog/${post.id}`} key={post.id} className="group flex flex-col justify-between transition-all duration-300">
                   <div>
-                    <span className="text-[9px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase tracking-wider block mb-1">
-                      {post.date}
-                    </span>
-                    <h3 className="text-sm sm:text-base font-bold text-[var(--text-primary)] group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors mb-2 line-clamp-2 leading-snug">
-                      {post.title}
-                    </h3>
-                    <p className="text-xs text-[var(--text-muted)] font-normal line-clamp-3 leading-relaxed">
-                      {post.excerpt}
-                    </p>
+                    <div className="relative h-48 rounded-2xl overflow-hidden mb-4 bg-neutral-100 dark:bg-neutral-900 border border-[var(--border-primary)] shadow-xs">
+                      {/* Gradient Top Edge Accent */}
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                      <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase tracking-wider block mb-1">
+                        {post.date}
+                      </span>
+                      <h3 className="text-sm sm:text-base font-bold text-[var(--text-primary)] group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors mb-2 line-clamp-2 leading-snug">
+                        {post.title}
+                      </h3>
+                      <p className="text-xs text-[var(--text-muted)] font-normal line-clamp-3 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="mt-4 flex items-center gap-1 text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase group-hover:gap-1.5 transition-all">
-                  Read Full Article <ChevronRight className="w-3 h-3 text-blue-500 stroke-[3]" />
-                </div>
-              </Link>
-            ))}
-          </div>
+                  
+                  <div className="mt-4 flex items-center gap-1 text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500 uppercase group-hover:gap-1.5 transition-all">
+                    Read Full Article <ChevronRight className="w-3 h-3 text-blue-500 stroke-[3]" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* 🏁 4. BLINKIT-STYLE BRANDED FOOTER SECTION (Shadow Neutral Text) */}
+            <div className="w-full flex justify-center items-center pt-20 pb-4 select-none">
+              <div className="text-center">
+                <span className="text-4xl sm:text-5xl font-black tracking-tighter text-neutral-300/60 dark:text-neutral-800/50 font-poppins block uppercase pointer-events-none transition-colors">
+                  the end
+                </span>
+              </div>
+            </div>
+          </>
         ) : (
           <div className="text-center text-sm text-[var(--text-muted)] py-12">
             No posts match your search criteria.
