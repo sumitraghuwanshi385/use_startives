@@ -45,6 +45,7 @@ import GlobalGlobe from './pages/GlobalGlobe';
 import BuildersStoriesPage from "./pages/BuildersStoriesPage";
 import StoryDetailsPage from "./pages/StoryDetailsPage";
 import BlogPage from './pages/BlogPage';
+import BlogDetailPage from './pages/BlogDetailPage';
 
 interface PageTitleProps {
   title: string;
@@ -169,6 +170,7 @@ const hideStarverseButton =
 <Route path="/builders" element={<BuildersStoriesPage />} />
 <Route path="/builders/:id" element={<StoryDetailsPage />} />
 <Route path="/blog" element={<ProtectedRoute><WithPageContainer><BlogPage /></WithPageContainer></ProtectedRoute>} />
+<Route path="/blog/:id" element={<BlogDetailPage />} />
 
 
           <Route path="/dashboard" element={
