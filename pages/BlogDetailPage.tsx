@@ -58,30 +58,30 @@ const blogData: Record<string, any> = {
     image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=1200&q=80",
     content: (
       <>
-        <p className="lead mb-10">
+        <p className="lead mb-7">
           One of the biggest reasons startups fail isn't technology. It isn't funding. It isn't competition. <strong>It's founder misalignment.</strong>
         </p>
-        <p>
+           <p className="lead mb-7">
           Every year, thousands of promising startups collapse because co-founders disagree on ownership, responsibilities, product direction, and long-term vision. On Startives, we see this pattern surface again and again in founder matching conversations: two brilliant people, one broken agreement.
         </p>
 
-        <p>
+           <p className="lead mb-7">
           Building a startup in 2026 is a marathon fueled by rapid iteration and AI-augmented execution. When you pair up with a tech co-founder, you're signing up for a professional marriage that will face intense pressure the moment real money, real users, or real disagreements enter the picture.
         </p>
-        <p>
+           <p className="lead mb-7">
           Without concrete frameworks, even the strongest ideas die in endless debates over whiteboards and Slack threads. At Startives, we've spent years studying hundreds of successful and failed founder pairs across our builder community to distill battle-tested systems that actually hold up under pressure.
         </p>
 
-        <p>
+           <p className="lead mb-7">
           This guide breaks down five frameworks that experienced founders on Startives use to keep equity fair, vision aligned, and the working relationship healthy, long before things ever get tense.
         </p>
 
         <div className="mt-12">
         <h2>1. Adopt a Dynamic Equity Split Framework</h2>
-        <p>
+           <p className="lead mb-7">
           The classic 50/50 split feels fair on day one and becomes a silent killer by month eighteen. Equity should reflect real, ongoing contribution, not just initial enthusiasm.
         </p>
-        <p>
+           <p className="lead mb-7">
           Startives founders who avoid future blow-ups tend to use tools like the Slicing Pie model or dynamic cap tables that adjust automatically based on:
         </p>
         <ul>
@@ -98,17 +98,17 @@ const blogData: Record<string, any> = {
           domain="slicingpie.com"
         />
 
-        <p>
+           <p className="lead mb-7">
           Implement a four-year vesting schedule with a one-year cliff and monthly acceleration triggers tied to real milestones, a shipped MVP, a signed pilot customer, or a closed pre-seed round.
         </p>
-        <p>
+           <p className="lead mb-7">
           This protects the company from a co-founder who disappears after six months while still rewarding sustained, honest effort. Many builders in the Startives community have used this exact structure to raise seed rounds with clean, investor-friendly cap tables, because sloppy equity math is one of the fastest ways to spook a diligence process.
         </p>
         </div>
 
         <div className="mt-12">
         <h2>2. Implement the RACI Responsibility Matrix</h2>
-        <p>
+           <p className="lead mb-7">
           Ambiguity breeds resentment. Clarity accelerates velocity. One of the most underrated habits we see among successful Startives builder pairs is creating a living RACI (Responsible, Accountable, Consulted, Informed) document that evolves with the startup instead of gathering dust in a shared drive.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
