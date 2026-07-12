@@ -58,30 +58,30 @@ const blogData: Record<string, any> = {
     image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=1200&q=80",
     content: (
       <>
-        <p className="lead mb-7">
+        <p className="lead mb-6">
           One of the biggest reasons startups fail isn't technology. It isn't funding. It isn't competition. <strong>It's founder misalignment.</strong>
         </p>
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           Every year, thousands of promising startups collapse because co-founders disagree on ownership, responsibilities, product direction, and long-term vision. On Startives, we see this pattern surface again and again in founder matching conversations: two brilliant people, one broken agreement.
         </p>
 
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           Building a startup in 2026 is a marathon fueled by rapid iteration and AI-augmented execution. When you pair up with a tech co-founder, you're signing up for a professional marriage that will face intense pressure the moment real money, real users, or real disagreements enter the picture.
         </p>
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           Without concrete frameworks, even the strongest ideas die in endless debates over whiteboards and Slack threads. At Startives, we've spent years studying hundreds of successful and failed founder pairs across our builder community to distill battle-tested systems that actually hold up under pressure.
         </p>
 
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           This guide breaks down five frameworks that experienced founders on Startives use to keep equity fair, vision aligned, and the working relationship healthy, long before things ever get tense.
         </p>
 
         <div className="mt-12">
         <h2>1. Adopt a Dynamic Equity Split Framework</h2>
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           The classic 50/50 split feels fair on day one and becomes a silent killer by month eighteen. Equity should reflect real, ongoing contribution, not just initial enthusiasm.
         </p>
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           Startives founders who avoid future blow-ups tend to use tools like the Slicing Pie model or dynamic cap tables that adjust automatically based on:
         </p>
         <ul>
@@ -98,17 +98,17 @@ const blogData: Record<string, any> = {
           domain="slicingpie.com"
         />
 
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           Implement a four-year vesting schedule with a one-year cliff and monthly acceleration triggers tied to real milestones, a shipped MVP, a signed pilot customer, or a closed pre-seed round.
         </p>
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           This protects the company from a co-founder who disappears after six months while still rewarding sustained, honest effort. Many builders in the Startives community have used this exact structure to raise seed rounds with clean, investor-friendly cap tables, because sloppy equity math is one of the fastest ways to spook a diligence process.
         </p>
         </div>
 
         <div className="mt-12">
         <h2>2. Implement the RACI Responsibility Matrix</h2>
-           <p className="lead mb-7">
+           <p className="lead mb-6">
           Ambiguity breeds resentment. Clarity accelerates velocity. One of the most underrated habits we see among successful Startives builder pairs is creating a living RACI (Responsible, Accountable, Consulted, Informed) document that evolves with the startup instead of gathering dust in a shared drive.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
@@ -133,7 +133,7 @@ const blogData: Record<string, any> = {
           domain="asana.com"
         />
 
-        <p>
+         <p className="lead mb-6">
           When roles blur, decisions stall. When roles are documented and revisited monthly, teams move faster because nobody is waiting for permission that was never clearly assigned in the first place.
         </p>
         <p>
@@ -143,20 +143,20 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>3. Draft a Comprehensive Founder Operating Agreement</h2>
-        <p>
+         <p className="lead mb-6">
           Investors in 2026 demand transparency, and a verbal handshake agreement no longer cuts it during diligence. Your founder operating agreement should cover decision rights on major spending, IP ownership and assignment, exit scenarios including a founder leaving early, and dispute resolution mechanisms that require mediation before either side even considers litigation.
         </p>
-        <p>
+         <p>
           Startives recommends founders draft this agreement together in the first thirty days, while goodwill is highest and incentives are still aligned. Waiting until a disagreement forces the conversation almost always produces a worse outcome for everyone, including the company itself.
         </p>
         </div>
 
         <div className="mt-12">
         <h2>4. Run Quarterly Vision Alignment Workshops</h2>
-        <p>
+         <p className="lead mb-6">
           Ask the hard questions early and revisit them on a fixed cadence. Are we building for acquisition or IPO? Bootstrapped cashflow or aggressive venture-backed scaling?
         </p>
-        <p>
+         <p className="lead mb-6">
           Are we both still excited about the same version of this company we started twelve months ago? Document your OKRs together and revisit them every ninety days rather than letting silent drift accumulate into a full-blown rift.
         </p>
         <p>
@@ -166,26 +166,26 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>5. Build in Public as a Team</h2>
-        <p>
+         <p className="lead mb-6">
           Transparency builds trust internally and attracts talent externally. Share progress on X, LinkedIn, and your Startives builder profile as a joint effort rather than one founder's personal brand.
         </p>
-        <p>
+         <p>
           The public accountability loop keeps both founders honest about milestones and accelerates learning, because your community starts pointing out blind spots before they become expensive mistakes.
         </p>
         </div>
 
         <div className="mt-12">
         <h2>What Happens When Disagreements Show Up Anyway</h2>
-        <p>
+         <p className="lead mb-6">
           Even with every framework in place, disagreements will still happen. That's not a sign your partnership is broken, it's a sign you're building something real with another human being who has their own instincts and blind spots.
         </p>
-        <p>
+         <p className="lead mb-6">
           The difference between founder pairs who survive these moments and pairs who don't usually comes down to process, not personality. Startives founders who navigate conflict well tend to separate the person from the position.
         </p>
-        <p>
+         <p className="lead mb-6">
           Instead of arguing about who's right, they ask what evidence would change either person's mind, and they agree in advance on who has final say when a decision genuinely can't wait for consensus.
         </p>
-        <p>
+         <p className="lead mb-6">
           It also helps enormously to bring in outside perspective before a disagreement calcifies into resentment. A trusted advisor, a mentor from the Startives community, or even a structured mediation session can surface the actual issue underneath a surface-level argument about a feature or a hire.
         </p>
         <p>
@@ -195,13 +195,13 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>Common Mistakes Founders Make with These Frameworks</h2>
-        <p>
+         <p className="lead mb-6">
           The most common mistake isn't skipping these frameworks entirely, it's setting them up once and never revisiting them. A RACI matrix from month one becomes useless by month twelve if the company has pivoted twice and hired five people since then.
         </p>
-        <p>
+        <p className="lead mb-6">
           Treat every framework in this guide as a living document, not a one-time exercise you can check off a list and forget about.
         </p>
-        <p>
+         <p className="lead mb-6">
           The second mistake is letting one founder own the framework while the other merely agrees to it passively. Equity splits, operating agreements, and vision workshops only work when both founders actively participate in shaping them.
         </p>
         <p>
@@ -227,23 +227,23 @@ const blogData: Record<string, any> = {
         <p className="lead">
           In a competitive 2026 funding landscape, your Startives profile is your digital pitch deck, your first impression, and often your only shot at getting noticed before a VC ever replies to a cold email.
         </p>
-        <p>
+         <p className="lead mb-6">
           Premium investors scroll hundreds of founder profiles every week. Make yours impossible to scroll past.
         </p>
 
-        <p>
+         <p className="lead mb-6">
           Fundraising has changed. Investors no longer wait for a warm intro to start forming an opinion about your startup, they form it the moment they land on your Startives page.
         </p>
-        <p>
+         <p>
           A weak, generic profile quietly filters you out of rooms you never even knew you were being considered for. A sharp one does the opposite. It turns a random scroll into an inbound message from a partner at a fund you've been trying to reach for months.
         </p>
 
         <div className="mt-12">
         <h2>1. Craft a Magnetic Headline &amp; One-Liner</h2>
-        <p>
+         <p className="lead mb-6">
           Use outcome-focused language instead of category labels. Instead of "AI productivity tool," say "Helping dev teams ship three times faster with autonomous agents."
         </p>
-        <p>
+         <p className="lead mb-6">
           Investors skim headlines in seconds, and the ones that stop the scroll are the ones that describe a transformation, not a feature list. On Startives, founders who rewrote their one-liner around outcomes saw noticeably higher profile click-through from investor searches.
         </p>
         <p>
@@ -253,10 +253,10 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>2. Showcase Traction with Real Metrics</h2>
-        <p>
+         <p className="lead mb-6">
           Upload verified screenshots of MRR, user growth, retention curves, and short demo videos rather than describing them in prose. VCs love numbers that tell a story on their own, without requiring a call to interpret them.
         </p>
-        <p>
+         <p className="lead mb-6">
           A simple month-over-month growth chart on your Startives profile often does more persuasive work than an entire paragraph of narrative.
         </p>
         <p>
@@ -269,24 +269,24 @@ const blogData: Record<string, any> = {
         <p>
           Share your "why," the personal pain or observation that sparked the idea. Include team photos, previous exits or notable projects, and a short technical deep-dive that proves you understand the problem at a level deeper than a pitch deck slide.
         </p>
-        <p>
-          Startives profiles that pair a strong personal narrative with real technical credibility consistently pull more inbound interest than polished-but-generic pages. Don't overwrite this section. Two or three tight paragraphs beat a wall of text that no busy investor will actually finish reading.
+         <p>     
+Startives profiles that pair a strong personal narrative with real technical credibility consistently pull more inbound interest than polished-but-generic pages. Don't overwrite this section. Two or three tight paragraphs beat a wall of text that no busy investor will actually finish reading.
         </p>
         </div>
 
         <div className="mt-12">
         <h2>4. Optimize for Search &amp; Discovery</h2>
-        <p>
+         <p className="lead mb-6">
           Use relevant tags, detailed tech stack information, and integrate your public GitHub and product analytics directly into your Startives profile. Enable "VC Match" signals so the platform can proactively surface your startup to investors whose thesis actually fits what you're building, instead of relying purely on luck and timing.
         </p>
-        <p>
+         <p>
           Precise tagging matters more than founders expect. A profile tagged accurately for "vertical SaaS" or "developer tools" gets discovered by the right investors far more often than one buried under an overly broad "tech startup" label.
         </p>
         </div>
 
         <div className="mt-12">
         <h2>5. Leverage Social Proof &amp; Testimonials</h2>
-        <p>
+         <p className="lead mb-6">
           Collect early user quotes, press mentions, advisor endorsements, and partner logos, then update your Startives profile regularly to show continued momentum rather than a static snapshot from six months ago.
         </p>
         <p>
@@ -303,13 +303,13 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>Common Profile Mistakes That Quietly Kill Interest</h2>
-        <p>
+         <p className="lead mb-6">
           The single biggest mistake founders make on any fundraising profile, Startives included, is treating it as a resume instead of a pitch. A resume lists what you've done. A pitch makes an investor feel the size of the opportunity in front of them.
         </p>
-        <p>
+         <p className="lead mb-6">
           Founders who simply list job titles and responsibilities without framing them around outcomes lose an investor's attention within seconds, long before the investor ever gets to the metrics that would have impressed them.
         </p>
-        <p>
+         <p className="lead mb-6">
           The second mistake is inconsistency between your Startives profile and everything else an investor will check. If your profile claims strong retention but your public analytics dashboard tells a different story, or if your team page lists a co-founder who quietly left the company months ago, that inconsistency erodes trust instantly and permanently.
         </p>
         <p>
@@ -319,7 +319,7 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>Timing Your Outreach Around Profile Updates</h2>
-        <p>
+         <p className="lead mb-6">
           A profile update isn't just a maintenance task, it's a legitimate reason to re-engage investors who previously passed or went quiet. Startives founders who ship a meaningful update, a new logo, a strong growth month, a notable hire, tend to pair that update with a short, direct follow-up message to investors already in their pipeline.
         </p>
         <p>
@@ -333,7 +333,7 @@ const blogData: Record<string, any> = {
           domain="ycombinator.com"
         />
 
-        <p>
+         <p className="lead mb-6">
           The founders who raise fastest on Startives treat their profile and their outreach as two halves of the same motion. The profile does the passive work of attracting inbound interest around the clock, while timed, metric-driven outreach does the active work of nudging warm leads toward a first call.
         </p>
         <p>
@@ -359,11 +359,11 @@ const blogData: Record<string, any> = {
         <p className="lead">
           Finding the right co-founder is harder than finding product-market fit, and arguably more important.
         </p>
-        <p>
+         <p className="lead mb-6">
           Modern platforms like Startives use sophisticated matching algorithms to cut that search time down from years of random networking to weeks of structured discovery.
         </p>
 
-        <p>
+         <p className="lead mb-6">
           For most of startup history, co-founder discovery has been an accident of geography and social circles. You found your co-founder because you happened to sit next to them in a lecture hall, a hackathon, or an old job.
         </p>
         <p>
@@ -372,7 +372,7 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>How Matching Algorithms Work in 2026</h2>
-        <p>
+         <p className="lead mb-6">
           Startives combines skill vectors, personality compatibility scoring, vision alignment surveys, and past collaboration signals into a single compatibility model. Rather than simply matching "developer looking for business co-founder" with "business person looking for developer," the system weighs dozens of underlying signals that historically predict whether a founding team stays together past the first hard year.
         </p>
         <p>
@@ -402,7 +402,7 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>Why Data-Driven Matching Beats Random Networking</h2>
-        <p>
+         <p className="lead mb-6">
           Builders who complete their full profile on Startives see roughly seventy percent better match quality than those with sparse profiles, because the algorithm simply has more honest signal to work with. Incomplete profiles force the system to guess, and guesses produce mismatches that cost both founders months of wasted momentum.
         </p>
         <p>
@@ -412,7 +412,7 @@ const blogData: Record<string, any> = {
 
         <div className="mt-12">
         <h2>The Human Element Behind the Data</h2>
-        <p>
+         <p className="lead mb-6">
           It's worth being honest about what an algorithm can and can't do. Startives' matching system is excellent at narrowing a pool of thousands of builders down to a shortlist of people worth talking to.
         </p>
         <p>
@@ -426,7 +426,7 @@ const blogData: Record<string, any> = {
           domain="ycombinator.com"
         />
 
-        <p>
+         <p className="lead mb-6">
           The founders who report the best long-term outcomes on Startives treat the algorithm as a filter, not a verdict. They use it to skip the wasted early conversations with people who were never going to be a fit on paper, then spend their saved time going deeper with the small number of matches who actually clear that bar.
         </p>
         <p>
