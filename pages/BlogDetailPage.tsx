@@ -58,7 +58,7 @@ const blogData: Record<string, any> = {
     image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=1200&q=80",
     content: (
       <>
-        <p className="lead">
+        <p className="lead mb-10">
           One of the biggest reasons startups fail isn't technology. It isn't funding. It isn't competition. <strong>It's founder misalignment.</strong>
         </p>
         <p>
