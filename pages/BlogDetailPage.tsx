@@ -1,6 +1,7 @@
+
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { ChevronLeft, Share2, Timer, ArrowRight, Star, Users, Award, Link as LinkIcon, ExternalLink } from "lucide-react";
+import { ChevronLeft, Share2, Timer, ArrowRight, Star, Users, Award, Link as LinkIcon, ExternalLink, CheckCircle2 } from "lucide-react";
 
 // Reusable resource-link card. Shows a favicon-based "cover" for the linked
 // site (fast + reliable, unlike hot-linking a scraped screenshot), the title,
@@ -47,16 +48,28 @@ const ResourceLink = ({
   </a>
 );
 
-// Numbered-section callout used for "1. / 2. / 3." style headings. Wraps the
-// heading (not the body) in a bordered card with a "Point N" eyebrow badge,
-// matching the design language of the rest of the article.
-const PointHeading = ({ number, title }: { number: number; title: string }) => (
-  <div className="my-10 p-6 rounded-2xl bg-[var(--component-background)] border border-[var(--border-primary)]">
-    <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 text-blue-500 text-xs font-bold mb-3">
-      Point {number}
-    </div>
+// Numbered-section heading used for "1. / 2. / 3." style sections. Compact
+// iOS-style glass pill badge ("Step N") sitting above the heading, rather
+// than a full bordered card, matching the glassmorphic back-button pill
+// already used at the top of the page.
+const StepHeading = ({ number, title }: { number: number; title: string }) => (
+  <div className="mt-12 mb-4">
+    <span
+      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 mb-3 rounded-full text-xs font-bold text-blue-500
+      bg-[var(--component-background)]/70 backdrop-blur-2xl border border-white/15
+      shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_4px_14px_-6px_rgba(0,0,0,0.18)]"
+    >
+      Step {number}
+    </span>
     <h2 className="!mt-0">{title}:</h2>
   </div>
+);
+
+// Compact accented heading for sub-sections that deserve emphasis without a
+// full numbered badge: a blue left rule, a trailing colon, and a bit of
+// extra breathing room before the paragraph that follows.
+const HighlightHeading = ({ title }: { title: string }) => (
+  <h2 className="!mb-5 pl-4 border-l-4 border-blue-500/50">{title}:</h2>
 );
 
 // Enhanced mini database with full SEO-optimized, high-quality articles (2026 context)
@@ -89,7 +102,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <PointHeading number={1} title="Adopt a Dynamic Equity Split Framework" />
+        <StepHeading number={1} title="Adopt a Dynamic Equity Split Framework" />
         <p className="lead mb-6">
           The classic 50/50 split feels fair on day one and turns into a silent killer by month eighteen. Equity should reflect real, ongoing contribution, not just how excited you both were at the start.
         </p>
@@ -119,7 +132,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={2} title="Implement the RACI Responsibility Matrix" />
+        <StepHeading number={2} title="Implement the RACI Responsibility Matrix" />
         <p className="lead mb-6">
           Unclear roles breed resentment. Clear roles help teams move faster. One habit we keep seeing among successful Startives pairs is a living RACI (Responsible, Accountable, Consulted, Informed) document that actually gets updated, instead of one that's written once and forgotten in a shared drive.
         </p>
@@ -154,7 +167,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={3} title="Draft a Comprehensive Founder Operating Agreement" />
+        <StepHeading number={3} title="Draft a Comprehensive Founder Operating Agreement" />
         <p className="lead mb-6">
           Investors in 2026 expect transparency, and a handshake agreement no longer cuts it during diligence. Your founder operating agreement should cover who decides on major spending, who owns the IP, what happens if a founder leaves early, and how you'll resolve disputes, ideally with mediation required before either side even thinks about a lawyer.
         </p>
@@ -164,7 +177,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={4} title="Run Quarterly Vision Alignment Workshops" />
+        <StepHeading number={4} title="Run Quarterly Vision Alignment Workshops" />
         <p className="lead mb-6">
           Ask the hard questions early and revisit them on a fixed schedule. Are you building for acquisition or IPO? Bootstrapped cashflow or aggressive venture-backed scaling?
         </p>
@@ -177,7 +190,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={5} title="Build in Public as a Team" />
+        <StepHeading number={5} title="Build in Public as a Team" />
         <p className="lead mb-6">
           Transparency builds trust internally and attracts talent externally. Share progress on X, LinkedIn, and your Startives builder profile as a joint effort rather than one founder's personal brand.
         </p>
@@ -206,7 +219,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Common Mistakes Founders Make with These Frameworks</h2>
+        <StepHeading number={6} title="Common Mistakes Founders Make with These Frameworks" />
         <p className="lead mb-6">
           The most common mistake isn't skipping these frameworks entirely, it's setting them up once and never revisiting them. A RACI matrix from month one becomes useless by month twelve if the company has pivoted twice and hired five people since then.
         </p>
@@ -251,7 +264,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <PointHeading number={1} title="Craft a Magnetic Headline &amp; One-Liner" />
+        <StepHeading number={1} title="Craft a Magnetic Headline &amp; One-Liner" />
         <p className="lead mb-6">
           Use outcome-focused language instead of category labels. Instead of "AI productivity tool," say "Helping dev teams ship three times faster with autonomous agents."
         </p>
@@ -264,7 +277,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={2} title="Showcase Traction with Real Metrics" />
+        <StepHeading number={2} title="Showcase Traction with Real Metrics" />
         <p className="lead mb-6">
           Upload verified screenshots of MRR, user growth, and retention curves, plus a short demo video, rather than describing them in prose. VCs love numbers that tell a story on their own, without needing a call to interpret them.
         </p>
@@ -277,7 +290,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={3} title="Build a Compelling Builder Story" />
+        <StepHeading number={3} title="Build a Compelling Builder Story" />
         <p className="lead mb-6">
           Share your "why," the personal pain or observation that sparked the idea. Include team photos, previous exits or notable projects, and a short technical breakdown that shows you understand the problem at a deeper level than a pitch deck slide.
         </p>
@@ -287,7 +300,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={4} title="Optimize for Search &amp; Discovery" />
+        <StepHeading number={4} title="Optimize for Search &amp; Discovery" />
         <p className="lead mb-6">
           Use relevant tags, add detailed tech stack information, and connect your public GitHub and product analytics directly to your Startives profile. Turn on "VC Match" so the platform can proactively surface your startup to investors whose focus actually fits what you're building, instead of relying on luck and timing.
         </p>
@@ -297,7 +310,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={5} title="Leverage Social Proof &amp; Testimonials" />
+        <StepHeading number={5} title="Leverage Social Proof &amp; Testimonials" />
         <p className="lead mb-6">
           Collect early user quotes, press mentions, advisor endorsements, and partner logos, then keep your Startives profile updated so it shows continued momentum instead of a static snapshot from six months ago.
         </p>
@@ -383,7 +396,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <h2>How Matching Algorithms Work in 2026</h2>
+        <HighlightHeading title="How Matching Algorithms Work in 2026" />
         <p className="lead mb-6">
           Startives combines skill data, personality compatibility scoring, vision alignment surveys, and past collaboration signals into a single compatibility model. Instead of simply matching "developer looking for business co-founder" with "business person looking for developer," the system weighs dozens of underlying signals that tend to predict whether a founding team stays together past the first hard year.
         </p>
@@ -393,13 +406,27 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Key Factors Scored</h2>
-        <ul>
-          <li>Technical complementarity, so you avoid duplicate skill sets that leave gaps uncovered.</li>
-          <li>Work style compatibility, measured through structured assessments rather than a single conversation.</li>
-          <li>Geographic and time-zone flexibility, since async collaboration friction quietly kills more startups than founders admit.</li>
-          <li>Shared values and long-term ambition level. Bootstrapper energy paired with venture-scale ambition rarely ends well.</li>
-        </ul>
+        <div className="not-prose my-8 p-6 rounded-2xl bg-[var(--component-background)] border border-[var(--border-primary)]">
+          <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] mb-4">Key Factors Scored:</h2>
+          <ul className="space-y-3 list-none pl-0 m-0">
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Technical complementarity, so you avoid duplicate skill sets that leave gaps uncovered.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Work style compatibility, measured through structured assessments rather than a single conversation.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Geographic and time-zone flexibility, since async collaboration friction quietly kills more startups than founders admit.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Shared values and long-term ambition level. Bootstrapper energy paired with venture-scale ambition rarely ends well.</span>
+            </li>
+          </ul>
+        </div>
         <p>
           Startives weights these factors differently depending on the founder's stage. Someone still validating an idea gets matched more on curiosity and resilience, while someone with an existing MVP gets matched more heavily on execution speed and technical fit.
         </p>
@@ -423,7 +450,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>The Human Element Behind the Data</h2>
+        <HighlightHeading title="The Human Element Behind the Data" />
         <p className="lead mb-6">
           It's worth being honest about what an algorithm can and can't do. Startives' matching system is excellent at narrowing a pool of thousands of builders down to a shortlist of people worth talking to.
         </p>
@@ -447,7 +474,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Getting Started on Startives</h2>
+        <HighlightHeading title="Getting Started on Startives" />
         <p>
           If you're new to the platform, resist the urge to fill out your profile quickly just to start browsing matches. What the algorithm can surface for you depends directly on how honest and complete your profile is.
         </p>
@@ -460,7 +487,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>What This Means for Your Search</h2>
+        <HighlightHeading title="What This Means for Your Search" />
         <p>
           If you're looking for a co-founder in 2026, treat your Startives profile like a resume for the most important hire you'll ever make. Be honest about your technical history, specific about the working style you thrive in, and upfront about your timeline and ambition level.
         </p>
@@ -499,7 +526,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <PointHeading number={1} title="Build Fast, Measure Faster" />
+        <StepHeading number={1} title="Build Fast, Measure Faster" />
         <p className="lead mb-6">
           Use no-code and AI-assisted tools to ship MVPs in days, not weeks. The point of an early MVP isn't to impress anyone, it's to be a fast, honest measurement instrument.
         </p>
@@ -512,7 +539,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={2} title="Talk to 100 Users Before Scaling" />
+        <StepHeading number={2} title="Talk to 100 Users Before Scaling" />
         <p className="lead mb-6">
           Run structured interviews with a consistent script, and build in public on Startives and X to gather real, unfiltered feedback instead of the polite feedback friends and family tend to give.
         </p>
@@ -532,7 +559,7 @@ const blogData: Record<string, any> = {
         />
 
         <div className="mt-12">
-        <PointHeading number={3} title="Iterate with Data, Not Opinions" />
+        <StepHeading number={3} title="Iterate with Data, Not Opinions" />
         <p className="lead mb-6">
           Use feature flags and lightweight A/B tests so you can settle debates with data instead of the loudest voice in the room. Kill features that don't move the needle, even the ones you personally love.
         </p>
@@ -545,7 +572,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={4} title="Watch for the Signals That Actually Matter" />
+        <StepHeading number={4} title="Watch for the Signals That Actually Matter" />
         <p className="lead mb-6">
           Product-market fit rarely announces itself with one dramatic moment. It shows up as organic referrals climbing without paid spend, support tickets shifting from "how do I use this" to "when will you add X," and usage that keeps growing even in weeks you didn't ship anything new.
         </p>
@@ -555,7 +582,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <PointHeading number={5} title="Don't Scale What Isn't Working" />
+        <StepHeading number={5} title="Don't Scale What Isn't Working" />
         <p>
           The most expensive mistake early-stage developers make is pouring paid acquisition budget into a product that hasn't proven organic pull yet. Scaling just amplifies whatever is already true about your retention. If it's weak, ad spend accelerates your burn rate without fixing the underlying problem.
         </p>
@@ -585,7 +612,7 @@ const blogData: Record<string, any> = {
         />
 
         <div className="mt-12">
-        <h2>Tools That Help You Measure Honestly</h2>
+        <HighlightHeading title="Tools That Help You Measure Honestly" />
         <p className="lead mb-6">
           You don't need an expensive analytics stack in the early days, but you do need discipline about what you track. A simple cohort retention chart, updated weekly, tells you more truth about your product than a dashboard full of vanity metrics.
         </p>
@@ -976,7 +1003,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Multi-Agent Orchestration Frameworks</h2>
+        <HighlightHeading title="Multi-Agent Orchestration Frameworks" />
         <p className="lead mb-6">
           Instead of building one monolithic agent that tries to do everything, the more scalable pattern in 2026 is a small set of specialized agents coordinated by a lightweight orchestrator: one agent for retrieval, one for reasoning, one for tool execution, and a supervisor that routes between them based on the task at hand.
         </p>
@@ -986,7 +1013,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Observability and Cost Guardrails</h2>
+        <HighlightHeading title="Observability and Cost Guardrails" />
         <p className="lead mb-6">
           Production agent systems need the same rigor as any other critical infrastructure: logging, tracing, and hard cost guardrails that stop a single runaway loop from silently draining your budget overnight.
         </p>
@@ -1003,14 +1030,14 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Designing for Graceful Degradation</h2>
+        <HighlightHeading title="Designing for Graceful Degradation" />
         <p>
           Every production agent will eventually hit a rate limit, an API outage, or an unexpected edge case. The strongest architectures degrade gracefully, falling back to simpler, cheaper responses instead of failing outright, so end users get a slightly reduced feature rather than a broken product.
         </p>
         </div>
 
         <div className="mt-12">
-        <h2>Testing and Evaluation Pipelines for Agents</h2>
+        <HighlightHeading title="Testing and Evaluation Pipelines for Agents" />
         <p className="lead mb-6">
           Traditional unit tests assume deterministic output, and agents are anything but deterministic. The teams shipping the most reliable agent products on Startives build evaluation pipelines instead: a curated set of representative test cases run against every model or prompt change, scored against a rubric rather than an exact string match. This catches quality regressions that a simple pass or fail test would miss entirely.
         </p>
@@ -1020,7 +1047,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Security Considerations for Agent Systems</h2>
+        <HighlightHeading title="Security Considerations for Agent Systems" />
         <p className="lead mb-6">
           Agents that can take actions, calling APIs, writing to databases, sending messages on a user's behalf, introduce a kind of risk that a purely conversational chatbot never had. Prompt injection through untrusted content, whether from a webpage the agent reads or a document a user uploads, is one of the most underestimated threats in production agent systems today.
         </p>
