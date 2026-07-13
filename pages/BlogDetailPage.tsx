@@ -90,7 +90,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <p className="lead mb-6">
-          Building a startup in 2026 moves fast — constant iteration, with AI doing more of the heavy lifting than ever. Teaming up with a tech co-founder is basically a professional marriage, and that marriage gets tested hard the moment real money, real users, or a real disagreement shows up.
+          Building a startup in 2026 moves fast, with constant iteration and AI doing more of the heavy lifting than ever. Teaming up with a tech co-founder is basically a professional marriage, and that marriage gets tested hard the moment real money, real users, or a real disagreement shows up.
         </p>
         <p className="lead mb-6">
           Without some ground rules, even a great idea can get stuck in endless whiteboard debates and Slack arguments. At Startives, we've spent years watching hundreds of founder pairs on our platform succeed and fail, and we've pulled out the systems that actually hold up once things get tense.
@@ -108,12 +108,26 @@ const blogData: Record<string, any> = {
         <p className="lead mb-6">
           Startives founders who avoid future blow-ups tend to use tools like the Slicing Pie model or dynamic cap tables that adjust automatically based on:
         </p>
-        <ul>
-          <li><strong>Time Commitment:</strong> Full-time vs part-time contributions tracked weekly, not assumed.</li>
-          <li><strong>Technical Impact:</strong> Code commits, architecture decisions, and MVP delivery speed.</li>
-          <li><strong>Network &amp; Capital Value:</strong> Introductions to VCs, early customers, and strategic partners.</li>
-          <li><strong>Opportunity Cost:</strong> Salary given up and personal runway put into the company.</li>
-        </ul>
+        <div className="not-prose my-6 p-5 rounded-2xl bg-[var(--component-background)] border border-[var(--border-primary)]">
+          <ul className="space-y-3 list-none pl-0 m-0">
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed"><strong className="text-[var(--text-primary)]">Time Commitment:</strong> Full-time vs part-time contributions tracked weekly, not assumed.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed"><strong className="text-[var(--text-primary)]">Technical Impact:</strong> Code commits, architecture decisions, and MVP delivery speed.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed"><strong className="text-[var(--text-primary)]">Network &amp; Capital Value:</strong> Introductions to VCs, early customers, and strategic partners.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed"><strong className="text-[var(--text-primary)]">Opportunity Cost:</strong> Salary given up and personal runway put into the company.</span>
+            </li>
+          </ul>
+        </div>
 
         <ResourceLink
           title="Slicing Pie: The Dynamic Equity Split Model"
@@ -653,13 +667,24 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <StepHeading number={1} title="Benefits of Building in Public" />
-        <ul>
-          <li>Organic user acquisition through transparency, since your build process itself becomes a form of marketing.</li>
-          <li>Early feedback loops that stop you from wasting effort on features nobody actually wants.</li>
-          <li>Attracting co-founders and talent naturally, since people can watch your judgment and consistency over time before ever applying.</li>
-        </ul>
-        <p>
+        <div className="not-prose p-6 rounded-2xl bg-[var(--component-background)] border border-[var(--border-primary)]">
+          <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] mb-4">Benefits of Building in Public:</h2>
+          <ul className="space-y-3 list-none pl-0 m-0">
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Organic user acquisition through transparency, since your build process itself becomes a form of marketing.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Early feedback loops that stop you from wasting effort on features nobody actually wants.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+              <span className="text-[var(--text-secondary)] leading-relaxed">Attracting co-founders and talent naturally, since people can watch your judgment and consistency over time before ever applying.</span>
+            </li>
+          </ul>
+        </div>
+        <p className="mt-6">
           Every one of these benefits compounds. A founder who shares a rough weekly update on Startives builds a small but genuine audience of people rooting for the product before it even launches. That audience becomes the first wave of users, the first source of honest feedback, and often the first source of warm introductions to investors and hires.
         </p>
         </div>
@@ -672,7 +697,7 @@ const blogData: Record<string, any> = {
         />
 
         <div className="mt-12">
-        <StepHeading number={2} title="Trust Is the New Moat" />
+        <StepHeading number={1} title="Trust Is the New Moat" />
         <p className="lead mb-6">
           In a market full of AI-assisted products that all look similar on the surface, trust has become the differentiator that actually sticks. Open builders build trust bit by bit, update by update, honest setback by honest setback.
         </p>
@@ -685,7 +710,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <StepHeading number={3} title="The Talent &amp; Investor Flywheel" />
+        <StepHeading number={2} title="The Talent &amp; Investor Flywheel" />
         <p className="lead mb-6">
           Openness doesn't just help with users, it changes how talent and capital find you. Engineers and designers increasingly choose who to work with based on public signal: shipped work, clear thinking, and consistency over time.
         </p>
@@ -698,7 +723,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <StepHeading number={4} title="How to Start Building in Public Without Overthinking It" />
+        <StepHeading number={3} title="How to Start Building in Public Without Overthinking It" />
         <p className="lead mb-6">
           The biggest barrier to building in public isn't strategy, it's the fear of looking unpolished. Founders wait for a milestone worth sharing and end up sharing nothing for months.
         </p>
@@ -711,7 +736,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <StepHeading number={5} title="Balancing Openness with Strategic Discretion" />
+        <StepHeading number={4} title="Balancing Openness with Strategic Discretion" />
         <p className="lead mb-6">
           Building in public doesn't mean sharing everything. Smart founders on Startives are transparent about their process, their learnings, and their metrics at a high level, while staying appropriately private about the specific mechanisms that would actually help a copycat, exact pricing negotiations mid-deal, unreleased technical details that took real work to figure out, or sensitive conversations with specific investors and partners.
         </p>
