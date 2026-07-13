@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChevronLeft, Share2, Timer, ArrowRight, Star, Users, Award, Link as LinkIcon, ExternalLink, CheckCircle2 } from "lucide-react";
@@ -49,9 +48,9 @@ const ResourceLink = ({
 );
 
 // Numbered-section heading used for "1. / 2. / 3." style sections. Compact
-// iOS-style glass pill badge ("Step N") sitting above the heading, rather
-// than a full bordered card, matching the glassmorphic back-button pill
-// already used at the top of the page.
+// iOS-style glass pill badge ("Key Takeaway N") sitting above the heading,
+// rather than a full bordered card, matching the glassmorphic back-button
+// pill already used at the top of the page.
 const StepHeading = ({ number, title }: { number: number; title: string }) => (
   <div className="mt-12 mb-4">
     <span
@@ -59,7 +58,7 @@ const StepHeading = ({ number, title }: { number: number; title: string }) => (
       bg-[var(--component-background)]/70 backdrop-blur-2xl border border-white/15
       shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_4px_14px_-6px_rgba(0,0,0,0.18)]"
     >
-      Step {number}
+      Key Takeaway {number}
     </span>
     <h2 className="!mt-0">{title}:</h2>
   </div>
@@ -327,7 +326,7 @@ const blogData: Record<string, any> = {
         />
 
         <div className="mt-12">
-        <h2>Common Profile Mistakes That Quietly Kill Interest</h2>
+        <HighlightHeading title="Common Profile Mistakes That Quietly Kill Interest" />
         <p className="lead mb-6">
           The single biggest mistake founders make on any fundraising profile, Startives included, is treating it like a resume instead of a pitch. A resume lists what you've done. A pitch makes an investor feel the size of the opportunity in front of them.
         </p>
@@ -343,7 +342,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Timing Your Outreach Around Profile Updates</h2>
+        <HighlightHeading title="Timing Your Outreach Around Profile Updates" />
         <p className="lead mb-6">
           A profile update isn't just a maintenance task, it's a legitimate reason to re-engage investors who previously passed or went quiet. Startives founders who ship a meaningful update, a new logo, a strong growth month, a notable hire, tend to pair that update with a short, direct follow-up message to investors already in their pipeline.
         </p>
@@ -440,7 +439,7 @@ const blogData: Record<string, any> = {
         />
 
         <div className="mt-12">
-        <h2>Why Data-Driven Matching Beats Random Networking</h2>
+        <HighlightHeading title="Why Data-Driven Matching Beats Random Networking" />
         <p className="lead mb-6">
           Builders who fully complete their profile on Startives see roughly seventy percent better match quality than those with sparse profiles, simply because the algorithm has more honest signal to work with. Incomplete profiles force the system to guess, and guesses produce mismatches that cost both founders months of wasted momentum.
         </p>
@@ -589,7 +588,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Common Signals Founders Misread</h2>
+        <HighlightHeading title="Common Signals Founders Misread" />
         <p className="lead mb-6">
           Two signals get misread more often than any others on early-stage teams. The first is press coverage. A nice write-up feels like validation, but it's a distribution event, not a product signal, and the spike in signups it generates almost never reflects sustained demand.
         </p>
@@ -654,7 +653,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <h2>Benefits of Building in Public</h2>
+        <StepHeading number={1} title="Benefits of Building in Public" />
         <ul>
           <li>Organic user acquisition through transparency, since your build process itself becomes a form of marketing.</li>
           <li>Early feedback loops that stop you from wasting effort on features nobody actually wants.</li>
@@ -673,7 +672,7 @@ const blogData: Record<string, any> = {
         />
 
         <div className="mt-12">
-        <h2>Trust Is the New Moat</h2>
+        <StepHeading number={2} title="Trust Is the New Moat" />
         <p className="lead mb-6">
           In a market full of AI-assisted products that all look similar on the surface, trust has become the differentiator that actually sticks. Open builders build trust bit by bit, update by update, honest setback by honest setback.
         </p>
@@ -686,7 +685,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>The Talent &amp; Investor Flywheel</h2>
+        <StepHeading number={3} title="The Talent &amp; Investor Flywheel" />
         <p className="lead mb-6">
           Openness doesn't just help with users, it changes how talent and capital find you. Engineers and designers increasingly choose who to work with based on public signal: shipped work, clear thinking, and consistency over time.
         </p>
@@ -699,7 +698,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>How to Start Building in Public Without Overthinking It</h2>
+        <StepHeading number={4} title="How to Start Building in Public Without Overthinking It" />
         <p className="lead mb-6">
           The biggest barrier to building in public isn't strategy, it's the fear of looking unpolished. Founders wait for a milestone worth sharing and end up sharing nothing for months.
         </p>
@@ -712,7 +711,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Balancing Openness with Strategic Discretion</h2>
+        <StepHeading number={5} title="Balancing Openness with Strategic Discretion" />
         <p className="lead mb-6">
           Building in public doesn't mean sharing everything. Smart founders on Startives are transparent about their process, their learnings, and their metrics at a high level, while staying appropriately private about the specific mechanisms that would actually help a copycat, exact pricing negotiations mid-deal, unreleased technical details that took real work to figure out, or sensitive conversations with specific investors and partners.
         </p>
@@ -748,7 +747,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <h2>Government Grants for Deep Tech and R&amp;D</h2>
+        <HighlightHeading title="Government Grants for Deep Tech and R&amp;D" />
         <p className="lead mb-6">
           Many governments now offer solid non-dilutive grants for startups working on AI infrastructure, climate technology, healthtech, and other categories seen as strategically important. These programs are underused simply because the application process feels intimidating compared to a quick VC pitch.
         </p>
@@ -769,7 +768,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Revenue-Based Financing</h2>
+        <HighlightHeading title="Revenue-Based Financing" />
         <p className="lead mb-6">
           For SaaS companies with consistent MRR, revenue-based financing lets you borrow against future revenue and repay as a percentage of monthly income rather than on a fixed schedule. This lines up repayment with your actual cash flow, which matters a lot during slower months.
         </p>
@@ -782,7 +781,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Specialized Venture Debt for AI/SaaS</h2>
+        <HighlightHeading title="Specialized Venture Debt for AI/SaaS" />
         <p className="lead mb-6">
           Venture debt has changed a lot by 2026, with lenders now specializing in AI-native SaaS companies and actually understanding metrics like token costs and inference margins that traditional lenders used to misread entirely. This specialization means better terms for founders who fit the profile these lenders are built to underwrite.
         </p>
@@ -792,14 +791,14 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Stacking Multiple Non-Dilutive Sources</h2>
+        <HighlightHeading title="Stacking Multiple Non-Dilutive Sources" />
         <p>
           The founders getting the most out of non-dilutive capital aren't relying on a single source, they're stacking grants, revenue-based financing, and venture debt strategically across different stages of growth. A grant might fund an early R&amp;D phase, revenue-based financing might fund a proven acquisition channel, and venture debt might extend runway between your seed and Series A.
         </p>
         </div>
 
         <div className="mt-12">
-        <h2>Common Mistakes When Applying for Non-Dilutive Capital</h2>
+        <HighlightHeading title="Common Mistakes When Applying for Non-Dilutive Capital" />
         <p className="lead mb-6">
           The most common mistake is applying too late, treating non-dilutive capital as a backup plan for when a priced round falls through. Grant cycles and lender underwriting both move slowly, often taking two to four months from application to funded, so founders who wait until they're desperate rarely get the timeline they need.
         </p>
@@ -815,7 +814,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Timing Considerations Across Your Fundraising Calendar</h2>
+        <HighlightHeading title="Timing Considerations Across Your Fundraising Calendar" />
         <p className="lead mb-6">
           Non-dilutive capital works best as a complement woven into your broader fundraising calendar, not a replacement for it. Plan grant applications around your product roadmap, since many programs want to see a specific R&amp;D milestone tied to the funds requested.
         </p>
@@ -854,7 +853,7 @@ const blogData: Record<string, any> = {
         </p>
 
         <div className="mt-12">
-        <h2>Month 1-2: Find a Painfully Specific Problem</h2>
+        <HighlightHeading title="Month 1-2: Find a Painfully Specific Problem" />
         <p className="lead mb-6">
           The best Micro-SaaS ideas rarely come from brainstorming sessions, they come from a founder's own frustration with an existing tool, or from a problem they watched a specific community complain about repeatedly.
         </p>
@@ -867,7 +866,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Month 2-3: Lean Architecture &amp; Automation</h2>
+        <HighlightHeading title="Month 2-3: Lean Architecture &amp; Automation" />
         <p className="lead mb-6">
           Build with a modern, boring stack. Next.js and Supabase remain the default for good reason in 2026, because they let a solo founder move fast without reinventing infrastructure.
         </p>
@@ -880,7 +879,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Month 3-4: Distribution Loops That Compound</h2>
+        <HighlightHeading title="Month 3-4: Distribution Loops That Compound" />
         <p className="lead mb-6">
           Distribution needs the same care as the product itself. Webhook-powered virality, where simply using the product naturally exposes it to new potential users, is one of the most efficient growth mechanisms available to a solo founder with no marketing budget.
         </p>
@@ -901,7 +900,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Month 4-5: Pricing for Sustainability</h2>
+        <HighlightHeading title="Month 4-5: Pricing for Sustainability" />
         <p className="lead mb-6">
           Underpricing is one of the most common Micro-SaaS mistakes. Price based on the value you deliver, not on what feels comfortable to charge a stranger.
         </p>
@@ -911,7 +910,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Month 5-6: Retention Over Acquisition</h2>
+        <HighlightHeading title="Month 5-6: Retention Over Acquisition" />
         <p className="lead mb-6">
           By month five, your focus should shift from pure acquisition to retention and expansion revenue. Churn is the silent killer of Micro-SaaS economics, a leaky bucket makes every acquisition effort feel like running in place.
         </p>
@@ -921,7 +920,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>Common Pitfalls That Derail Solo Founders</h2>
+        <HighlightHeading title="Common Pitfalls That Derail Solo Founders" />
         <p className="lead mb-6">
           The most common pitfall is scope creep disguised as ambition. A solo founder who starts adding features to appeal to a slightly different audience segment ends up with a diluted product that doesn't really serve anyone well.
         </p>
@@ -937,7 +936,7 @@ const blogData: Record<string, any> = {
         </div>
 
         <div className="mt-12">
-        <h2>A Lean Tool Stack That Actually Scales</h2>
+        <HighlightHeading title="A Lean Tool Stack That Actually Scales" />
         <p className="lead mb-6">
           Beyond Next.js and Supabase, the strongest solo builders on Startives keep their tool stack deliberately small: a single analytics tool configured properly rather than three tools configured poorly, one payment processor, and one customer communication platform that handles both support and lifecycle emails.
         </p>
