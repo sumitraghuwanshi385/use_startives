@@ -139,7 +139,16 @@ const hideStarverseButton =
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  const showFooter = location.pathname === '/'; 
+  const hideFooterRoutes = [
+  '/login',
+  '/signup',
+  '/verify-email',
+  '/forgot-password',
+  '/new-password',
+];
+
+const showFooter = !hideFooterRoutes.includes(location.pathname);
+ 
   const isFullHeightPage = location.pathname.startsWith('/messages') || location.pathname.startsWith('/team/') || location.pathname === '/blueprint' || location.pathname.startsWith('/asset/');
 
   return (
@@ -172,7 +181,14 @@ const hideStarverseButton =
 <Route path="/blog"
 element={<WithPageContainer> <BlogPage />
 </WithPageContainer>}/>
-<Route path="/blog/:id" element={<BlogDetailPage />} />
+<Route
+  path="/blog/:id"
+  element={
+    <WithPageContainer>
+      <BlogDetailPage />
+    </WithPageContainer>
+  }
+/>
 
           <Route path="/dashboard" element={
   <ProtectedRoute>
@@ -200,7 +216,14 @@ element={<WithPageContainer> <BlogPage />
           <Route path="/connections" element={<ProtectedRoute><WithPageContainer><ConnectionsPage /></WithPageContainer></ProtectedRoute>} />
           <Route path="/saved-projects" element={<ProtectedRoute><WithPageContainer><SavedProjectsPage /></WithPageContainer></ProtectedRoute>} />
           <Route path="/activity-log" element={<ProtectedRoute><WithPageContainer><ActivityLogPage /></WithPageContainer></ProtectedRoute>} />
-<Route path="/globe" element={<GlobalGlobe />} />
+<Route
+  path="/globe"
+  element={
+    <ProtectedRoute>
+      <GlobalGlobe />
+    </ProtectedRoute>
+  }
+/>
 
 
   
