@@ -12,11 +12,10 @@ const Footer: React.FC = () => {
   ];
 
   const exploreLinks: { name: string; path: string }[] = [
-    { name: 'Builders', path: '/builders' },
-    { name: 'Builder Stories', path: '/builders' },
     { name: 'Projects', path: '/projects' },
     { name: 'Marketplace', path: '/blueprint' },
     { name: 'Starverse', path: '/globe' },
+    { name: 'Builder Stories', path: '/builders' },
   ];
 
   const socialLinks = [
@@ -76,6 +75,9 @@ const Footer: React.FC = () => {
         
         <div className="border-t border-[var(--border-primary)] pt-8 text-center text-sm">
           <p>&copy; {new Date().getFullYear()} {APP_NAME}. All rights reserved.</p>
+          <p className="mt-2 text-xs text-[var(--text-muted)]">
+            Made with ♥️ for founders, builders and innovators.
+          </p>
         </div>
       </div>
     </footer>
