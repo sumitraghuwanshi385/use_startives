@@ -6,6 +6,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { AppProvider } from './contexts/AppContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from "react-helmet-async";
 
 if (import.meta.env.DEV) {
   window.onerror = function (msg) {
@@ -22,6 +23,7 @@ if (!rootElement) {
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
+  <HelmetProvider>
     <BrowserRouter>
       <ThemeProvider>
         <AppProvider>
@@ -30,5 +32,6 @@ ReactDOM.createRoot(rootElement).render(
         </AppProvider>
       </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </HelmetProvider>
+</React.StrictMode>
 );
