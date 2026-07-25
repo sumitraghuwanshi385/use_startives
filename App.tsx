@@ -139,16 +139,7 @@ const hideStarverseButton =
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  const hideFooterRoutes = [
-  '/login',
-  '/signup',
-  '/verify-email',
-  '/forgot-password',
-  '/new-password',
-];
-
-const showFooter = !hideFooterRoutes.includes(location.pathname);
- 
+  const showFooter = location.pathname === '/'; 
   const isFullHeightPage = location.pathname.startsWith('/messages') || location.pathname.startsWith('/team/') || location.pathname === '/blueprint' || location.pathname.startsWith('/asset/');
 
   return (
@@ -176,19 +167,26 @@ const showFooter = !hideFooterRoutes.includes(location.pathname);
           <Route path="/new-password" element={<NewPasswordPage />} />
           <Route path="/contact-us" element={<WithPageContainer><ContactUsPage /></WithPageContainer>} />
           <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
-<Route path="/builders" element={<BuildersStoriesPage />} />
-<Route path="/builders/:id" element={<StoryDetailsPage />} />
+<Route
+  path="/builders"
+  element={
+    <ProtectedRoute>
+      <BuildersStoriesPage />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/builders/:id"
+  element={
+    <ProtectedRoute>
+      <StoryDetailsPage />
+    </ProtectedRoute>
+  }
+/>
 <Route path="/blog"
 element={<WithPageContainer> <BlogPage />
 </WithPageContainer>}/>
-<Route
-  path="/blog/:id"
-  element={
-    <WithPageContainer>
-      <BlogDetailPage />
-    </WithPageContainer>
-  }
-/>
+<Route path="/blog/:id" element={<BlogDetailPage />} />
 
           <Route path="/dashboard" element={
   <ProtectedRoute>
