@@ -169,9 +169,11 @@ const hideStarverseButton =
           <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
 <Route path="/builders" element={<BuildersStoriesPage />} />
 <Route path="/builders/:id" element={<StoryDetailsPage />} />
-<Route path="/blog" element={<ProtectedRoute><WithPageContainer><BlogPage /></WithPageContainer></ProtectedRoute>} />
-<Route path="/blog/:id" element={<BlogDetailPage />} />
-
+<Route path="/blog"
+element={<WithPageContainer> <BlogPage />
+</WithPageContainer>
+}
+/>
 
           <Route path="/dashboard" element={
   <ProtectedRoute>
