@@ -1,31 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import "./global.css";
-import { Analytics } from '@vercel/analytics/react'
-
-window.onerror = function (msg, url, lineNo, columnNo, error) {
-  document.body.innerHTML =
-    "<h1 style='color:red'>JS ERROR: " + msg + "</h1>";
-};
-
+import './global.css';
+import { Analytics } from '@vercel/analytics/react';
 import { AppProvider } from './contexts/AppContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
 
-const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error("Could not find root element to mount to");
+if (import.meta.env.DEV) {
+  window.onerror = function (msg) {
+    document.body.innerHTML =
+      "<h1 style='color:red'>JS ERROR: " + msg + "</h1>";
+  };
 }
 
-const root = ReactDOM.createRoot(rootElement);
-root.render(
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error('Could not find root element to mount to');
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <AppProvider>
           <App />
-           <Analytics />  
+          <Analytics />
         </AppProvider>
       </ThemeProvider>
     </BrowserRouter>
