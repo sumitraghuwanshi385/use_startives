@@ -1,15 +1,22 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { APP_NAME, TwitterXIcon } from '../constants';
 
 const Footer: React.FC = () => {
-  // FIX: Added explicit type to handle both internal 'path' and external 'href' if needed, though currently only using 'path'.
-  const helpLinks: { name: string; path?: string; href?: string }[] = [
-    { name: 'About Us', path: '/about' }, 
+  const helpCenterLinks: { name: string; path: string }[] = [
+    { name: 'About Us', path: '/about' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Privacy Policy', path: '/privacy-policy' },
     { name: 'Contact Us', path: '/contact-us' },
     { name: 'For Sponsorship', path: '/sponsorship' },
+  ];
+
+  const exploreLinks: { name: string; path: string }[] = [
+    { name: 'Builders', path: '/builders' },
+    { name: 'Builder Stories', path: '/builders' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Marketplace', path: '/blueprint' },
+    { name: 'Starverse', path: '/globe' },
   ];
 
   const socialLinks = [
@@ -18,36 +25,42 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-[var(--background-secondary)] text-[var(--text-muted)] border-t border-[var(--border-primary)] relative z-10">
+    <footer className="bg-[var(--background-secondary)] text-[var(--text-muted)] border-t border-[var(--border-primary)] relative z-10" aria-label="Site footer">
       <div className="container mx-auto px-6 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
-          <div className="md:col-span-1 lg:col-span-2">
-             <Link to="/" className="flex items-center text-[var(--text-primary)] mb-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+          <div className="sm:col-span-2 lg:col-span-1">
+             <Link to="/" className="flex items-center text-[var(--text-primary)] mb-3" aria-label={`${APP_NAME} home`}>
                 <img src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" alt="Startives Logo" style={{ height: '32px' }} className="mr-3" />
                 <span className="font-startives-brand text-2xl tracking-tighter gradient-text bg-gradient-to-r from-red-500 to-blue-500">{APP_NAME}</span>
             </Link>
-            <p className="text-sm max-w-sm">Empowering Startup Founders to Connect & Build.</p>
+            <p className="text-sm max-w-sm">Build startups faster with co-founders, builders, projects, startup stories, and a growing founder community.</p>
           </div>
-          
-          <div>
+
+          <nav aria-label="Help Center">
             <h5 className="font-semibold text-[var(--text-primary)] mb-3">Help Center</h5>
             <ul className="space-y-2">
-              {helpLinks.map(link => (
+              {helpCenterLinks.map(link => (
                 <li key={link.name}>
-                  {link.path ? (
-                    <Link to={link.path} className="hover:text-[var(--accent-info-hover)] transition-colors duration-300 text-sm">
-                      {link.name}
-                    </Link>
-                  ) : (
-                    // FIX: Checking link.href safely now that the type is defined.
-                    <a href={link.href} className="hover:text-[var(--accent-info-hover)] transition-colors duration-300 text-sm" target="_blank" rel="noopener noreferrer">
-                      {link.name}
-                    </a>
-                  )}
+                  <Link to={link.path} className="hover:text-[var(--accent-info-hover)] transition-colors duration-300 text-sm">
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
+
+          <nav aria-label="Explore">
+            <h5 className="font-semibold text-[var(--text-primary)] mb-3">Explore</h5>
+            <ul className="space-y-2">
+              {exploreLinks.map(link => (
+                <li key={link.name}>
+                  <Link to={link.path} className="hover:text-[var(--accent-info-hover)] transition-colors duration-300 text-sm">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <div>
             <h5 className="font-semibold text-[var(--text-primary)] mb-3">Join us on</h5>
