@@ -46,6 +46,7 @@ import BuildersStoriesPage from "./pages/BuildersStoriesPage";
 import StoryDetailsPage from "./pages/StoryDetailsPage";
 import BlogPage from './pages/BlogPage';
 import BlogDetailPage from './pages/BlogDetailPage';
+import LogoutConfirmModal from "./components/LogoutConfirmModal";
 
 interface PageTitleProps {
   title: string;
@@ -71,12 +72,10 @@ const App: React.FC = () => {
 const navigate = useNavigate();
 const [isChatOpen, setIsChatOpen] = React.useState(false);
 
-  const {
-  currentUser,
-  showOnboardingModal,
-  authLoadingState,
-  logout
-} = useAppContext();
+const [showLogoutModal, setShowLogoutModal] = React.useState(false);
+
+const { currentUser, showOnboardingModal,
+authLoadingState,logout } = useAppContext();
 
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ;
 
@@ -117,21 +116,11 @@ useEffect(() => {
 useEffect(() => {
   if (!currentUser) return;
 
-  // Har protected page par history me ek state push karo
   window.history.pushState(null, "", window.location.href);
 
   const handleBack = () => {
-    const confirmLogout = window.confirm(
-      "Do you want to log out?\n\nPress OK to Log out or Cancel to stay on Startives."
-    );
-
-    if (confirmLogout) {
-      logout();
-      navigate("/", { replace: true });
-    } else {
-      // User cancel kare to wahi page par rehna
-      window.history.pushState(null, "", window.location.href);
-    }
+    setShowLogoutModal(true);
+    window.history.pushState(null, "", window.location.href);
   };
 
   window.addEventListener("popstate", handleBack);
@@ -139,7 +128,7 @@ useEffect(() => {
   return () => {
     window.removeEventListener("popstate", handleBack);
   };
-}, [currentUser, navigate, logout]);
+}, [currentUser]);
 
   const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
   const staticPages = ['/about', '/privacy-policy', '/contact-us', '/sponsorship'];
@@ -268,6 +257,16 @@ element={<WithPageContainer> <BlogPage />
 <FloatingActionMenu />
 {currentUser && !hideStarverseButton && (
   <StarverseFloatingButton />
+
+<LogoutConfirmModal
+  open={showLogoutModal}
+  onClose={() => setShowLogoutModal(false)}
+  onLogout={() => {
+    logout();
+    navigate("/", { replace: true });
+  }}
+/>
+
 )}
     </div>
         </GoogleOAuthProvider>
