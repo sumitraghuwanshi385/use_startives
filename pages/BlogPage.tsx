@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChevronRight, Search, Twitter, Instagram, Newspaper, Cpu, Group, Rocket } from 'lucide-react';
 
 // --- Startives Optimized Real-World Blog Data (Strictly 2026) ---
@@ -63,7 +63,17 @@ export const blogPosts = [
 ];
 
 const BlogPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [searchQuery, setSearchQuery] = useState('');
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
   
   const filteredPosts = blogPosts.filter(post => 
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -75,6 +85,17 @@ const BlogPage: React.FC = () => {
       
       {/* 🌟 1. HERO HEADER SECTION */}
       <div className="w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
+
+<div className="max-w-6xl mx-auto pt-4 flex justify-start">
+  <button
+    onClick={handleBack}
+    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--component-background)] border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition-all duration-200"
+  >
+    <ChevronRight className="w-4 h-4 rotate-180" />
+    <span className="text-sm font-semibold">Back</span>
+  </button>
+</div>
+
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
           {/* Blogs Title Container */}
