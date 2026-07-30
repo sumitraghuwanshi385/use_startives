@@ -255,8 +255,10 @@ element={<WithPageContainer> <BlogPage />
 {currentUser && !isChatOpen && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
 
 <FloatingActionMenu />
+
 {currentUser && !hideStarverseButton && (
   <StarverseFloatingButton />
+)}
 
 <LogoutConfirmModal
   open={showLogoutModal}
@@ -267,7 +269,6 @@ element={<WithPageContainer> <BlogPage />
   }}
 />
 
-)}
     </div>
         </GoogleOAuthProvider>
   );
