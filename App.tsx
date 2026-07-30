@@ -188,6 +188,16 @@ const hideStarverseButton =
  
   const isFullHeightPage = location.pathname.startsWith('/messages') || location.pathname.startsWith('/team/') || location.pathname === '/blueprint' || location.pathname.startsWith('/asset/');
 
+useEffect(() => {
+  console.log("Window Scroll:", window.scrollY);
+
+  const main = document.querySelector("main");
+  console.log("Main Scroll:", main?.scrollTop);
+
+  console.log("Scrolling Element:", document.scrollingElement);
+}, [location.pathname]);
+
+
   return (
       <GoogleOAuthProvider clientId={googleClientId}>
     <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
