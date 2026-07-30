@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -68,9 +68,15 @@ const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: s
 
 const App: React.FC = () => {
   const location = useLocation();
+const navigate = useNavigate();
 const [isChatOpen, setIsChatOpen] = React.useState(false);
 
-  const { currentUser, showOnboardingModal, authLoadingState } = useAppContext(); 
+  const {
+  currentUser,
+  showOnboardingModal,
+  authLoadingState,
+  logout
+} = useAppContext();
 
     const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ;
 
@@ -107,6 +113,33 @@ useEffect(() => {
 
   return () => observer.disconnect();
 }, []);
+
+useEffect(() => {
+  if (!currentUser) return;
+
+  // Har protected page par history me ek state push karo
+  window.history.pushState(null, "", window.location.href);
+
+  const handleBack = () => {
+    const confirmLogout = window.confirm(
+      "Do you want to log out?\n\nPress OK to Log out or Cancel to stay on Startives."
+    );
+
+    if (confirmLogout) {
+      logout();
+      navigate("/", { replace: true });
+    } else {
+      // User cancel kare to wahi page par rehna
+      window.history.pushState(null, "", window.location.href);
+    }
+  };
+
+  window.addEventListener("popstate", handleBack);
+
+  return () => {
+    window.removeEventListener("popstate", handleBack);
+  };
+}, [currentUser, navigate, logout]);
 
   const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
   const staticPages = ['/about', '/privacy-policy', '/contact-us', '/sponsorship'];
