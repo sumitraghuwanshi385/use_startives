@@ -113,20 +113,33 @@ useEffect(() => {
   return () => observer.disconnect();
 }, []);
 
+
 useEffect(() => {
   if (!currentUser) return;
 
-  // Back button intercept
+  // Sirf in main/root pages par browser back -> Logout Dialog
+  const protectedBackRoutes = [
+    "/dashboard",
+    "/projects",
+    "/startalks",
+    "/messages",
+    "/globe", // Startverse
+  ];
+
+  const shouldIntercept =
+    protectedBackRoutes.includes(location.pathname);
+
+  if (!shouldIntercept) return;
+
+  // Current page history me dobara push karo
   window.history.pushState(null, "", window.location.href);
 
   const handleBack = () => {
-    // Agar modal pehle se open hai to kuch mat karo
     if (showLogoutModal) return;
 
-    // Modal open karo
     setShowLogoutModal(true);
 
-    // User ko current page par hi rakho
+    // User ko isi page par rakho
     window.history.pushState(null, "", window.location.href);
   };
 
@@ -135,7 +148,7 @@ useEffect(() => {
   return () => {
     window.removeEventListener("popstate", handleBack);
   };
-}, [currentUser, showLogoutModal]);
+}, [currentUser, location.pathname, showLogoutModal]);
 
 
   const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
