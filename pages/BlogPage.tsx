@@ -84,9 +84,9 @@ const BlogPage: React.FC = () => {
     <div className="w-full bg-[var(--background-secondary)] font-poppins pb-12">
       
       {/* 🌟 1. HERO HEADER SECTION */}
-      <div className="w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
+      <div className="relative w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
 
-<div className="max-w-6xl mx-auto pt-6 pb-2 flex justify-start">
+<div className="absolute top-3 left-3 sm:top-4 sm:left-6 z-30">
   <button
     onClick={handleBack}
     className="group relative inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--text-muted)] overflow-hidden
