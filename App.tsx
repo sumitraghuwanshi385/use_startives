@@ -116,10 +116,17 @@ useEffect(() => {
 useEffect(() => {
   if (!currentUser) return;
 
+  // Back button intercept
   window.history.pushState(null, "", window.location.href);
 
   const handleBack = () => {
+    // Agar modal pehle se open hai to kuch mat karo
+    if (showLogoutModal) return;
+
+    // Modal open karo
     setShowLogoutModal(true);
+
+    // User ko current page par hi rakho
     window.history.pushState(null, "", window.location.href);
   };
 
@@ -128,10 +135,13 @@ useEffect(() => {
   return () => {
     window.removeEventListener("popstate", handleBack);
   };
-}, [currentUser]);
+}, [currentUser, showLogoutModal]);
+
 
   const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
+
   const staticPages = ['/about', '/privacy-policy', '/contact-us', '/sponsorship'];
+
   const showHeader = !noHeaderRoutes.includes(location.pathname);
   
   const hideFABRoutes = [
@@ -161,7 +171,8 @@ const hideStarverseButton =
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  const showFooter = location.pathname === '/'; 
+  const showFooter = location.pathname === "/" && !currentUser;
+ 
   const isFullHeightPage = location.pathname.startsWith('/messages') || location.pathname.startsWith('/team/') || location.pathname === '/blueprint' || location.pathname.startsWith('/asset/');
 
   return (
@@ -177,7 +188,15 @@ const hideStarverseButton =
       <main className={`flex-grow ${isFullHeightPage || isChatOpen ? '' : 'pb-16'} ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+  path="/"
+  element={
+    currentUser ? (
+      <Navigate to="/dashboard" replace />
+    ) : (
+      <HomePage />
+    )
+  }/>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
@@ -263,8 +282,9 @@ element={<WithPageContainer> <BlogPage />
 <LogoutConfirmModal
   open={showLogoutModal}
   onClose={() => setShowLogoutModal(false)}
-  onLogout={() => {
-    logout();
+  onLogout={async () => {
+    setShowLogoutModal(false);
+    await logout();
     navigate("/", { replace: true });
   }}
 />
