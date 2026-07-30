@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChevronRight, Search, Twitter, Instagram, Newspaper, Cpu, Group, Rocket } from 'lucide-react';
+import { ChevronRight, Search, Twitter, Instagram, Newspaper, Cpu, Group, Rocket, ChevronLeft } from 'lucide-react';
 
 // --- Startives Optimized Real-World Blog Data (Strictly 2026) ---
 export const blogPosts = [
@@ -86,13 +86,19 @@ const BlogPage: React.FC = () => {
       {/* 🌟 1. HERO HEADER SECTION */}
       <div className="w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
 
-<div className="max-w-6xl mx-auto pt-4 flex justify-start">
+<div className="max-w-6xl mx-auto pt-6 pb-2 flex justify-start">
   <button
     onClick={handleBack}
-    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--component-background)] border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition-all duration-200"
+    className="group relative inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--text-muted)] overflow-hidden
+    bg-[var(--component-background)]/70 backdrop-blur-2xl border border-white/15
+    shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_4px_14px_-6px_rgba(0,0,0,0.18)]
+    hover:text-blue-500 hover:border-blue-500/30
+    hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.5),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_6px_18px_-6px_rgba(59,130,246,0.3)]
+    transition-all duration-300"
   >
-    <ChevronRight className="w-4 h-4 rotate-180" />
-    <span className="text-sm font-semibold">Back</span>
+    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-t-full" />
+    <ChevronLeft className="w-3.5 h-3.5 relative z-10 group-hover:-translate-x-0.5 transition-transform" />
+    <span className="relative z-10">Back</span>
   </button>
 </div>
 
