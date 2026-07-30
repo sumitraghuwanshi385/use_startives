@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { LogOut } from "lucide-react";
 
 interface LogoutConfirmModalProps {
   open: boolean;
@@ -15,7 +16,9 @@ const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
     if (!open) return;
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+      }
     };
 
     document.addEventListener("keydown", handleEsc);
@@ -27,42 +30,54 @@ const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
 
   if (!open) return null;
 
+  const handleLogout = () => {
+    onClose();
+
+    setTimeout(() => {
+      onLogout();
+    }, 180);
+  };
+
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-md px-5"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-xl px-5 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-3xl border border-white/10 bg-white/10 backdrop-blur-2xl shadow-2xl p-7 animate-[fadeIn_.2s_ease]"
+        className="w-full max-w-md rounded-[28px] border border-white/10 bg-white/10 backdrop-blur-3xl shadow-[0_25px_80px_rgba(0,0,0,0.45)] p-7 animate-in zoom-in-95 duration-200"
       >
+        {/* Icon */}
         <div className="flex justify-center">
-          <div className="h-16 w-16 rounded-full bg-red-500/15 flex items-center justify-center border border-red-500/30">
-            <span className="text-3xl">🚪</span>
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-red-500/30 bg-red-500/15">
+            <LogOut className="h-8 w-8 text-red-400" strokeWidth={2.2} />
           </div>
         </div>
 
+        {/* Title */}
         <h2 className="mt-5 text-center text-2xl font-bold text-white">
           Leave Startives?
         </h2>
 
-        <p className="mt-3 text-center text-gray-300 leading-relaxed">
+        {/* Description */}
+        <p className="mt-3 text-center text-sm leading-6 text-gray-300">
           Pressing back will log you out of your account.
           <br />
           Are you sure you want to continue?
         </p>
 
+        {/* Buttons */}
         <div className="mt-8 flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 rounded-xl border border-white/15 bg-white/5 py-3 font-medium text-white transition hover:bg-white/10"
+            className="flex-1 rounded-full border border-white/15 bg-white/5 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/10 active:scale-[0.98]"
           >
             Cancel
           </button>
 
           <button
-            onClick={onLogout}
-            className="flex-1 rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700"
+            onClick={handleLogout}
+            className="flex-1 rounded-full bg-red-600 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-red-700 active:scale-[0.98]"
           >
             Log out
           </button>
