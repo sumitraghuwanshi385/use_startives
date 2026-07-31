@@ -5,56 +5,56 @@ import { ChevronRight, Search, Twitter, Instagram, Newspaper, Cpu, Group, Rocket
 // --- Startives Optimized Real-World Blog Data (Strictly 2026) ---
 export const blogPosts = [
   {
-    id: "1",
+    slug: "co-founder-equity-frameworks",
     title: "5 Tactical Frameworks to Align Equity and Vision with Your Tech Co-Founder",
     excerpt: "Diving deep into split structures, vesting schedules, and engineering culture milestones that modern builders need to scale their products effortlessly.",
     date: "JUL 10, 2026",
     image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80"
   },
   {
-    id: "2",
+    slug: "optimize-startup-profile-attract-vcs",
     title: "How to Optimize Your Startup Profile on Startives to Attract Premium VCs",
     excerpt: "A complete walkthrough on positioning your pitch deck metrics, product prototypes, and builder stories to gain unfair visibility in front of active investors.",
     date: "JUL 06, 2026",
     image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=600&q=80"
   },
   {
-    id: "3",
+    slug: "co-founder-matching-algorithms",
     title: "Demystifying Preferred Co-Founder Matching Algorithms in Modern Ecosystems",
     excerpt: "How automated platform networking helps builders cut down the search time for looking into skill gaps and core team alignment.",
     date: "JUN 28, 2026",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80"
   },
   {
-    id: "4",
+    slug: "product-market-fit-early-stage",
     title: "Navigating Product-Market Fit: Tactical Blueprints for Early Stage Devs",
     excerpt: "With raw validation loops, community building, and focus on minimum viable experiences, build things that people actually track and use.",
     date: "JUN 15, 2026",
     image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80"
   },
   {
-    id: "5",
+    slug: "building-in-public-open-builders",
     title: "Ecosystem Synergies: Why Open Builders are Outpacing Stealth Mode Founders",
     excerpt: "The power of building in public, validating metrics openly, and sharing your journey to assemble high-caliber teams organically.",
     date: "MAY 30, 2026",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80"
   },
   {
-    id: "6",
+    slug: "non-dilutive-funding-grants-venture-debt",
     title: "The Art of Non-Dilutive Funding: Grants and Venture Debt for SaaS in 2026",
     excerpt: "Keep your equity intact. Explore the emerging landscape of alternative financing instruments tailored specifically for high-growth software products.",
     date: "MAY 14, 2026",
     image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=400&q=80"
   },
   {
-    id: "7",
+    slug: "micro-saas-blueprint-10k-mrr",
     title: "Cracking the Micro-SaaS Blueprint: Solopreneur to $10K MRR in 6 Months",
     excerpt: "An inside look at lean framework architectures, automated cold outreach, and webhook-driven distribution loops that change the bootstrapping game.",
     date: "APR 22, 2026",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80"
   },
   {
-    id: "8",
+    slug: "scalable-ai-agents-architecture",
     title: "Building Scalable AI Agents: Architecture Patterns for Modern Application Infrastructure",
     excerpt: "Stop wasting API credits. Learn how context window caching, vector database optimization, and semantic routing layer strategies save costs.",
     date: "MAR 09, 2026",
@@ -86,21 +86,22 @@ const BlogPage: React.FC = () => {
       {/* 🌟 1. HERO HEADER SECTION */}
       <div className="relative w-full pt-0 pb-0 px-4 border-b border-[var(--border-primary)] text-center -mt-2">
 
-<div className="absolute top-3 left-3 sm:top-4 sm:left-6 z-30">
-  <button
-    onClick={handleBack}
-    className="group relative inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--text-muted)] overflow-hidden
-    bg-[var(--component-background)]/70 backdrop-blur-2xl border border-white/15
-    shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_4px_14px_-6px_rgba(0,0,0,0.18)]
-    hover:text-blue-500 hover:border-blue-500/30
-    hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.5),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_6px_18px_-6px_rgba(59,130,246,0.3)]
-    transition-all duration-300"
-  >
-    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-t-full" />
-    <ChevronLeft className="w-3.5 h-3.5 relative z-10 group-hover:-translate-x-0.5 transition-transform" />
-    <span className="relative z-10">Back</span>
-  </button>
-</div>
+        {/* Back Button - Repositioned higher and more to the left */}
+        <div className="absolute top-1 left-1 sm:top-2 sm:left-4 z-30">
+          <button
+            onClick={handleBack}
+            className="group relative inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--text-muted)] overflow-hidden
+            bg-[var(--component-background)]/70 backdrop-blur-2xl border border-white/15
+            shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_4px_14px_-6px_rgba(0,0,0,0.18)]
+            hover:text-blue-500 hover:border-blue-500/30
+            hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.5),inset_0_-1px_2px_0_rgba(0,0,0,0.06),0_6px_18px_-6px_rgba(59,130,246,0.3)]
+            transition-all duration-300"
+          >
+            <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-t-full" />
+            <ChevronLeft className="w-3.5 h-3.5 relative z-10 group-hover:-translate-x-0.5 transition-transform" />
+            <span className="relative z-10">Back</span>
+          </button>
+        </div>
 
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
@@ -199,7 +200,7 @@ const BlogPage: React.FC = () => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 sm:gap-10">
               {filteredPosts.map((post) => (
-                <Link to={`/blog/${post.id}`} key={post.id} className="group flex flex-col justify-between transition-all duration-300">
+                <Link to={`/blog/${post.slug}`} key={post.slug} className="group flex flex-col justify-between transition-all duration-300">
                   <div>
                     <div className="relative h-48 rounded-2xl overflow-hidden mb-4 bg-neutral-100 dark:bg-neutral-900 border border-[var(--border-primary)] shadow-xs">
                       {/* Gradient Top Edge Accent */}
