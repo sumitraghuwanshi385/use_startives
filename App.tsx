@@ -250,7 +250,7 @@ useEffect(() => {
 <Route path="/blog"
 element={<WithPageContainer> <BlogPage />
 </WithPageContainer>}/>
-<Route path="/blog/:id" element={<BlogDetailPage />} />
+<Route path="/blog/:slug" element={<BlogDetailPage />} />
 
           <Route path="/dashboard" element={
   <ProtectedRoute>
