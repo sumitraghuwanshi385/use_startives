@@ -22,6 +22,7 @@ const applicationRoutes = require('./routes/applicationRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const assetRoutes = require("./routes/assetRoutes");
 const locationRoutes = require('./routes/locationRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 
 const app = express();
@@ -87,6 +88,7 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use("/api/assets",assetRoutes);
 app.use('/api/location', locationRoutes);
+app.use('/api/comments', commentRoutes);
 
 // ===== SERVER =====
 const PORT = process.env.PORT || 5000;
