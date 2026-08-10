@@ -18,10 +18,9 @@ const MAX_STARTALK_LENGTH = 1000;
 /*
  * Light feed shuffle.
  *
- * We intentionally DO NOT completely randomize the feed.
- * Only a small number of nearby cards are moved so the
- * feed feels fresh after login / refresh without becoming
- * chaotic.
+ * Feed completely random nahi hoga.
+ * Sirf kuch nearby cards subtly move honge,
+ * taaki refresh/login par feed thoda fresh lage.
  */
 const LIGHT_SHUFFLE_MOVES = 3;
 
@@ -45,7 +44,7 @@ const TrashIcon: React.FC<{
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12.56 0c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12.56 0c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
     />
   </svg>
 );
@@ -97,13 +96,12 @@ const XMarkIcon: React.FC<{
 ========================================================= */
 
 /*
- * Creates a subtle shuffle instead of:
+ * Subtle/local shuffle.
  *
+ * NOT:
  * [...items].sort(() => Math.random() - 0.5)
  *
- * The old method can completely destroy the feed order.
- *
- * This one only performs a few local swaps.
+ * Sirf limited nearby swaps hote hain.
  */
 const lightShuffle = <T,>(
   items: T[],
@@ -134,11 +132,6 @@ const lightShuffle = <T,>(
           result.length
       );
 
-    /*
-     * Keep the second position reasonably close.
-     * This creates a light shuffle rather than
-     * a completely random feed.
-     */
     const distance =
       Math.floor(
         Math.random() * 5
@@ -153,9 +146,6 @@ const lightShuffle = <T,>(
       firstIndex +
       distance * direction;
 
-    /*
-     * Clamp into array range.
-     */
     if (
       secondIndex < 0
     ) {
@@ -359,16 +349,15 @@ const StartalksPage: React.FC = () => {
   /*
    * IMPORTANT:
    *
-   * This ref only controls the initial Feed shuffle.
+   * Shuffle only once when real feed data becomes
+   * available.
    *
-   * It does NOT reset when:
-   * - a new Startalk is posted
-   * - a reaction changes
+   * It will NOT reshuffle when:
+   * - reactions change
    * - comments change
-   * - a Startalk is deleted
-   *
-   * Therefore the feed will not randomly jump around
-   * after normal interactions.
+   * - a post is deleted
+   * - a new post is created
+   * - context updates
    */
   const hasShuffled =
     useRef(false);
@@ -610,11 +599,19 @@ const StartalksPage: React.FC = () => {
       /*
        * FEED
        *
-       * Shuffle ONCE when the page/feed is initially
-       * rendered.
+       * Wait until actual data exists.
        *
-       * After that return the actual startalk order
-       * so normal app updates don't cause jumping.
+       * This fixes the common case where startalks
+       * initially comes as [] and gets populated later.
+       */
+      if (
+        startalks.length === 0
+      ) {
+        return [];
+      }
+
+      /*
+       * Shuffle ONLY once.
        */
       if (
         !hasShuffled.current
@@ -628,6 +625,10 @@ const StartalksPage: React.FC = () => {
         );
       }
 
+      /*
+       * After initial shuffle, keep the actual
+       * context order stable.
+       */
       return startalks;
 
     }, [
@@ -818,9 +819,7 @@ const StartalksPage: React.FC = () => {
                     accept="image/*"
                   />
 
-                  {/* =================================================
-                      CHARACTER COUNTER
-                  ================================================= */}
+                  {/* CHARACTER COUNTER */}
 
                   <div className="relative w-9 h-9 flex items-center justify-center">
 
@@ -846,11 +845,10 @@ const StartalksPage: React.FC = () => {
                             offset="100%"
                             stopColor="#3b82f6"
                           />
+
                         </linearGradient>
 
                       </defs>
-
-                      {/* BACKGROUND CIRCLE */}
 
                       <circle
                         cx="18"
@@ -860,8 +858,6 @@ const StartalksPage: React.FC = () => {
                         stroke="rgba(120,120,120,0.2)"
                         fill="none"
                       />
-
-                      {/* PROGRESS */}
 
                       <circle
                         cx="18"
