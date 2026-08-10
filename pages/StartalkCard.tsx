@@ -56,28 +56,6 @@ interface LocalComment {
   timestamp: string;
 }
 
-/*
- * IMPORTANT:
- *
- * Backend formatComment() returns:
- *
- * {
- *   id,
- *   authorId,
- *   author: "Apives",
- *   avatar: "...",
- *   headline: "...",
- *   text: "..."
- * }
- *
- * Earlier frontend code treated `author` like an object.
- * That caused:
- *
- * author = "User"
- *
- * even though backend was correctly returning the real name.
- */
-
 const normalizeComment = (
   comment: any
 ): LocalComment => {
@@ -105,15 +83,6 @@ const normalizeComment = (
     authorObject?.id ||
     authorObject?._id;
 
-  /*
-   * FIX:
-   *
-   * Backend sends author as STRING:
-   *
-   * author: "Apives"
-   *
-   * So explicitly support string author.
-   */
   const resolvedAuthor =
     typeof source?.author === 'string'
       ? source.author
@@ -172,12 +141,6 @@ const normalizeComment = (
   };
 };
 
-/*
- * Get the best available comment count from the Startalk.
- *
- * Supports multiple backend/frontend field names so the card
- * does not fall back to 0 when another valid count exists.
- */
 const getStartalkCommentCount = (
   talk: any
 ): number => {
@@ -695,14 +658,6 @@ const StartalkCardContent: React.FC<{
     setCommentDeleting,
   ] = useState(false);
 
-  /*
-   * FIX #2:
-   *
-   * Keep the count independently at card level.
-   *
-   * This means opening comments is NOT required to know
-   * the count.
-   */
   const [
     commentCount,
     setCommentCount,
@@ -712,13 +667,6 @@ const StartalkCardContent: React.FC<{
     )
   );
 
-  /*
-   * Sync count when the actual Startalk changes.
-   *
-   * IMPORTANT:
-   * This does NOT depend on reactions or other local card
-   * interactions.
-   */
   useEffect(() => {
     const incomingCount =
       getStartalkCommentCount(
@@ -798,12 +746,6 @@ const StartalkCardContent: React.FC<{
           normalized
         );
 
-        /*
-         * Backend is now the source of truth.
-         *
-         * This fixes:
-         * 3 comments -> refresh -> 0
-         */
         setCommentCount(
           normalized.length
         );
@@ -812,11 +754,6 @@ const StartalkCardContent: React.FC<{
           'Loading Startalk comments failed:',
           error
         );
-
-        /*
-         * Don't destroy the existing count if the
-         * comments request temporarily fails.
-         */
       } finally {
         setCommentsLoading(false);
       }
@@ -910,9 +847,6 @@ const StartalkCardContent: React.FC<{
           );
         }
 
-        /*
-         * Always reload Mongo data.
-         */
         await loadComments();
 
         setCommentText('');
@@ -1329,8 +1263,6 @@ const StartalkCardContent: React.FC<{
                   event.stopPropagation()
                 }
               >
-                {/* HEADER */}
-
                 <div
                   className="
                     flex items-center justify-between
@@ -1375,8 +1307,6 @@ const StartalkCardContent: React.FC<{
                     <XMarkIcon className="w-4 h-4" />
                   </button>
                 </div>
-
-                {/* COMMENT LIST */}
 
                 <div
                   className="
@@ -1451,11 +1381,6 @@ const StartalkCardContent: React.FC<{
                               .toUpperCase() ||
                             'U';
 
-                          /*
-                           * Profile avatar.
-                           *
-                           * NOW CLICKABLE.
-                           */
                           const commentAvatar =
                             comment.avatar ? (
                               <img
@@ -1589,8 +1514,6 @@ const StartalkCardContent: React.FC<{
                     </div>
                   )}
                 </div>
-
-                {/* COMMENT INPUT */}
 
                 <div
                   className="
@@ -1935,13 +1858,13 @@ const StartalkCardContent: React.FC<{
                   <div
                     className="
                       absolute bottom-full left-0 mb-3
-                      p-1.5
+                      p-1
                       bg-[var(--component-background)]
                       border border-[var(--border-primary)]
                       rounded-full
                       shadow-[0_18px_50px_rgba(0,0,0,0.22)]
                       dark:shadow-[0_18px_50px_rgba(0,0,0,0.5)]
-                      flex items-center gap-1 z-[90]
+                      flex items-center gap-0.5 z-[90]
                     "
                   >
                     {MOOD_EMOJIS.map(
@@ -1956,7 +1879,7 @@ const StartalkCardContent: React.FC<{
                               emoji
                             );
                           }}
-                          className={`w-9 h-9 flex items-center justify-center text-lg hover:scale-125 transition-transform rounded-full ${
+                          className={`w-7 h-7 flex items-center justify-center text-sm hover:scale-125 transition-transform rounded-full ${
                             talk.currentUserReaction ===
                             emoji
                               ? 'bg-purple-100 dark:bg-purple-900/30'
@@ -2091,7 +2014,9 @@ const StartalkCardContent: React.FC<{
               </div>
             </div>
 
-            <span className="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-widest shrink-0">
+            {/* TIME AGO — REDUCED ~30% */}
+
+            <span className="text-[7px] text-[var(--text-muted)] font-bold uppercase tracking-widest shrink-0">
               {timeAgo(
                 talk.timestamp
               )}
