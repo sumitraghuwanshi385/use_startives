@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { StartalkCard } from './StartalksPage';
+import { StartalkCard } from './StartalkCard';
 import { User } from '../types';
 import { 
     getFlagEmoji, 
