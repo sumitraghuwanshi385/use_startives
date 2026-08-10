@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { User, StartupIdea, Position, StartupCategory, BusinessModel, WorkMode, Startalk } from './types'; 
 
@@ -36,16 +35,52 @@ export const getFlagEmoji = (countryName?: string) => {
 export const timeAgo = (date: string | number | Date) => {
   const now = new Date();
   const past = new Date(date);
+
   const diffInMs = now.getTime() - past.getTime();
+
+  // Future/invalid dates
+  if (diffInMs < 0) return 'Just now';
+
   const diffInSecs = Math.floor(diffInMs / 1000);
   const diffInMins = Math.floor(diffInSecs / 60);
   const diffInHours = Math.floor(diffInMins / 60);
   const diffInDays = Math.floor(diffInHours / 24);
+  const diffInWeeks = Math.floor(diffInDays / 7);
+  const diffInMonths = Math.floor(diffInDays / 30);
+  const diffInYears = Math.floor(diffInDays / 365);
 
-  if (diffInSecs < 60) return 'Just now';
-  if (diffInMins < 60) return `${diffInMins}m ago`;
-  if (diffInHours < 24) return `${diffInHours}h ago`;
-  return `${diffInDays}d ago`;
+  // Seconds
+  if (diffInSecs < 60) {
+    return 'Just now';
+  }
+
+  // Minutes
+  if (diffInMins < 60) {
+    return `${diffInMins} ${diffInMins === 1 ? 'min' : 'mins'} ago`;
+  }
+
+  // Hours
+  if (diffInHours < 24) {
+    return `${diffInHours} ${diffInHours === 1 ? 'hour' : 'hours'} ago`;
+  }
+
+  // Days
+  if (diffInDays < 7) {
+    return `${diffInDays} ${diffInDays === 1 ? 'day' : 'days'} ago`;
+  }
+
+  // Weeks
+  if (diffInDays < 30) {
+    return `${diffInWeeks} ${diffInWeeks === 1 ? 'week' : 'weeks'} ago`;
+  }
+
+  // Months
+  if (diffInDays < 365) {
+    return `${diffInMonths} ${diffInMonths === 1 ? 'month' : 'months'} ago`;
+  }
+
+  // Years
+  return `${diffInYears} ${diffInYears === 1 ? 'year' : 'years'} ago`;
 };
 
 // --- ICONS ---
