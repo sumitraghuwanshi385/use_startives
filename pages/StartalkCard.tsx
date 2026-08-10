@@ -1774,7 +1774,8 @@ const StartalkCardContent: React.FC<{
                     key={emoji}
                     className="flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)]"
                   >
-                    <span>
+                    {/* CARD REACTION EMOJI — 20% SMALLER */}
+                    <span className="text-[0.8rem] leading-none">
                       {emoji}
                     </span>
 
@@ -1858,13 +1859,13 @@ const StartalkCardContent: React.FC<{
                   <div
                     className="
                       absolute bottom-full left-0 mb-3
-                      p-1
+                      p-1.5
                       bg-[var(--component-background)]
                       border border-[var(--border-primary)]
                       rounded-full
                       shadow-[0_18px_50px_rgba(0,0,0,0.22)]
                       dark:shadow-[0_18px_50px_rgba(0,0,0,0.5)]
-                      flex items-center gap-0.5 z-[90]
+                      flex items-center gap-1 z-[90]
                     "
                   >
                     {MOOD_EMOJIS.map(
@@ -1879,7 +1880,7 @@ const StartalkCardContent: React.FC<{
                               emoji
                             );
                           }}
-                          className={`w-7 h-7 flex items-center justify-center text-sm hover:scale-125 transition-transform rounded-full ${
+                          className={`w-9 h-9 flex items-center justify-center text-lg hover:scale-125 transition-transform rounded-full ${
                             talk.currentUserReaction ===
                             emoji
                               ? 'bg-purple-100 dark:bg-purple-900/30'
@@ -2014,9 +2015,8 @@ const StartalkCardContent: React.FC<{
               </div>
             </div>
 
-            {/* TIME AGO — REDUCED ~30% */}
-
-            <span className="text-[7px] text-[var(--text-muted)] font-bold uppercase tracking-widest shrink-0">
+            {/* TIME AGO — 15% SMALLER */}
+            <span className="text-[8.5px] text-[var(--text-muted)] font-bold uppercase tracking-widest shrink-0">
               {timeAgo(
                 talk.timestamp
               )}
