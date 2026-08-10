@@ -207,6 +207,20 @@ receivedApplications: Application[];
   addStartalk: (content: string, imageUrl?: string) => void;
   deleteStartalk: (talkId: string) => void;
   reactToStartalk: (talkId: string, emoji: string) => void;
+// ---------------- STARTALK COMMENTS ----------------
+  fetchStartalkComments: (
+    startalkId: string
+  ) => Promise<any[]>;
+
+  addStartalkComment: (
+    startalkId: string,
+    text: string
+  ) => Promise<any | null>;
+
+  deleteStartalkComment: (
+    commentId: string
+  ) => Promise<boolean>;
+
   addApplication: (application: Omit<Application, 'id' | 'status' | 'submittedDate'>) => void;
   updateApplicationStatus: (applicationId: string, status: Application['status']) => void;
   removeApplication: (applicationId: string) => void;
