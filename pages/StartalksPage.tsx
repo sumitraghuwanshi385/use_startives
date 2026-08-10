@@ -15,15 +15,6 @@ import { StartalkCard } from './StartalkCard';
 
 const MAX_STARTALK_LENGTH = 1000;
 
-/*
- * Light feed shuffle.
- *
- * Feed completely random nahi hoga.
- * Sirf kuch nearby cards subtly move honge,
- * taaki refresh/login par feed thoda fresh lage.
- */
-const LIGHT_SHUFFLE_MOVES = 3;
-
 /* =========================================================
    ICONS
 ========================================================= */
@@ -92,94 +83,39 @@ const XMarkIcon: React.FC<{
 );
 
 /* =========================================================
-   LIGHT SHUFFLE
+   PROPER RANDOM SHUFFLE
 ========================================================= */
 
 /*
- * Subtle/local shuffle.
+ * Fisher-Yates shuffle.
  *
- * NOT:
- * [...items].sort(() => Math.random() - 0.5)
+ * This is a REAL shuffle.
  *
- * Sirf limited nearby swaps hote hain.
+ * IMPORTANT:
+ * This function is called ONLY when a new authenticated
+ * session gets its initial Feed order.
  */
-const lightShuffle = <T,>(
-  items: T[],
-  moves: number = LIGHT_SHUFFLE_MOVES
+const shuffleStartalks = <T,>(
+  items: T[]
 ): T[] => {
   const result = [...items];
 
-  if (result.length < 2) {
-    return result;
-  }
-
-  const actualMoves = Math.min(
-    moves,
-    Math.max(
-      1,
-      Math.floor(result.length / 2)
-    )
-  );
-
   for (
-    let i = 0;
-    i < actualMoves;
-    i++
+    let i = result.length - 1;
+    i > 0;
+    i--
   ) {
-    const firstIndex =
-      Math.floor(
-        Math.random() *
-          result.length
-      );
+    const j = Math.floor(
+      Math.random() * (i + 1)
+    );
 
-    const distance =
-      Math.floor(
-        Math.random() * 5
-      ) + 1;
-
-    const direction =
-      Math.random() > 0.5
-        ? 1
-        : -1;
-
-    let secondIndex =
-      firstIndex +
-      distance * direction;
-
-    if (
-      secondIndex < 0
-    ) {
-      secondIndex =
-        Math.min(
-          result.length - 1,
-          firstIndex + distance
-        );
-    }
-
-    if (
-      secondIndex >=
-      result.length
-    ) {
-      secondIndex =
-        Math.max(
-          0,
-          firstIndex - distance
-        );
-    }
-
-    if (
-      firstIndex !==
-      secondIndex
-    ) {
-      const temp =
-        result[firstIndex];
-
-      result[firstIndex] =
-        result[secondIndex];
-
-      result[secondIndex] =
-        temp;
-    }
+    [
+      result[i],
+      result[j],
+    ] = [
+      result[j],
+      result[i],
+    ];
   }
 
   return result;
@@ -212,6 +148,7 @@ const ConfirmModal: React.FC<
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+
       <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] w-full max-w-[320px] overflow-hidden shadow-none animate-in zoom-in-95 duration-200 flex flex-col font-poppins">
 
         <div className="p-6 text-center">
@@ -249,6 +186,7 @@ const ConfirmModal: React.FC<
           </button>
 
         </div>
+
       </div>
     </div>
   );
@@ -276,6 +214,7 @@ const StartalksPage: React.FC = () => {
 
   const {
     startalks,
+    currentUser,
     addStartalk,
     deleteStartalk,
     addNotification,
@@ -347,26 +286,42 @@ const StartalksPage: React.FC = () => {
     useRef<HTMLTextAreaElement>(null);
 
   /*
-   * IMPORTANT:
+   * Stores the Feed order for the current
+   * authenticated session.
    *
-   * Shuffle only once when real feed data becomes
-   * available.
+   * This is intentionally NOT derived from useMemo.
    *
-   * It will NOT reshuffle when:
-   * - reactions change
-   * - comments change
-   * - a post is deleted
-   * - a new post is created
-   * - context updates
+   * Therefore:
+   *
+   * comments     -> same order
+   * reactions    -> same order
+   * new post     -> same order
+   * delete       -> same order
+   * navigation   -> same order
+   *
+   * Refresh/login -> new order
    */
-  const hasShuffled =
-    useRef(false);
+  const [
+    shuffledFeed,
+    setShuffledFeed,
+  ] = useState<Startalk[]>([]);
+
+  /*
+   * Which authenticated user/session has already
+   * received a shuffle.
+   *
+   * This prevents startalks state updates from
+   * triggering another shuffle.
+   */
+  const shuffledSessionRef =
+    useRef<string | null>(null);
 
   /* =======================================================
      FOCUS TEXTAREA
   ======================================================= */
 
   useEffect(() => {
+
     const params =
       new URLSearchParams(
         location.search
@@ -379,8 +334,84 @@ const StartalksPage: React.FC = () => {
     ) {
       textareaRef.current.focus();
     }
+
   }, [
     location.search,
+  ]);
+
+  /* =======================================================
+     AUTH SESSION + FEED SHUFFLE
+  ======================================================= */
+
+  useEffect(() => {
+
+    const userId =
+      currentUser?.id ||
+      (currentUser as any)?._id;
+
+    /*
+     * Logged out.
+     *
+     * Clear the session shuffle completely.
+     */
+    if (!userId) {
+
+      shuffledSessionRef.current =
+        null;
+
+      setShuffledFeed([]);
+
+      return;
+    }
+
+    /*
+     * Wait until actual Startalk data arrives.
+     *
+     * This is important because the context can initially
+     * contain [] before the API response arrives.
+     */
+    if (
+      !startalks ||
+      startalks.length === 0
+    ) {
+      return;
+    }
+
+    const sessionId =
+      String(userId);
+
+    /*
+     * Already shuffled for this login session.
+     *
+     * DO NOT shuffle again.
+     */
+    if (
+      shuffledSessionRef.current ===
+      sessionId
+    ) {
+      return;
+    }
+
+    /*
+     * First real Feed load for this authenticated session.
+     *
+     * Proper full shuffle.
+     */
+    const newShuffledFeed =
+      shuffleStartalks(
+        startalks
+      );
+
+    setShuffledFeed(
+      newShuffledFeed
+    );
+
+    shuffledSessionRef.current =
+      sessionId;
+
+  }, [
+    currentUser,
+    startalks,
   ]);
 
   /* =======================================================
@@ -389,6 +420,7 @@ const StartalksPage: React.FC = () => {
 
   const handlePost =
     async () => {
+
       const trimmedContent =
         newTalkContent.trim();
 
@@ -408,6 +440,7 @@ const StartalksPage: React.FC = () => {
       }
 
       try {
+
         setIsPosting(true);
 
         await addStartalk(
@@ -420,7 +453,9 @@ const StartalksPage: React.FC = () => {
         setImagePreview(null);
 
       } finally {
+
         setIsPosting(false);
+
       }
     };
 
@@ -432,6 +467,7 @@ const StartalksPage: React.FC = () => {
     async (
       e: React.ChangeEvent<HTMLInputElement>
     ) => {
+
       const file =
         e.target.files?.[0];
 
@@ -440,6 +476,7 @@ const StartalksPage: React.FC = () => {
       }
 
       try {
+
         setIsImageUploading(
           true
         );
@@ -468,6 +505,7 @@ const StartalksPage: React.FC = () => {
           res.data?.success &&
           res.data?.fileUrl
         ) {
+
           setImagePreview(
             res.data.fileUrl
           );
@@ -480,7 +518,9 @@ const StartalksPage: React.FC = () => {
               'success'
             );
           }
+
         } else {
+
           if (
             addNotification
           ) {
@@ -489,11 +529,12 @@ const StartalksPage: React.FC = () => {
               'error'
             );
           }
+
         }
+
       } catch (err: any) {
-        console.error(
-          err
-        );
+
+        console.error(err);
 
         if (
           addNotification
@@ -506,15 +547,17 @@ const StartalksPage: React.FC = () => {
             'error'
           );
         }
+
       } finally {
+
         setIsImageUploading(
           false
         );
 
         if (e.target) {
-          e.target.value =
-            '';
+          e.target.value = '';
         }
+
       }
     };
 
@@ -525,13 +568,17 @@ const StartalksPage: React.FC = () => {
   const filteredTalks =
     useMemo(() => {
 
-      /*
-       * LATEST
-       */
+      /* ---------------------------------------------------
+         LATEST
+         
+         NO SHUFFLE HERE.
+      --------------------------------------------------- */
+
       if (
         activeFilter ===
         'Latest'
       ) {
+
         return [
           ...startalks,
         ].sort(
@@ -543,19 +590,25 @@ const StartalksPage: React.FC = () => {
               a.timestamp
             ).getTime()
         );
+
       }
 
-      /*
-       * MOST REACTED
-       */
+      /* ---------------------------------------------------
+         MOST REACTED
+
+         NO SHUFFLE HERE.
+      --------------------------------------------------- */
+
       if (
         activeFilter ===
         'Most reacted'
       ) {
+
         return [
           ...startalks,
         ].sort(
           (a, b) => {
+
             const aTotal =
               Object.values(
                 a.reactions ||
@@ -592,48 +645,37 @@ const StartalksPage: React.FC = () => {
               bTotal -
               aTotal
             );
+
           }
         );
+
       }
 
-      /*
-       * FEED
-       *
-       * Wait until actual data exists.
-       *
-       * This fixes the common case where startalks
-       * initially comes as [] and gets populated later.
-       */
-      if (
-        startalks.length === 0
-      ) {
-        return [];
-      }
+      /* ---------------------------------------------------
+         FEED
 
-      /*
-       * Shuffle ONLY once.
-       */
-      if (
-        !hasShuffled.current
-      ) {
-        hasShuffled.current =
-          true;
+         ONLY the persistent shuffled order.
 
-        return lightShuffle(
-          startalks,
-          LIGHT_SHUFFLE_MOVES
-        );
-      }
+         NEVER shuffle here.
+      --------------------------------------------------- */
 
-      /*
-       * After initial shuffle, keep the actual
-       * context order stable.
-       */
-      return startalks;
+      return shuffledFeed.filter(
+        shuffledTalk =>
+          startalks.some(
+            currentTalk =>
+              String(
+                currentTalk.id
+              ) ===
+              String(
+                shuffledTalk.id
+              )
+          )
+      );
 
     }, [
-      startalks,
       activeFilter,
+      startalks,
+      shuffledFeed,
     ]);
 
   /* =======================================================
@@ -827,6 +869,7 @@ const StartalksPage: React.FC = () => {
                       viewBox="0 0 36 36"
                       className="absolute w-9 h-9 -rotate-90"
                     >
+
                       <defs>
 
                         <linearGradient
@@ -836,6 +879,7 @@ const StartalksPage: React.FC = () => {
                           x2="100%"
                           y2="100%"
                         >
+
                           <stop
                             offset="0%"
                             stopColor="#ff3d5e"
@@ -1048,6 +1092,7 @@ const StartalksPage: React.FC = () => {
                 border-[var(--border-primary)]
                 shadow-none
               ">
+
                 <p className="
                   text-[var(--text-muted)]
                   font-black
@@ -1059,6 +1104,7 @@ const StartalksPage: React.FC = () => {
                   No talks shared yet.
                   Be the first!
                 </p>
+
               </div>
 
             )}
@@ -1085,6 +1131,7 @@ const StartalksPage: React.FC = () => {
             if (
               talkToDeleteId
             ) {
+
               deleteStartalk(
                 talkToDeleteId
               );
@@ -1092,6 +1139,7 @@ const StartalksPage: React.FC = () => {
               setTalkToDeleteId(
                 null
               );
+
             }
 
           }}
