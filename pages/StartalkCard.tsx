@@ -6,15 +6,26 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { Startalk } from '../types';
 import { timeAgo } from '../constants';
 
-const MOOD_EMOJIS = ['🚀', '💡', '❤️', '🔥', '💯', '😂', '😭'];
+const MOOD_EMOJIS = [
+  '🚀',
+  '💡',
+  '❤️',
+  '🔥',
+  '💯',
+  '😂',
+  '😭',
+];
 
 export const MAX_STARTALK_WORDS = 1000;
-export const MAX_COMMENT_WORDS = 500;
+
+/* Comment limit is 500 CHARACTERS, not words. */
+export const MAX_COMMENT_LENGTH = 500;
 
 const isMongoId = (id?: string) =>
   !!id && /^[a-f\d]{24}$/i.test(id);
@@ -23,22 +34,18 @@ const isMongoId = (id?: string) =>
    HELPERS
 ========================================================= */
 
-const countWords = (value: string) => {
-  const text = value.trim();
-  return text ? text.split(/\s+/).length : 0;
-};
+const countCharacters = (value: string) =>
+  value.length;
 
-const trimToWordLimit = (
+const trimToCharacterLimit = (
   value: string,
   limit: number
 ) => {
-  const words = value.trim().split(/\s+/);
-
-  if (!value.trim() || words.length <= limit) {
+  if (value.length <= limit) {
     return value;
   }
 
-  return words.slice(0, limit).join(' ');
+  return value.slice(0, limit);
 };
 
 interface LocalComment {
@@ -53,34 +60,41 @@ interface LocalComment {
 const normalizeComment = (
   comment: any
 ): LocalComment => {
+  const source =
+    comment?.comment ||
+    comment?.data ||
+    comment;
+
   const authorObject =
-    comment?.author ||
-    comment?.user ||
-    comment?.authorUser ||
+    source?.author ||
+    source?.user ||
+    source?.authorUser ||
     {};
 
   const authorId =
-    comment?.authorId ||
-    comment?.userId ||
+    source?.authorId ||
+    source?.userId ||
     authorObject?.id ||
     authorObject?._id;
 
   return {
     id: String(
-      comment?.id ||
-        comment?._id ||
-        `${Date.now()}-${Math.random()}`
+      source?.id ||
+        source?._id ||
+        `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}`
     ),
 
     text: String(
-      comment?.text ||
-        comment?.content ||
+      source?.text ||
+        source?.content ||
         ''
     ),
 
     author: String(
-      comment?.authorName ||
-        comment?.userName ||
+      source?.authorName ||
+        source?.userName ||
         authorObject?.name ||
         'User'
     ),
@@ -90,17 +104,17 @@ const normalizeComment = (
       : undefined,
 
     avatar:
-      comment?.avatar ||
-      comment?.authorAvatar ||
-      comment?.profilePictureUrl ||
+      source?.avatar ||
+      source?.authorAvatar ||
+      source?.profilePictureUrl ||
       authorObject?.profilePictureUrl ||
       authorObject?.avatar ||
       undefined,
 
     timestamp:
-      comment?.timestamp ||
-      comment?.createdAt ||
-      comment?.updatedAt ||
+      source?.timestamp ||
+      source?.createdAt ||
+      source?.updatedAt ||
       new Date().toISOString(),
   };
 };
@@ -301,6 +315,7 @@ const CopyIcon: React.FC<{
       height="11"
       rx="2"
     />
+
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -412,15 +427,11 @@ const StartalkCardContent: React.FC<{
   className = '',
 }) => {
   /*
-   * `as any` is intentional here.
-   *
-   * It prevents GitHub/TypeScript from turning red when
-   * the existing AppContext interface has not yet been
-   * updated with the backend comment methods.
-   *
-   * These are still the REAL backend methods.
+   * Existing AppContext backend methods are intentionally
+   * used here. No fake/local backend is created.
    */
-  const app = useAppContext() as any;
+  const app =
+    useAppContext() as any;
 
   const {
     reactToStartalk,
@@ -435,11 +446,12 @@ const StartalkCardContent: React.FC<{
      USER
   ======================================================= */
 
-  const displayUser = users?.find(
-    (u: any) =>
-      String(u.id) ===
-      String(talk.authorId)
-  );
+  const displayUser =
+    users?.find(
+      (u: any) =>
+        String(u.id) ===
+        String(talk.authorId)
+    );
 
   const isMe =
     String(currentUser?.id) ===
@@ -489,7 +501,7 @@ const StartalkCardContent: React.FC<{
     isMongoId(talk.authorId);
 
   /* =======================================================
-     REACTIONS
+     REACTION
   ======================================================= */
 
   const [
@@ -544,6 +556,7 @@ const StartalkCardContent: React.FC<{
       window.clearTimeout(
         holdTimeout.current
       );
+
       holdTimeout.current = null;
     }
   };
@@ -601,8 +614,13 @@ const StartalkCardContent: React.FC<{
       ? comments.length
       : backendCommentCount;
 
-  const commentWordCount =
-    countWords(commentText);
+  /* 500 CHARACTERS */
+  const commentCharacterCount =
+    countCharacters(commentText);
+
+  /* =======================================================
+     LOAD COMMENTS - REAL BACKEND
+  ======================================================= */
 
   const loadComments =
     async () => {
@@ -613,6 +631,8 @@ const StartalkCardContent: React.FC<{
         console.error(
           'fetchStartalkComments is not available in AppContext.'
         );
+
+        setComments([]);
         return;
       }
 
@@ -624,15 +644,26 @@ const StartalkCardContent: React.FC<{
             talk.id
           );
 
-        const normalized =
+        const source =
           Array.isArray(result)
             ? result
-                .map(normalizeComment)
-                .filter(
-                  comment =>
-                    !!comment.id
-                )
+            : Array.isArray(
+                result?.comments
+              )
+            ? result.comments
+            : Array.isArray(
+                result?.data
+              )
+            ? result.data
             : [];
+
+        const normalized =
+          source
+            .map(normalizeComment)
+            .filter(
+              comment =>
+                !!comment.id
+            );
 
         setComments(normalized);
       } catch (error) {
@@ -640,20 +671,26 @@ const StartalkCardContent: React.FC<{
           'Loading Startalk comments failed:',
           error
         );
+
+        setComments([]);
       } finally {
         setCommentsLoading(false);
       }
     };
 
+  /* =======================================================
+     OPEN COMMENTS
+  ======================================================= */
+
   const openComments =
     async () => {
       setIsCommentsOpen(true);
       setIsShareMenuOpen(false);
+      setIsReactionMenuOpen(false);
 
       /*
-       * IMPORTANT:
        * No focus() here.
-       * Mobile keyboard therefore stays closed.
+       * Keyboard will NOT automatically open on mobile.
        */
       await loadComments();
     };
@@ -664,27 +701,31 @@ const StartalkCardContent: React.FC<{
     setCommentToDeleteId(null);
   };
 
+  /* =======================================================
+     COMMENT INPUT
+  ======================================================= */
+
   const handleCommentChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value =
       event.target.value;
 
-    if (
-      countWords(value) >
-      MAX_COMMENT_WORDS
-    ) {
-      setCommentText(
-        trimToWordLimit(
-          value,
-          MAX_COMMENT_WORDS
-        )
-      );
-      return;
-    }
-
-    setCommentText(value);
+    /*
+     * HARD 500 CHARACTER LIMIT.
+     * Not a word limit.
+     */
+    setCommentText(
+      trimToCharacterLimit(
+        value,
+        MAX_COMMENT_LENGTH
+      )
+    );
   };
+
+  /* =======================================================
+     ADD COMMENT - REAL BACKEND
+  ======================================================= */
 
   const handleAddComment =
     async () => {
@@ -700,8 +741,8 @@ const StartalkCardContent: React.FC<{
       }
 
       if (
-        countWords(text) >
-        MAX_COMMENT_WORDS
+        text.length >
+        MAX_COMMENT_LENGTH
       ) {
         return;
       }
@@ -713,6 +754,7 @@ const StartalkCardContent: React.FC<{
         console.error(
           'addStartalkComment is not available in AppContext.'
         );
+
         return;
       }
 
@@ -720,7 +762,9 @@ const StartalkCardContent: React.FC<{
 
       try {
         /*
-         * REAL BACKEND COMMENT
+         * REAL BACKEND REQUEST.
+         *
+         * The component does not fabricate a comment.
          */
         const created =
           await addStartalkComment(
@@ -728,19 +772,23 @@ const StartalkCardContent: React.FC<{
             text
           );
 
-        if (!created) {
-          return;
+        /*
+         * If the context explicitly returns false,
+         * the backend rejected the request.
+         */
+        if (created === false) {
+          throw new Error(
+            'Backend rejected the comment.'
+          );
         }
 
-        const normalized =
-          normalizeComment(
-            created
-          );
-
-        setComments(prev => [
-          ...prev,
-          normalized,
-        ]);
+        /*
+         * Always refresh from backend after a successful
+         * request instead of trusting local state.
+         *
+         * This keeps the UI synchronized with Mongo/API.
+         */
+        await loadComments();
 
         setCommentText('');
       } catch (error) {
@@ -748,6 +796,11 @@ const StartalkCardContent: React.FC<{
           'Adding Startalk comment failed:',
           error
         );
+
+        /*
+         * Do NOT add a fake comment locally when
+         * the backend request fails.
+         */
       } finally {
         setCommentSubmitting(false);
       }
@@ -772,6 +825,10 @@ const StartalkCardContent: React.FC<{
       }
     };
 
+  /* =======================================================
+     DELETE COMMENT - REAL BACKEND
+  ======================================================= */
+
   const requestDeleteComment =
     (commentId: string) => {
       setCommentToDeleteId(
@@ -795,33 +852,32 @@ const StartalkCardContent: React.FC<{
         console.error(
           'deleteStartalkComment is not available in AppContext.'
         );
+
         return;
       }
 
       setCommentDeleting(true);
 
       try {
-        /*
-         * REAL BACKEND DELETE
-         */
         const success =
           await deleteStartalkComment(
             commentToDeleteId
           );
 
-        if (success) {
-          setComments(prev =>
-            prev.filter(
-              comment =>
-                comment.id !==
-                commentToDeleteId
-            )
-          );
-
-          setCommentToDeleteId(
-            null
+        if (success === false) {
+          throw new Error(
+            'Backend rejected comment deletion.'
           );
         }
+
+        /*
+         * Refresh from backend after delete.
+         */
+        await loadComments();
+
+        setCommentToDeleteId(
+          null
+        );
       } catch (error) {
         console.error(
           'Deleting Startalk comment failed:',
@@ -883,6 +939,7 @@ const StartalkCardContent: React.FC<{
 
           textarea.style.position =
             'fixed';
+
           textarea.style.opacity =
             '0';
 
@@ -949,10 +1006,6 @@ const StartalkCardContent: React.FC<{
 
         await copyShareLink();
       } catch (error: any) {
-        /*
-         * Closing the native share sheet
-         * is not an error.
-         */
         if (
           error?.name ===
           'AbortError'
@@ -973,13 +1026,6 @@ const StartalkCardContent: React.FC<{
     () => {
       setIsReactionMenuOpen(false);
 
-      /*
-       * Android/iOS/browser with Web Share:
-       * directly opens the REAL native share sheet.
-       *
-       * Desktop/unsupported browsers:
-       * opens our small fallback menu.
-       */
       if (
         typeof navigator !==
           'undefined' &&
@@ -1039,6 +1085,7 @@ const StartalkCardContent: React.FC<{
         setIsReactionMenuOpen(
           false
         );
+
         setIsShareMenuOpen(false);
 
         if (isCommentsOpen) {
@@ -1070,7 +1117,7 @@ const StartalkCardContent: React.FC<{
   }, [isCommentsOpen]);
 
   /* =======================================================
-     BODY LOCK FOR COMMENTS
+     BODY LOCK
   ======================================================= */
 
   useEffect(() => {
@@ -1100,15 +1147,460 @@ const StartalkCardContent: React.FC<{
   }, [isCommentsOpen]);
 
   /* =======================================================
-     RENDER
+     COMMENT MODAL
+  ======================================================= */
+
+  const commentsModal =
+    isCommentsOpen &&
+    typeof document !== 'undefined'
+      ? createPortal(
+          <div
+            className="
+              fixed
+              inset-0
+              z-[1100]
+              flex
+              items-center
+              justify-center
+              px-3
+              py-4
+              sm:px-4
+              sm:py-6
+              bg-black/65
+              dark:bg-black/80
+              backdrop-blur-[7px]
+              overscroll-none
+            "
+            style={{
+              paddingTop:
+                'max(1rem, env(safe-area-inset-top))',
+              paddingBottom:
+                'max(1rem, env(safe-area-inset-bottom))',
+              width: '100vw',
+              height: '100dvh',
+            }}
+            onMouseDown={event => {
+              if (
+                event.target ===
+                event.currentTarget
+              ) {
+                closeComments();
+              }
+            }}
+          >
+            <div
+              className="
+                relative
+                w-full
+                max-w-[520px]
+                overflow-visible
+              "
+            >
+              <div
+                className="
+                  absolute
+                  -inset-3
+                  rounded-[2rem]
+                  bg-black/10
+                  dark:bg-black/25
+                  blur-2xl
+                  pointer-events-none
+                "
+                aria-hidden="true"
+              />
+
+              <div
+                className="
+                  relative
+                  w-full
+                  h-[76vh]
+                  max-h-[650px]
+                  min-h-[430px]
+                  bg-[var(--component-background)]
+                  border
+                  border-[var(--border-primary)]
+                  rounded-[1.75rem]
+                  sm:rounded-[2rem]
+                  shadow-[0_30px_90px_-20px_rgba(0,0,0,0.45)]
+                  dark:shadow-[0_30px_90px_-20px_rgba(0,0,0,0.70)]
+                  overflow-hidden
+                  flex
+                  flex-col
+                  font-poppins
+                  animate-in
+                  zoom-in-95
+                  duration-200
+                "
+                onMouseDown={event =>
+                  event.stopPropagation()
+                }
+              >
+                {/* HEADER */}
+
+                <div
+                  className="
+                    flex
+                    items-center
+                    justify-between
+                    px-5
+                    md:px-6
+                    py-4
+                    border-b
+                    border-[var(--border-primary)]
+                    shrink-0
+                    bg-[var(--component-background)]
+                  "
+                >
+                  <div className="min-w-0">
+                    <h3 className="text-base md:text-lg font-bold text-[var(--text-primary)] tracking-tight">
+                      Comments
+                    </h3>
+
+                    <p className="text-[10px] text-[var(--text-muted)] font-medium mt-0.5">
+                      {displayedCommentCount >
+                      0
+                        ? `${displayedCommentCount} ${
+                            displayedCommentCount ===
+                            1
+                              ? 'comment'
+                              : 'comments'
+                          }`
+                        : 'Join the conversation'}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={
+                      closeComments
+                    }
+                    className="
+                      w-8
+                      h-8
+                      rounded-full
+                      flex
+                      items-center
+                      justify-center
+                      bg-[var(--background-tertiary)]
+                      border
+                      border-[var(--border-primary)]
+                      text-[var(--text-muted)]
+                      hover:text-[var(--text-primary)]
+                      hover:border-purple-500/40
+                      transition-all
+                      active:scale-95
+                      shrink-0
+                    "
+                    aria-label="Close comments"
+                  >
+                    <XMarkIcon className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* COMMENT LIST */}
+
+                <div
+                  className="
+                    flex-1
+                    overflow-y-auto
+                    overscroll-contain
+                    px-5
+                    md:px-6
+                    py-5
+                    min-h-0
+                  "
+                >
+                  {commentsLoading ? (
+                    <div className="h-full min-h-[260px] flex flex-col items-center justify-center">
+                      <div className="w-9 h-9 rounded-full border-2 border-purple-500/20 border-t-purple-500 animate-spin" />
+
+                      <p className="mt-3 text-xs font-semibold text-[var(--text-muted)]">
+                        Loading comments…
+                      </p>
+                    </div>
+                  ) : comments.length ===
+                    0 ? (
+                    <div className="h-full min-h-[260px] flex flex-col items-center justify-center text-center">
+                      <div
+                        className="
+                          w-11
+                          h-11
+                          rounded-full
+                          bg-purple-500/[0.07]
+                          dark:bg-purple-500/[0.12]
+                          border
+                          border-purple-500/20
+                          flex
+                          items-center
+                          justify-center
+                          mb-3
+                          text-purple-500
+                        "
+                      >
+                        <CommentIcon className="w-5 h-5" />
+                      </div>
+
+                      <p className="text-xs font-bold text-[var(--text-primary)]">
+                        No comments yet
+                      </p>
+
+                      <p className="text-[10px] text-[var(--text-muted)] mt-1">
+                        Be the first to share your thoughts.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-5">
+                      {comments.map(
+                        comment => {
+                          const isCommentOwner =
+                            String(
+                              currentUser?.id
+                            ) ===
+                            String(
+                              comment.authorId
+                            );
+
+                          const commentInitials =
+                            comment.author
+                              .split(' ')
+                              .map(
+                                name =>
+                                  name[0]
+                              )
+                              .join('')
+                              .substring(
+                                0,
+                                2
+                              )
+                              .toUpperCase() ||
+                            'U';
+
+                          return (
+                            <div
+                              key={
+                                comment.id
+                              }
+                              className="flex items-start gap-3"
+                            >
+                              {comment.avatar ? (
+                                <img
+                                  src={
+                                    comment.avatar
+                                  }
+                                  alt={
+                                    comment.author
+                                  }
+                                  className="
+                                    w-9
+                                    h-9
+                                    rounded-full
+                                    object-cover
+                                    border
+                                    border-[var(--border-primary)]
+                                    shrink-0
+                                  "
+                                />
+                              ) : (
+                                <div className="
+                                  w-9
+                                  h-9
+                                  rounded-full
+                                  icon-bg-gradient
+                                  flex
+                                  items-center
+                                  justify-center
+                                  text-white
+                                  text-[10px]
+                                  font-bold
+                                  shrink-0
+                                ">
+                                  {
+                                    commentInitials
+                                  }
+                                </div>
+                              )}
+
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-bold text-[var(--text-primary)] truncate">
+                                    {
+                                      comment.author
+                                    }
+                                  </span>
+
+                                  <span className="text-[9px] text-[var(--text-muted)] font-medium shrink-0">
+                                    {timeAgo(
+                                      comment.timestamp
+                                    )}
+                                  </span>
+                                </div>
+
+                                <p className="mt-1 text-xs md:text-sm text-[var(--text-secondary)] leading-relaxed break-words whitespace-pre-wrap">
+                                  {
+                                    comment.text
+                                  }
+                                </p>
+                              </div>
+
+                              {isCommentOwner && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    requestDeleteComment(
+                                      comment.id
+                                    )
+                                  }
+                                  className="
+                                    p-1.5
+                                    rounded-full
+                                    text-[var(--text-muted)]
+                                    hover:text-red-500
+                                    hover:bg-red-50
+                                    dark:hover:bg-red-950/20
+                                    transition-colors
+                                    shrink-0
+                                  "
+                                  title="Delete comment"
+                                  aria-label="Delete comment"
+                                >
+                                  <TrashIcon className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* COMMENT INPUT */}
+
+                <div
+                  className="
+                    px-5
+                    md:px-6
+                    py-4
+                    border-t
+                    border-[var(--border-primary)]
+                    bg-[var(--component-background)]
+                    shrink-0
+                  "
+                >
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={commentText}
+                      maxLength={
+                        MAX_COMMENT_LENGTH
+                      }
+                      onChange={
+                        handleCommentChange
+                      }
+                      onKeyDown={
+                        handleCommentKeyDown
+                      }
+                      placeholder="Write a comment..."
+                      disabled={
+                        commentSubmitting
+                      }
+                      className="
+                        flex-1
+                        min-w-0
+                        h-10
+                        px-4
+                        rounded-full
+                        bg-[var(--background-tertiary)]
+                        border
+                        border-[var(--border-primary)]
+                        text-xs
+                        md:text-sm
+                        text-[var(--text-primary)]
+                        placeholder-[var(--text-muted)]
+                        focus:outline-none
+                        focus:border-purple-500/60
+                        focus:ring-2
+                        focus:ring-purple-500/10
+                        transition-all
+                        disabled:opacity-60
+                      "
+                    />
+
+                    <button
+                      type="button"
+                      onClick={
+                        handleAddComment
+                      }
+                      disabled={
+                        !commentText.trim() ||
+                        commentSubmitting ||
+                        commentCharacterCount >
+                          MAX_COMMENT_LENGTH
+                      }
+                      className="
+                        h-10
+                        px-4
+                        md:px-5
+                        rounded-full
+                        button-gradient
+                        text-white
+                        text-[10px]
+                        font-black
+                        uppercase
+                        tracking-widest
+                        disabled:opacity-40
+                        disabled:cursor-not-allowed
+                        transition-all
+                        active:scale-95
+                        shrink-0
+                      "
+                    >
+                      {commentSubmitting
+                        ? '...'
+                        : 'Post'}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-2 px-1">
+                    <span className="text-[9px] text-[var(--text-muted)]">
+                      Press Enter to post
+                    </span>
+
+                    <span
+                      className={`
+                        text-[9px]
+                        font-semibold
+                        ${
+                          commentCharacterCount >=
+                          MAX_COMMENT_LENGTH
+                            ? 'text-red-500'
+                            : 'text-[var(--text-muted)]'
+                        }
+                      `}
+                    >
+                      {
+                        commentCharacterCount
+                      }
+                      /
+                      {
+                        MAX_COMMENT_LENGTH
+                      }
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
+
+  /* =======================================================
+     RENDER CARD
   ======================================================= */
 
   return (
     <>
-      {/* =================================================
-          STARTALK CARD
-      ================================================= */}
-
       <article
         className={`
           w-full
@@ -1251,6 +1743,7 @@ const StartalkCardContent: React.FC<{
                     className="flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)]"
                   >
                     <span>{emoji}</span>
+
                     <span className="text-xs font-bold text-[var(--text-primary)]">
                       {Number(count)}
                     </span>
@@ -1295,8 +1788,13 @@ const StartalkCardContent: React.FC<{
                     )
                   }
                   className={`
-                    inline-flex items-center gap-2
-                    px-4 py-1.5
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    w-[104px]
+                    h-8
+                    px-3
                     rounded-full
                     border
                     transition-all
@@ -1311,17 +1809,19 @@ const StartalkCardContent: React.FC<{
                     }
                   `}
                 >
-                  {talk.currentUserReaction ? (
-                    <span className="text-base">
-                      {
-                        talk.currentUserReaction
-                      }
-                    </span>
-                  ) : (
-                    <SmileIcon className="w-4 h-4" />
-                  )}
+                  <span className="w-5 flex items-center justify-center shrink-0">
+                    {talk.currentUserReaction ? (
+                      <span className="text-base leading-none">
+                        {
+                          talk.currentUserReaction
+                        }
+                      </span>
+                    ) : (
+                      <SmileIcon className="w-4 h-4" />
+                    )}
+                  </span>
 
-                  <span>
+                  <span className="whitespace-nowrap">
                     {talk.currentUserReaction
                       ? 'Reacted'
                       : 'React'}
@@ -1329,7 +1829,23 @@ const StartalkCardContent: React.FC<{
                 </button>
 
                 {isReactionMenuOpen && (
-                  <div className="absolute bottom-full left-0 mb-3 p-1.5 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-[0_18px_50px_rgba(0,0,0,0.22)] dark:shadow-[0_18px_50px_rgba(0,0,0,0.5)] flex items-center gap-1 z-[90]">
+                  <div className="
+                    absolute
+                    bottom-full
+                    left-0
+                    mb-3
+                    p-1.5
+                    bg-[var(--component-background)]
+                    border
+                    border-[var(--border-primary)]
+                    rounded-full
+                    shadow-[0_18px_50px_rgba(0,0,0,0.22)]
+                    dark:shadow-[0_18px_50px_rgba(0,0,0,0.5)]
+                    flex
+                    items-center
+                    gap-1
+                    z-[90]
+                  ">
                     {MOOD_EMOJIS.map(
                       emoji => (
                         <button
@@ -1337,6 +1853,7 @@ const StartalkCardContent: React.FC<{
                           type="button"
                           onClick={e => {
                             e.stopPropagation();
+
                             handleReaction(
                               emoji
                             );
@@ -1360,17 +1877,23 @@ const StartalkCardContent: React.FC<{
 
               <button
                 type="button"
-                onClick={openComments}
+                onClick={
+                  openComments
+                }
                 className="
-                  inline-flex items-center gap-2
-                  px-4 py-1.5
+                  inline-flex
+                  items-center
+                  justify-center
+                  gap-2
+                  w-[72px]
+                  h-8
+                  px-3
                   rounded-full
-                  border border-purple-500/25
-                  bg-purple-500/[0.06]
-                  dark:bg-purple-500/[0.10]
-                  text-purple-600
-                  dark:text-purple-400
-                  hover:bg-purple-500/[0.12]
+                  border
+                  border-[var(--border-primary)]
+                  bg-[var(--background-tertiary)]
+                  text-[var(--text-muted)]
+                  hover:text-purple-600
                   hover:border-purple-500/50
                   transition-all
                   active:scale-95
@@ -1403,9 +1926,11 @@ const StartalkCardContent: React.FC<{
                     inline-flex
                     items-center
                     justify-center
-                    w-9 h-8
+                    w-9
+                    h-8
                     rounded-full
-                    border border-[var(--border-primary)]
+                    border
+                    border-[var(--border-primary)]
                     bg-[var(--background-tertiary)]
                     text-[var(--text-muted)]
                     hover:text-purple-600
@@ -1427,7 +1952,8 @@ const StartalkCardContent: React.FC<{
                     mb-3
                     w-[190px]
                     rounded-2xl
-                    border border-[var(--border-primary)]
+                    border
+                    border-[var(--border-primary)]
                     bg-[var(--component-background)]
                     shadow-[0_20px_60px_rgba(0,0,0,0.20)]
                     dark:shadow-[0_20px_60px_rgba(0,0,0,0.50)]
@@ -1443,6 +1969,7 @@ const StartalkCardContent: React.FC<{
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--background-tertiary)] transition-colors"
                       >
                         <ShareIcon className="w-4 h-4 text-purple-500" />
+
                         <span>
                           Share Startalk
                         </span>
@@ -1477,480 +2004,136 @@ const StartalkCardContent: React.FC<{
         </div>
       </article>
 
-      {/* =================================================
-          COMMENTS MODAL
-      ================================================= */}
+      {/* COMMENT MODAL PORTAL */}
 
-      {isCommentsOpen && (
-        <div
-          className="
-            fixed inset-0 z-[1100]
-            flex items-center justify-center
-            px-3 py-4 sm:px-4 sm:py-6
-            bg-black/65 dark:bg-black/80
-            backdrop-blur-[7px]
-          "
-          style={{
-            paddingTop:
-              'max(1rem, env(safe-area-inset-top))',
-            paddingBottom:
-              'max(1rem, env(safe-area-inset-bottom))',
-          }}
-          onMouseDown={event => {
-            if (
-              event.target ===
-              event.currentTarget
-            ) {
-              closeComments();
-            }
-          }}
-        >
-          {/* OUTER WRAPPER
-              overflow-visible is intentional:
-              it prevents the top shadow from being cut.
-          */}
-
-          <div
-            className="
-              relative
-              w-full
-              max-w-[520px]
-              overflow-visible
-            "
-          >
-            {/* SHADOW LAYER */}
-
-            <div
-              className="
-                absolute
-                -inset-3
-                rounded-[2rem]
-                bg-black/10
-                dark:bg-black/25
-                blur-2xl
-                pointer-events-none
-              "
-              aria-hidden="true"
-            />
-
-            {/* MODAL
-                76vh = approximately 15% shorter
-                than the previous 90vh.
-            */}
-
-            <div
-              className="
-                relative
-                w-full
-                h-[76vh]
-                max-h-[650px]
-                min-h-[430px]
-                bg-[var(--component-background)]
-                border border-[var(--border-primary)]
-                rounded-[1.75rem] sm:rounded-[2rem]
-                shadow-[0_30px_90px_-20px_rgba(0,0,0,0.45)]
-                dark:shadow-[0_30px_90px_-20px_rgba(0,0,0,0.70)]
-                overflow-hidden
-                flex flex-col
-                font-poppins
-                animate-in
-                zoom-in-95
-                duration-200
-              "
-              onMouseDown={event =>
-                event.stopPropagation()
-              }
-            >
-              {/* HEADER */}
-
-              <div className="
-                flex items-center justify-between
-                px-5 md:px-6 py-4
-                border-b border-[var(--border-primary)]
-                shrink-0
-                bg-[var(--component-background)]
-              ">
-                <div className="min-w-0">
-                  <h3 className="text-base md:text-lg font-bold text-[var(--text-primary)] tracking-tight">
-                    Comments
-                  </h3>
-
-                  <p className="text-[10px] text-[var(--text-muted)] font-medium mt-0.5">
-                    {displayedCommentCount > 0
-                      ? `${displayedCommentCount} ${
-                          displayedCommentCount === 1
-                            ? 'comment'
-                            : 'comments'
-                        }`
-                      : 'Join the conversation'}
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={
-                    closeComments
-                  }
-                  className="
-                    w-8 h-8
-                    rounded-full
-                    flex items-center justify-center
-                    bg-[var(--background-tertiary)]
-                    border border-[var(--border-primary)]
-                    text-[var(--text-muted)]
-                    hover:text-[var(--text-primary)]
-                    hover:border-purple-500/40
-                    transition-all
-                    active:scale-95
-                    shrink-0
-                  "
-                  aria-label="Close comments"
-                >
-                  <XMarkIcon className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* COMMENT LIST */}
-
-              <div className="
-                flex-1
-                overflow-y-auto
-                overscroll-contain
-                px-5 md:px-6
-                py-5
-                min-h-0
-              ">
-                {commentsLoading ? (
-                  <div className="h-full min-h-[260px] flex flex-col items-center justify-center">
-                    <div className="w-9 h-9 rounded-full border-2 border-purple-500/20 border-t-purple-500 animate-spin" />
-
-                    <p className="mt-3 text-xs font-semibold text-[var(--text-muted)]">
-                      Loading comments…
-                    </p>
-                  </div>
-                ) : comments.length === 0 ? (
-                  <div className="h-full min-h-[260px] flex flex-col items-center justify-center text-center">
-                    <div className="
-                      w-11 h-11
-                      rounded-full
-                      bg-purple-500/[0.07]
-                      dark:bg-purple-500/[0.12]
-                      border border-purple-500/20
-                      flex items-center justify-center
-                      mb-3
-                      text-purple-500
-                    ">
-                      <CommentIcon className="w-5 h-5" />
-                    </div>
-
-                    <p className="text-xs font-bold text-[var(--text-primary)]">
-                      No comments yet
-                    </p>
-
-                    <p className="text-[10px] text-[var(--text-muted)] mt-1">
-                      Be the first to share your thoughts.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-5">
-                    {comments.map(
-                      comment => {
-                        const isCommentOwner =
-                          String(
-                            currentUser?.id
-                          ) ===
-                          String(
-                            comment.authorId
-                          );
-
-                        const commentInitials =
-                          comment.author
-                            .split(' ')
-                            .map(
-                              name =>
-                                name[0]
-                            )
-                            .join('')
-                            .substring(
-                              0,
-                              2
-                            )
-                            .toUpperCase() ||
-                          'U';
-
-                        return (
-                          <div
-                            key={
-                              comment.id
-                            }
-                            className="flex items-start gap-3"
-                          >
-                            {comment.avatar ? (
-                              <img
-                                src={
-                                  comment.avatar
-                                }
-                                alt={
-                                  comment.author
-                                }
-                                className="w-9 h-9 rounded-full object-cover border border-[var(--border-primary)] shrink-0"
-                              />
-                            ) : (
-                              <div className="w-9 h-9 rounded-full icon-bg-gradient flex items-center justify-center text-white text-[10px] font-bold shrink-0">
-                                {
-                                  commentInitials
-                                }
-                              </div>
-                            )}
-
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-[var(--text-primary)] truncate">
-                                  {
-                                    comment.author
-                                  }
-                                </span>
-
-                                <span className="text-[9px] text-[var(--text-muted)] font-medium shrink-0">
-                                  {timeAgo(
-                                    comment.timestamp
-                                  )}
-                                </span>
-                              </div>
-
-                              <p className="mt-1 text-xs md:text-sm text-[var(--text-secondary)] leading-relaxed break-words whitespace-pre-wrap">
-                                {
-                                  comment.text
-                                }
-                              </p>
-                            </div>
-
-                            {isCommentOwner && (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setCommentToDeleteId(
-                                    comment.id
-                                  )
-                                }
-                                className="p-1.5 rounded-full text-[var(--text-muted)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors shrink-0"
-                                title="Delete comment"
-                                aria-label="Delete comment"
-                              >
-                                <TrashIcon className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-                          </div>
-                        );
-                      }
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* COMMENT INPUT */}
-
-              <div className="
-                px-5 md:px-6 py-4
-                border-t border-[var(--border-primary)]
-                bg-[var(--component-background)]
-                shrink-0
-              ">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={commentText}
-                    onChange={
-                      handleCommentChange
-                    }
-                    onKeyDown={
-                      handleCommentKeyDown
-                    }
-                    placeholder="Write a comment..."
-                    disabled={
-                      commentSubmitting
-                    }
-                    className="
-                      flex-1 min-w-0
-                      h-10 px-4
-                      rounded-full
-                      bg-[var(--background-tertiary)]
-                      border border-[var(--border-primary)]
-                      text-xs md:text-sm
-                      text-[var(--text-primary)]
-                      placeholder-[var(--text-muted)]
-                      focus:outline-none
-                      focus:border-purple-500/60
-                      focus:ring-2
-                      focus:ring-purple-500/10
-                      transition-all
-                      disabled:opacity-60
-                    "
-                  />
-
-                  <button
-                    type="button"
-                    onClick={
-                      handleAddComment
-                    }
-                    disabled={
-                      !commentText.trim() ||
-                      commentSubmitting ||
-                      commentWordCount >
-                        MAX_COMMENT_WORDS
-                    }
-                    className="
-                      h-10
-                      px-4 md:px-5
-                      rounded-full
-                      button-gradient
-                      text-white
-                      text-[10px]
-                      font-black
-                      uppercase
-                      tracking-widest
-                      disabled:opacity-40
-                      disabled:cursor-not-allowed
-                      transition-all
-                      active:scale-95
-                      shrink-0
-                    "
-                  >
-                    {commentSubmitting
-                      ? '...'
-                      : 'Post'}
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between mt-2 px-1">
-                  <span className="text-[9px] text-[var(--text-muted)]">
-                    Press Enter to post
-                  </span>
-
-                  <span
-                    className={`
-                      text-[9px] font-semibold
-                      ${
-                        commentWordCount >=
-                        MAX_COMMENT_WORDS
-                          ? 'text-red-500'
-                          : 'text-[var(--text-muted)]'
-                      }
-                    `}
-                  >
-                    {commentWordCount}/
-                    {MAX_COMMENT_WORDS}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {commentsModal}
 
       {/* =================================================
           DELETE COMMENT
       ================================================= */}
 
-      {commentToDeleteId && (
-        <div
-          className="
-            fixed inset-0 z-[1200]
-            flex items-center justify-center
-            p-4
-            bg-black/70 dark:bg-black/80
-            backdrop-blur-[7px]
-          "
-          onMouseDown={event => {
-            if (
-              event.target ===
-                event.currentTarget &&
-              !commentDeleting
-            ) {
-              setCommentToDeleteId(
-                null
-              );
-            }
-          }}
-        >
+      {commentToDeleteId &&
+        typeof document !== 'undefined' &&
+        createPortal(
           <div
             className="
-              w-full max-w-[320px]
-              bg-[var(--component-background)]
-              border border-[var(--border-primary)]
-              rounded-[2rem]
-              overflow-hidden
-              shadow-[0_25px_80px_rgba(0,0,0,0.35)]
-              dark:shadow-[0_25px_80px_rgba(0,0,0,0.65)]
+              fixed
+              inset-0
+              z-[1200]
+              flex
+              items-center
+              justify-center
+              p-4
+              bg-black/70
+              dark:bg-black/80
+              backdrop-blur-[7px]
             "
-            onMouseDown={event =>
-              event.stopPropagation()
-            }
+            style={{
+              width: '100vw',
+              height: '100dvh',
+            }}
+            onMouseDown={event => {
+              if (
+                event.target ===
+                  event.currentTarget &&
+                !commentDeleting
+              ) {
+                setCommentToDeleteId(
+                  null
+                );
+              }
+            }}
           >
-            <div className="p-6 text-center">
-              <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mx-auto mb-4">
-                <TrashIcon className="w-6 h-6" />
+            <div
+              className="
+                w-full
+                max-w-[320px]
+                bg-[var(--component-background)]
+                border
+                border-[var(--border-primary)]
+                rounded-[2rem]
+                overflow-hidden
+                shadow-[0_25px_80px_rgba(0,0,0,0.35)]
+                dark:shadow-[0_25px_80px_rgba(0,0,0,0.65)]
+              "
+              onMouseDown={event =>
+                event.stopPropagation()
+              }
+            >
+              <div className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mx-auto mb-4">
+                  <TrashIcon className="w-6 h-6" />
+                </div>
+
+                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
+                  Delete comment?
+                </h3>
+
+                <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">
+                  This comment will be permanently removed. This action cannot be undone.
+                </p>
               </div>
 
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
-                Delete comment?
-              </h3>
+              <div className="flex border-t border-[var(--border-primary)]">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCommentToDeleteId(
+                      null
+                    )
+                  }
+                  disabled={
+                    commentDeleting
+                  }
+                  className="
+                    flex-1
+                    px-4
+                    py-4
+                    text-[10px]
+                    font-black
+                    uppercase
+                    tracking-widest
+                    text-[var(--text-muted)]
+                    hover:bg-[var(--background-tertiary)]
+                    border-r
+                    border-[var(--border-primary)]
+                    disabled:opacity-50
+                  "
+                >
+                  Cancel
+                </button>
 
-              <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">
-                This comment will be permanently removed. This action cannot be undone.
-              </p>
+                <button
+                  type="button"
+                  onClick={
+                    confirmDeleteComment
+                  }
+                  disabled={
+                    commentDeleting
+                  }
+                  className="
+                    flex-1
+                    px-4
+                    py-4
+                    text-[10px]
+                    font-black
+                    uppercase
+                    tracking-widest
+                    text-red-500
+                    hover:bg-red-50
+                    dark:hover:bg-red-950/20
+                    disabled:opacity-50
+                  "
+                >
+                  {commentDeleting
+                    ? 'Deleting…'
+                    : 'Delete'}
+                </button>
+              </div>
             </div>
-
-            <div className="flex border-t border-[var(--border-primary)]">
-              <button
-                type="button"
-                onClick={() =>
-                  setCommentToDeleteId(
-                    null
-                  )
-                }
-                disabled={
-                  commentDeleting
-                }
-                className="
-                  flex-1 px-4 py-4
-                  text-[10px] font-black
-                  uppercase tracking-widest
-                  text-[var(--text-muted)]
-                  hover:bg-[var(--background-tertiary)]
-                  border-r border-[var(--border-primary)]
-                  disabled:opacity-50
-                "
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                onClick={
-                  confirmDeleteComment
-                }
-                disabled={
-                  commentDeleting
-                }
-                className="
-                  flex-1 px-4 py-4
-                  text-[10px] font-black
-                  uppercase tracking-widest
-                  text-red-500
-                  hover:bg-red-50
-                  dark:hover:bg-red-950/20
-                  disabled:opacity-50
-                "
-              >
-                {commentDeleting
-                  ? 'Deleting…'
-                  : 'Delete'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 };
