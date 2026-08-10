@@ -3,6 +3,7 @@ import React, {
   ErrorInfo,
   ReactNode,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -13,12 +14,90 @@ import { timeAgo } from '../constants';
 
 const MOOD_EMOJIS = ['🚀', '💡', '❤️', '🔥', '💯', '😂', '😭'];
 
+const MAX_STARTALK_WORDS = 1000;
+const MAX_COMMENT_WORDS = 500;
+
 const isMongoId = (id?: string) =>
   !!id && /^[a-f\d]{24}$/i.test(id);
 
 /* =========================================================
+   HELPERS
+========================================================= */
+
+const countWords = (value: string) => {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return 0;
+  }
+
+  return trimmed.split(/\s+/).length;
+};
+
+const trimToWordLimit = (
+  value: string,
+  limit: number
+) => {
+  const words = value.trim().split(/\s+/);
+
+  if (words.length <= limit) {
+    return value;
+  }
+
+  return words.slice(0, limit).join(' ');
+};
+
+const getCommentId = (comment: any) =>
+  String(comment?.id || comment?._id || '');
+
+const normalizeComment = (
+  comment: any
+): LocalComment => {
+  const authorObject =
+    comment?.author ||
+    comment?.user ||
+    comment?.authorUser ||
+    {};
+
+  const authorName =
+    comment?.authorName ||
+    comment?.userName ||
+    authorObject?.name ||
+    'User';
+
+  const authorId =
+    comment?.authorId ||
+    comment?.userId ||
+    authorObject?._id ||
+    authorObject?.id;
+
+  const avatar =
+    comment?.avatar ||
+    comment?.authorAvatar ||
+    comment?.profilePictureUrl ||
+    authorObject?.profilePictureUrl ||
+    authorObject?.avatar;
+
+  const timestamp =
+    comment?.timestamp ||
+    comment?.createdAt ||
+    comment?.updatedAt ||
+    new Date().toISOString();
+
+  return {
+    id: getCommentId(comment),
+    text: String(comment?.text || comment?.content || ''),
+    author: String(authorName),
+    authorId: authorId
+      ? String(authorId)
+      : undefined,
+    avatar: avatar || undefined,
+    timestamp,
+  };
+};
+
+/* =========================================================
    RUNTIME ERROR BOUNDARY
-   Prevents this component from becoming a white blank screen.
 ========================================================= */
 
 interface ErrorBoundaryProps {
@@ -41,7 +120,9 @@ class StartalkErrorBoundary extends Component<
     errorStack: '',
   };
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(
+    error: Error
+  ): ErrorBoundaryState {
     return {
       hasError: true,
       errorMessage:
@@ -51,7 +132,10 @@ class StartalkErrorBoundary extends Component<
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(
+    error: Error,
+    errorInfo: ErrorInfo
+  ) {
     console.error(
       'STARTALK CARD RUNTIME ERROR:',
       error
@@ -151,9 +235,10 @@ const SmileIcon: React.FC<{
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
+    strokeWidth={1.6}
     stroke="currentColor"
     className={className}
+    aria-hidden="true"
   >
     <path
       strokeLinecap="round"
@@ -172,14 +257,69 @@ const CommentIcon: React.FC<{
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
+    strokeWidth={1.6}
     stroke="currentColor"
     className={className}
+    aria-hidden="true"
   >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M8.625 9.75h6.75m-6.75 3h4.125M12 21a9 9 0 1 0-8.25-5.4L3 21l5.4-.75A8.96 8.96 0 0 0 12 21Z"
+    />
+  </svg>
+);
+
+const ShareIcon: React.FC<{
+  className?: string;
+}> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.7}
+    stroke="currentColor"
+    className={className}
+    aria-hidden="true"
+  >
+    <circle cx="18" cy="5" r="2.2" />
+    <circle cx="6" cy="12" r="2.2" />
+    <circle cx="18" cy="19" r="2.2" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m8 11 7.8-4.6M8 13l7.8 4.6"
+    />
+  </svg>
+);
+
+const CopyIcon: React.FC<{
+  className?: string;
+}> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.7}
+    stroke="currentColor"
+    className={className}
+    aria-hidden="true"
+  >
+    <rect
+      x="8"
+      y="8"
+      width="11"
+      height="11"
+      rx="2"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
     />
   </svg>
 );
@@ -196,6 +336,7 @@ const TrashIcon: React.FC<{
     strokeWidth={1.5}
     stroke="currentColor"
     className={className}
+    aria-hidden="true"
   >
     <path
       strokeLinecap="round"
@@ -217,6 +358,7 @@ const XMarkIcon: React.FC<{
     strokeWidth={2}
     stroke="currentColor"
     className={className}
+    aria-hidden="true"
   >
     <path
       strokeLinecap="round"
@@ -259,7 +401,10 @@ const renderTextWithLinks = (text: string) => {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-purple-600 font-semibold underline break-all hover:text-purple-400 transition"
+          onClick={event =>
+            event.stopPropagation()
+          }
+          className="text-purple-600 dark:text-purple-400 font-semibold underline break-all hover:text-purple-500 transition"
         >
           {part}
         </a>
@@ -275,7 +420,7 @@ const renderTextWithLinks = (text: string) => {
 };
 
 /* =========================================================
-   LOCAL COMMENT TYPE
+   COMMENT TYPE
 ========================================================= */
 
 interface LocalComment {
@@ -304,11 +449,15 @@ const StartalkCardContent: React.FC<{
     reactToStartalk,
     currentUser,
     users,
+
+    fetchStartalkComments,
+    addStartalkComment,
+    deleteStartalkComment,
   } = useAppContext();
 
-  /* -------------------------
+  /* =======================================================
      USER DATA
-  ------------------------- */
+  ======================================================= */
 
   const displayUser = users?.find(
     u =>
@@ -328,10 +477,8 @@ const StartalkCardContent: React.FC<{
 
   const displayAvatar =
     displayUser?.profilePictureUrl ||
-    displayUser?.avatar ||
     (isMe
-      ? currentUser?.profilePictureUrl ||
-        currentUser?.avatar
+      ? currentUser?.profilePictureUrl
       : null) ||
     talk.authorAvatar;
 
@@ -343,9 +490,9 @@ const StartalkCardContent: React.FC<{
     talk.authorHeadline ||
     'Builder';
 
-  /* -------------------------
+  /* =======================================================
      REACTION STATE
-  ------------------------- */
+  ======================================================= */
 
   const [
     isReactionMenuOpen,
@@ -358,9 +505,9 @@ const StartalkCardContent: React.FC<{
   const timeoutRef =
     useRef<number | null>(null);
 
-  /* -------------------------
+  /* =======================================================
      COMMENT STATE
-  ------------------------- */
+  ======================================================= */
 
   const [
     isCommentsOpen,
@@ -378,181 +525,68 @@ const StartalkCardContent: React.FC<{
   ] = useState<LocalComment[]>([]);
 
   const [
+    commentsLoading,
+    setCommentsLoading,
+  ] = useState(false);
+
+  const [
+    commentSubmitting,
+    setCommentSubmitting,
+  ] = useState(false);
+
+  const [
     commentToDeleteId,
     setCommentToDeleteId,
   ] = useState<string | null>(null);
 
-  /* -------------------------
+  const [
+    commentDeleting,
+    setCommentDeleting,
+  ] = useState(false);
+
+  /* =======================================================
+     SHARE STATE
+  ======================================================= */
+
+  const [
+    isShareMenuOpen,
+    setIsShareMenuOpen,
+  ] = useState(false);
+
+  const [
+    shareMessage,
+    setShareMessage,
+  ] = useState('');
+
+  const shareRef =
+    useRef<HTMLDivElement>(null);
+
+  /* =======================================================
+     WORD COUNTS
+  ======================================================= */
+
+  const commentWordCount =
+    countWords(commentText);
+
+  const commentLimitReached =
+    commentWordCount >=
+    MAX_COMMENT_WORDS;
+
+  /* =======================================================
      INITIALS
-  ------------------------- */
+  ======================================================= */
 
-  const initials = talk.authorName
-    ? talk.authorName
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .substring(0, 2)
-        .toUpperCase()
-    : 'UU';
+  const initials =
+    displayName
+      ?.split(' ')
+      .map(n => n[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase() || 'UU';
 
-  /* -------------------------
-     REACTION
-  ------------------------- */
-
-  const handleReaction = (
-    emoji: string
-  ) => {
-    reactToStartalk(
-      talk.id,
-      emoji
-    );
-
-    setIsReactionMenuOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (
-      event: MouseEvent
-    ) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(
-          event.target as Node
-        )
-      ) {
-        setIsReactionMenuOpen(
-          false
-        );
-      }
-    };
-
-    document.addEventListener(
-      'mousedown',
-      handleClickOutside
-    );
-
-    return () =>
-      document.removeEventListener(
-        'mousedown',
-        handleClickOutside
-      );
-  }, []);
-
-  const handleHoldStart = () => {
-    timeoutRef.current =
-      window.setTimeout(() => {
-        setIsReactionMenuOpen(
-          true
-        );
-      }, 300);
-  };
-
-  const handleHoldEnd = () => {
-    if (timeoutRef.current) {
-      clearTimeout(
-        timeoutRef.current
-      );
-    }
-  };
-
-  /* -------------------------
-     COMMENTS
-  ------------------------- */
-
-  const openComments = () => {
-    // Intentionally does NOT focus the input.
-    // Therefore mobile keyboard will NOT open automatically.
-    setIsCommentsOpen(true);
-  };
-
-  const closeComments = () => {
-    setIsCommentsOpen(false);
-    setCommentText('');
-    setCommentToDeleteId(null);
-  };
-
-  const handleAddComment = () => {
-    const text =
-      commentText.trim();
-
-    if (!text) return;
-
-    const newComment: LocalComment = {
-      id: `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}`,
-
-      text,
-
-      author:
-        currentUser?.name ||
-        'You',
-
-      authorId:
-        currentUser?.id
-          ? String(currentUser.id)
-          : undefined,
-
-      avatar:
-        currentUser?.profilePictureUrl ||
-        currentUser?.avatar ||
-        undefined,
-
-      timestamp:
-        new Date().toISOString(),
-    };
-
-    setComments(prev => [
-      ...prev,
-      newComment,
-    ]);
-
-    setCommentText('');
-  };
-
-  const handleCommentKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (
-      event.key === 'Enter' &&
-      !event.shiftKey
-    ) {
-      event.preventDefault();
-      handleAddComment();
-    }
-  };
-
-  const requestDeleteComment = (
-    commentId: string
-  ) => {
-    setCommentToDeleteId(
-      commentId
-    );
-  };
-
-  const cancelDeleteComment = () => {
-    setCommentToDeleteId(null);
-  };
-
-  const confirmDeleteComment = () => {
-    if (!commentToDeleteId) {
-      return;
-    }
-
-    setComments(prev =>
-      prev.filter(
-        comment =>
-          comment.id !==
-          commentToDeleteId
-      )
-    );
-
-    setCommentToDeleteId(null);
-  };
-
-  /* -------------------------
-     REACTION COUNTS
-  ------------------------- */
+  /* =======================================================
+     TOTAL REACTIONS
+  ======================================================= */
 
   const totalReactions =
     Object.values(
@@ -573,19 +607,596 @@ const StartalkCardContent: React.FC<{
   const profileClickable =
     isMongoId(talk.authorId);
 
+  /* =======================================================
+     COMMENT COUNT
+  ======================================================= */
+
+  const commentCount =
+    comments.length;
+
+  /*
+   * If your backend returns commentCount on Startalk,
+   * use that as initial value.
+   *
+   * This also keeps the UI compatible with the current
+   * Startalk type until backend aggregation is added.
+   */
+  const backendCommentCount =
+    Number(
+      (talk as any).commentCount ??
+        (talk as any).commentsCount ??
+        0
+    );
+
+  const displayedCommentCount =
+    comments.length > 0
+      ? commentCount
+      : backendCommentCount;
+
+  /* =======================================================
+     LOAD COMMENTS
+  ======================================================= */
+
+  const loadComments = async () => {
+    setCommentsLoading(true);
+
+    try {
+      const result =
+        await fetchStartalkComments(
+          talk.id
+        );
+
+      const normalized =
+        Array.isArray(result)
+          ? result
+              .map(normalizeComment)
+              .filter(comment => !!comment.id)
+          : [];
+
+      setComments(normalized);
+
+    } catch (error) {
+      console.error(
+        'Loading comments failed:',
+        error
+      );
+
+      setComments([]);
+
+    } finally {
+      setCommentsLoading(false);
+    }
+  };
+
+  /* =======================================================
+     OPEN COMMENTS
+  ======================================================= */
+
+  const openComments = async () => {
+    setIsCommentsOpen(true);
+    setIsShareMenuOpen(false);
+
+    /*
+     * Do not focus input.
+     * This intentionally prevents mobile keyboard
+     * from opening automatically.
+     */
+    await loadComments();
+  };
+
+  /* =======================================================
+     CLOSE COMMENTS
+  ======================================================= */
+
+  const closeComments = () => {
+    setIsCommentsOpen(false);
+    setCommentText('');
+    setCommentToDeleteId(null);
+    setCommentsLoading(false);
+  };
+
+  /* =======================================================
+     BODY SCROLL LOCK
+  ======================================================= */
+
+  useEffect(() => {
+    if (!isCommentsOpen) {
+      return;
+    }
+
+    const originalOverflow =
+      document.body.style.overflow;
+
+    const originalTouchAction =
+      document.body.style.touchAction;
+
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+
+    return () => {
+      document.body.style.overflow =
+        originalOverflow;
+
+      document.body.style.touchAction =
+        originalTouchAction;
+    };
+  }, [isCommentsOpen]);
+
+  /* =======================================================
+     ESCAPE KEY
+  ======================================================= */
+
+  useEffect(() => {
+    const handleEscape = (
+      event: KeyboardEvent
+    ) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (isCommentsOpen) {
+        closeComments();
+      }
+
+      if (isShareMenuOpen) {
+        setIsShareMenuOpen(false);
+      }
+
+      if (isReactionMenuOpen) {
+        setIsReactionMenuOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      'keydown',
+      handleEscape
+    );
+
+    return () =>
+      document.removeEventListener(
+        'keydown',
+        handleEscape
+      );
+  }, [
+    isCommentsOpen,
+    isShareMenuOpen,
+    isReactionMenuOpen,
+  ]);
+
+  /* =======================================================
+     REACTION OUTSIDE CLICK
+  ======================================================= */
+
+  useEffect(() => {
+    const handleClickOutside = (
+      event: MouseEvent
+    ) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setIsReactionMenuOpen(false);
+      }
+
+      if (
+        shareRef.current &&
+        !shareRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setIsShareMenuOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      'mousedown',
+      handleClickOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        'mousedown',
+        handleClickOutside
+      );
+  }, []);
+
+  /* =======================================================
+     REACTION
+  ======================================================= */
+
+  const handleReaction = (
+    emoji: string
+  ) => {
+    reactToStartalk(
+      talk.id,
+      emoji
+    );
+
+    setIsReactionMenuOpen(false);
+  };
+
+  /* =======================================================
+     LONG PRESS
+  ======================================================= */
+
+  const handleHoldStart = () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(
+        timeoutRef.current
+      );
+    }
+
+    timeoutRef.current =
+      window.setTimeout(() => {
+        setIsReactionMenuOpen(true);
+      }, 450);
+  };
+
+  const handleHoldEnd = () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(
+        timeoutRef.current
+      );
+
+      timeoutRef.current = null;
+    }
+  };
+
+  /* =======================================================
+     ADD COMMENT
+  ======================================================= */
+
+  const handleAddComment = async () => {
+    const text =
+      commentText.trim();
+
+    if (!text) {
+      return;
+    }
+
+    if (
+      countWords(text) >
+      MAX_COMMENT_WORDS
+    ) {
+      return;
+    }
+
+    if (!currentUser) {
+      return;
+    }
+
+    setCommentSubmitting(true);
+
+    try {
+      const created =
+        await addStartalkComment(
+          talk.id,
+          text
+        );
+
+      if (!created) {
+        return;
+      }
+
+      const normalized =
+        normalizeComment(created);
+
+      /*
+       * If backend somehow doesn't return an id,
+       * generate a safe temporary one.
+       */
+      if (!normalized.id) {
+        normalized.id =
+          `${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2)}`;
+      }
+
+      setComments(prev => [
+        ...prev,
+        normalized,
+      ]);
+
+      setCommentText('');
+
+    } catch (error) {
+      console.error(
+        'Add comment failed:',
+        error
+      );
+
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+
+  /* =======================================================
+     COMMENT INPUT
+  ======================================================= */
+
+  const handleCommentChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value =
+      event.target.value;
+
+    if (
+      countWords(value) >
+      MAX_COMMENT_WORDS
+    ) {
+      setCommentText(
+        trimToWordLimit(
+          value,
+          MAX_COMMENT_WORDS
+        )
+      );
+
+      return;
+    }
+
+    setCommentText(value);
+  };
+
+  const handleCommentKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (
+      event.key === 'Enter' &&
+      !event.shiftKey
+    ) {
+      event.preventDefault();
+
+      if (
+        !commentSubmitting &&
+        commentText.trim()
+      ) {
+        handleAddComment();
+      }
+    }
+  };
+
+  /* =======================================================
+     DELETE COMMENT
+  ======================================================= */
+
+  const requestDeleteComment = (
+    commentId: string
+  ) => {
+    setCommentToDeleteId(
+      commentId
+    );
+  };
+
+  const cancelDeleteComment = () => {
+    if (commentDeleting) {
+      return;
+    }
+
+    setCommentToDeleteId(null);
+  };
+
+  const confirmDeleteComment =
+    async () => {
+      if (!commentToDeleteId) {
+        return;
+      }
+
+      setCommentDeleting(true);
+
+      try {
+        const success =
+          await deleteStartalkComment(
+            commentToDeleteId
+          );
+
+        if (success) {
+          setComments(prev =>
+            prev.filter(
+              comment =>
+                comment.id !==
+                commentToDeleteId
+            )
+          );
+
+          setCommentToDeleteId(null);
+        }
+
+      } catch (error) {
+        console.error(
+          'Delete comment failed:',
+          error
+        );
+
+      } finally {
+        setCommentDeleting(false);
+      }
+    };
+
+  /* =======================================================
+     SHARE
+  ======================================================= */
+
+  const shareUrl = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return '';
+    }
+
+    return `${window.location.origin}/startalk/${talk.id}`;
+  }, [talk.id]);
+
+  const shareTitle =
+    `${displayName} on Startives`;
+
+  const shareText =
+    talk.content.length > 180
+      ? `${talk.content.slice(0, 180)}…`
+      : talk.content;
+
+  const copyShareLink = async () => {
+    try {
+      if (
+        navigator.clipboard &&
+        window.isSecureContext
+      ) {
+        await navigator.clipboard.writeText(
+          shareUrl
+        );
+      } else {
+        const textarea =
+          document.createElement('textarea');
+
+        textarea.value = shareUrl;
+
+        textarea.style.position =
+          'fixed';
+
+        textarea.style.opacity = '0';
+
+        document.body.appendChild(
+          textarea
+        );
+
+        textarea.focus();
+        textarea.select();
+
+        document.execCommand('copy');
+
+        document.body.removeChild(
+          textarea
+        );
+      }
+
+      setShareMessage('Link copied');
+
+      window.setTimeout(() => {
+        setShareMessage('');
+      }, 1800);
+
+    } catch (error) {
+      console.error(
+        'Copy share link failed:',
+        error
+      );
+
+      setShareMessage(
+        'Unable to copy'
+      );
+
+      window.setTimeout(() => {
+        setShareMessage('');
+      }, 1800);
+    }
+  };
+
+  const handleNativeShare =
+    async () => {
+      try {
+        if (
+          navigator.share
+        ) {
+          await navigator.share({
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl,
+          });
+
+          setIsShareMenuOpen(false);
+
+          return;
+        }
+
+        await copyShareLink();
+
+      } catch (error: any) {
+        /*
+         * AbortError simply means the user closed
+         * the native share sheet.
+         */
+        if (
+          error?.name ===
+          'AbortError'
+        ) {
+          return;
+        }
+
+        console.error(
+          'Native share failed:',
+          error
+        );
+
+        await copyShareLink();
+      }
+    };
+
+  const handleShareButton = () => {
+    setIsReactionMenuOpen(false);
+
+    /*
+     * On mobile devices supporting Web Share API,
+     * open native share directly.
+     *
+     * Otherwise show our fallback menu.
+     */
+    if (
+      typeof navigator !== 'undefined' &&
+      typeof navigator.share === 'function'
+    ) {
+      handleNativeShare();
+
+      return;
+    }
+
+    setIsShareMenuOpen(
+      prev => !prev
+    );
+  };
+
+  /* =======================================================
+     SHARE MENU
+  ======================================================= */
+
+  const openShareMenuFallback =
+    () => {
+      setIsShareMenuOpen(true);
+      setIsReactionMenuOpen(false);
+    };
+
+  /* =======================================================
+     RENDER
+  ======================================================= */
+
   return (
     <>
       {/* =================================================
           STARTALK CARD
       ================================================= */}
 
-      <div
-        className={`bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] p-5 md:p-6 transition-all duration-300 hover:shadow-none hover:border-purple-500/30 group flex flex-col gap-4 select-none font-poppins ${className}`}
+      <article
+        className={`
+          w-full
+          bg-[var(--component-background)]
+          rounded-2xl
+          border border-[var(--border-primary)]
+          p-5 md:p-6
+          transition-all duration-300
+          hover:border-purple-500/30
+          group
+          flex flex-col
+          gap-4
+          select-none
+          font-poppins
+          relative
+          ${className}
+        `}
       >
-        {/* HEADER */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             {profileClickable ? (
               <Link
                 to={`/user/${talk.authorId}`}
@@ -619,7 +1230,7 @@ const StartalkCardContent: React.FC<{
               </div>
             )}
 
-            <div className="overflow-hidden text-left">
+            <div className="overflow-hidden text-left min-w-0">
               {profileClickable ? (
                 <Link
                   to={`/user/${talk.authorId}`}
@@ -637,14 +1248,13 @@ const StartalkCardContent: React.FC<{
               )}
 
               <p className="text-[10px] md:text-xs text-purple-500 truncate font-medium font-poppins">
-                {displayHeadline ||
-                  'Builder'}
+                {displayHeadline || 'Builder'}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[10px] font-black uppercase text-[var(--text-muted)] shadow-none h-fit">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[10px] font-black uppercase text-[var(--text-muted)] h-fit">
               <SmileIcon className="w-3.5 h-3.5 text-purple-500" />
 
               <span className="text-[var(--text-primary)]">
@@ -661,8 +1271,9 @@ const StartalkCardContent: React.FC<{
                       talk.id
                     )
                   }
-                  className="p-1.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 hover:scale-110 transition-transform border border-red-200 dark:border-red-800/30 shadow-none"
+                  className="p-1.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 hover:scale-110 transition-transform border border-red-200 dark:border-red-800/30"
                   title="Delete talk"
+                  aria-label="Delete talk"
                 >
                   <TrashIcon className="w-3.5 h-3.5" />
                 </button>
@@ -670,29 +1281,34 @@ const StartalkCardContent: React.FC<{
           </div>
         </div>
 
-        {/* CONTENT */}
+        {/* =================================================
+            CONTENT
+        ================================================= */}
 
         <div className="space-y-4 text-left">
-          <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium whitespace-pre-wrap">
+          <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium whitespace-pre-wrap break-words">
             {renderTextWithLinks(
               talk.content
             )}
           </p>
 
           {talk.imageUrl && (
-            <div className="rounded-xl overflow-hidden border border-[var(--border-primary)] bg-[var(--background-tertiary)] shadow-none">
+            <div className="rounded-xl overflow-hidden border border-[var(--border-primary)] bg-[var(--background-tertiary)]">
               <img
                 src={getImageUrl(
                   talk.imageUrl
                 )}
                 alt="Post attachment"
                 className="w-full h-auto object-cover max-h-[400px]"
+                loading="lazy"
               />
             </div>
           )}
         </div>
 
-        {/* REACTION BREAKDOWN */}
+        {/* =================================================
+            REACTION BREAKDOWN
+        ================================================= */}
 
         {totalReactions > 0 && (
           <div className="flex items-center gap-3 flex-wrap text-sm">
@@ -701,8 +1317,7 @@ const StartalkCardContent: React.FC<{
             )
               .filter(
                 ([, count]) =>
-                  (count as number) >
-                  0
+                  (count as number) > 0
               )
               .map(
                 ([emoji, count]) => (
@@ -710,11 +1325,9 @@ const StartalkCardContent: React.FC<{
                     key={emoji}
                     className="flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)]"
                   >
-                    <span>
-                      {emoji}
-                    </span>
+                    <span>{emoji}</span>
 
-                    <span className="text-xs font-bold">
+                    <span className="text-xs font-bold text-[var(--text-primary)]">
                       {count as number}
                     </span>
                   </div>
@@ -723,14 +1336,18 @@ const StartalkCardContent: React.FC<{
           </div>
         )}
 
-        {/* ACTION ROW */}
+        {/* =================================================
+            ACTION ROW
+        ================================================= */}
 
-        <div className="flex flex-col gap-3 pt-2 border-t border-[var(--border-primary)]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {/* REACT */}
+        <div className="relative flex flex-col gap-3 pt-2 border-t border-[var(--border-primary)]">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 min-w-0">
+              {/* =========================================
+                  REACT
+              ========================================= */}
 
-              <div className="relative">
+              <div className="relative shrink-0">
                 <button
                   type="button"
                   onMouseDown={
@@ -750,14 +1367,31 @@ const StartalkCardContent: React.FC<{
                   }
                   onClick={() =>
                     setIsReactionMenuOpen(
-                      !isReactionMenuOpen
+                      prev => !prev
                     )
                   }
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border transition-all shadow-none active:scale-95 group/pill select-none touch-none text-[10px] font-black uppercase ${
-                    userHasReacted
-                      ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-500 text-purple-600 dark:text-purple-400'
-                      : 'bg-[var(--background-tertiary)] border-[var(--border-primary)] text-[var(--text-muted)] hover:text-purple-600 hover:border-purple-500/50'
-                  }`}
+                  className={`
+                    inline-flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-1.5
+                    rounded-full
+                    border
+                    transition-all
+                    active:scale-95
+                    group/pill
+                    select-none
+                    touch-none
+                    text-[10px]
+                    font-black
+                    uppercase
+                    ${
+                      userHasReacted
+                        ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-500 text-purple-600 dark:text-purple-400'
+                        : 'bg-[var(--background-tertiary)] border-[var(--border-primary)] text-[var(--text-muted)] hover:text-purple-600 hover:border-purple-500/50'
+                    }
+                  `}
                 >
                   {talk.currentUserReaction ? (
                     <span className="text-base leading-none">
@@ -779,26 +1413,57 @@ const StartalkCardContent: React.FC<{
                 {isReactionMenuOpen && (
                   <div
                     ref={menuRef}
-                    className="absolute bottom-full left-0 mb-3 p-1.5 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none flex items-center gap-1 z-50 animate-in slide-in-from-bottom-2 duration-200"
+                    className="
+                      absolute
+                      bottom-full
+                      left-0
+                      mb-3
+                      p-1.5
+                      bg-[var(--component-background)]
+                      border
+                      border-[var(--border-primary)]
+                      rounded-full
+                      shadow-[0_18px_50px_rgba(0,0,0,0.18)]
+                      dark:shadow-[0_18px_50px_rgba(0,0,0,0.45)]
+                      flex
+                      items-center
+                      gap-1
+                      z-[80]
+                      animate-in
+                      slide-in-from-bottom-2
+                      duration-200
+                    "
                   >
                     {MOOD_EMOJIS.map(
                       emoji => (
                         <button
                           key={emoji}
                           type="button"
-                          onClick={e => {
-                            e.stopPropagation();
+                          onClick={event => {
+                            event.stopPropagation();
 
                             handleReaction(
                               emoji
                             );
                           }}
-                          className={`w-9 h-9 flex items-center justify-center text-lg hover:scale-125 transition-transform hover:bg-[var(--background-tertiary)] rounded-full ${
-                            talk.currentUserReaction ===
-                            emoji
-                              ? 'bg-purple-100 dark:bg-purple-900/30'
-                              : ''
-                          }`}
+                          className={`
+                            w-9
+                            h-9
+                            flex
+                            items-center
+                            justify-center
+                            text-lg
+                            hover:scale-125
+                            transition-transform
+                            hover:bg-[var(--background-tertiary)]
+                            rounded-full
+                            ${
+                              talk.currentUserReaction ===
+                              emoji
+                                ? 'bg-purple-100 dark:bg-purple-900/30'
+                                : ''
+                            }
+                          `}
                         >
                           {emoji}
                         </button>
@@ -808,31 +1473,171 @@ const StartalkCardContent: React.FC<{
                 )}
               </div>
 
-              {/* COMMENTS */}
+              {/* =========================================
+                  COMMENTS
+              ========================================= */}
 
               <button
                 type="button"
-                onClick={
-                  openComments
-                }
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[var(--text-muted)] hover:text-purple-600 hover:border-purple-500/50 transition-all shadow-none active:scale-95 text-[10px] font-black uppercase"
+                onClick={openComments}
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  px-4
+                  py-1.5
+                  rounded-full
+                  border
+                  border-purple-500/25
+                  bg-purple-500/[0.06]
+                  dark:bg-purple-500/[0.10]
+                  text-purple-600
+                  dark:text-purple-400
+                  hover:bg-purple-500/[0.12]
+                  hover:border-purple-500/50
+                  transition-all
+                  active:scale-95
+                  text-[10px]
+                  font-black
+                  uppercase
+                  shrink-0
+                "
               >
                 <CommentIcon className="w-4 h-4" />
 
                 <span>
-                  Comments
+                  {displayedCommentCount}
                 </span>
               </button>
+
+              {/* =========================================
+                  SHARE
+              ========================================= */}
+
+              <div
+                ref={shareRef}
+                className="relative shrink-0"
+              >
+                <button
+                  type="button"
+                  onClick={
+                    handleShareButton
+                  }
+                  className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    w-9
+                    h-8
+                    rounded-full
+                    border
+                    border-[var(--border-primary)]
+                    bg-[var(--background-tertiary)]
+                    text-[var(--text-muted)]
+                    hover:text-purple-600
+                    hover:border-purple-500/50
+                    transition-all
+                    active:scale-95
+                  "
+                  title="Share Startalk"
+                  aria-label="Share Startalk"
+                >
+                  <ShareIcon className="w-4 h-4" />
+                </button>
+
+                {isShareMenuOpen && (
+                  <div
+                    className="
+                      absolute
+                      left-0
+                      bottom-full
+                      mb-3
+                      w-[190px]
+                      rounded-2xl
+                      border
+                      border-[var(--border-primary)]
+                      bg-[var(--component-background)]
+                      shadow-[0_20px_60px_rgba(0,0,0,0.18)]
+                      dark:shadow-[0_20px_60px_rgba(0,0,0,0.48)]
+                      overflow-hidden
+                      z-[90]
+                      animate-in
+                      fade-in
+                      zoom-in-95
+                      duration-150
+                    "
+                  >
+                    <div className="p-1.5">
+                      <button
+                        type="button"
+                        onClick={
+                          handleNativeShare
+                        }
+                        className="
+                          w-full
+                          flex
+                          items-center
+                          gap-3
+                          px-3
+                          py-2.5
+                          rounded-xl
+                          text-left
+                          text-xs
+                          font-semibold
+                          text-[var(--text-primary)]
+                          hover:bg-[var(--background-tertiary)]
+                          transition-colors
+                        "
+                      >
+                        <ShareIcon className="w-4 h-4 text-purple-500" />
+
+                        <span>
+                          Share Startalk
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={
+                          copyShareLink
+                        }
+                        className="
+                          w-full
+                          flex
+                          items-center
+                          gap-3
+                          px-3
+                          py-2.5
+                          rounded-xl
+                          text-left
+                          text-xs
+                          font-semibold
+                          text-[var(--text-primary)]
+                          hover:bg-[var(--background-tertiary)]
+                          transition-colors
+                        "
+                      >
+                        <CopyIcon className="w-4 h-4 text-purple-500" />
+
+                        <span>
+                          {shareMessage ||
+                            'Copy link'}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <span className="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-widest font-poppins">
+            <span className="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-widest font-poppins shrink-0">
               {timeAgo(
                 talk.timestamp
               )}
             </span>
           </div>
         </div>
-      </div>
+      </article>
 
       {/* =================================================
           COMMENTS MODAL
@@ -840,7 +1645,31 @@ const StartalkCardContent: React.FC<{
 
       {isCommentsOpen && (
         <div
-          className="fixed inset-0 z-[1100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="
+            fixed
+            inset-0
+            z-[1100]
+            flex
+            items-center
+            justify-center
+            px-3
+            py-4
+            sm:px-4
+            sm:py-6
+            bg-black/70
+            dark:bg-black/80
+            backdrop-blur-[7px]
+            overscroll-none
+            animate-in
+            fade-in
+            duration-200
+          "
+          style={{
+            paddingTop:
+              'max(1rem, env(safe-area-inset-top))',
+            paddingBottom:
+              'max(1rem, env(safe-area-inset-bottom))',
+          }}
           onMouseDown={event => {
             if (
               event.target ===
@@ -851,51 +1680,175 @@ const StartalkCardContent: React.FC<{
           }}
         >
           <div
-            className="w-full max-w-[520px] h-[90vh] max-h-[760px] min-h-[520px] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 font-poppins"
+            className="
+              w-full
+              max-w-[520px]
+              h-[76vh]
+              max-h-[650px]
+              min-h-[430px]
+              bg-[var(--component-background)]
+              border
+              border-[var(--border-primary)]
+              rounded-[1.75rem]
+              sm:rounded-[2rem]
+              shadow-[0_30px_100px_rgba(0,0,0,0.30)]
+              dark:shadow-[0_30px_100px_rgba(0,0,0,0.65)]
+              overflow-hidden
+              flex
+              flex-col
+              animate-in
+              zoom-in-95
+              duration-200
+              font-poppins
+              relative
+            "
             onMouseDown={event =>
               event.stopPropagation()
             }
           >
-            {/* HEADER */}
+            {/* =========================================
+                HEADER
+            ========================================= */}
 
-            <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-[var(--border-primary)] shrink-0">
-              <div>
+            <div className="
+              flex
+              items-center
+              justify-between
+              px-5
+              md:px-6
+              py-4
+              border-b
+              border-[var(--border-primary)]
+              shrink-0
+              bg-[var(--component-background)]
+            ">
+              <div className="min-w-0">
                 <h3 className="text-base md:text-lg font-bold text-[var(--text-primary)] tracking-tight">
                   Comments
                 </h3>
 
                 <p className="text-[10px] text-[var(--text-muted)] font-medium mt-0.5">
-                  Join the conversation
+                  {displayedCommentCount > 0
+                    ? `${displayedCommentCount} ${
+                        displayedCommentCount === 1
+                          ? 'comment'
+                          : 'comments'
+                      }`
+                    : 'Join the conversation'}
                 </p>
               </div>
 
               <button
                 type="button"
-                onClick={
-                  closeComments
-                }
-                className="w-8 h-8 rounded-full flex items-center justify-center bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all active:scale-95"
+                onClick={closeComments}
+                className="
+                  w-8
+                  h-8
+                  rounded-full
+                  flex
+                  items-center
+                  justify-center
+                  bg-[var(--background-tertiary)]
+                  border
+                  border-[var(--border-primary)]
+                  text-[var(--text-muted)]
+                  hover:text-[var(--text-primary)]
+                  hover:border-purple-500/40
+                  transition-all
+                  active:scale-95
+                  shrink-0
+                "
                 aria-label="Close comments"
               >
                 <XMarkIcon className="w-4 h-4" />
               </button>
             </div>
 
-            {/* COMMENT LIST */}
+            {/* =========================================
+                COMMENT LIST
+            ========================================= */}
 
-            <div className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-6 py-5 min-h-0">
-              {comments.length ===
-              0 ? (
-                <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center">
-                  <div className="w-11 h-11 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] flex items-center justify-center mb-3 text-purple-500">
+            <div
+              className="
+                flex-1
+                overflow-y-auto
+                overscroll-contain
+                px-5
+                md:px-6
+                py-5
+                min-h-0
+                scrollbar-thin
+              "
+            >
+              {commentsLoading ? (
+                <div className="
+                  h-full
+                  min-h-[260px]
+                  flex
+                  flex-col
+                  items-center
+                  justify-center
+                  text-center
+                ">
+                  <div className="
+                    w-10
+                    h-10
+                    rounded-full
+                    border-2
+                    border-purple-500/20
+                    border-t-purple-500
+                    animate-spin
+                  />
+
+                  <p className="
+                    mt-3
+                    text-xs
+                    font-semibold
+                    text-[var(--text-muted)]
+                  ">
+                    Loading comments…
+                  </p>
+                </div>
+              ) : comments.length === 0 ? (
+                <div className="
+                  h-full
+                  min-h-[260px]
+                  flex
+                  flex-col
+                  items-center
+                  justify-center
+                  text-center
+                ">
+                  <div className="
+                    w-11
+                    h-11
+                    rounded-full
+                    bg-purple-500/[0.07]
+                    dark:bg-purple-500/[0.12]
+                    border
+                    border-purple-500/20
+                    flex
+                    items-center
+                    justify-center
+                    mb-3
+                    text-purple-500
+                  ">
                     <CommentIcon className="w-5 h-5" />
                   </div>
 
-                  <p className="text-xs font-bold text-[var(--text-primary)]">
+                  <p className="
+                    text-xs
+                    font-bold
+                    text-[var(--text-primary)]
+                  ">
                     No comments yet
                   </p>
 
-                  <p className="text-[10px] text-[var(--text-muted)] mt-1">
+                  <p className="
+                    text-[10px]
+                    text-[var(--text-muted)]
+                    mt-1
+                  ">
                     Be the first to share your thoughts.
                   </p>
                 </div>
@@ -913,7 +1866,7 @@ const StartalkCardContent: React.FC<{
 
                       const commentInitials =
                         comment.author
-                          .split(' ')
+                          ?.split(' ')
                           .map(
                             name =>
                               name[0]
@@ -923,14 +1876,19 @@ const StartalkCardContent: React.FC<{
                             0,
                             2
                           )
-                          .toUpperCase();
+                          .toUpperCase() ||
+                        'U';
 
                       return (
                         <div
                           key={
                             comment.id
                           }
-                          className="flex items-start gap-3"
+                          className="
+                            flex
+                            items-start
+                            gap-3
+                          "
                         >
                           {/* AVATAR */}
 
@@ -942,12 +1900,33 @@ const StartalkCardContent: React.FC<{
                               alt={
                                 comment.author
                               }
-                              className="w-9 h-9 rounded-full object-cover border border-[var(--border-primary)] shrink-0"
+                              className="
+                                w-9
+                                h-9
+                                rounded-full
+                                object-cover
+                                border
+                                border-[var(--border-primary)]
+                                shrink-0
+                              "
                             />
                           ) : (
-                            <div className="w-9 h-9 rounded-full icon-bg-gradient flex items-center justify-center text-white text-[10px] font-bold shrink-0">
-                              {commentInitials ||
-                                'YO'}
+                            <div className="
+                              w-9
+                              h-9
+                              rounded-full
+                              icon-bg-gradient
+                              flex
+                              items-center
+                              justify-center
+                              text-white
+                              text-[10px]
+                              font-bold
+                              shrink-0
+                            ">
+                              {
+                                commentInitials
+                              }
                             </div>
                           )}
 
@@ -955,27 +1934,45 @@ const StartalkCardContent: React.FC<{
 
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-[var(--text-primary)] truncate">
+                              <span className="
+                                text-xs
+                                font-bold
+                                text-[var(--text-primary)]
+                                truncate
+                              ">
                                 {
                                   comment.author
                                 }
                               </span>
 
-                              <span className="text-[9px] text-[var(--text-muted)] font-medium shrink-0">
+                              <span className="
+                                text-[9px]
+                                text-[var(--text-muted)]
+                                font-medium
+                                shrink-0
+                              ">
                                 {timeAgo(
                                   comment.timestamp
                                 )}
                               </span>
                             </div>
 
-                            <p className="mt-1 text-xs md:text-sm text-[var(--text-secondary)] leading-relaxed break-words whitespace-pre-wrap">
+                            <p className="
+                              mt-1
+                              text-xs
+                              md:text-sm
+                              text-[var(--text-secondary)]
+                              leading-relaxed
+                              break-words
+                              whitespace-pre-wrap
+                            ">
                               {
                                 comment.text
                               }
                             </p>
                           </div>
 
-                          {/* DELETE ONLY */}
+                          {/* DELETE */}
 
                           {isCommentOwner && (
                             <button
@@ -985,8 +1982,18 @@ const StartalkCardContent: React.FC<{
                                   comment.id
                                 )
                               }
-                              className="p-1.5 rounded-full text-[var(--text-muted)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors shrink-0"
+                              className="
+                                p-1.5
+                                rounded-full
+                                text-[var(--text-muted)]
+                                hover:text-red-500
+                                hover:bg-red-50
+                                dark:hover:bg-red-950/20
+                                transition-colors
+                                shrink-0
+                              "
                               title="Delete comment"
+                              aria-label="Delete comment"
                             >
                               <TrashIcon className="w-3.5 h-3.5" />
                             </button>
@@ -999,25 +2006,55 @@ const StartalkCardContent: React.FC<{
               )}
             </div>
 
-            {/* COMMENT COMPOSER */}
+            {/* =========================================
+                COMMENT COMPOSER
+            ========================================= */}
 
-            <div className="px-5 md:px-6 py-4 border-t border-[var(--border-primary)] bg-[var(--component-background)] shrink-0">
+            <div className="
+              px-5
+              md:px-6
+              py-4
+              border-t
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              shrink-0
+            ">
               <div className="flex items-center gap-2">
                 <input
                   type="text"
-                  value={
-                    commentText
-                  }
-                  onChange={event =>
-                    setCommentText(
-                      event.target.value
-                    )
+                  value={commentText}
+                  maxLength={5000}
+                  onChange={
+                    handleCommentChange
                   }
                   onKeyDown={
                     handleCommentKeyDown
                   }
                   placeholder="Write a comment..."
-                  className="flex-1 min-w-0 h-10 px-4 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-xs md:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-purple-500/60 focus:ring-2 focus:ring-purple-500/10 transition-all font-poppins"
+                  disabled={
+                    commentSubmitting
+                  }
+                  className="
+                    flex-1
+                    min-w-0
+                    h-10
+                    px-4
+                    rounded-full
+                    bg-[var(--background-tertiary)]
+                    border
+                    border-[var(--border-primary)]
+                    text-xs
+                    md:text-sm
+                    text-[var(--text-primary)]
+                    placeholder-[var(--text-muted)]
+                    focus:outline-none
+                    focus:border-purple-500/60
+                    focus:ring-2
+                    focus:ring-purple-500/10
+                    transition-all
+                    font-poppins
+                    disabled:opacity-60
+                  "
                 />
 
                 <button
@@ -1026,17 +2063,62 @@ const StartalkCardContent: React.FC<{
                     handleAddComment
                   }
                   disabled={
-                    !commentText.trim()
+                    !commentText.trim() ||
+                    commentSubmitting ||
+                    commentWordCount >
+                      MAX_COMMENT_WORDS
                   }
-                  className="h-10 px-4 md:px-5 rounded-full button-gradient text-white text-[10px] font-black uppercase tracking-widest disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 shrink-0"
+                  className="
+                    h-10
+                    px-4
+                    md:px-5
+                    rounded-full
+                    button-gradient
+                    text-white
+                    text-[10px]
+                    font-black
+                    uppercase
+                    tracking-widest
+                    disabled:opacity-40
+                    disabled:cursor-not-allowed
+                    transition-all
+                    active:scale-95
+                    shrink-0
+                  "
                 >
-                  Post
+                  {commentSubmitting
+                    ? '...'
+                    : 'Post'}
                 </button>
               </div>
 
-              <div className="flex justify-between mt-2 px-1">
-                <span className="text-[9px] text-[var(--text-muted)]">
+              <div className="
+                flex
+                items-center
+                justify-between
+                mt-2
+                px-1
+              ">
+                <span className="
+                  text-[9px]
+                  text-[var(--text-muted)]
+                ">
                   Press Enter to post
+                </span>
+
+                <span
+                  className={`
+                    text-[9px]
+                    font-semibold
+                    ${
+                      commentLimitReached
+                        ? 'text-red-500'
+                        : 'text-[var(--text-muted)]'
+                    }
+                  `}
+                >
+                  {commentWordCount}/
+                  {MAX_COMMENT_WORDS}
                 </span>
               </div>
             </div>
@@ -1050,43 +2132,118 @@ const StartalkCardContent: React.FC<{
 
       {commentToDeleteId && (
         <div
-          className="fixed inset-0 z-[1200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="
+            fixed
+            inset-0
+            z-[1200]
+            flex
+            items-center
+            justify-center
+            p-4
+            bg-black/70
+            dark:bg-black/80
+            backdrop-blur-[7px]
+            animate-in
+            fade-in
+            duration-200
+          "
           onMouseDown={event => {
             if (
               event.target ===
-              event.currentTarget
+              event.currentTarget &&
+              !commentDeleting
             ) {
               cancelDeleteComment();
             }
           }}
         >
           <div
-            className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] w-full max-w-[320px] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col font-poppins"
+            className="
+              bg-[var(--component-background)]
+              border
+              border-[var(--border-primary)]
+              rounded-[2rem]
+              w-full
+              max-w-[320px]
+              overflow-hidden
+              shadow-[0_25px_80px_rgba(0,0,0,0.30)]
+              dark:shadow-[0_25px_80px_rgba(0,0,0,0.65)]
+              animate-in
+              zoom-in-95
+              duration-200
+              flex
+              flex-col
+              font-poppins
+            "
             onMouseDown={event =>
               event.stopPropagation()
             }
           >
             <div className="p-6 text-center">
-              <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mx-auto mb-4">
+              <div className="
+                w-12
+                h-12
+                rounded-full
+                bg-red-100
+                dark:bg-red-900/30
+                text-red-500
+                flex
+                items-center
+                justify-center
+                mx-auto
+                mb-4
+              ">
                 <TrashIcon className="w-6 h-6" />
               </div>
 
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2 tracking-tight">
+              <h3 className="
+                text-lg
+                font-bold
+                text-[var(--text-primary)]
+                mb-2
+                tracking-tight
+              ">
                 Delete comment?
               </h3>
 
-              <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">
+              <p className="
+                text-xs
+                text-[var(--text-muted)]
+                font-medium
+                leading-relaxed
+              ">
                 This comment will be permanently removed. This action cannot be undone.
               </p>
             </div>
 
-            <div className="flex border-t border-[var(--border-primary)]">
+            <div className="
+              flex
+              border-t
+              border-[var(--border-primary)]
+            ">
               <button
                 type="button"
                 onClick={
                   cancelDeleteComment
                 }
-                className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:bg-[var(--background-tertiary)] transition-colors border-r border-[var(--border-primary)]"
+                disabled={
+                  commentDeleting
+                }
+                className="
+                  flex-1
+                  px-4
+                  py-4
+                  text-[10px]
+                  font-black
+                  uppercase
+                  tracking-widest
+                  text-[var(--text-muted)]
+                  hover:bg-[var(--background-tertiary)]
+                  transition-colors
+                  border-r
+                  border-[var(--border-primary)]
+                  disabled:opacity-50
+                "
               >
                 Cancel
               </button>
@@ -1096,9 +2253,27 @@ const StartalkCardContent: React.FC<{
                 onClick={
                   confirmDeleteComment
                 }
-                className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                disabled={
+                  commentDeleting
+                }
+                className="
+                  flex-1
+                  px-4
+                  py-4
+                  text-[10px]
+                  font-black
+                  uppercase
+                  tracking-widest
+                  text-red-500
+                  hover:bg-red-50
+                  dark:hover:bg-red-950/20
+                  transition-colors
+                  disabled:opacity-50
+                "
               >
-                Delete
+                {commentDeleting
+                  ? 'Deleting…'
+                  : 'Delete'}
               </button>
             </div>
           </div>
@@ -1110,7 +2285,6 @@ const StartalkCardContent: React.FC<{
 
 /* =========================================================
    PUBLIC STARTALK CARD
-   Error boundary wraps the actual card.
 ========================================================= */
 
 export const StartalkCard: React.FC<{
