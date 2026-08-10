@@ -1,3 +1,5 @@
+// backend/controllers/commentController.js
+
 const mongoose = require('mongoose');
 const Comment = require('../models/Comment');
 const Startalk = require('../models/Startalk');
@@ -9,46 +11,60 @@ const User = require('../models/User');
 // ============================================================
 
 const formatComment = (comment) => {
-    const obj = comment.toObject
+    const obj = comment?.toObject
         ? comment.toObject()
         : comment;
 
-    return {
-        id: obj._id
-            ? obj._id.toString()
-            : obj.id,
+    const populatedAuthor =
+        obj?.authorId && typeof obj.authorId === 'object'
+            ? obj.authorId
+            : null;
 
-        startalkId: obj.startalkId
+    const authorId =
+        populatedAuthor?._id
+            ? populatedAuthor._id.toString()
+            : obj?.authorId
+                ? obj.authorId.toString()
+                : null;
+
+    return {
+        id: obj?._id
+            ? obj._id.toString()
+            : obj?.id,
+
+        startalkId: obj?.startalkId
             ? obj.startalkId.toString()
             : null,
 
-        authorId: obj.authorId?._id
-            ? obj.authorId._id.toString()
-            : obj.authorId
-                ? obj.authorId.toString()
-                : null,
+        authorId,
 
-        author: obj.authorId?.name || 'User',
+        // 🔥 REAL USER NAME
+        author:
+            populatedAuthor?.name ||
+            'User',
 
+        // 🔥 REAL USER AVATAR
         avatar:
-            obj.authorId?.profilePictureUrl ||
+            populatedAuthor?.profilePictureUrl ||
             null,
 
+        // 🔥 USER HEADLINE
         headline:
-            obj.authorId?.headline ||
+            populatedAuthor?.headline ||
             'Builder',
 
-        text: obj.text,
+        text:
+            obj?.text || '',
 
         timestamp:
-            obj.createdAt ||
-            obj.timestamp,
+            obj?.createdAt ||
+            obj?.timestamp,
 
         createdAt:
-            obj.createdAt,
+            obj?.createdAt,
 
         updatedAt:
-            obj.updatedAt,
+            obj?.updatedAt,
     };
 };
 
@@ -61,6 +77,10 @@ const getComments = async (req, res) => {
     try {
         const { startalkId } = req.params;
 
+        // -----------------------------
+        // Validate Startalk ID
+        // -----------------------------
+
         if (!mongoose.Types.ObjectId.isValid(startalkId)) {
             return res.status(400).json({
                 success: false,
@@ -68,7 +88,10 @@ const getComments = async (req, res) => {
             });
         }
 
-        // Make sure Startalk exists
+        // -----------------------------
+        // Check Startalk exists
+        // -----------------------------
+
         const startalk = await Startalk.findById(startalkId)
             .select('_id')
             .lean();
@@ -80,25 +103,55 @@ const getComments = async (req, res) => {
             });
         }
 
+        // -----------------------------
+        // Fetch comments
+        // -----------------------------
+
         const comments = await Comment.find({
             startalkId,
         })
             .populate(
                 'authorId',
-                'name profilePictureUrl headline'
+                '_id name email profilePictureUrl headline'
             )
             .sort({
                 createdAt: 1,
             })
             .lean();
 
+        // 🔥 DEBUG — CHECK EXACT USER DATA
+        console.log(
+            '🔥 COMMENTS FETCHED:',
+            comments.map((comment) => ({
+                commentId: comment._id?.toString(),
+                authorId: comment.authorId?._id?.toString(),
+                authorName: comment.authorId?.name,
+                authorEmail: comment.authorId?.email,
+            }))
+        );
+
+        const formattedComments =
+            comments.map(formatComment);
+
+        // 🔥 DEBUG — CHECK FINAL RESPONSE
+        console.log(
+            '🔥 FORMATTED COMMENTS:',
+            formattedComments.map((comment) => ({
+                id: comment.id,
+                authorId: comment.authorId,
+                author: comment.author,
+                text: comment.text,
+            }))
+        );
+
         return res.json({
             success: true,
-            comments: comments.map(formatComment),
-            count: comments.length,
+            comments: formattedComments,
+            count: formattedComments.length,
         });
 
     } catch (error) {
+
         console.error(
             'GET COMMENTS ERROR:',
             error
@@ -179,11 +232,18 @@ const createComment = async (req, res) => {
         // Check authenticated user
         // -----------------------------
 
+        if (!req.user?._id) {
+            return res.status(401).json({
+                success: false,
+                message: 'Not authenticated',
+            });
+        }
+
         const user = await User.findById(
             req.user._id
         )
             .select(
-                '_id name profilePictureUrl headline'
+                '_id name email profilePictureUrl headline'
             )
             .lean();
 
@@ -193,6 +253,23 @@ const createComment = async (req, res) => {
                 message: 'User not found',
             });
         }
+
+        // ====================================================
+        // 🔥 IMPORTANT DEBUG
+        // ====================================================
+
+        console.log(
+            '🔥 COMMENT USER FROM DB:',
+            {
+                id: user._id?.toString(),
+                name: user.name,
+                email: user.email,
+                profilePictureUrl:
+                    user.profilePictureUrl,
+                headline:
+                    user.headline,
+            }
+        );
 
         // -----------------------------
         // Create comment
@@ -205,7 +282,7 @@ const createComment = async (req, res) => {
         });
 
         // -----------------------------
-        // Populate user
+        // Populate user after creation
         // -----------------------------
 
         const populatedComment =
@@ -214,18 +291,71 @@ const createComment = async (req, res) => {
             )
                 .populate(
                     'authorId',
-                    'name profilePictureUrl headline'
+                    '_id name email profilePictureUrl headline'
                 )
                 .lean();
 
+        if (!populatedComment) {
+            return res.status(500).json({
+                success: false,
+                message:
+                    'Comment created but could not be loaded',
+            });
+        }
+
+        // ====================================================
+        // 🔥 IMPORTANT DEBUG
+        // ====================================================
+
+        console.log(
+            '🔥 COMMENT AFTER POPULATE:',
+            {
+                commentId:
+                    populatedComment._id?.toString(),
+
+                authorId:
+                    populatedComment.authorId?._id?.toString(),
+
+                authorName:
+                    populatedComment.authorId?.name,
+
+                authorEmail:
+                    populatedComment.authorId?.email,
+
+                text:
+                    populatedComment.text,
+            }
+        );
+
+        // -----------------------------
+        // Format comment
+        // -----------------------------
+
+        const formattedComment =
+            formatComment(
+                populatedComment
+            );
+
+        // ====================================================
+        // 🔥 FINAL RESPONSE DEBUG
+        // ====================================================
+
+        console.log(
+            '🔥 COMMENT SENT TO FRONTEND:',
+            formattedComment
+        );
+
+        // -----------------------------
+        // Response
+        // -----------------------------
+
         return res.status(201).json({
             success: true,
-            comment: formatComment(
-                populatedComment
-            ),
+            comment: formattedComment,
         });
 
     } catch (error) {
+
         console.error(
             'CREATE COMMENT ERROR:',
             error
@@ -249,6 +379,10 @@ const deleteComment = async (req, res) => {
     try {
         const { commentId } = req.params;
 
+        // -----------------------------
+        // Validate comment ID
+        // -----------------------------
+
         if (
             !mongoose.Types.ObjectId.isValid(
                 commentId
@@ -260,8 +394,14 @@ const deleteComment = async (req, res) => {
             });
         }
 
+        // -----------------------------
+        // Find comment
+        // -----------------------------
+
         const comment =
-            await Comment.findById(commentId);
+            await Comment.findById(
+                commentId
+            );
 
         if (!comment) {
             return res.status(404).json({
@@ -270,9 +410,20 @@ const deleteComment = async (req, res) => {
             });
         }
 
-        // --------------------------------
-        // ONLY COMMENT OWNER CAN DELETE
-        // --------------------------------
+        // -----------------------------
+        // Authentication check
+        // -----------------------------
+
+        if (!req.user?._id) {
+            return res.status(401).json({
+                success: false,
+                message: 'Not authenticated',
+            });
+        }
+
+        // -----------------------------
+        // Only owner can delete
+        // -----------------------------
 
         if (
             String(comment.authorId) !==
@@ -285,15 +436,21 @@ const deleteComment = async (req, res) => {
             });
         }
 
+        // -----------------------------
+        // Delete
+        // -----------------------------
+
         await comment.deleteOne();
 
         return res.json({
             success: true,
-            message: 'Comment deleted successfully',
+            message:
+                'Comment deleted successfully',
             commentId,
         });
 
     } catch (error) {
+
         console.error(
             'DELETE COMMENT ERROR:',
             error
@@ -308,6 +465,10 @@ const deleteComment = async (req, res) => {
     }
 };
 
+
+// ============================================================
+// EXPORTS
+// ============================================================
 
 module.exports = {
     getComments,
