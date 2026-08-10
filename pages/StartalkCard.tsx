@@ -87,48 +87,8 @@ const XMarkIcon: React.FC<{ className?: string }> = ({
   </svg>
 );
 
-// --- Helper to fix Image URLs ---
-
-const getImageUrl = (url: string) => {
-  if (!url) return "";
-  return url;
-};
-
-// --- Link Detection ---
-
-const renderTextWithLinks = (text: string) => {
-  const urlRegex =
-    /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/;
-
-  const parts = text.split(
-    /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/g
-  );
-
-  return parts.map((part, index) => {
-    if (urlRegex.test(part)) {
-      const href = part.startsWith('http')
-        ? part
-        : `https://${part}`;
-
-      return (
-        <a
-          key={index}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-purple-600 font-semibold underline break-all hover:text-purple-400 transition"
-        >
-          {part}
-        </a>
-      );
-    }
-
-    return <span key={index}>{part}</span>;
-  });
-};
-
 // --- Local Comment Type ---
-// Frontend-only for now. No backend/API is used.
+// Frontend-only for now.
 
 interface LocalComment {
   id: string;
@@ -148,7 +108,6 @@ export const StartalkCard: React.FC<{
   onDeleteRequest,
   className = "",
 }) => {
-
   const {
     reactToStartalk,
     currentUser,
@@ -207,8 +166,10 @@ export const StartalkCard: React.FC<{
   const [comments, setComments] =
     useState<LocalComment[]>([]);
 
-  const commentInputRef =
-    useRef<HTMLInputElement>(null);
+  // --- Comment Delete Confirmation ---
+
+  const [commentToDeleteId, setCommentToDeleteId] =
+    useState<string | null>(null);
 
   // --- Initials ---
 
@@ -268,17 +229,15 @@ export const StartalkCard: React.FC<{
   // --- Comments ---
 
   const openComments = () => {
+    // Do NOT focus the input here.
+    // This prevents the mobile keyboard from opening automatically.
     setIsCommentsOpen(true);
-
-    // Focus after modal has rendered
-    window.setTimeout(() => {
-      commentInputRef.current?.focus();
-    }, 100);
   };
 
   const closeComments = () => {
     setIsCommentsOpen(false);
     setCommentText('');
+    setCommentToDeleteId(null);
   };
 
   const handleAddComment = () => {
@@ -324,14 +283,27 @@ export const StartalkCard: React.FC<{
     }
   };
 
-  const handleDeleteComment = (
+  const requestDeleteComment = (
     commentId: string
   ) => {
+    setCommentToDeleteId(commentId);
+  };
+
+  const cancelDeleteComment = () => {
+    setCommentToDeleteId(null);
+  };
+
+  const confirmDeleteComment = () => {
+    if (!commentToDeleteId) return;
+
     setComments(prev =>
       prev.filter(
-        comment => comment.id !== commentId
+        comment =>
+          comment.id !== commentToDeleteId
       )
     );
+
+    setCommentToDeleteId(null);
   };
 
   // --- Reaction Counts ---
@@ -487,9 +459,46 @@ export const StartalkCard: React.FC<{
         <div className="space-y-4 text-left">
 
           <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium whitespace-pre-wrap">
-            {renderTextWithLinks(
-              talk.content
-            )}
+            {(() => {
+              const urlRegex =
+                /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/;
+
+              const parts =
+                talk.content.split(
+                  /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/g
+                );
+
+              return parts.map(
+                (part, index) => {
+                  if (
+                    urlRegex.test(part)
+                  ) {
+                    const href =
+                      part.startsWith('http')
+                        ? part
+                        : `https://${part}`;
+
+                    return (
+                      <a
+                        key={index}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-purple-600 font-semibold underline break-all hover:text-purple-400 transition"
+                      >
+                        {part}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <span key={index}>
+                      {part}
+                    </span>
+                  );
+                }
+              );
+            })()}
           </p>
 
           {talk.imageUrl && (
@@ -558,9 +567,7 @@ export const StartalkCard: React.FC<{
 
             <div className="flex items-center gap-2">
 
-              {/* =====================
-                  REACT BUTTON
-              ====================== */}
+              {/* React */}
 
               <div className="relative">
 
@@ -626,6 +633,7 @@ export const StartalkCard: React.FC<{
                           key={emoji}
                           onClick={e => {
                             e.stopPropagation();
+
                             handleReaction(
                               emoji
                             );
@@ -649,10 +657,7 @@ export const StartalkCard: React.FC<{
 
               </div>
 
-              {/* =====================
-                  COMMENTS BUTTON
-                  Directly beside React
-              ====================== */}
+              {/* Comments */}
 
               <button
                 type="button"
@@ -705,7 +710,7 @@ export const StartalkCard: React.FC<{
         >
 
           <div
-            className="w-full max-w-[520px] max-h-[80vh] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 font-poppins"
+            className="w-full max-w-[520px] h-[90vh] max-h-[760px] min-h-[520px] bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 font-poppins"
             onMouseDown={event =>
               event.stopPropagation()
             }
@@ -713,7 +718,7 @@ export const StartalkCard: React.FC<{
 
             {/* --- Modal Header --- */}
 
-            <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-[var(--border-primary)]">
+            <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-[var(--border-primary)] shrink-0">
 
               <div>
 
@@ -740,11 +745,11 @@ export const StartalkCard: React.FC<{
 
             {/* --- Comments List --- */}
 
-            <div className="flex-1 overflow-y-auto px-5 md:px-6 py-5 min-h-[180px]">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-5 md:px-6 py-5 min-h-0">
 
               {comments.length === 0 ? (
 
-                <div className="h-full min-h-[180px] flex flex-col items-center justify-center text-center">
+                <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center">
 
                   <div className="w-11 h-11 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] flex items-center justify-center mb-3 text-purple-500">
 
@@ -764,7 +769,7 @@ export const StartalkCard: React.FC<{
 
               ) : (
 
-                <div className="space-y-4">
+                <div className="space-y-5">
 
                   {comments.map(
                     comment => {
@@ -823,7 +828,7 @@ export const StartalkCard: React.FC<{
 
                           )}
 
-                          {/* Comment Content */}
+                          {/* Comment */}
 
                           <div className="flex-1 min-w-0">
 
@@ -851,14 +856,14 @@ export const StartalkCard: React.FC<{
 
                           </div>
 
-                          {/* Delete only own local comment */}
+                          {/* ONLY DELETE - NO EDIT */}
 
                           {isCommentOwner && (
 
                             <button
                               type="button"
                               onClick={() =>
-                                handleDeleteComment(
+                                requestDeleteComment(
                                   comment.id
                                 )
                               }
@@ -885,14 +890,11 @@ export const StartalkCard: React.FC<{
 
             {/* --- Comment Composer --- */}
 
-            <div className="px-5 md:px-6 py-4 border-t border-[var(--border-primary)] bg-[var(--component-background)]">
+            <div className="px-5 md:px-6 py-4 border-t border-[var(--border-primary)] bg-[var(--component-background)] shrink-0">
 
               <div className="flex items-center gap-2">
 
                 <input
-                  ref={
-                    commentInputRef
-                  }
                   type="text"
                   value={
                     commentText
@@ -906,7 +908,6 @@ export const StartalkCard: React.FC<{
                     handleCommentKeyDown
                   }
                   placeholder="Write a comment..."
-                  maxLength={500}
                   className="flex-1 min-w-0 h-10 px-4 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-xs md:text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-purple-500/60 focus:ring-2 focus:ring-purple-500/10 transition-all font-poppins"
                 />
 
@@ -931,11 +932,82 @@ export const StartalkCard: React.FC<{
                   Press Enter to post
                 </span>
 
-                <span className="text-[9px] text-[var(--text-muted)]">
-                  {commentText.length}/500
-                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* ==================================
+          DELETE COMMENT CONFIRMATION
+      =================================== */}
+
+      {commentToDeleteId && (
+
+        <div
+          className="fixed inset-0 z-[1200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onMouseDown={event => {
+
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              cancelDeleteComment();
+            }
+
+          }}
+        >
+
+          <div
+            className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[2rem] w-full max-w-[320px] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col font-poppins"
+            onMouseDown={event =>
+              event.stopPropagation()
+            }
+          >
+
+            <div className="p-6 text-center">
+
+              <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mx-auto mb-4">
+
+                <TrashIcon className="w-6 h-6" />
 
               </div>
+
+              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2 tracking-tight">
+                Delete comment?
+              </h3>
+
+              <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">
+                This comment will be permanently removed. This action cannot be undone.
+              </p>
+
+            </div>
+
+            <div className="flex border-t border-[var(--border-primary)]">
+
+              <button
+                type="button"
+                onClick={
+                  cancelDeleteComment
+                }
+                className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] hover:bg-[var(--background-tertiary)] transition-colors border-r border-[var(--border-primary)]"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={
+                  confirmDeleteComment
+                }
+                className="flex-1 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+              >
+                Delete
+              </button>
 
             </div>
 
