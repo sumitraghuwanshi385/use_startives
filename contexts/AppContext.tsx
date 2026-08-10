@@ -716,6 +716,148 @@ return false;
       } catch (error) { console.error("Reaction failed:", error); }
   };
 
+// ============================================================
+  // STARTALK COMMENTS
+  // ============================================================
+
+  const fetchStartalkComments = async (
+    startalkId: string
+  ) => {
+
+    const t = getAuthToken();
+
+    if (!t) {
+      return [];
+    }
+
+    try {
+
+      const res = await axios.get(
+        `/api/comments/startalk/${startalkId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${t}`,
+          },
+        }
+      );
+
+      if (
+        res.data?.success &&
+        Array.isArray(res.data.comments)
+      ) {
+        return res.data.comments;
+      }
+
+      return [];
+
+    } catch (error) {
+
+      console.error(
+        "Fetch Startalk Comments Error:",
+        error
+      );
+
+      return [];
+    }
+  };
+
+
+  const addStartalkComment = async (
+    startalkId: string,
+    text: string
+  ) => {
+
+    const t = getAuthToken();
+
+    if (!t || !currentUser) {
+      return null;
+    }
+
+    try {
+
+      const res = await axios.post(
+        `/api/comments/startalk/${startalkId}`,
+        {
+          text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${t}`,
+          },
+        }
+      );
+
+      if (res.data?.success) {
+
+        return res.data.comment;
+
+      }
+
+      return null;
+
+    } catch (error: any) {
+
+      console.error(
+        "Add Startalk Comment Error:",
+        error
+      );
+
+      addNotificationCallBack(
+        error.response?.data?.message ||
+          "Failed to post comment.",
+        "error"
+      );
+
+      return null;
+    }
+  };
+
+
+  const deleteStartalkComment = async (
+    commentId: string
+  ) => {
+
+    const t = getAuthToken();
+
+    if (!t || !currentUser) {
+      return false;
+    }
+
+    try {
+
+      const res = await axios.delete(
+        `/api/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${t}`,
+          },
+        }
+      );
+
+      if (res.data?.success) {
+        return true;
+      }
+
+      return false;
+
+    } catch (error: any) {
+
+      console.error(
+        "Delete Startalk Comment Error:",
+        error
+      );
+
+      addNotificationCallBack(
+        error.response?.data?.message ||
+          "Failed to delete comment.",
+        "error"
+      );
+
+      return false;
+    }
+  };
+
+
   // ---------------- USER HELPERS ----------------
   const getIdeaById = (id: string) => startupIdeas.find(idea => idea.id === id);
   const getPositionById = (ideaId: string, positionId: string) => {
@@ -1121,7 +1263,8 @@ useEffect(() => {
     startupIdeas, startalks, assets,
 fetchAssets, sentApplications, fetchNotifications,
   receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addIdea, addStartalk, deleteStartalk, reactToStartalk, updateIdea, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
+    addIdea, addStartalk, deleteStartalk, reactToStartalk, fetchStartalkComments, addStartalkComment, deleteStartalkComment,
+updateIdea, updateAsset, deleteIdea, deleteAsset, addApplication, addNotification: addNotificationCallBack, removeNotification, getIdeaById, getPositionById,
     login, signup, verifyAndLogin, logout, updateUser, updateApplicationStatus, googleLogin,
     removeApplication,
     toggleSaveProject, isProjectSaved, getUserById, removeConnection,
@@ -1135,7 +1278,9 @@ declineConnectionRequest,
   }), [
     startupIdeas, startalks, sentApplications,
 receivedApplications, notifications, currentUser, users, token, appNotifications, isLoading, authLoadingState, showOnboardingModal,
-    addNotificationCallBack, assets,deleteAsset, updateAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds
+    addNotificationCallBack, assets,deleteAsset, updateAsset, getUserById, fetchUserProfile, sentConnectionRequests, connectedUserIds,fetchStartalkComments,
+addStartalkComment,
+deleteStartalkComment
   ]);
 
   return (
