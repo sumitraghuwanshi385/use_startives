@@ -1317,26 +1317,27 @@ useEffect(() => {
         Array.isArray(res.data.startalks)
       ) {
         const normalizedStartalks =
-          res.data.startalks.map((talk: any) => ({
-            ...talk,
+  res.data.startalks.map((talk: any) => ({
+    ...talk,
 
-            // 🔥 IMPORTANT:
-            // MongoDB normally returns _id.
-            // StartalkCard expects id.
-            id: String(
-              talk._id ||
-              talk.id ||
-              ''
-            ),
+    id: String(
+      talk._id ||
+      talk.id ||
+      ''
+    ),
 
-            // 🔥 Keep authorId consistent as well
-            authorId: String(
-              talk.authorId ||
-              talk.author?._id ||
-              talk.author?.id ||
-              ''
-            ),
-          }));
+    authorId: String(
+      talk.authorId ||
+      talk.author?._id ||
+      talk.author?.id ||
+      ''
+    ),
+
+    // REAL backend comment count
+    commentCount: Number(
+      talk.commentCount || 0
+    ),
+  }));
 
         setStartalks(normalizedStartalks);
       } else {
