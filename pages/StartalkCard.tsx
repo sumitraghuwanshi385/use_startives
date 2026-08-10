@@ -23,8 +23,6 @@ const MOOD_EMOJIS = [
 ];
 
 export const MAX_STARTALK_WORDS = 1000;
-
-/* Comment limit is 500 CHARACTERS, not words. */
 export const MAX_COMMENT_LENGTH = 500;
 
 const isMongoId = (id?: string) =>
@@ -54,8 +52,31 @@ interface LocalComment {
   author: string;
   authorId?: string;
   avatar?: string;
+  headline?: string;
   timestamp: string;
 }
+
+/*
+ * IMPORTANT:
+ *
+ * Backend formatComment() returns:
+ *
+ * {
+ *   id,
+ *   authorId,
+ *   author: "Apives",
+ *   avatar: "...",
+ *   headline: "...",
+ *   text: "..."
+ * }
+ *
+ * Earlier frontend code treated `author` like an object.
+ * That caused:
+ *
+ * author = "User"
+ *
+ * even though backend was correctly returning the real name.
+ */
 
 const normalizeComment = (
   comment: any
@@ -63,19 +84,57 @@ const normalizeComment = (
   const source =
     comment?.comment ||
     comment?.data ||
-    comment;
+    comment ||
+    {};
 
   const authorObject =
-    source?.author ||
-    source?.user ||
-    source?.authorUser ||
-    {};
+    source?.user &&
+    typeof source.user === 'object'
+      ? source.user
+      : source?.author &&
+        typeof source.author === 'object'
+      ? source.author
+      : source?.authorUser &&
+        typeof source.authorUser === 'object'
+      ? source.authorUser
+      : {};
 
   const authorId =
     source?.authorId ||
     source?.userId ||
     authorObject?.id ||
     authorObject?._id;
+
+  /*
+   * FIX:
+   *
+   * Backend sends author as STRING:
+   *
+   * author: "Apives"
+   *
+   * So explicitly support string author.
+   */
+  const resolvedAuthor =
+    typeof source?.author === 'string'
+      ? source.author
+      : source?.authorName ||
+        source?.userName ||
+        authorObject?.name ||
+        source?.name ||
+        'User';
+
+  const resolvedAvatar =
+    source?.avatar ||
+    source?.authorAvatar ||
+    source?.profilePictureUrl ||
+    authorObject?.profilePictureUrl ||
+    authorObject?.avatar ||
+    undefined;
+
+  const resolvedHeadline =
+    source?.headline ||
+    authorObject?.headline ||
+    'Builder';
 
   return {
     id: String(
@@ -93,23 +152,17 @@ const normalizeComment = (
     ),
 
     author: String(
-      source?.authorName ||
-        source?.userName ||
-        authorObject?.name ||
-        'User'
+      resolvedAuthor
     ),
 
     authorId: authorId
       ? String(authorId)
       : undefined,
 
-    avatar:
-      source?.avatar ||
-      source?.authorAvatar ||
-      source?.profilePictureUrl ||
-      authorObject?.profilePictureUrl ||
-      authorObject?.avatar ||
-      undefined,
+    avatar: resolvedAvatar,
+
+    headline:
+      resolvedHeadline,
 
     timestamp:
       source?.timestamp ||
@@ -117,6 +170,45 @@ const normalizeComment = (
       source?.updatedAt ||
       new Date().toISOString(),
   };
+};
+
+/*
+ * Get the best available comment count from the Startalk.
+ *
+ * Supports multiple backend/frontend field names so the card
+ * does not fall back to 0 when another valid count exists.
+ */
+const getStartalkCommentCount = (
+  talk: any
+): number => {
+  if (
+    Array.isArray(talk?.comments)
+  ) {
+    return talk.comments.length;
+  }
+
+  const possibleCounts = [
+    talk?.commentCount,
+    talk?.commentsCount,
+    talk?.comment_count,
+    talk?.totalComments,
+  ];
+
+  for (const value of possibleCounts) {
+    if (
+      value !== undefined &&
+      value !== null &&
+      value !== '' &&
+      Number.isFinite(Number(value))
+    ) {
+      return Math.max(
+        0,
+        Number(value)
+      );
+    }
+  }
+
+  return 0;
 };
 
 /* =========================================================
@@ -287,6 +379,7 @@ const ShareIcon: React.FC<{
     <circle cx="18" cy="5" r="2.2" />
     <circle cx="6" cy="12" r="2.2" />
     <circle cx="18" cy="19" r="2.2" />
+
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -426,10 +519,6 @@ const StartalkCardContent: React.FC<{
   onDeleteRequest,
   className = '',
 }) => {
-  /*
-   * Existing AppContext backend methods are intentionally
-   * used here. No fake/local backend is created.
-   */
   const app =
     useAppContext() as any;
 
@@ -463,6 +552,7 @@ const StartalkCardContent: React.FC<{
       ? currentUser?.name
       : null) ||
     talk.authorName ||
+    (talk as any).author ||
     'User';
 
   const displayAvatar =
@@ -472,7 +562,8 @@ const StartalkCardContent: React.FC<{
       ? currentUser?.profilePictureUrl ||
         currentUser?.avatar
       : null) ||
-    talk.authorAvatar;
+    talk.authorAvatar ||
+    (talk as any).profilePictureUrl;
 
   const displayHeadline =
     displayUser?.headline ||
@@ -483,7 +574,7 @@ const StartalkCardContent: React.FC<{
     'Builder';
 
   const initials =
-    displayName
+    String(displayName)
       .split(' ')
       .map(
         (name: string) =>
@@ -498,7 +589,9 @@ const StartalkCardContent: React.FC<{
     String(talk.authorId);
 
   const profileClickable =
-    isMongoId(talk.authorId);
+    isMongoId(
+      talk.authorId
+    );
 
   /* =======================================================
      REACTION
@@ -602,24 +695,61 @@ const StartalkCardContent: React.FC<{
     setCommentDeleting,
   ] = useState(false);
 
-  const backendCommentCount =
-    Number(
-      (talk as any).commentCount ??
-        (talk as any).commentsCount ??
-        0
+  /*
+   * FIX #2:
+   *
+   * Keep the count independently at card level.
+   *
+   * This means opening comments is NOT required to know
+   * the count.
+   */
+  const [
+    commentCount,
+    setCommentCount,
+  ] = useState<number>(() =>
+    getStartalkCommentCount(
+      talk
+    )
+  );
+
+  /*
+   * Sync count when the actual Startalk changes.
+   *
+   * IMPORTANT:
+   * This does NOT depend on reactions or other local card
+   * interactions.
+   */
+  useEffect(() => {
+    const incomingCount =
+      getStartalkCommentCount(
+        talk
+      );
+
+    setCommentCount(
+      incomingCount
     );
+  }, [
+    talk.id,
+    (talk as any).commentCount,
+    (talk as any).commentsCount,
+    (talk as any).comment_count,
+    Array.isArray(
+      (talk as any).comments
+    )
+      ? (talk as any).comments.length
+      : undefined,
+  ]);
 
   const displayedCommentCount =
     comments.length > 0
       ? comments.length
-      : backendCommentCount;
+      : commentCount;
 
-  /* 500 CHARACTERS */
   const commentCharacterCount =
     countCharacters(commentText);
 
   /* =======================================================
-     LOAD COMMENTS - REAL BACKEND
+     LOAD COMMENTS
   ======================================================= */
 
   const loadComments =
@@ -632,7 +762,6 @@ const StartalkCardContent: React.FC<{
           'fetchStartalkComments is not available in AppContext.'
         );
 
-        setComments([]);
         return;
       }
 
@@ -665,14 +794,29 @@ const StartalkCardContent: React.FC<{
                 !!comment.id
             );
 
-        setComments(normalized);
+        setComments(
+          normalized
+        );
+
+        /*
+         * Backend is now the source of truth.
+         *
+         * This fixes:
+         * 3 comments -> refresh -> 0
+         */
+        setCommentCount(
+          normalized.length
+        );
       } catch (error) {
         console.error(
           'Loading Startalk comments failed:',
           error
         );
 
-        setComments([]);
+        /*
+         * Don't destroy the existing count if the
+         * comments request temporarily fails.
+         */
       } finally {
         setCommentsLoading(false);
       }
@@ -685,13 +829,10 @@ const StartalkCardContent: React.FC<{
   const openComments =
     async () => {
       setIsCommentsOpen(true);
+
       setIsShareMenuOpen(false);
       setIsReactionMenuOpen(false);
 
-      /*
-       * No focus() here.
-       * Keyboard will NOT automatically open on mobile.
-       */
       await loadComments();
     };
 
@@ -711,10 +852,6 @@ const StartalkCardContent: React.FC<{
     const value =
       event.target.value;
 
-    /*
-     * HARD 500 CHARACTER LIMIT.
-     * Not a word limit.
-     */
     setCommentText(
       trimToCharacterLimit(
         value,
@@ -724,7 +861,7 @@ const StartalkCardContent: React.FC<{
   };
 
   /* =======================================================
-     ADD COMMENT - REAL BACKEND
+     ADD COMMENT
   ======================================================= */
 
   const handleAddComment =
@@ -761,21 +898,12 @@ const StartalkCardContent: React.FC<{
       setCommentSubmitting(true);
 
       try {
-        /*
-         * REAL BACKEND REQUEST.
-         *
-         * The component does not fabricate a comment.
-         */
         const created =
           await addStartalkComment(
             talk.id,
             text
           );
 
-        /*
-         * If the context explicitly returns false,
-         * the backend rejected the request.
-         */
         if (created === false) {
           throw new Error(
             'Backend rejected the comment.'
@@ -783,10 +911,7 @@ const StartalkCardContent: React.FC<{
         }
 
         /*
-         * Always refresh from backend after a successful
-         * request instead of trusting local state.
-         *
-         * This keeps the UI synchronized with Mongo/API.
+         * Always reload Mongo data.
          */
         await loadComments();
 
@@ -796,11 +921,6 @@ const StartalkCardContent: React.FC<{
           'Adding Startalk comment failed:',
           error
         );
-
-        /*
-         * Do NOT add a fake comment locally when
-         * the backend request fails.
-         */
       } finally {
         setCommentSubmitting(false);
       }
@@ -826,7 +946,7 @@ const StartalkCardContent: React.FC<{
     };
 
   /* =======================================================
-     DELETE COMMENT - REAL BACKEND
+     DELETE COMMENT
   ======================================================= */
 
   const requestDeleteComment =
@@ -870,9 +990,6 @@ const StartalkCardContent: React.FC<{
           );
         }
 
-        /*
-         * Refresh from backend after delete.
-         */
         await loadComments();
 
         setCommentToDeleteId(
@@ -1156,18 +1273,10 @@ const StartalkCardContent: React.FC<{
       ? createPortal(
           <div
             className="
-              fixed
-              inset-0
-              z-[1100]
-              flex
-              items-center
-              justify-center
-              px-3
-              py-4
-              sm:px-4
-              sm:py-6
-              bg-black/65
-              dark:bg-black/80
+              fixed inset-0 z-[1100]
+              flex items-center justify-center
+              px-3 py-4 sm:px-4 sm:py-6
+              bg-black/65 dark:bg-black/80
               backdrop-blur-[7px]
               overscroll-none
             "
@@ -1190,46 +1299,31 @@ const StartalkCardContent: React.FC<{
           >
             <div
               className="
-                relative
-                w-full
-                max-w-[520px]
+                relative w-full max-w-[520px]
                 overflow-visible
               "
             >
               <div
                 className="
-                  absolute
-                  -inset-3
-                  rounded-[2rem]
-                  bg-black/10
-                  dark:bg-black/25
-                  blur-2xl
-                  pointer-events-none
+                  absolute -inset-3 rounded-[2rem]
+                  bg-black/10 dark:bg-black/25
+                  blur-2xl pointer-events-none
                 "
                 aria-hidden="true"
               />
 
               <div
                 className="
-                  relative
-                  w-full
-                  h-[76vh]
-                  max-h-[650px]
+                  relative w-full
+                  h-[76vh] max-h-[650px]
                   min-h-[430px]
                   bg-[var(--component-background)]
-                  border
-                  border-[var(--border-primary)]
-                  rounded-[1.75rem]
-                  sm:rounded-[2rem]
+                  border border-[var(--border-primary)]
+                  rounded-[1.75rem] sm:rounded-[2rem]
                   shadow-[0_30px_90px_-20px_rgba(0,0,0,0.45)]
                   dark:shadow-[0_30px_90px_-20px_rgba(0,0,0,0.70)]
-                  overflow-hidden
-                  flex
-                  flex-col
-                  font-poppins
-                  animate-in
-                  zoom-in-95
-                  duration-200
+                  overflow-hidden flex flex-col
+                  font-poppins animate-in zoom-in-95 duration-200
                 "
                 onMouseDown={event =>
                   event.stopPropagation()
@@ -1239,16 +1333,10 @@ const StartalkCardContent: React.FC<{
 
                 <div
                   className="
-                    flex
-                    items-center
-                    justify-between
-                    px-5
-                    md:px-6
-                    py-4
-                    border-b
-                    border-[var(--border-primary)]
-                    shrink-0
-                    bg-[var(--component-background)]
+                    flex items-center justify-between
+                    px-5 md:px-6 py-4
+                    border-b border-[var(--border-primary)]
+                    shrink-0 bg-[var(--component-background)]
                   "
                 >
                   <div className="min-w-0">
@@ -1257,11 +1345,9 @@ const StartalkCardContent: React.FC<{
                     </h3>
 
                     <p className="text-[10px] text-[var(--text-muted)] font-medium mt-0.5">
-                      {displayedCommentCount >
-                      0
+                      {displayedCommentCount > 0
                         ? `${displayedCommentCount} ${
-                            displayedCommentCount ===
-                            1
+                            displayedCommentCount === 1
                               ? 'comment'
                               : 'comments'
                           }`
@@ -1275,21 +1361,14 @@ const StartalkCardContent: React.FC<{
                       closeComments
                     }
                     className="
-                      w-8
-                      h-8
-                      rounded-full
-                      flex
-                      items-center
-                      justify-center
+                      w-8 h-8 rounded-full
+                      flex items-center justify-center
                       bg-[var(--background-tertiary)]
-                      border
-                      border-[var(--border-primary)]
+                      border border-[var(--border-primary)]
                       text-[var(--text-muted)]
                       hover:text-[var(--text-primary)]
                       hover:border-purple-500/40
-                      transition-all
-                      active:scale-95
-                      shrink-0
+                      transition-all active:scale-95 shrink-0
                     "
                     aria-label="Close comments"
                   >
@@ -1301,13 +1380,9 @@ const StartalkCardContent: React.FC<{
 
                 <div
                   className="
-                    flex-1
-                    overflow-y-auto
+                    flex-1 overflow-y-auto
                     overscroll-contain
-                    px-5
-                    md:px-6
-                    py-5
-                    min-h-0
+                    px-5 md:px-6 py-5 min-h-0
                   "
                 >
                   {commentsLoading ? (
@@ -1318,23 +1393,16 @@ const StartalkCardContent: React.FC<{
                         Loading comments…
                       </p>
                     </div>
-                  ) : comments.length ===
-                    0 ? (
+                  ) : comments.length === 0 ? (
                     <div className="h-full min-h-[260px] flex flex-col items-center justify-center text-center">
                       <div
                         className="
-                          w-11
-                          h-11
-                          rounded-full
+                          w-11 h-11 rounded-full
                           bg-purple-500/[0.07]
                           dark:bg-purple-500/[0.12]
-                          border
-                          border-purple-500/20
-                          flex
-                          items-center
-                          justify-center
-                          mb-3
-                          text-purple-500
+                          border border-purple-500/20
+                          flex items-center justify-center
+                          mb-3 text-purple-500
                         "
                       >
                         <CommentIcon className="w-5 h-5" />
@@ -1360,8 +1428,16 @@ const StartalkCardContent: React.FC<{
                               comment.authorId
                             );
 
+                          const commentProfileClickable =
+                            isMongoId(
+                              comment.authorId
+                            );
+
                           const commentInitials =
-                            comment.author
+                            String(
+                              comment.author ||
+                                'User'
+                            )
                               .split(' ')
                               .map(
                                 name =>
@@ -1375,6 +1451,43 @@ const StartalkCardContent: React.FC<{
                               .toUpperCase() ||
                             'U';
 
+                          /*
+                           * Profile avatar.
+                           *
+                           * NOW CLICKABLE.
+                           */
+                          const commentAvatar =
+                            comment.avatar ? (
+                              <img
+                                src={
+                                  comment.avatar
+                                }
+                                alt={
+                                  comment.author
+                                }
+                                className="
+                                  w-9 h-9 rounded-full
+                                  object-cover
+                                  border border-[var(--border-primary)]
+                                  shrink-0
+                                "
+                              />
+                            ) : (
+                              <div
+                                className="
+                                  w-9 h-9 rounded-full
+                                  icon-bg-gradient
+                                  flex items-center justify-center
+                                  text-white text-[10px]
+                                  font-bold shrink-0
+                                "
+                              >
+                                {
+                                  commentInitials
+                                }
+                              </div>
+                            );
+
                           return (
                             <div
                               key={
@@ -1382,51 +1495,56 @@ const StartalkCardContent: React.FC<{
                               }
                               className="flex items-start gap-3"
                             >
-                              {comment.avatar ? (
-                                <img
-                                  src={
-                                    comment.avatar
-                                  }
-                                  alt={
-                                    comment.author
-                                  }
+                              {commentProfileClickable ? (
+                                <Link
+                                  to={`/user/${comment.authorId}`}
                                   className="
-                                    w-9
-                                    h-9
-                                    rounded-full
-                                    object-cover
-                                    border
-                                    border-[var(--border-primary)]
                                     shrink-0
+                                    rounded-full
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-purple-500/40
                                   "
-                                />
-                              ) : (
-                                <div className="
-                                  w-9
-                                  h-9
-                                  rounded-full
-                                  icon-bg-gradient
-                                  flex
-                                  items-center
-                                  justify-center
-                                  text-white
-                                  text-[10px]
-                                  font-bold
-                                  shrink-0
-                                ">
-                                  {
-                                    commentInitials
+                                  aria-label={`View ${comment.author}'s profile`}
+                                  onClick={e =>
+                                    e.stopPropagation()
                                   }
-                                </div>
+                                >
+                                  {
+                                    commentAvatar
+                                  }
+                                </Link>
+                              ) : (
+                                commentAvatar
                               )}
 
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-xs font-bold text-[var(--text-primary)] truncate">
-                                    {
-                                      comment.author
-                                    }
-                                  </span>
+                                  {commentProfileClickable ? (
+                                    <Link
+                                      to={`/user/${comment.authorId}`}
+                                      onClick={e =>
+                                        e.stopPropagation()
+                                      }
+                                      className="
+                                        text-xs font-bold
+                                        text-[var(--text-primary)]
+                                        truncate
+                                        hover:text-purple-600
+                                        transition-colors
+                                      "
+                                    >
+                                      {
+                                        comment.author
+                                      }
+                                    </Link>
+                                  ) : (
+                                    <span className="text-xs font-bold text-[var(--text-primary)] truncate">
+                                      {
+                                        comment.author
+                                      }
+                                    </span>
+                                  )}
 
                                   <span className="text-[9px] text-[var(--text-muted)] font-medium shrink-0">
                                     {timeAgo(
@@ -1451,14 +1569,12 @@ const StartalkCardContent: React.FC<{
                                     )
                                   }
                                   className="
-                                    p-1.5
-                                    rounded-full
+                                    p-1.5 rounded-full
                                     text-[var(--text-muted)]
                                     hover:text-red-500
                                     hover:bg-red-50
                                     dark:hover:bg-red-950/20
-                                    transition-colors
-                                    shrink-0
+                                    transition-colors shrink-0
                                   "
                                   title="Delete comment"
                                   aria-label="Delete comment"
@@ -1478,11 +1594,8 @@ const StartalkCardContent: React.FC<{
 
                 <div
                   className="
-                    px-5
-                    md:px-6
-                    py-4
-                    border-t
-                    border-[var(--border-primary)]
+                    px-5 md:px-6 py-4
+                    border-t border-[var(--border-primary)]
                     bg-[var(--component-background)]
                     shrink-0
                   "
@@ -1505,16 +1618,11 @@ const StartalkCardContent: React.FC<{
                         commentSubmitting
                       }
                       className="
-                        flex-1
-                        min-w-0
-                        h-10
-                        px-4
+                        flex-1 min-w-0 h-10 px-4
                         rounded-full
                         bg-[var(--background-tertiary)]
-                        border
-                        border-[var(--border-primary)]
-                        text-xs
-                        md:text-sm
+                        border border-[var(--border-primary)]
+                        text-xs md:text-sm
                         text-[var(--text-primary)]
                         placeholder-[var(--text-muted)]
                         focus:outline-none
@@ -1538,20 +1646,14 @@ const StartalkCardContent: React.FC<{
                           MAX_COMMENT_LENGTH
                       }
                       className="
-                        h-10
-                        px-4
-                        md:px-5
-                        rounded-full
-                        button-gradient
-                        text-white
-                        text-[10px]
-                        font-black
-                        uppercase
+                        h-10 px-4 md:px-5
+                        rounded-full button-gradient
+                        text-white text-[10px]
+                        font-black uppercase
                         tracking-widest
                         disabled:opacity-40
                         disabled:cursor-not-allowed
-                        transition-all
-                        active:scale-95
+                        transition-all active:scale-95
                         shrink-0
                       "
                     >
@@ -1568,8 +1670,7 @@ const StartalkCardContent: React.FC<{
 
                     <span
                       className={`
-                        text-[9px]
-                        font-semibold
+                        text-[9px] font-semibold
                         ${
                           commentCharacterCount >=
                           MAX_COMMENT_LENGTH
@@ -1603,19 +1704,15 @@ const StartalkCardContent: React.FC<{
     <>
       <article
         className={`
-          w-full
-          relative
+          w-full relative
           bg-[var(--component-background)]
           rounded-2xl
           border border-[var(--border-primary)]
           p-5 md:p-6
           transition-all duration-300
           hover:border-purple-500/30
-          group
-          flex flex-col
-          gap-4
-          select-none
-          font-poppins
+          group flex flex-col gap-4
+          select-none font-poppins
           ${className}
         `}
       >
@@ -1626,7 +1723,13 @@ const StartalkCardContent: React.FC<{
             {profileClickable ? (
               <Link
                 to={`/user/${talk.authorId}`}
-                className="relative shrink-0"
+                className="
+                  relative shrink-0 rounded-full
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-purple-500/40
+                "
+                aria-label={`View ${displayName}'s profile`}
               >
                 {displayAvatar ? (
                   <img
@@ -1660,7 +1763,13 @@ const StartalkCardContent: React.FC<{
               {profileClickable ? (
                 <Link
                   to={`/user/${talk.authorId}`}
-                  className="font-semibold text-sm md:text-base text-[var(--text-primary)] hover:text-purple-600 transition-colors truncate block tracking-tight"
+                  className="
+                    font-semibold text-sm md:text-base
+                    text-[var(--text-primary)]
+                    hover:text-purple-600
+                    transition-colors truncate block
+                    tracking-tight
+                  "
                 >
                   {displayName}
                 </Link>
@@ -1742,7 +1851,9 @@ const StartalkCardContent: React.FC<{
                     key={emoji}
                     className="flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)]"
                   >
-                    <span>{emoji}</span>
+                    <span>
+                      {emoji}
+                    </span>
 
                     <span className="text-xs font-bold text-[var(--text-primary)]">
                       {Number(count)}
@@ -1788,20 +1899,12 @@ const StartalkCardContent: React.FC<{
                     )
                   }
                   className={`
-                    inline-flex
-                    items-center
-                    justify-center
-                    gap-2
-                    w-[104px]
-                    h-8
-                    px-3
-                    rounded-full
-                    border
-                    transition-all
-                    active:scale-95
-                    text-[10px]
-                    font-black
-                    uppercase
+                    inline-flex items-center
+                    justify-center gap-2
+                    w-[104px] h-8 px-3
+                    rounded-full border
+                    transition-all active:scale-95
+                    text-[10px] font-black uppercase
                     ${
                       userHasReacted
                         ? 'bg-purple-100 dark:bg-purple-900/30 border-purple-500 text-purple-600 dark:text-purple-400'
@@ -1829,23 +1932,18 @@ const StartalkCardContent: React.FC<{
                 </button>
 
                 {isReactionMenuOpen && (
-                  <div className="
-                    absolute
-                    bottom-full
-                    left-0
-                    mb-3
-                    p-1.5
-                    bg-[var(--component-background)]
-                    border
-                    border-[var(--border-primary)]
-                    rounded-full
-                    shadow-[0_18px_50px_rgba(0,0,0,0.22)]
-                    dark:shadow-[0_18px_50px_rgba(0,0,0,0.5)]
-                    flex
-                    items-center
-                    gap-1
-                    z-[90]
-                  ">
+                  <div
+                    className="
+                      absolute bottom-full left-0 mb-3
+                      p-1.5
+                      bg-[var(--component-background)]
+                      border border-[var(--border-primary)]
+                      rounded-full
+                      shadow-[0_18px_50px_rgba(0,0,0,0.22)]
+                      dark:shadow-[0_18px_50px_rgba(0,0,0,0.5)]
+                      flex items-center gap-1 z-[90]
+                    "
+                  >
                     {MOOD_EMOJIS.map(
                       emoji => (
                         <button
@@ -1881,25 +1979,17 @@ const StartalkCardContent: React.FC<{
                   openComments
                 }
                 className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  w-[72px]
-                  h-8
-                  px-3
-                  rounded-full
-                  border
+                  inline-flex items-center
+                  justify-center gap-2
+                  w-[72px] h-8 px-3
+                  rounded-full border
                   border-[var(--border-primary)]
                   bg-[var(--background-tertiary)]
                   text-[var(--text-muted)]
                   hover:text-purple-600
                   hover:border-purple-500/50
-                  transition-all
-                  active:scale-95
-                  text-[10px]
-                  font-black
-                  uppercase
+                  transition-all active:scale-95
+                  text-[10px] font-black uppercase
                   shrink-0
                 "
                 aria-label={`${displayedCommentCount} comments`}
@@ -1923,20 +2013,15 @@ const StartalkCardContent: React.FC<{
                     handleShareButton
                   }
                   className="
-                    inline-flex
-                    items-center
+                    inline-flex items-center
                     justify-center
-                    w-9
-                    h-8
-                    rounded-full
-                    border
-                    border-[var(--border-primary)]
+                    w-9 h-8 rounded-full
+                    border border-[var(--border-primary)]
                     bg-[var(--background-tertiary)]
                     text-[var(--text-muted)]
                     hover:text-purple-600
                     hover:border-purple-500/50
-                    transition-all
-                    active:scale-95
+                    transition-all active:scale-95
                   "
                   title="Share Startalk"
                   aria-label="Share Startalk"
@@ -1945,28 +2030,32 @@ const StartalkCardContent: React.FC<{
                 </button>
 
                 {isShareMenuOpen && (
-                  <div className="
-                    absolute
-                    left-0
-                    bottom-full
-                    mb-3
-                    w-[190px]
-                    rounded-2xl
-                    border
-                    border-[var(--border-primary)]
-                    bg-[var(--component-background)]
-                    shadow-[0_20px_60px_rgba(0,0,0,0.20)]
-                    dark:shadow-[0_20px_60px_rgba(0,0,0,0.50)]
-                    overflow-hidden
-                    z-[100]
-                  ">
+                  <div
+                    className="
+                      absolute left-0 bottom-full mb-3
+                      w-[190px]
+                      rounded-2xl
+                      border border-[var(--border-primary)]
+                      bg-[var(--component-background)]
+                      shadow-[0_20px_60px_rgba(0,0,0,0.20)]
+                      dark:shadow-[0_20px_60px_rgba(0,0,0,0.50)]
+                      overflow-hidden z-[100]
+                    "
+                  >
                     <div className="p-1.5">
                       <button
                         type="button"
                         onClick={
                           handleNativeShare
                         }
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--background-tertiary)] transition-colors"
+                        className="
+                          w-full flex items-center
+                          gap-3 px-3 py-2.5 rounded-xl
+                          text-left text-xs font-semibold
+                          text-[var(--text-primary)]
+                          hover:bg-[var(--background-tertiary)]
+                          transition-colors
+                        "
                       >
                         <ShareIcon className="w-4 h-4 text-purple-500" />
 
@@ -1980,7 +2069,14 @@ const StartalkCardContent: React.FC<{
                         onClick={
                           copyShareLink
                         }
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--background-tertiary)] transition-colors"
+                        className="
+                          w-full flex items-center
+                          gap-3 px-3 py-2.5 rounded-xl
+                          text-left text-xs font-semibold
+                          text-[var(--text-primary)]
+                          hover:bg-[var(--background-tertiary)]
+                          transition-colors
+                        "
                       >
                         <CopyIcon className="w-4 h-4 text-purple-500" />
 
@@ -2004,8 +2100,6 @@ const StartalkCardContent: React.FC<{
         </div>
       </article>
 
-      {/* COMMENT MODAL PORTAL */}
-
       {commentsModal}
 
       {/* =================================================
@@ -2017,15 +2111,9 @@ const StartalkCardContent: React.FC<{
         createPortal(
           <div
             className="
-              fixed
-              inset-0
-              z-[1200]
-              flex
-              items-center
-              justify-center
-              p-4
-              bg-black/70
-              dark:bg-black/80
+              fixed inset-0 z-[1200]
+              flex items-center justify-center p-4
+              bg-black/70 dark:bg-black/80
               backdrop-blur-[7px]
             "
             style={{
@@ -2046,11 +2134,9 @@ const StartalkCardContent: React.FC<{
           >
             <div
               className="
-                w-full
-                max-w-[320px]
+                w-full max-w-[320px]
                 bg-[var(--component-background)]
-                border
-                border-[var(--border-primary)]
+                border border-[var(--border-primary)]
                 rounded-[2rem]
                 overflow-hidden
                 shadow-[0_25px_80px_rgba(0,0,0,0.35)]
@@ -2086,17 +2172,12 @@ const StartalkCardContent: React.FC<{
                     commentDeleting
                   }
                   className="
-                    flex-1
-                    px-4
-                    py-4
-                    text-[10px]
-                    font-black
-                    uppercase
-                    tracking-widest
+                    flex-1 px-4 py-4
+                    text-[10px] font-black
+                    uppercase tracking-widest
                     text-[var(--text-muted)]
                     hover:bg-[var(--background-tertiary)]
-                    border-r
-                    border-[var(--border-primary)]
+                    border-r border-[var(--border-primary)]
                     disabled:opacity-50
                   "
                 >
@@ -2112,13 +2193,9 @@ const StartalkCardContent: React.FC<{
                     commentDeleting
                   }
                   className="
-                    flex-1
-                    px-4
-                    py-4
-                    text-[10px]
-                    font-black
-                    uppercase
-                    tracking-widest
+                    flex-1 px-4 py-4
+                    text-[10px] font-black
+                    uppercase tracking-widest
                     text-red-500
                     hover:bg-red-50
                     dark:hover:bg-red-950/20
