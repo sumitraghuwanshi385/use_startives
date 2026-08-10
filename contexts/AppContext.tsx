@@ -721,96 +721,208 @@ return false;
   // ============================================================
 
   const fetchStartalkComments = async (
-    startalkId: string
-  ) => {
+  startalkId: string
+) => {
+  const t = getAuthToken();
 
-    const t = getAuthToken();
+  if (
+    !t ||
+    !startalkId ||
+    startalkId === "undefined" ||
+    startalkId === "null"
+  ) {
+    console.error(
+      "Cannot fetch comments: invalid Startalk ID",
+      startalkId
+    );
 
-    if (!t) {
-      return [];
-    }
+    return [];
+  }
 
-    try {
-
-      const res = await axios.get(
-        `/api/comments/startalk/${startalkId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${t}`,
-          },
-        }
-      );
-
-      if (
-        res.data?.success &&
-        Array.isArray(res.data.comments)
-      ) {
-        return res.data.comments;
+  try {
+    const res = await axios.get(
+      `/api/comments/startalk/${encodeURIComponent(
+        String(startalkId)
+      )}`,
+      {
+        headers: {
+          Authorization: `Bearer ${t}`,
+        },
       }
+    );
 
-      return [];
-
-    } catch (error) {
-
-      console.error(
-        "Fetch Startalk Comments Error:",
-        error
-      );
-
-      return [];
+    if (
+      res.data?.success &&
+      Array.isArray(res.data.comments)
+    ) {
+      return res.data.comments;
     }
-  };
+
+    return [];
+  } catch (error: any) {
+    console.error(
+      "Fetch Startalk Comments Error:",
+      error?.response?.status,
+      error?.response?.data || error
+    );
+
+    return [];
+  }
+};
 
 
   const addStartalkComment = async (
-    startalkId: string,
-    text: string
-  ) => {
+  startalkId: string,
+  text: string
+) => {
+  const t = getAuthToken();
 
-    const t = getAuthToken();
+  // ==========================================
+  // AUTH VALIDATION
+  // ==========================================
 
-    if (!t || !currentUser) {
-      return null;
-    }
+  if (!t || !currentUser) {
+    console.error(
+      "Cannot add comment: user is not authenticated."
+    );
 
-    try {
+    addNotificationCallBack(
+      "Please log in again to comment.",
+      "error"
+    );
 
-      const res = await axios.post(
-        `/api/comments/startalk/${startalkId}`,
-        {
-          text,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${t}`,
-          },
-        }
-      );
+    return null;
+  }
 
-      if (res.data?.success) {
+  // ==========================================
+  // STARTALK ID VALIDATION
+  // ==========================================
 
-        return res.data.comment;
+  if (
+    !startalkId ||
+    startalkId === "undefined" ||
+    startalkId === "null"
+  ) {
+    console.error(
+      "Cannot add comment: invalid Startalk ID:",
+      startalkId
+    );
 
+    addNotificationCallBack(
+      "Invalid Startalk. Please refresh the page.",
+      "error"
+    );
+
+    return null;
+  }
+
+  // ==========================================
+  // TEXT VALIDATION
+  // ==========================================
+
+  const cleanText = text.trim();
+
+  if (!cleanText) {
+    return null;
+  }
+
+  try {
+    // ========================================
+    // DEBUG — REMOVE LATER IF NEEDED
+    // ========================================
+
+    console.log(
+      "POSTING STARTALK COMMENT:",
+      {
+        startalkId: String(startalkId),
+        text: cleanText,
+        userId: currentUser.id,
       }
+    );
 
-      return null;
+    // ========================================
+    // REAL BACKEND REQUEST
+    // ========================================
 
-    } catch (error: any) {
+    const res = await axios.post(
+      `/api/comments/startalk/${encodeURIComponent(
+        String(startalkId)
+      )}`,
+      {
+        text: cleanText,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${t}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-      console.error(
-        "Add Startalk Comment Error:",
-        error
-      );
+    // ========================================
+    // DEBUG RESPONSE
+    // ========================================
 
-      addNotificationCallBack(
-        error.response?.data?.message ||
-          "Failed to post comment.",
-        "error"
-      );
+    console.log(
+      "STARTALK COMMENT RESPONSE:",
+      res.status,
+      res.data
+    );
 
-      return null;
+    // ========================================
+    // SUCCESS
+    // ========================================
+
+    if (
+      res.data?.success &&
+      res.data?.comment
+    ) {
+      return res.data.comment;
     }
-  };
+
+    // ========================================
+    // BACKEND RETURNED FAILURE
+    // ========================================
+
+    console.error(
+      "Backend rejected Startalk comment:",
+      res.data
+    );
+
+    addNotificationCallBack(
+      res.data?.message ||
+        res.data?.error ||
+        "Failed to post comment.",
+      "error"
+    );
+
+    return null;
+
+  } catch (error: any) {
+
+    // ========================================
+    // API ERROR
+    // ========================================
+
+    console.error(
+      "Add Startalk Comment Error:",
+      error?.response?.status,
+      error?.response?.data || error
+    );
+
+    const backendMessage =
+      error?.response?.data?.message ||
+      error?.response?.data?.error;
+
+    addNotificationCallBack(
+      backendMessage ||
+        "Failed to post comment.",
+      "error"
+    );
+
+    return null;
+  }
+};
 
 
   const deleteStartalkComment = async (
@@ -1195,14 +1307,46 @@ useEffect(() => {
 
     try {
       const res = await axios.get('/api/startalks', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
-      if (res.data.success) {
-        setStartalks(res.data.startalks);
+      if (
+        res.data?.success &&
+        Array.isArray(res.data.startalks)
+      ) {
+        const normalizedStartalks =
+          res.data.startalks.map((talk: any) => ({
+            ...talk,
+
+            // 🔥 IMPORTANT:
+            // MongoDB normally returns _id.
+            // StartalkCard expects id.
+            id: String(
+              talk._id ||
+              talk.id ||
+              ''
+            ),
+
+            // 🔥 Keep authorId consistent as well
+            authorId: String(
+              talk.authorId ||
+              talk.author?._id ||
+              talk.author?.id ||
+              ''
+            ),
+          }));
+
+        setStartalks(normalizedStartalks);
+      } else {
+        setStartalks([]);
       }
-    } catch (err) {
-      console.error("Startalk fetch error:", err);
+    } catch (error: any) {
+      console.error(
+        "Startalk fetch error:",
+        error?.response?.data || error
+      );
     }
   };
 
