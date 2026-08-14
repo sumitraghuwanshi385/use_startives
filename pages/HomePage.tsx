@@ -1,555 +1,2325 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+  ArrowRight,
+  BadgeCheck,
+  BarChart3,
+  Box,
+  BriefcaseBusiness,
+  Check,
+  ChevronRight,
+  CircleDollarSign,
+  Compass,
+  Globe2,
+  Handshake,
+  Lightbulb,
+  MessageCircle,
+  Rocket,
+  Search,
+  Sparkles,
+  Star,
+  TrendingUp,
+  Users,
+  Zap,
+} from 'lucide-react';
+
 import { useAppContext } from '../contexts/AppContext';
-import { timeAgo } from '../constants';
-import { useTheme } from '../contexts/ThemeContext';
-import { 
-    APP_NAME, 
-    LinkedInLogoIcon,
-    GithubLogoIcon,
-    XLogoIcon,
-    FacebookLogoIcon,
-    CurrencyDollarIcon,
-    ChevronRightIcon,
-    BoltIcon,
-    UsersIcon,
-    IdeaStarIcon
-} from '../constants'; 
+import { APP_NAME } from '../constants';
 import { ProjectCard } from '../pages/ProjectsListPage';
 
-const GradientButton: React.FC<{ to?: string; href?: string; children: React.ReactNode; className?: string; icon?: React.ReactNode, type?: "button" | "submit" | "reset", onClick?: () => void, "data-animate-delay"?: string }> = ({ to, href, children, className, icon, type="button", onClick, "data-animate-delay": dataAnimateDelay }) => {
-  const commonClasses = `button-gradient inline-flex items-center justify-center text-white font-semibold py-3 px-8 rounded-full text-base transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500/50 ${className}`;
-  
+/* =========================================================
+   BUTTON
+========================================================= */
+
+const GradientButton: React.FC<{
+  to?: string;
+  href?: string;
+  children: React.ReactNode;
+  className?: string;
+  icon?: React.ReactNode;
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
+}> = ({
+  to,
+  href,
+  children,
+  className = '',
+  icon,
+  type = 'button',
+  onClick,
+}) => {
+  const commonClasses = `
+    button-gradient
+    inline-flex items-center justify-center
+    gap-2
+    text-white
+    font-semibold
+    py-3 px-7
+    rounded-full
+    text-sm
+    transition-all duration-300
+    hover:scale-[1.03]
+    active:scale-[0.98]
+    focus:outline-none
+    focus:ring-4
+    focus:ring-red-500/20
+    ${className}
+  `;
+
   const content = (
     <>
-      {icon && <span className="mr-2">{icon}</span>}
       {children}
+      {icon && <span>{icon}</span>}
     </>
   );
 
   if (to) {
-    return <Link to={to} className={commonClasses} onClick={onClick} data-Animate-delay={dataAnimateDelay}>{content}</Link>;
-  }
-  if (href) {
-    return <a href={href} target="_blank" rel="noopener noreferrer" className={commonClasses} onClick={onClick} data-Animate-delay={dataAnimateDelay}>{content}</a>;
-  }
-  return <button type={type} className={commonClasses} onClick={onClick} data-Animate-delay={dataAnimateDelay}>{content}</button>;
-};
-
-const ArrowRightIcon: React.FC<{className?: string}> = ({className}) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`w-5 h-5 ${className}`}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-  </svg>
-);
-
-const GlobeIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8 text-blue-400" }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-        <path d="M2 12h20" />
-    </svg>
-);
-
-const CubeIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8 text-blue-400" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-  </svg>
-);
-
-const CheckBadgeIcon: React.FC<{ className?: string }> = ({ className = "w-8 h-8 text-blue-400" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-);
-
-const SparklesIcon: React.FC<{className?: string}> = ({className = "w-10 h-10 text-blue-400"}) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.567L16.5 21.75l-.398-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.398a2.25 2.25 0 001.423-1.423L16.5 15.75l.398 1.183a2.25 2.25 0 001.423 1.423L19.5 18.75l-1.183.398a2.25 2.25 0 00-1.423 1.423z" />
-  </svg>
-);
-
-const useCountUp = (endValue: number, duration: number = 2000) => {
-    const [count, setCount] = useState(0);
-    useEffect(() => {
-        let start = 0;
-        const totalFrames = Math.round(duration / (1000 / 60));
-        const counter = setInterval(() => {
-            start++;
-            const progress = start / totalFrames;
-            const easedProgress = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.round(endValue * easedProgress));
-            if (start === totalFrames) {
-                clearInterval(counter);
-                setCount(endValue); 
-            }
-        }, 1000 / 60);
-        return () => clearInterval(counter);
-    }, [endValue, duration]);
-    return count;
-};
-
-const ChartBarSquareIcon: React.FC<{ className?: string }> = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>);
-const LightningBoltIcon: React.FC<{ className?: string }> = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>);
-
-const EcosystemStatCard: React.FC<{ endValue: number; label: string; description: string; icon: React.ReactElement<{ className?: string }>; suffix?: string; className?: string; gradient: string }> = ({ endValue, label, description, icon, suffix, className, gradient }) => {
-    const { theme } = useTheme();
-    const [isInView, setIsInView] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-    const count = useCountUp(isInView ? endValue : 0, 2000);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                setIsInView(true);
-                observer.unobserve(entry.target);
-            }
-        }, { threshold: 0.5 });
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
-        };
-    }, []);
-    
-    const textGradient = theme === 'dark' ? 'from-white to-neutral-400' : 'from-neutral-900 to-neutral-600';
-
     return (
-        <div 
-            ref={ref}
-            className={`fade-in-up bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 transform hover:-translate-y-2 hover:border-red-500/50 ${className}`}
-        >
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br ${gradient}`}>
-                {React.cloneElement(icon, { className: "w-7 h-7 text-white"})}
-            </div>
-            <p className={`text-3xl font-bold bg-gradient-to-r ${textGradient} bg-clip-text text-transparent font-poppins`}>
-                {count}{suffix}
-            </p>
-            <h3 className="text-base font-bold text-[var(--text-primary)] mt-3 font-poppins">{label}</h3>
-            <p className="text-[var(--text-secondary)] mt-1 text-xs font-poppins">{description}</p>
-        </div>
+      <Link
+        to={to}
+        className={commonClasses}
+        onClick={onClick}
+      >
+        {content}
+      </Link>
     );
-};
-
-const HomePage: React.FC = () => {
-  const pageRef = useRef<HTMLDivElement>(null);
-
-const navigate = useNavigate();
-const { startupIdeas, currentUser } = useAppContext();
-
-const recentProjects = [...startupIdeas]
-  .filter((idea) => !idea.askingPrice)
-  .sort(
-    (a, b) =>
-      new Date(b.createdAt || b.postedDate).getTime() -
-      new Date(a.createdAt || a.postedDate).getTime()
-  )
-  .slice(0, 4);
-
-const handleProtectedRoute = (path: string) => {
-  if (!currentUser) {
-    navigate("/login");
-  } else {
-    navigate(path);
   }
-};
 
-  const features = [
-    { icon: <CheckBadgeIcon />, title: "Validate your idea", description: "Get feedback on your startup concept from a diverse community of experts and peers.", gradient: 'from-sky-400 to-cyan-300' },
-    { icon: <UsersIcon />, title: "Find a co-founder", description: "Connect with passionate individuals who share your vision and have the skills to help you succeed.", gradient: 'from-red-500 to-rose-400' },
-    { icon: <CubeIcon />, title: "Build your mvp", description: "Assemble a talented team to bring your Minimum Viable Product to life and start testing the market.", gradient: 'from-orange-400 to-yellow-300' },
-    { icon: <GlobeIcon />, title: "Scale your venture", description: "Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.", gradient: 'from-emerald-400 to-teal-300' },
-  ];
-  
-  const testimonials = [
-      { name: "Prince", role: "Founder, Apives", quote: `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.` },
-      { name: "Sumit", role: "UX Designer", quote: `I was looking to join an exciting project and found the perfect fit here. The quality of ideas is amazing.` },
-      { name: "Sonali Jaiswal", role: "Full-Stack Developer", quote: `As a developer, this platform is a goldmine. I get to work on innovative projects and build my portfolio.` }
-  ];
-
-  const companyLogos = [
-    { component: <LinkedInLogoIcon />, alt: 'LinkedIn' },
-    { component: <GithubLogoIcon />, alt: 'GitHub' },
-    { component: <XLogoIcon />, alt: 'X' },
-    { component: <FacebookLogoIcon />, alt: 'Facebook' },
-  ];
-
-  const whyChooseFeatures = [
-    {
-      align: 'left',
-      title: 'Forge global alliances.',
-      description: 'Break geographical barriers. Connect with a diverse pool of innovators, mentors, and investors from every corner of the globe.',
-      gradient: 'from-sky-400 to-cyan-300',
-    },
-    {
-      align: 'right',
-      title: 'Assemble your dream team.',
-      description: 'Find the missing piece to your puzzle. Our platform is the crucible where visionary founders meet brilliant developers and designers.',
-      gradient: 'from-red-500 to-red-400',
-    },
-    {
-      align: 'left',
-      title: 'Launchpad for legends.',
-      description: 'Go from a spark of genius to a market-ready MVP. We provide the tools and community support to validate your vision.',
-      gradient: 'from-orange-400 to-yellow-300',
-    }
-  ];
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={commonClasses}
+        onClick={onClick}
+      >
+        {content}
+      </a>
+    );
+  }
 
   return (
-    <div ref={pageRef} className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins">
-      <div className="relative z-10">
-        <section className="hero-animated-bg relative pt-20 pb-20 sm:pt-24 sm:pb-28 text-center px-4">
-          <div className="absolute inset-0 z-0 dot-pattern-bg"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--background-primary)] to-transparent z-10"></div>
-          <div className="relative z-20 max-w-4xl mx-auto">
-            <div className="fade-in-up">
-              <img src="https://i.postimg.cc/pLTtqf3Q/Picsart-25-09-19-20-29-01-019.png" alt="Startives Logo" className="mx-auto mb-4 h-24 w-24" />
-            </div>
-             <div className="fade-in">
-                <div className="flex items-center justify-center gap-x-4 sm:gap-x-6 gap-y-2 flex-wrap mb-8 text-sm text-[var(--text-secondary)]">
-                    <span className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
-                            <UsersIcon className="w-2.5 h-2.5 text-white"/>
-                        </div> 
-                        Find co-founders
-                    </span>
-                    <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">&bull;</span>
-                    <span className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
-                            <SparklesIcon className="w-2.5 h-2.5 text-white"/>
-                        </div>
-                        Validate ideas
-                    </span>
-                    <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">&bull;</span>
-                    <span className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
-                            <CubeIcon className="w-2.5 h-2.5 text-white"/>
-                        </div>
-                        Assemble teams
-                    </span>
-                </div>
-              </div>
-            <div className="fade-in-up">
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins">
-                Where visionaries &<br/>
-                <span className="bg-gradient-to-r from-red-500 to-blue-500 gradient-text">builders connect</span>
-              </h1>
-              <p className="mt-6 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto font-medium font-poppins">
-                {APP_NAME} is your launchpad for turning visionary ideas into reality. Connect with co-founders, assemble your dream team, and build the future, together.
-              </p>
-            </div>
-            <div className="mt-10 flex items-center justify-center gap-4 fade-in-up">
-              <GradientButton to="/signup" className="font-poppins">Join the future</GradientButton>
-            </div>
-          </div>
-        </section>
+    <button
+      type={type}
+      className={commonClasses}
+      onClick={onClick}
+    >
+      {content}
+    </button>
+  );
+};
 
-{/* 🔥 DISCOVER PROJECTS SECTION */}
-<section className="py-12 sm:py-16 bg-[var(--background-primary)]">
-  <div className="container mx-auto px-4">
+/* =========================================================
+   COUNT UP
+========================================================= */
 
-    <div className="text-center mb-10 fade-in-up">
-      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
-        Discover Projects
-      </h2>
-      <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
-        Explore live startup ideas, apply to join teams, or submit your own and find co-founders.
-      </p>
-    </div>
+const useCountUp = (
+  endValue: number,
+  duration: number = 1600
+) => {
+  const [count, setCount] = useState(0);
 
-    {/* ✅ FIXED GRID WITH LOGIN PROTECTION */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {recentProjects.map((idea) => (
-        <div
-          key={idea.id}
-          onClick={() => handleProtectedRoute(`/idea/${idea.id}`)}
-          className="cursor-pointer"
-        >
-          <ProjectCard idea={idea} />
-        </div>
-      ))}
-    </div>
+  useEffect(() => {
+    let frame = 0;
+    const totalFrames = Math.max(
+      1,
+      Math.round(duration / 16)
+    );
 
-    <div className="flex justify-center gap-4 mt-10">
+    const timer = window.setInterval(() => {
+      frame += 1;
 
-      <button
-        onClick={() => handleProtectedRoute("/discover")}
-        className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest"
+      const progress = Math.min(
+        frame / totalFrames,
+        1
+      );
+
+      const eased =
+        1 - Math.pow(1 - progress, 3);
+
+      setCount(
+        Math.round(endValue * eased)
+      );
+
+      if (progress >= 1) {
+        window.clearInterval(timer);
+        setCount(endValue);
+      }
+    }, 16);
+
+    return () =>
+      window.clearInterval(timer);
+  }, [endValue, duration]);
+
+  return count;
+};
+
+/* =========================================================
+   STAT CARD
+========================================================= */
+
+const EcosystemStatCard: React.FC<{
+  endValue: number;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+  suffix?: string;
+  gradient: string;
+}> = ({
+  endValue,
+  label,
+  description,
+  icon,
+  suffix = '',
+  gradient,
+}) => {
+  const [isInView, setIsInView] =
+    useState(false);
+
+  const ref =
+    useRef<HTMLDivElement>(null);
+
+  const count = useCountUp(
+    isInView ? endValue : 0
+  );
+
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element) return;
+
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            observer.unobserve(entry.target);
+          }
+        },
+        { threshold: 0.25 }
+      );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="
+        group
+        bg-[var(--component-background)]
+        border border-[var(--border-primary)]
+        rounded-2xl
+        p-5
+        transition-all duration-300
+        hover:-translate-y-1
+        hover:border-purple-500/30
+      "
+    >
+      <div
+        className={`
+          w-10 h-10
+          rounded-xl
+          flex items-center justify-center
+          mb-5
+          bg-gradient-to-br
+          ${gradient}
+        `}
       >
-        Explore Projects
-      </button>
-
-      <button
-        onClick={() => handleProtectedRoute("/submit-idea")}
-        className="bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest"
-      >
-        Submit Idea
-      </button>
-
-    </div>
-
-  </div>
-</section>
-
-        <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-10 fade-in-up">
-                    <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins">
-                        An ecosystem in motion
-                    </h2>
-                    <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
-                        Witness the pulse of innovation. Our platform is a dynamic network where connections spark, ideas ignite, and ventures take flight every day.
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                     <EcosystemStatCard 
-                        className="ecosystem-stat-card shadow-none"
-                        endValue={50}
-                        suffix="+"
-                        label="Projects launched"
-                        description="From initial spark to successful launch, ventures are taking off."
-                        icon={<ChartBarSquareIcon />}
-                        gradient="from-sky-500 to-cyan-400"
-                    />
-                     <EcosystemStatCard 
-                        className="ecosystem-stat-card shadow-none"
-                        endValue={200}
-                        suffix="+"
-                        label="Founders connected"
-                        description="Building powerful partnerships and lasting co-founder relationships."
-                        icon={<UsersIcon />}
-                        gradient="from-red-500 to-red-600"
-                    />
-                     <EcosystemStatCard 
-                        className="ecosystem-stat-card shadow-none"
-                        endValue={500}
-                        suffix="+"
-                        label="Innovators"
-                        description="A growing community of developers, designers, and strategists."
-                        icon={<LightningBoltIcon />}
-                        gradient="from-orange-400 to-yellow-300"
-                    />
-                </div>
-            </div>
-        </section>
-        
-        <section className="py-12 bg-[var(--background-primary)]">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-extrabold text-[var(--text-primary)] mb-2 fade-in-up tracking-tight font-poppins">Everything you need to start</h2>
-              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto fade-in-up text-sm sm:text-base font-medium font-poppins">From idea to launch, {APP_NAME} provides the tools and community to support your journey.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature, index) => (
-                <div key={index} className="feature-card-item bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 transform hover:-translate-y-2 hover:border-red-500/50 fade-in-up text-center flex flex-col items-center shadow-none">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 bg-gradient-to-br ${feature.gradient}`}>
-                      {React.cloneElement(feature.icon, { className: "w-5 h-5 text-white"})}
-                  </div>
-                  <h3 className="text-base font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">{feature.title}</h3>
-                  <p className="text-[var(--text-secondary)] text-xs font-medium leading-relaxed font-poppins">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-[100px] -ml-40 -mb-40 pointer-events-none"></div>
-            
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="max-w-3xl mx-auto text-center mb-6">
-                    <h2 className="text-xl md:text-2xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins">The asset exchange</h2>
-                    <div className="w-12 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto my-3 rounded-full"></div>
-                    <p className="text-[var(--text-secondary)] text-xs sm:text-sm leading-relaxed font-medium opacity-90 font-poppins">
-                        A premium ecosystem where validated digital products find new growth. 
-                        We facilitate direct introductions between high-level builders and strategic acquirers.
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <div className="bg-[var(--component-background)] p-6 rounded-3xl border border-[var(--border-primary)] shadow-none flex flex-col items-center text-center">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-4">
-                            <CurrencyDollarIcon className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">Vetted inventory</h3>
-                        <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">Access startups with proven revenue, verified MRR, and clean codebases. Every listing undergoes an internal audit process.</p>
-                    </div>
-
-                    <div className="bg-[var(--component-background)] p-6 rounded-3xl border border-[var(--border-primary)] shadow-none flex flex-col items-center text-center">
-                        <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 mb-4">
-                            <BoltIcon className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">Secured handover</h3>
-                        <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">Gain access to standardized migration checklists for code, domains, and documentation to ensure a predictable transfer.</p>
-                    </div>
-
-                    <div className="bg-[var(--component-background)] p-6 rounded-3xl border border-[var(--border-primary)] shadow-none flex flex-col items-center text-center">
-                        <div className="w-12 h-12 rounded-2xl bg-sky-100 dark:bg-sky-500/10 flex items-center justify-center text-sky-600 mb-4">
-                            <UsersIcon className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">Founder access</h3>
-                        <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">Skip the middleman. Chat directly with original builders for due diligence. We provide the room, you finalize the transaction.</p>
-                    </div>
-                </div>
-
-                <div className="p-6 sm:p-8 rounded-[2.5rem] bg-white dark:bg-black border border-gray-100 dark:border-neutral-900 shadow-none relative overflow-hidden text-neutral-900 dark:text-white max-w-4xl mx-auto">
-                    <div className="absolute inset-0 dot-pattern-bg opacity-[0.03] pointer-events-none"></div>
-                    <div className="absolute -top-20 -right-20 w-56 h-56 bg-emerald-50 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-60"></div>
-                    
-                    <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-8">
-                        <div className="text-center sm:text-left max-w-lg">
-                            <h3 className="text-xl font-black tracking-tight mb-2 italic font-poppins">Ready to cash out?</h3>
-                            <p className="text-neutral-500 dark:text-neutral-400 text-sm font-medium leading-relaxed font-poppins">
-                                List your digital assets in front of thousands of potential acquirers. 
-                                High-intent, zero commissions, and founder-focused.
-                            </p>
-                        </div>
-                        <Link to="/submit-asset" className="w-full sm:w-auto px-10 py-3 button-gradient text-white font-black uppercase text-[11px] tracking-widest rounded-full shadow-none hover:scale-105 transition-all active:scale-95 text-center font-poppins">
-                            Enroll your asset
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
-             <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40"></div>
-             <div className="container mx-auto px-4 relative z-10">
-                 <div className="flex flex-col lg:flex-row items-center gap-10 max-w-5xl mx-auto">
-                     <div className="lg:w-1/2 space-y-6 text-center lg:text-left">
-                         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins uppercase">The pulse of innovation</h2>
-                         <p className="text-sm sm:text-base text-[var(--text-secondary)] font-medium leading-relaxed font-poppins">
-                             Explore real-time thoughts, wins, and pivots from founders building the next big things. Startalks is the social layer where the community breathes.
-                         </p>
-                         <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
-                            <Link to="/startalks" className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-none hover:scale-105 transition-all font-poppins">Enter the feed</Link>
-                            <Link to="/signup" className="bg-[var(--background-tertiary)] text-[var(--text-primary)] border border-[var(--border-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[var(--component-background-hover)] transition-all font-poppins shadow-none">Join the talk</Link>
-                         </div>
-                     </div>
-                     <div className="lg:w-1/2 relative">
-                         <div className="grid grid-cols-2 gap-4">
-                             {[
-                                 { name: 'Sarah J.', content: 'Just secured beta testers! 🚀', delay: '0s', emoji: '🎉' },
-                                 { name: 'Mike R.', content: 'Pivot was the best decision.', delay: '0.2s', emoji: '💡' },
-                                 { name: 'Elena W.', content: 'Scaling to 10k MRR today.', delay: '0.4s', emoji: '📈' },
-                                 { name: 'Liam P.', content: 'Building in public is hard but worth it.', delay: '0.6s', emoji: '🔨' }
-                             ].map((talk, idx) => (
-                                 <div key={idx} className="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-[var(--border-primary)] shadow-none animate-in slide-in-from-bottom-4 duration-700 font-poppins" style={{ animationDelay: talk.delay }}>
-                                     <div className="flex items-center gap-2 mb-2">
-                                         <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-[10px] text-white font-bold">{talk.name[0]}</div>
-                                         <span className="text-[10px] font-bold text-[var(--text-primary)]">{talk.name}</span>
-                                     </div>
-                                     <p className="text-[11px] text-[var(--text-secondary)] font-medium italic">"{talk.content}"</p>
-                                     <div className="mt-2 text-right text-xs">{talk.emoji}</div>
-                                 </div>
-                             ))}
-                         </div>
-                         <div className="absolute -top-6 -right-6 w-12 h-12 bg-purple-500/10 rounded-full animate-orbit blur-xl"></div>
-                         <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl" style={{ animationDirection: 'reverse' }}></div>
-                     </div>
-                 </div>
-             </div>
-        </section>
-
-        <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-10 fade-in">
-                    <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">Why startives exists?</h2>
-                    <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">We're more than a platform; we're your strategic partner in innovation.</p>
-                </div>
-                <div className="max-w-4xl mx-auto space-y-12">
-                    {whyChooseFeatures.map((feature, index) => (
-                        <div key={index} className={`fade-in-up flex flex-col ${index % 2 === 0 ? 'md:items-start text-center md:text-left' : 'md:items-end text-center md:text-right'}`}>
-                            <h3 className={`text-2xl font-bold bg-gradient-to-r ${feature.gradient} gradient-text mb-3 inline-block tracking-tight font-poppins`}>{feature.title}</h3>
-                            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
-                                {feature.description}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-        
-        <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">From our community</h2>
-              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">Innovators are building, connecting, and succeeding on {APP_NAME}.</p>
-            </div>
-            <div className="relative w-full overflow-hidden mask-gradient">
-              <div className="flex animate-marquee gap-8">
-                {[...testimonials, ...testimonials].map((testimonial, index) => (
-                  <div key={index} className="flex-shrink-0 w-[90vw] sm:w-[420px]">
-                    <div className="p-6 bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] flex flex-col space-y-4 h-full transform transition-all duration-300 hover:-translate-y-1 hover:shadow-none hover:border-purple-500/20 relative overflow-hidden font-poppins shadow-none">
-                      <img src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" alt="Logo" className="absolute -top-4 -right-4 w-24 h-24 opacity-5" />
-                      <div className="flex justify-between items-center z-10">
-                        <div className="flex space-x-0.5 text-yellow-400">
-                          <StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon />
-                        </div>
-                      </div>
-                      <p className="text-[var(--text-secondary)] text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">"{testimonial.quote}"</p>
-                      <div className="pt-4 border-t border-[var(--border-primary)] z-10">
-                        <div>
-                          <p className="font-bold text-[var(--text-primary)] text-sm">{testimonial.name}</p>
-                          <p className="text-xs text-[var(--text-muted)]">{testimonial.role}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <section className="py-16 bg-[var(--background-primary)]">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-10 fade-in-up">
-                    <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight font-poppins uppercase">
-                        Powering the next wave of startups
-                    </h2>
-                    <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                        We are proud to be the launchpad for innovators from world-class companies and universities.
-                    </p>
-                </div>
-             <div className="flex justify-center items-center gap-x-16 sm:gap-x-24">
-                {companyLogos.map((logo, index) => (
-                    <div key={index} aria-label={logo.alt}>
-                        {React.cloneElement(logo.component, {
-                            className: "h-8 w-8 text-[var(--text-muted)] opacity-70 hover:opacity-100 transition-opacity duration-300 shadow-none"
-                        })}
-                    </div>
-                ))}
-            </div>
-        </div>
-        </section>
-        <section className="text-center py-12 px-4 bg-[var(--background-secondary)]">
-            <div className="container mx-auto max-w-3xl fade-in font-poppins">
-              <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center mx-auto mb-4 shadow-none">
-                <SparklesIcon className="w-6 h-6 text-white"/>
-              </div>
-              <h2 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">Ready to build what's next?</h2>
-              <p className="text-[var(--text-secondary)] mt-2 text-xs sm:text-sm leading-relaxed font-medium">
-                Your next big opportunity is just a click away. Join a community of forward-thinkers and start building your legacy today.
-              </p>
-              <div className="mt-8">
-                 <GradientButton to="/signup" icon={<ArrowRightIcon />} className="shadow-none !text-xs !py-2.5 !px-6">Launch your vision</GradientButton>
-              </div>
-            </div>
-        </section>
+        {icon}
       </div>
+
+      <div className="flex items-baseline gap-1">
+        <span className="
+          text-3xl
+          font-extrabold
+          tracking-tight
+          text-[var(--text-primary)]
+        ">
+          {count}
+        </span>
+
+        <span className="
+          text-lg
+          font-bold
+          text-[var(--text-muted)]
+        ">
+          {suffix}
+        </span>
+      </div>
+
+      <h3 className="
+        mt-2
+        text-sm
+        font-bold
+        text-[var(--text-primary)]
+      ">
+        {label}
+      </h3>
+
+      <p className="
+        mt-1
+        text-xs
+        leading-relaxed
+        text-[var(--text-secondary)]
+      ">
+        {description}
+      </p>
     </div>
   );
 };
 
-const StarIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.007z" clipRule="evenodd" />
-  </svg>
+/* =========================================================
+   SMALL FEATURE
+========================================================= */
+
+const MiniFeature: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+}> = ({
+  icon,
+  title,
+  text,
+}) => (
+  <div className="
+    flex
+    items-start
+    gap-3
+  ">
+    <div className="
+      w-9 h-9
+      shrink-0
+      rounded-xl
+      bg-[var(--background-tertiary)]
+      border border-[var(--border-primary)]
+      flex items-center justify-center
+      text-purple-500
+    ">
+      {icon}
+    </div>
+
+    <div>
+      <h3 className="
+        text-sm
+        font-bold
+        text-[var(--text-primary)]
+      ">
+        {title}
+      </h3>
+
+      <p className="
+        mt-1
+        text-xs
+        leading-relaxed
+        text-[var(--text-secondary)]
+      ">
+        {text}
+      </p>
+    </div>
+  </div>
 );
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+const HomePage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const {
+    startupIdeas,
+    currentUser,
+  } = useAppContext();
+
+  /* =======================================================
+     PROJECTS
+  ======================================================= */
+
+  const recentProjects = [
+    ...(startupIdeas || []),
+  ]
+    .filter(
+      idea => !idea.askingPrice
+    )
+    .sort(
+      (a, b) =>
+        new Date(
+          b.createdAt ||
+            b.postedDate
+        ).getTime() -
+        new Date(
+          a.createdAt ||
+            a.postedDate
+        ).getTime()
+    )
+    .slice(0, 4);
+
+  /* =======================================================
+     ROUTING
+  ======================================================= */
+
+  const handleProtectedRoute = (
+    path: string
+  ) => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    navigate(path);
+  };
+
+  /* =======================================================
+     FEATURES
+  ======================================================= */
+
+  const features = [
+    {
+      icon: (
+        <BadgeCheck className="w-5 h-5" />
+      ),
+      title: 'Validate ideas',
+      description:
+        'Get feedback before you spend months building.',
+    },
+    {
+      icon: (
+        <Handshake className="w-5 h-5" />
+      ),
+      title: 'Find co-founders',
+      description:
+        'Meet builders who complement your skills and vision.',
+    },
+    {
+      icon: (
+        <Box className="w-5 h-5" />
+      ),
+      title: 'Build together',
+      description:
+        'Turn promising ideas into real products with a team.',
+    },
+    {
+      icon: (
+        <TrendingUp className="w-5 h-5" />
+      ),
+      title: 'Grow your startup',
+      description:
+        'Find people, opportunities and momentum in one place.',
+    },
+  ];
+
+  /* =======================================================
+     TESTIMONIALS
+  ======================================================= */
+
+  const testimonials = [
+    {
+      name: 'Prince',
+      role: 'Founder, Apives',
+      quote:
+        'Within a week, I connected with two incredible developers on Startives.',
+    },
+    {
+      name: 'Sumit',
+      role: 'UX Designer',
+      quote:
+        'I was looking to join an exciting project and found the perfect fit here.',
+    },
+    {
+      name: 'Sonali Jaiswal',
+      role: 'Full-Stack Developer',
+      quote:
+        'As a developer, Startives gives me a place to discover interesting projects.',
+    },
+  ];
+
+  return (
+    <div
+      className="
+        min-h-screen
+        bg-[var(--background-primary)]
+        text-[var(--text-primary)]
+        overflow-x-hidden
+        font-poppins
+      "
+    >
+
+      {/* ===================================================
+          HERO
+      =================================================== */}
+
+      <section
+        className="
+          relative
+          overflow-hidden
+          pt-16
+          pb-16
+          sm:pt-20
+          sm:pb-20
+          px-4
+        "
+      >
+        <div className="
+          absolute
+          inset-0
+          dot-pattern-bg
+          opacity-40
+          pointer-events-none
+        " />
+
+        <div className="
+          absolute
+          top-[-180px]
+          left-1/2
+          -translate-x-1/2
+          w-[520px]
+          h-[520px]
+          rounded-full
+          bg-purple-500/[0.07]
+          blur-[110px]
+          pointer-events-none
+        " />
+
+        <div className="
+          absolute
+          top-[-80px]
+          right-[-140px]
+          w-[320px]
+          h-[320px]
+          rounded-full
+          bg-blue-500/[0.06]
+          blur-[100px]
+          pointer-events-none
+        " />
+
+        <div className="
+          relative
+          z-10
+          max-w-5xl
+          mx-auto
+          text-center
+        ">
+
+          {/* eyebrow */}
+
+          <div className="
+            inline-flex
+            items-center
+            gap-2
+            px-3.5
+            py-1.5
+            rounded-full
+            bg-[var(--background-tertiary)]
+            border border-[var(--border-primary)]
+            text-[10px]
+            sm:text-xs
+            font-bold
+            text-[var(--text-secondary)]
+            mb-6
+          ">
+            <span className="
+              w-1.5 h-1.5
+              rounded-full
+              bg-green-500
+              animate-pulse
+            " />
+
+            The builder network
+          </div>
+
+          {/* heading */}
+
+          <h1 className="
+            text-[2.7rem]
+            leading-[1.02]
+            sm:text-6xl
+            md:text-7xl
+            font-extrabold
+            tracking-[-0.055em]
+            text-[var(--text-primary)]
+          ">
+            Build something
+            <br />
+
+            <span className="
+              bg-gradient-to-r
+              from-red-500
+              via-purple-500
+              to-blue-500
+              bg-clip-text
+              text-transparent
+            ">
+              worth building.
+            </span>
+          </h1>
+
+          <p className="
+            mt-5
+            max-w-xl
+            mx-auto
+            text-sm
+            sm:text-base
+            leading-relaxed
+            text-[var(--text-secondary)]
+            font-medium
+          ">
+            Find co-founders, discover projects,
+            share ideas and meet people who
+            actually build.
+          </p>
+
+          {/* actions */}
+
+          <div className="
+            mt-7
+            flex
+            flex-col
+            sm:flex-row
+            items-center
+            justify-center
+            gap-3
+          ">
+            <GradientButton
+              to="/signup"
+              icon={
+                <ArrowRight className="w-4 h-4" />
+              }
+            >
+              Start building
+            </GradientButton>
+
+            <button
+              type="button"
+              onClick={() =>
+                handleProtectedRoute(
+                  '/discover'
+                )
+              }
+              className="
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                px-6
+                py-3
+                rounded-full
+                border border-[var(--border-primary)]
+                bg-[var(--background-tertiary)]
+                text-[var(--text-primary)]
+                text-sm
+                font-semibold
+                transition-all
+                hover:border-purple-500/40
+                hover:bg-[var(--component-background)]
+              "
+            >
+              <Compass className="w-4 h-4" />
+              Explore projects
+            </button>
+          </div>
+
+          {/* quick points */}
+
+          <div className="
+            mt-8
+            flex
+            flex-wrap
+            items-center
+            justify-center
+            gap-x-5
+            gap-y-2
+            text-[10px]
+            sm:text-xs
+            text-[var(--text-muted)]
+            font-medium
+          ">
+            <span className="flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-purple-500" />
+              Find co-founders
+            </span>
+
+            <span className="
+              hidden
+              sm:block
+              opacity-40
+            ">
+              •
+            </span>
+
+            <span className="flex items-center gap-1.5">
+              <Lightbulb className="w-3.5 h-3.5 text-yellow-500" />
+              Validate ideas
+            </span>
+
+            <span className="
+              hidden
+              sm:block
+              opacity-40
+            ">
+              •
+            </span>
+
+            <span className="flex items-center gap-1.5">
+              <Rocket className="w-3.5 h-3.5 text-blue-500" />
+              Launch products
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          DISCOVER PROJECTS
+      =================================================== */}
+
+      <section className="
+        py-12
+        sm:py-16
+        bg-[var(--background-primary)]
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+
+          <div className="
+            flex
+            flex-col
+            sm:flex-row
+            sm:items-end
+            sm:justify-between
+            gap-4
+            mb-7
+          ">
+            <div>
+              <div className="
+                flex
+                items-center
+                gap-2
+                mb-2
+              ">
+                <span className="
+                  w-7 h-7
+                  rounded-lg
+                  bg-purple-500/10
+                  text-purple-500
+                  flex items-center justify-center
+                ">
+                  <Search className="w-4 h-4" />
+                </span>
+
+                <span className="
+                  text-[10px]
+                  font-black
+                  uppercase
+                  tracking-[0.16em]
+                  text-purple-500
+                ">
+                  Discover
+                </span>
+              </div>
+
+              <h2 className="
+                text-2xl
+                md:text-3xl
+                font-extrabold
+                tracking-tight
+              ">
+                What are people building?
+              </h2>
+
+              <p className="
+                mt-1.5
+                text-xs
+                sm:text-sm
+                text-[var(--text-secondary)]
+              ">
+                Explore projects looking for builders.
+              </p>
+            </div>
+
+            <Link
+              to="/discover"
+              className="
+                inline-flex
+                items-center
+                gap-1.5
+                text-xs
+                font-bold
+                text-purple-600
+                dark:text-purple-400
+                hover:gap-2
+                transition-all
+              "
+            >
+              View all
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {recentProjects.length > 0 ? (
+            <div className="
+              grid
+              grid-cols-1
+              md:grid-cols-2
+              gap-5
+            ">
+              {recentProjects.map(
+                idea => (
+                  <div
+                    key={idea.id}
+                    onClick={() =>
+                      handleProtectedRoute(
+                        `/idea/${idea.id}`
+                      )
+                    }
+                    className="
+                      cursor-pointer
+                      transition-transform
+                      hover:-translate-y-0.5
+                    "
+                  >
+                    <ProjectCard
+                      idea={idea}
+                    />
+                  </div>
+                )
+              )}
+            </div>
+          ) : (
+            <div className="
+              rounded-2xl
+              border border-dashed
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              p-10
+              text-center
+            ">
+              <Compass className="
+                w-8 h-8
+                mx-auto
+                text-[var(--text-muted)]
+              " />
+
+              <p className="
+                mt-3
+                text-sm
+                font-semibold
+              ">
+                Projects are coming in.
+              </p>
+
+              <p className="
+                mt-1
+                text-xs
+                text-[var(--text-muted)]
+              ">
+                Be one of the first builders to
+                publish an idea.
+              </p>
+            </div>
+          )}
+
+          <div className="
+            mt-7
+            flex
+            flex-wrap
+            justify-center
+            gap-3
+          ">
+            <button
+              type="button"
+              onClick={() =>
+                handleProtectedRoute(
+                  '/discover'
+                )
+              }
+              className="
+                button-gradient
+                text-white
+                px-6
+                py-2.5
+                rounded-full
+                text-[10px]
+                font-black
+                uppercase
+                tracking-widest
+              "
+            >
+              Explore projects
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                handleProtectedRoute(
+                  '/submit-idea'
+                )
+              }
+              className="
+                px-6
+                py-2.5
+                rounded-full
+                text-[10px]
+                font-black
+                uppercase
+                tracking-widest
+                bg-[var(--background-tertiary)]
+                border border-[var(--border-primary)]
+                text-[var(--text-primary)]
+                hover:border-purple-500/40
+                transition-all
+              "
+            >
+              Submit an idea
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          STATS
+      =================================================== */}
+
+      <section className="
+        py-12
+        bg-[var(--background-secondary)]
+        border-y border-[var(--border-primary)]
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+          <div className="
+            max-w-2xl
+            mx-auto
+            text-center
+            mb-8
+          ">
+            <p className="
+              text-[10px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-purple-500
+            ">
+              Growing together
+            </p>
+
+            <h2 className="
+              mt-2
+              text-2xl
+              md:text-3xl
+              font-extrabold
+              tracking-tight
+            ">
+              An ecosystem in motion.
+            </h2>
+
+            <p className="
+              mt-2
+              text-xs
+              sm:text-sm
+              text-[var(--text-secondary)]
+            ">
+              Ideas become projects. Projects
+              become teams. Teams build companies.
+            </p>
+          </div>
+
+          <div className="
+            grid
+            grid-cols-1
+            sm:grid-cols-3
+            gap-4
+            max-w-5xl
+            mx-auto
+          ">
+            <EcosystemStatCard
+              endValue={50}
+              suffix="+"
+              label="Projects"
+              description="Ideas moving from concept to execution."
+              icon={
+                <BarChart3 className="
+                  w-5 h-5
+                  text-white
+                " />
+              }
+              gradient="
+                from-blue-500
+                to-cyan-400
+              "
+            />
+
+            <EcosystemStatCard
+              endValue={200}
+              suffix="+"
+              label="Builders connected"
+              description="Founders, developers, designers and creators."
+              icon={
+                <Users className="
+                  w-5 h-5
+                  text-white
+                " />
+              }
+              gradient="
+                from-purple-500
+                to-pink-500
+              "
+            />
+
+            <EcosystemStatCard
+              endValue={500}
+              suffix="+"
+              label="Innovators"
+              description="People looking for their next thing to build."
+              icon={
+                <Zap className="
+                  w-5 h-5
+                  text-white
+                " />
+              }
+              gradient="
+                from-orange-500
+                to-yellow-400
+              "
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          WHAT YOU CAN DO
+      =================================================== */}
+
+      <section className="
+        py-14
+        sm:py-16
+        bg-[var(--background-primary)]
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+
+          <div className="
+            max-w-2xl
+            mx-auto
+            text-center
+            mb-9
+          ">
+            <p className="
+              text-[10px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-purple-500
+            ">
+              One place to build
+            </p>
+
+            <h2 className="
+              mt-2
+              text-2xl
+              md:text-3xl
+              font-extrabold
+              tracking-tight
+            ">
+              From idea to launch.
+            </h2>
+
+            <p className="
+              mt-2
+              text-xs
+              sm:text-sm
+              text-[var(--text-secondary)]
+            ">
+              Everything you need to move forward,
+              without the noise.
+            </p>
+          </div>
+
+          <div className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-4
+            gap-4
+            max-w-6xl
+            mx-auto
+          ">
+            {features.map(
+              (feature, index) => (
+                <div
+                  key={index}
+                  className="
+                    group
+                    bg-[var(--component-background)]
+                    border border-[var(--border-primary)]
+                    rounded-2xl
+                    p-5
+                    transition-all duration-300
+                    hover:-translate-y-1
+                    hover:border-purple-500/30
+                  "
+                >
+                  <div className="
+                    w-10 h-10
+                    rounded-xl
+                    bg-purple-500/10
+                    text-purple-500
+                    flex
+                    items-center
+                    justify-center
+                    mb-5
+                  ">
+                    {feature.icon}
+                  </div>
+
+                  <h3 className="
+                    text-sm
+                    font-bold
+                    text-[var(--text-primary)]
+                  ">
+                    {feature.title}
+                  </h3>
+
+                  <p className="
+                    mt-1.5
+                    text-xs
+                    leading-relaxed
+                    text-[var(--text-secondary)]
+                  ">
+                    {feature.description}
+                  </p>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          STARTALK
+      =================================================== */}
+
+      <section className="
+        py-14
+        bg-[var(--background-secondary)]
+        border-y border-[var(--border-primary)]
+        overflow-hidden
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+          <div className="
+            max-w-6xl
+            mx-auto
+            rounded-[2rem]
+            border border-[var(--border-primary)]
+            bg-[var(--component-background)]
+            overflow-hidden
+          ">
+            <div className="
+              grid
+              lg:grid-cols-2
+              gap-8
+              p-6
+              sm:p-8
+              lg:p-10
+            ">
+
+              {/* left */}
+
+              <div className="
+                flex
+                flex-col
+                justify-center
+              ">
+                <div className="
+                  w-10 h-10
+                  rounded-xl
+                  bg-purple-500/10
+                  text-purple-500
+                  flex items-center justify-center
+                  mb-5
+                ">
+                  <MessageCircle className="w-5 h-5" />
+                </div>
+
+                <p className="
+                  text-[10px]
+                  font-black
+                  uppercase
+                  tracking-[0.18em]
+                  text-purple-500
+                ">
+                  Startalks
+                </p>
+
+                <h2 className="
+                  mt-2
+                  text-2xl
+                  sm:text-3xl
+                  font-extrabold
+                  tracking-tight
+                ">
+                  See what builders
+                  are thinking.
+                </h2>
+
+                <p className="
+                  mt-3
+                  max-w-md
+                  text-xs
+                  sm:text-sm
+                  leading-relaxed
+                  text-[var(--text-secondary)]
+                ">
+                  Share wins, ask questions,
+                  talk through pivots and learn
+                  from people building in public.
+                </p>
+
+                <div className="
+                  mt-6
+                  flex
+                  flex-wrap
+                  gap-3
+                ">
+                  <Link
+                    to="/startalks"
+                    className="
+                      button-gradient
+                      text-white
+                      px-6
+                      py-2.5
+                      rounded-full
+                      text-[10px]
+                      font-black
+                      uppercase
+                      tracking-widest
+                      inline-flex
+                      items-center
+                      gap-2
+                    "
+                  >
+                    Open Startalks
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+
+                  <Link
+                    to="/signup"
+                    className="
+                      px-6
+                      py-2.5
+                      rounded-full
+                      text-[10px]
+                      font-black
+                      uppercase
+                      tracking-widest
+                      bg-[var(--background-tertiary)]
+                      border border-[var(--border-primary)]
+                    "
+                  >
+                    Join the conversation
+                  </Link>
+                </div>
+              </div>
+
+              {/* right */}
+
+              <div className="
+                grid
+                grid-cols-2
+                gap-3
+                self-center
+              ">
+                {[
+                  {
+                    name: 'Sarah',
+                    text: 'Just secured my first beta users.',
+                    icon: '🚀',
+                  },
+                  {
+                    name: 'Mike',
+                    text: 'The pivot finally started making sense.',
+                    icon: '💡',
+                  },
+                  {
+                    name: 'Elena',
+                    text: 'Shipping the new version today.',
+                    icon: '⚡',
+                  },
+                  {
+                    name: 'Liam',
+                    text: 'Building in public is worth it.',
+                    icon: '🔨',
+                  },
+                ].map(
+                  (talk, index) => (
+                    <div
+                      key={index}
+                      className="
+                        p-4
+                        rounded-2xl
+                        bg-[var(--background-tertiary)]
+                        border border-[var(--border-primary)]
+                        transition-all
+                        hover:-translate-y-1
+                      "
+                    >
+                      <div className="
+                        flex
+                        items-center
+                        justify-between
+                        gap-2
+                      ">
+                        <div className="
+                          flex
+                          items-center
+                          gap-2
+                        ">
+                          <div className="
+                            w-7 h-7
+                            rounded-full
+                            icon-bg-gradient
+                            flex
+                            items-center
+                            justify-center
+                            text-[10px]
+                            text-white
+                            font-bold
+                          ">
+                            {talk.name[0]}
+                          </div>
+
+                          <span className="
+                            text-[10px]
+                            font-bold
+                          ">
+                            {talk.name}
+                          </span>
+                        </div>
+
+                        <span className="text-sm">
+                          {talk.icon}
+                        </span>
+                      </div>
+
+                      <p className="
+                        mt-3
+                        text-[11px]
+                        leading-relaxed
+                        text-[var(--text-secondary)]
+                      ">
+                        {talk.text}
+                      </p>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          ASSET EXCHANGE
+      =================================================== */}
+
+      <section className="
+        py-14
+        sm:py-16
+        bg-[var(--background-primary)]
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+          <div className="
+            max-w-6xl
+            mx-auto
+            rounded-[2rem]
+            border border-[var(--border-primary)]
+            bg-[var(--component-background)]
+            p-6
+            sm:p-8
+            lg:p-10
+            relative
+            overflow-hidden
+          ">
+
+            <div className="
+              absolute
+              -top-28
+              -right-28
+              w-64
+              h-64
+              rounded-full
+              bg-emerald-500/[0.07]
+              blur-3xl
+              pointer-events-none
+            " />
+
+            <div className="
+              relative
+              z-10
+              flex
+              flex-col
+              lg:flex-row
+              lg:items-end
+              lg:justify-between
+              gap-6
+              mb-8
+            ">
+              <div>
+                <div className="
+                  flex
+                  items-center
+                  gap-2
+                  mb-3
+                ">
+                  <div className="
+                    w-9 h-9
+                    rounded-xl
+                    bg-emerald-500/10
+                    text-emerald-500
+                    flex items-center justify-center
+                  ">
+                    <CircleDollarSign className="w-5 h-5" />
+                  </div>
+
+                  <span className="
+                    text-[10px]
+                    font-black
+                    uppercase
+                    tracking-[0.18em]
+                    text-emerald-500
+                  ">
+                    Asset Exchange
+                  </span>
+                </div>
+
+                <h2 className="
+                  text-2xl
+                  sm:text-3xl
+                  font-extrabold
+                  tracking-tight
+                ">
+                  Build. Grow. Exit.
+                </h2>
+
+                <p className="
+                  mt-2
+                  max-w-xl
+                  text-xs
+                  sm:text-sm
+                  text-[var(--text-secondary)]
+                  leading-relaxed
+                ">
+                  Discover digital products looking
+                  for their next chapter — or put
+                  yours in front of potential buyers.
+                </p>
+              </div>
+
+              <Link
+                to="/assets"
+                className="
+                  shrink-0
+                  inline-flex
+                  items-center
+                  gap-1.5
+                  text-xs
+                  font-bold
+                  text-emerald-600
+                  dark:text-emerald-400
+                "
+              >
+                Explore assets
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="
+              grid
+              grid-cols-1
+              md:grid-cols-3
+              gap-4
+            ">
+              <MiniFeature
+                icon={
+                  <Search className="w-4 h-4" />
+                }
+                title="Discover"
+                text="Find products, startups and digital assets worth exploring."
+              />
+
+              <MiniFeature
+                icon={
+                  <BadgeCheck className="w-4 h-4" />
+                }
+                title="Evaluate"
+                text="Understand the product, traction and opportunity before reaching out."
+              />
+
+              <MiniFeature
+                icon={
+                  <Handshake className="w-4 h-4" />
+                }
+                title="Connect"
+                text="Talk directly with founders and take the conversation forward."
+              />
+            </div>
+
+            <div className="
+              mt-7
+              flex
+              flex-col
+              sm:flex-row
+              items-center
+              justify-between
+              gap-5
+              p-5
+              rounded-2xl
+              bg-[var(--background-tertiary)]
+              border border-[var(--border-primary)]
+            ">
+              <div className="
+                text-center
+                sm:text-left
+              ">
+                <h3 className="
+                  text-sm
+                  font-bold
+                ">
+                  Have something worth building on?
+                </h3>
+
+                <p className="
+                  mt-1
+                  text-xs
+                  text-[var(--text-secondary)]
+                ">
+                  List your digital asset on Startives.
+                </p>
+              </div>
+
+              <Link
+                to="/submit-asset"
+                className="
+                  button-gradient
+                  text-white
+                  px-6
+                  py-2.5
+                  rounded-full
+                  text-[10px]
+                  font-black
+                  uppercase
+                  tracking-widest
+                  whitespace-nowrap
+                "
+              >
+                List your asset
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          WHY STARTIVES
+      =================================================== */}
+
+      <section className="
+        py-14
+        sm:py-16
+        bg-[var(--background-secondary)]
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+          <div className="
+            max-w-2xl
+            mx-auto
+            text-center
+            mb-10
+          ">
+            <p className="
+              text-[10px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-purple-500
+            ">
+              Why Startives
+            </p>
+
+            <h2 className="
+              mt-2
+              text-2xl
+              md:text-3xl
+              font-extrabold
+              tracking-tight
+            ">
+              The right people change everything.
+            </h2>
+          </div>
+
+          <div className="
+            max-w-5xl
+            mx-auto
+            grid
+            md:grid-cols-3
+            gap-5
+          ">
+
+            <div className="
+              bg-[var(--component-background)]
+              border border-[var(--border-primary)]
+              rounded-2xl
+              p-6
+            ">
+              <div className="
+                w-10 h-10
+                rounded-xl
+                bg-blue-500/10
+                text-blue-500
+                flex items-center justify-center
+              ">
+                <Globe2 className="w-5 h-5" />
+              </div>
+
+              <h3 className="
+                mt-5
+                text-base
+                font-bold
+              ">
+                Meet beyond your circle.
+              </h3>
+
+              <p className="
+                mt-2
+                text-xs
+                leading-relaxed
+                text-[var(--text-secondary)]
+              ">
+                Discover builders from different
+                backgrounds, skills and places.
+              </p>
+            </div>
+
+            <div className="
+              bg-[var(--component-background)]
+              border border-[var(--border-primary)]
+              rounded-2xl
+              p-6
+            ">
+              <div className="
+                w-10 h-10
+                rounded-xl
+                bg-purple-500/10
+                text-purple-500
+                flex items-center justify-center
+              ">
+                <Users className="w-5 h-5" />
+              </div>
+
+              <h3 className="
+                mt-5
+                text-base
+                font-bold
+              ">
+                Find your missing piece.
+              </h3>
+
+              <p className="
+                mt-2
+                text-xs
+                leading-relaxed
+                text-[var(--text-secondary)]
+              ">
+                Find the developer, designer,
+                marketer or co-founder your idea needs.
+              </p>
+            </div>
+
+            <div className="
+              bg-[var(--component-background)]
+              border border-[var(--border-primary)]
+              rounded-2xl
+              p-6
+            ">
+              <div className="
+                w-10 h-10
+                rounded-xl
+                bg-orange-500/10
+                text-orange-500
+                flex items-center justify-center
+              ">
+                <Rocket className="w-5 h-5" />
+              </div>
+
+              <h3 className="
+                mt-5
+                text-base
+                font-bold
+              ">
+                Stop planning. Start shipping.
+              </h3>
+
+              <p className="
+                mt-2
+                text-xs
+                leading-relaxed
+                text-[var(--text-secondary)]
+              ">
+                Turn conversations into collaborations
+                and ideas into products.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          COMMUNITY
+      =================================================== */}
+
+      <section className="
+        py-14
+        sm:py-16
+        bg-[var(--background-primary)]
+      ">
+        <div className="
+          container
+          mx-auto
+          px-4
+        ">
+          <div className="
+            flex
+            flex-col
+            sm:flex-row
+            sm:items-end
+            sm:justify-between
+            gap-4
+            mb-8
+          ">
+            <div>
+              <p className="
+                text-[10px]
+                font-black
+                uppercase
+                tracking-[0.18em]
+                text-purple-500
+              ">
+                Community
+              </p>
+
+              <h2 className="
+                mt-2
+                text-2xl
+                md:text-3xl
+                font-extrabold
+                tracking-tight
+              ">
+                Built by builders.
+              </h2>
+            </div>
+
+            <span className="
+              text-xs
+              text-[var(--text-muted)]
+            ">
+              Real people. Real projects.
+            </span>
+          </div>
+
+          <div className="
+            grid
+            grid-cols-1
+            md:grid-cols-3
+            gap-4
+            max-w-6xl
+            mx-auto
+          ">
+            {testimonials.map(
+              (testimonial, index) => (
+                <div
+                  key={index}
+                  className="
+                    p-5
+                    rounded-2xl
+                    border border-[var(--border-primary)]
+                    bg-[var(--component-background)]
+                    transition-all
+                    hover:-translate-y-1
+                    hover:border-purple-500/20
+                  "
+                >
+                  <div className="
+                    flex
+                    items-center
+                    justify-between
+                    mb-5
+                  ">
+                    <div className="
+                      flex
+                      items-center
+                      gap-2
+                    ">
+                      <div className="
+                        w-8 h-8
+                        rounded-full
+                        icon-bg-gradient
+                        text-white
+                        text-[10px]
+                        font-bold
+                        flex items-center justify-center
+                      ">
+                        {testimonial.name[0]}
+                      </div>
+
+                      <div>
+                        <p className="
+                          text-xs
+                          font-bold
+                        ">
+                          {testimonial.name}
+                        </p>
+
+                        <p className="
+                          text-[9px]
+                          text-[var(--text-muted)]
+                        ">
+                          {testimonial.role}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="
+                      flex
+                      gap-0.5
+                      text-yellow-400
+                    ">
+                      {[1, 2, 3, 4, 5].map(
+                        star => (
+                          <Star
+                            key={star}
+                            className="w-3 h-3 fill-current"
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="
+                    text-xs
+                    sm:text-sm
+                    leading-relaxed
+                    text-[var(--text-secondary)]
+                  ">
+                    “{testimonial.quote}”
+                  </p>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          FINAL CTA
+      =================================================== */}
+
+      <section className="
+        py-14
+        sm:py-16
+        px-4
+        bg-[var(--background-secondary)]
+        border-t border-[var(--border-primary)]
+      ">
+        <div className="
+          max-w-3xl
+          mx-auto
+          text-center
+        ">
+          <div className="
+            mx-auto
+            w-11 h-11
+            rounded-2xl
+            icon-bg-gradient
+            text-white
+            flex items-center justify-center
+            mb-5
+          ">
+            <Sparkles className="w-5 h-5" />
+          </div>
+
+          <h2 className="
+            text-2xl
+            sm:text-3xl
+            md:text-4xl
+            font-extrabold
+            tracking-tight
+          ">
+            Your next build starts here.
+          </h2>
+
+          <p className="
+            mt-3
+            max-w-lg
+            mx-auto
+            text-xs
+            sm:text-sm
+            leading-relaxed
+            text-[var(--text-secondary)]
+          ">
+            Find the people, ideas and opportunities
+            that move you forward.
+          </p>
+
+          <div className="
+            mt-6
+            flex
+            justify-center
+          ">
+            <GradientButton
+              to="/signup"
+              icon={
+                <ArrowRight className="w-4 h-4" />
+              }
+            >
+              Join Startives
+            </GradientButton>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================
+          FOOTER
+          PEERLIST-STYLE GHOST WORDMARK
+      =================================================== */}
+
+      <footer className="
+        relative
+        bg-[var(--background-secondary)]
+        overflow-hidden
+        pt-10
+        pb-8
+        border-t border-[var(--border-primary)]
+      ">
+
+        <div className="
+          container
+          mx-auto
+          px-5
+        ">
+
+          {/* links */}
+
+          <div className="
+            grid
+            grid-cols-2
+            sm:grid-cols-4
+            gap-x-8
+            gap-y-8
+            max-w-5xl
+            mx-auto
+          ">
+
+            <div>
+              <h3 className="
+                text-xs
+                font-bold
+                text-[var(--text-primary)]
+                mb-4
+              ">
+                Explore
+              </h3>
+
+              <div className="
+                flex
+                flex-col
+                gap-2.5
+              ">
+                <Link
+                  to="/discover"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Discover Projects
+                </Link>
+
+                <Link
+                  to="/users"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Find Builders
+                </Link>
+
+                <Link
+                  to="/startalks"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Startalks
+                </Link>
+
+                <Link
+                  to="/assets"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Asset Exchange
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="
+                text-xs
+                font-bold
+                text-[var(--text-primary)]
+                mb-4
+              ">
+                Build
+              </h3>
+
+              <div className="
+                flex
+                flex-col
+                gap-2.5
+              ">
+                <Link
+                  to="/submit-idea"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Submit an Idea
+                </Link>
+
+                <Link
+                  to="/submit-asset"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  List an Asset
+                </Link>
+
+                <Link
+                  to="/signup"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Create Profile
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="
+                text-xs
+                font-bold
+                text-[var(--text-primary)]
+                mb-4
+              ">
+                Company
+              </h3>
+
+              <div className="
+                flex
+                flex-col
+                gap-2.5
+              ">
+                <Link
+                  to="/about"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  About
+                </Link>
+
+                <Link
+                  to="/blog"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Blog
+                </Link>
+
+                <Link
+                  to="/contact"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Contact
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="
+                text-xs
+                font-bold
+                text-[var(--text-primary)]
+                mb-4
+              ">
+                Legal
+              </h3>
+
+              <div className="
+                flex
+                flex-col
+                gap-2.5
+              ">
+                <Link
+                  to="/privacy"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Privacy
+                </Link>
+
+                <Link
+                  to="/terms"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Terms
+                </Link>
+
+                <Link
+                  to="/code-of-conduct"
+                  className="
+                    text-xs
+                    text-[var(--text-secondary)]
+                    hover:text-[var(--text-primary)]
+                    transition-colors
+                  "
+                >
+                  Code of Conduct
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* small footer nav */}
+
+          <div className="
+            mt-10
+            pt-5
+            border-t border-[var(--border-primary)]
+            flex
+            flex-wrap
+            justify-center
+            items-center
+            gap-x-5
+            gap-y-2
+            text-[10px]
+            text-[var(--text-muted)]
+          ">
+            <Link
+              to="/about"
+              className="hover:text-[var(--text-primary)] transition-colors"
+            >
+              About
+            </Link>
+
+            <Link
+              to="/contact"
+              className="hover:text-[var(--text-primary)] transition-colors"
+            >
+              Help
+            </Link>
+
+            <Link
+              to="/privacy"
+              className="hover:text-[var(--text-primary)] transition-colors"
+            >
+              Privacy
+            </Link>
+
+            <Link
+              to="/terms"
+              className="hover:text-[var(--text-primary)] transition-colors"
+            >
+              Terms
+            </Link>
+          </div>
+
+          {/* =================================================
+              HUGE GHOST WORDMARK
+          ================================================= */}
+
+          <div
+            className="
+              relative
+              mt-8
+              h-[110px]
+              sm:h-[150px]
+              md:h-[175px]
+              flex
+              items-end
+              justify-center
+              overflow-hidden
+              select-none
+            "
+            aria-hidden="true"
+          >
+            <div
+              className="
+                absolute
+                left-1/2
+                bottom-[-12px]
+                -translate-x-1/2
+                whitespace-nowrap
+                text-[82px]
+                sm:text-[120px]
+                md:text-[155px]
+                lg:text-[180px]
+                leading-none
+                font-black
+                tracking-[-0.08em]
+                text-[var(--text-primary)]
+                opacity-[0.10]
+                dark:opacity-[0.16]
+              "
+            >
+              {APP_NAME}
+            </div>
+
+            {/* subtle shadow / blur layer */}
+
+            <div
+              className="
+                absolute
+                left-1/2
+                bottom-[-22px]
+                -translate-x-1/2
+                whitespace-nowrap
+                text-[82px]
+                sm:text-[120px]
+                md:text-[155px]
+                lg:text-[180px]
+                leading-none
+                font-black
+                tracking-[-0.08em]
+                text-black
+                dark:text-white
+                opacity-[0.035]
+                blur-[5px]
+                scale-[1.01]
+              "
+            >
+              {APP_NAME}
+            </div>
+          </div>
+
+          {/* copyright */}
+
+          <div className="
+            relative
+            z-10
+            flex
+            items-center
+            justify-center
+            gap-2
+            text-[10px]
+            sm:text-xs
+            text-[var(--text-muted)]
+            pb-1
+          ">
+            <span>
+              © {new Date().getFullYear()}
+            </span>
+
+            <span className="
+              w-5 h-5
+              rounded-md
+              icon-bg-gradient
+              text-white
+              flex
+              items-center
+              justify-center
+              text-[9px]
+              font-black
+            ">
+              S
+            </span>
+
+            <span className="font-medium">
+              {APP_NAME}
+            </span>
+          </div>
+
+        </div>
+      </footer>
+    </div>
+  );
+};
 
 export default HomePage;
