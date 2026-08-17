@@ -15,17 +15,9 @@ import {
   DollarSign,
   ArrowRight,
   Star,
-  Github,
-  Linkedin,
-  Facebook,
-  Twitter,
-  Rocket,
   ShieldCheck,
 } from 'lucide-react';
 
-/* ----------------------------------------------------------------------- /
-/  Scroll-reveal hook — single source of truth for every "in view" fade   /
-/ ----------------------------------------------------------------------- */
 function useInView<T extends HTMLElement>(threshold = 0.2) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -52,9 +44,6 @@ function useInView<T extends HTMLElement>(threshold = 0.2) {
   return { ref, inView };
 }
 
-/* ----------------------------------------------------------------------- /
-/  Reveal wrapper — pass a stagger delay (ms) for sequenced entrances     /
-/ ----------------------------------------------------------------------- */
 const Reveal: React.FC<{
   children: React.ReactNode;
   delay?: number;
@@ -75,9 +64,6 @@ const Reveal: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- /
-/  Magnetic gradient button — subtle cursor-follow glow, premium feel     /
-/ ----------------------------------------------------------------------- */
 const GradientButton: React.FC<{
   to?: string;
   href?: string;
@@ -107,44 +93,18 @@ const GradientButton: React.FC<{
     el.style.setProperty('--y', `${e.clientY - rect.top}px`);
   }, []);
 
-  const commonClasses = `
-    button-gradient
-    magnetic-btn
-    group
-    relative
-    inline-flex
-    items-center
-    justify-center
-    overflow-hidden
-    text-white
-    font-semibold
-    py-3
-    px-8
-    rounded-full
-    text-base
-    transition-transform
-    duration-300
-    ease-out
-    hover:scale-[1.03]
-    active:scale-[0.98]
-    focus:outline-none
-    focus:ring-4
-    focus:ring-red-500/40
-    ${className}
-  `;
+  const commonClasses = `button-gradient magnetic-btn group relative inline-flex items-center justify-center overflow-hidden text-white font-semibold py-3 px-8 rounded-full text-base transition-transform duration-300 ease-out hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-red-500/40 ${className}`;
 
   const content = (
-    <>
-      <span className="relative z-10 flex items-center gap-2">
-        {children}
+    <span className="relative z-10 flex items-center gap-2">
+      {children}
 
-        {icon && (
-          <span className="transition-transform duration-300 group-hover:translate-x-1">
-            {icon}
-          </span>
-        )}
-      </span>
-    </>
+      {icon && (
+        <span className="transition-transform duration-300 group-hover:translate-x-1">
+          {icon}
+        </span>
+      )}
+    </span>
   );
 
   if (to) {
@@ -190,9 +150,6 @@ const GradientButton: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- /
-/  Count-up stat card                                                     /
-/ ----------------------------------------------------------------------- */
 const useCountUp = (
   endValue: number,
   active: boolean,
@@ -204,7 +161,6 @@ const useCountUp = (
     if (!active) return;
 
     let start = 0;
-
     const totalFrames = Math.round(duration / (1000 / 60));
 
     const counter = setInterval(() => {
@@ -246,7 +202,6 @@ const EcosystemStatCard: React.FC<{
 }) => {
   const { theme } = useTheme();
   const { ref, inView } = useInView<HTMLDivElement>(0.4);
-
   const count = useCountUp(endValue, inView);
 
   const textGradient =
@@ -260,7 +215,9 @@ const EcosystemStatCard: React.FC<{
       className={`reveal-item ${
         inView ? 'is-visible' : ''
       } stat-card bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:-translate-y-2 hover:border-red-500/50 hover:shadow-xl`}
-      style={{ transitionDelay: inView ? `${delay}ms` : '0ms' }}
+      style={{
+        transitionDelay: inView ? `${delay}ms` : '0ms',
+      }}
     >
       <div
         className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br ${gradient} shadow-lg shadow-black/5`}
@@ -286,9 +243,6 @@ const EcosystemStatCard: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- /
-/  Homepage                                                                /
-/ ----------------------------------------------------------------------- */
 const HomePage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -392,7 +346,6 @@ const HomePage: React.FC = () => {
       ref={pageRef}
       className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins"
     >
-      {/* Structured data — helps search engines understand the org & site */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -411,9 +364,6 @@ const HomePage: React.FC = () => {
       />
 
       <div className="relative z-10">
-
-        {/* ------------------------------------------------------------ HERO */}
-
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
 
@@ -515,8 +465,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ DISCOVER */}
-
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -566,8 +514,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* --------------------------------------------------- ECOSYSTEM */}
-
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -577,8 +523,8 @@ const HomePage: React.FC = () => {
 
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
                 Witness the pulse of innovation. Our platform is a dynamic
-                network where connections spark, ideas ignite, and ventures
-                take flight every day.
+                network where connections spark, ideas ignite, and ventures take
+                flight every day.
               </p>
             </Reveal>
 
@@ -615,8 +561,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ----------------------------------------------------- FEATURES */}
-
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -625,8 +569,8 @@ const HomePage: React.FC = () => {
               </h2>
 
               <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
-                From idea to launch, {APP_NAME} provides the tools and
-                community to support your journey.
+                From idea to launch, {APP_NAME} provides the tools and community
+                to support your journey.
               </p>
             </Reveal>
 
@@ -653,8 +597,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </section>
-
-        {/* -------------------------------------------------- ASSET EXCHANGE */}
 
         <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none" />
@@ -688,9 +630,8 @@ const HomePage: React.FC = () => {
                   </h3>
 
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
-                    Access startups with proven revenue, verified MRR, and
-                    clean codebases. Every listing undergoes an internal audit
-                    process.
+                    Access startups with proven revenue, verified MRR, and clean
+                    codebases. Every listing undergoes an internal audit process.
                   </p>
                 </div>
               </Reveal>
@@ -707,8 +648,7 @@ const HomePage: React.FC = () => {
 
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
                     Gain access to standardized migration checklists for code,
-                    domains, and documentation to ensure a predictable
-                    transfer.
+                    domains, and documentation to ensure a predictable transfer.
                   </p>
                 </div>
               </Reveal>
@@ -724,9 +664,8 @@ const HomePage: React.FC = () => {
                   </h3>
 
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
-                    Skip the middleman. Chat directly with original builders
-                    for due diligence. We provide the room, you finalize the
-                    transaction.
+                    Skip the middleman. Chat directly with original builders for
+                    due diligence. We provide the room, you finalize the transaction.
                   </p>
                 </div>
               </Reveal>
@@ -745,9 +684,8 @@ const HomePage: React.FC = () => {
                     </h3>
 
                     <p className="text-neutral-500 dark:text-neutral-400 text-sm font-medium leading-relaxed font-poppins">
-                      List your digital assets in front of thousands of
-                      potential acquirers. High-intent, zero commissions, and
-                      founder-focused.
+                      List your digital assets in front of thousands of potential
+                      acquirers. High-intent, zero commissions, and founder-focused.
                     </p>
                   </div>
 
@@ -762,8 +700,6 @@ const HomePage: React.FC = () => {
             </Reveal>
           </div>
         </section>
-
-        {/* ------------------------------------------------------ STARTALKS */}
 
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
@@ -818,8 +754,7 @@ const HomePage: React.FC = () => {
                     },
                     {
                       name: 'Liam P.',
-                      content:
-                        'Building in public is hard but worth it.',
+                      content: 'Building in public is hard but worth it.',
                       emoji: '🔨',
                     },
                   ].map((talk, idx) => (
@@ -859,8 +794,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* --------------------------------------------------- WHY STARTIVES */}
-
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -869,8 +802,7 @@ const HomePage: React.FC = () => {
               </h2>
 
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                We're more than a platform; we're your strategic partner in
-                innovation.
+                We're more than a platform; we're your strategic partner in innovation.
               </p>
             </Reveal>
 
@@ -900,8 +832,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ---------------------------------------------------- TESTIMONIALS */}
-
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal className="text-center mb-10">
@@ -910,8 +840,7 @@ const HomePage: React.FC = () => {
               </h2>
 
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                Innovators are building, connecting, and succeeding on{' '}
-                {APP_NAME}.
+                Innovators are building, connecting, and succeeding on {APP_NAME}.
               </p>
             </Reveal>
 
@@ -964,64 +893,42 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------- CLOSING */}
-        {/* Powering the next wave of startups section removed */}
-
-        <section className="text-center pt-16 pb-16 sm:pt-20 sm:pb-20 px-4 bg-white relative overflow-hidden">
-          {/* Premium liquid-glass ambient glow */}
-          <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-red-500/10 blur-[100px] pointer-events-none" />
-          <div className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-blue-500/10 blur-[100px] pointer-events-none" />
-
-          <Reveal className="container mx-auto max-w-5xl font-poppins relative z-10">
-            {/* New Launch Your Vision Image */}
+        <section className="text-center pt-8 pb-0 sm:pt-10 sm:pb-0 px-4 bg-white">
+          <Reveal className="container mx-auto max-w-5xl font-poppins">
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
-              alt="Launch your vision"
-              className="mx-auto w-full max-w-4xl h-auto object-contain rounded-[2rem]"
+              alt=""
+              aria-hidden="true"
+              className="mx-auto w-full max-w-4xl h-auto object-contain object-center block"
             />
 
-            {/* ------------------------------------------------------ */}
-            {/* iOS 27 INSPIRED LIQUID GLASS LAUNCH CONTROL            */}
-            {/* ------------------------------------------------------ */}
-
-            <div className="mt-8 flex justify-center">
+            <div className="mt-5 sm:mt-6 flex justify-center">
               <Link
                 to="/signup"
-                className="launch-vision-glass group relative inline-flex items-center gap-3 rounded-full p-1.5 pr-5 sm:pr-6 overflow-hidden"
+                className="liquid-glass-cta group relative inline-flex items-center justify-center gap-3 rounded-full px-2 py-2 pl-6 sm:pl-7 text-neutral-900 font-bold text-sm sm:text-[15px] tracking-tight select-none overflow-hidden transition-all duration-300 hover:scale-[1.035] active:scale-[0.97] focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/20"
               >
-                {/* Liquid glass reflection */}
-                <span className="absolute inset-0 rounded-full pointer-events-none liquid-glass-shine" />
+                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 pointer-events-none" />
 
-                {/* Soft red-blue liquid glow */}
-                <span className="absolute -inset-4 rounded-full bg-gradient-to-r from-red-500/10 via-white/20 to-blue-500/10 blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/15 via-purple-400/10 to-blue-500/20 pointer-events-none" />
 
-                {/* Glass Icon Pill */}
-                <span className="relative z-10 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full launch-icon-glass">
-                  <span className="absolute inset-[1px] rounded-full bg-gradient-to-br from-red-500 via-purple-500 to-blue-500 opacity-90" />
+                <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 rounded-full pointer-events-none" />
 
-                  <span className="absolute inset-[2px] rounded-full bg-white/10 backdrop-blur-md" />
-
-                  <Rocket className="relative z-10 w-5 h-5 text-white transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
-                </span>
-
-                {/* Black Text */}
-                <span className="relative z-10 text-sm sm:text-[15px] font-bold tracking-tight text-black">
+                <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
                 </span>
 
-                {/* Arrow */}
-                <span className="relative z-10 flex items-center justify-center w-7 h-7 rounded-full bg-black/[0.06] transition-all duration-300 group-hover:bg-black/[0.1] group-hover:translate-x-0.5">
-                  <ArrowRight className="w-3.5 h-3.5 text-black transition-transform duration-300 group-hover:translate-x-0.5" />
+                <span className="relative z-10 flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-white/80 bg-white/35 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.95),0_3px_12px_rgba(20,30,60,0.12)] transition-all duration-300 group-hover:bg-white/50 group-hover:shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_5px_16px_rgba(40,50,100,0.16)]">
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500/55 via-purple-400/30 to-blue-500/60 opacity-80 blur-[0.5px]" />
+
+                  <span className="absolute inset-[1px] rounded-full bg-white/20 backdrop-blur-md" />
+
+                  <ArrowRight className="relative z-10 w-4 h-4 sm:w-[18px] sm:h-[18px] text-neutral-900 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </span>
               </Link>
             </div>
           </Reveal>
         </section>
       </div>
-
-      {/* -------------------------------------------------------------- */}
-      {/*  Scoped premium-motion styles — scroll reveals, glow, float      */}
-      {/* -------------------------------------------------------------- */}
 
       <style>{`
         .reveal-item {
@@ -1057,70 +964,44 @@ const HomePage: React.FC = () => {
           opacity: 1;
         }
 
-        /* ------------------------------------------------------------ */
-        /* iOS 27 STYLE LIQUID GLASS                                    */
-        /* ------------------------------------------------------------ */
-
-        .launch-vision-glass {
-          isolation: isolate;
+        .liquid-glass-cta {
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          backdrop-filter: blur(24px) saturate(180%);
           background:
             linear-gradient(
               135deg,
-              rgba(255, 255, 255, 0.88),
-              rgba(255, 255, 255, 0.58)
+              rgba(255, 255, 255, 0.78),
+              rgba(255, 255, 255, 0.48)
             );
-          border: 1px solid rgba(255, 255, 255, 0.92);
+          border: 1px solid rgba(255, 255, 255, 0.9);
           box-shadow:
-            0 18px 50px rgba(15, 23, 42, 0.10),
-            0 4px 14px rgba(15, 23, 42, 0.06),
-            inset 0 1px 0 rgba(255, 255, 255, 0.95),
-            inset 0 -1px 0 rgba(255, 255, 255, 0.30);
-          backdrop-filter: blur(28px) saturate(180%);
-          -webkit-backdrop-filter: blur(28px) saturate(180%);
-          transition:
-            transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-            box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            inset 0 1px 2px rgba(255, 255, 255, 0.95),
+            inset 0 -1px 1px rgba(120, 130, 160, 0.08),
+            0 8px 28px rgba(30, 40, 80, 0.13);
         }
 
-        .launch-vision-glass:hover {
-          transform: translateY(-2px) scale(1.025);
-          box-shadow:
-            0 24px 65px rgba(15, 23, 42, 0.13),
-            0 7px 20px rgba(15, 23, 42, 0.07),
-            inset 0 1px 0 rgba(255, 255, 255, 1),
-            inset 0 -1px 0 rgba(255, 255, 255, 0.40);
-        }
-
-        .launch-icon-glass {
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.34),
-              rgba(255, 255, 255, 0.10)
-            );
-          border: 1px solid rgba(255, 255, 255, 0.70);
-          box-shadow:
-            0 5px 15px rgba(15, 23, 42, 0.10),
-            inset 0 1px 1px rgba(255, 255, 255, 0.60);
-          backdrop-filter: blur(18px) saturate(180%);
-          -webkit-backdrop-filter: blur(18px) saturate(180%);
-        }
-
-        .liquid-glass-shine {
+        .liquid-glass-cta::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
           background:
             linear-gradient(
               115deg,
-              transparent 0%,
-              rgba(255, 255, 255, 0.48) 22%,
-              rgba(255, 255, 255, 0.16) 38%,
-              transparent 58%
+              rgba(255, 255, 255, 0.5),
+              transparent 35%,
+              transparent 65%,
+              rgba(255, 255, 255, 0.25)
             );
-          transform: translateX(-120%);
-          transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+          opacity: 0.7;
+          pointer-events: none;
         }
 
-        .launch-vision-glass:hover .liquid-glass-shine {
-          transform: translateX(120%);
+        .liquid-glass-cta:hover {
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 1),
+            inset 0 -1px 1px rgba(100, 110, 150, 0.08),
+            0 12px 34px rgba(30, 40, 80, 0.17);
         }
 
         @keyframes float-slow {
@@ -1138,6 +1019,20 @@ const HomePage: React.FC = () => {
           animation: float-slow 8s ease-in-out infinite;
         }
 
+        @media (max-width: 639px) {
+          .liquid-glass-cta {
+            padding-top: 7px;
+            padding-bottom: 7px;
+            padding-left: 22px;
+            padding-right: 7px;
+            font-size: 14px;
+          }
+
+          .liquid-glass-cta span {
+            -webkit-tap-highlight-color: transparent;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .reveal-item {
             opacity: 1 !important;
@@ -1149,8 +1044,7 @@ const HomePage: React.FC = () => {
             animation: none !important;
           }
 
-          .launch-vision-glass,
-          .liquid-glass-shine {
+          .liquid-glass-cta {
             transition: none !important;
           }
         }
