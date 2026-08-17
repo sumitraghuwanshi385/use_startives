@@ -76,15 +76,16 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="relative w-full overflow-hidden leading-none">
-        <div className="absolute top-3 sm:top-5 left-0 right-0 z-10 text-center px-4">
-          <p className="text-xs sm:text-sm font-medium text-white/90">
-            &copy; 2026 {APP_NAME}. All rights reserved.
+        <div className="absolute top-3 sm:top-4 left-0 right-0 z-20 flex justify-center px-4">
+          <p className="inline-block bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent font-bold text-xs sm:text-sm">
+            © 2026 {APP_NAME}. All rights reserved.
           </p>
         </div>
+
         <img
-          src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786960609/Picsart_26-08-17_15-26-26-148_cknym4.jpg"
+          src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786961157/IMG_20260817_153521_ckxsje.png"
           alt="Startives founders and builders"
-          className="block w-full h-auto min-h-[180px] sm:min-h-[240px] object-cover object-bottom"
+          className="block w-full h-auto object-contain object-bottom"
         />
       </div>
     </footer>
