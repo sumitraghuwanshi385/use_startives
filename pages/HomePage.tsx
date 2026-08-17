@@ -278,7 +278,6 @@ const HomePage: React.FC = () => {
 
       <div className="relative z-10">
 
-        {/* HERO */}
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
@@ -343,7 +342,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* DISCOVER */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -385,7 +383,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ECOSYSTEM */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -429,7 +426,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* FEATURES */}
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -457,7 +453,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ASSET EXCHANGE */}
         <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-[100px] -ml-40 -mb-40 pointer-events-none" />
@@ -536,7 +531,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* STARTALKS */}
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
           <div className="container mx-auto px-4 relative z-10">
@@ -595,7 +589,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* WHY STARTIVES */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -626,7 +619,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal className="text-center mb-10">
@@ -674,7 +666,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* LOGOS */}
         <section className="py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -699,8 +690,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* CLOSING */}
-        <section className="relative w-full overflow-hidden min-h-[468px] sm:min-h-[550px] flex items-center justify-center px-4 py-10 sm:py-14">
+        {/* Updated Closing Section */}
+        <section className="relative w-full overflow-hidden min-h-[470px] sm:min-h-[550px] flex items-center justify-center px-4">
           <img
             src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786965415/IMG_20260817_164534_reb6bx.png"
             alt=""
@@ -714,11 +705,11 @@ const HomePage: React.FC = () => {
                 Let’s build what’s next.
               </h2>
 
-              <p className="mt-3 text-xs sm:text-sm md:text-base text-neutral-700 max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="mt-4 text-xs sm:text-sm md:text-base text-neutral-700 max-w-2xl mx-auto leading-relaxed font-medium">
                 Your next idea could become the next big thing. Find the people, energy, and momentum to turn your vision into something real.
               </p>
 
-              <div className="mt-6 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 <GradientButton
                   to="/signup"
                   icon={
