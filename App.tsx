@@ -24,8 +24,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import MyProjectsPage from './pages/MyProjectsPage';
 import { MyApplicationsPage } from './pages/MyApplicationsPage';
 import { ConnectionsPage } from './pages/ConnectionsPage';
-import PublicProfilePage from './pages/PublicProfilePage'; 
-import SavedProjectsPage from './pages/SavedProjectsPage'; 
+import PublicProfilePage from './pages/PublicProfilePage';
+import SavedProjectsPage from './pages/SavedProjectsPage';
 import ActivityLogPage from './pages/ActivityLogPage';
 import PlaceholderContentPage from './pages/PlaceholderContentPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -54,14 +54,31 @@ interface PageTitleProps {
   className?: string;
 }
 
-export const PageTitle: React.FC<PageTitleProps> = ({ title, description, className = "" }) => (
+export const PageTitle: React.FC<PageTitleProps> = ({
+  title,
+  description,
+  className = ""
+}) => (
   <div className={`mb-8 ${className}`}>
-    <h1 className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight font-poppins">{title}</h1>
-    {description && <p className="text-[var(--text-muted)] mt-2 text-sm sm:text-base font-poppins">{description}</p>}
+    <h1 className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight font-poppins">
+      {title}
+    </h1>
+
+    {description && (
+      <p className="text-[var(--text-muted)] mt-2 text-sm sm:text-base font-poppins">
+        {description}
+      </p>
+    )}
   </div>
 );
 
-const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: string }> = ({ children, pageClassName = "w-full px-6 lg:px-16 py-8" }) => (
+const WithPageContainer: React.FC<{
+  children: React.ReactNode;
+  pageClassName?: string;
+}> = ({
+  children,
+  pageClassName = "w-full px-6 lg:px-16 py-8"
+}) => (
   <div className={pageClassName}>
     {children}
   </div>
@@ -69,251 +86,592 @@ const WithPageContainer: React.FC<{ children: React.ReactNode, pageClassName?: s
 
 const App: React.FC = () => {
   const location = useLocation();
-const navigate = useNavigate();
-const [isChatOpen, setIsChatOpen] = React.useState(false);
+  const navigate = useNavigate();
 
-const [showLogoutModal, setShowLogoutModal] = React.useState(false);
+  const [isChatOpen, setIsChatOpen] = React.useState(false);
+  const [showLogoutModal, setShowLogoutModal] = React.useState(false);
 
-const { currentUser, showOnboardingModal,
-authLoadingState,logout } = useAppContext();
+  const {
+    currentUser,
+    showOnboardingModal,
+    authLoadingState,
+    logout
+  } = useAppContext();
 
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID ;
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   useEffect(() => {
+    const warmServer = async () => {
+      try {
+        fetch("https://use-startives.onrender.com/test123").catch(() => {});
+        fetch("https://use-startives.onrender.com/api/ideas").catch(() => {});
+        fetch("https://use-startives.onrender.com/api/assets").catch(() => {});
+        fetch("https://use-startives.onrender.com/api/startalks").catch(() => {});
+      } catch (err) {}
+    };
 
-  const warmServer = async () => {
-    try {
+    warmServer();
+  }, []);
 
-      // Wake backend
-      fetch("https://use-startives.onrender.com/test123").catch(()=>{})
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const hasClass = document.body.classList.contains('chat-open');
+      setIsChatOpen(hasClass);
+    });
 
-      // Prefetch APIs
-      fetch("https://use-startives.onrender.com/api/ideas").catch(()=>{})
-      fetch("https://use-startives.onrender.com/api/assets").catch(()=>{})
-      fetch("https://use-startives.onrender.com/api/startalks").catch(()=>{})
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
 
-    } catch (err) {}
-  };
+    return () => observer.disconnect();
+  }, []);
 
-  warmServer();
+  useEffect(() => {
+    if (!currentUser) return;
 
-}, []);
+    const protectedBackRoutes = [
+      "/dashboard",
+      "/projects",
+      "/startalks",
+      "/messages",
+      "/globe",
+    ];
 
-useEffect(() => {
-  const observer = new MutationObserver(() => {
-    const hasClass = document.body.classList.contains('chat-open');
-    setIsChatOpen(hasClass);
-  });
+    const shouldIntercept =
+      protectedBackRoutes.includes(location.pathname);
 
-  observer.observe(document.body, {
-    attributes: true,
-    attributeFilter: ['class'],
-  });
+    if (!shouldIntercept) return;
 
-  return () => observer.disconnect();
-}, []);
+    window.history.pushState(null, "", window.location.href);
 
+    const handleBack = () => {
+      if (showLogoutModal) return;
 
-useEffect(() => {
-  if (!currentUser) return;
+      setShowLogoutModal(true);
 
-  // Sirf in main/root pages par browser back -> Logout Dialog
-  const protectedBackRoutes = [
-    "/dashboard",
-    "/projects",
-    "/startalks",
-    "/messages",
-    "/globe", // Startverse
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", handleBack);
+
+    return () => {
+      window.removeEventListener("popstate", handleBack);
+    };
+  }, [currentUser, location.pathname, showLogoutModal]);
+
+  const noHeaderRoutes = [
+    '/login',
+    '/signup',
+    '/verify-email',
+    '/forgot-password',
+    '/new-password'
   ];
 
-  const shouldIntercept =
-    protectedBackRoutes.includes(location.pathname);
-
-  if (!shouldIntercept) return;
-
-  // Current page history me dobara push karo
-  window.history.pushState(null, "", window.location.href);
-
-  const handleBack = () => {
-    if (showLogoutModal) return;
-
-    setShowLogoutModal(true);
-
-    // User ko isi page par rakho
-    window.history.pushState(null, "", window.location.href);
-  };
-
-  window.addEventListener("popstate", handleBack);
-
-  return () => {
-    window.removeEventListener("popstate", handleBack);
-  };
-}, [currentUser, location.pathname, showLogoutModal]);
-
-
-  const noHeaderRoutes = ['/login', '/signup', '/verify-email', '/forgot-password', '/new-password'];
-
-  const staticPages = ['/about', '/privacy-policy', '/contact-us', '/sponsorship'];
+  const staticPages = [
+    '/about',
+    '/privacy-policy',
+    '/contact-us',
+    '/sponsorship'
+  ];
 
   const showHeader = !noHeaderRoutes.includes(location.pathname);
-  
+
   const hideFABRoutes = [
-    '/post-idea', 
-    '/submit-asset', 
-    '/profile/edit', 
+    '/post-idea',
+    '/submit-asset',
+    '/profile/edit',
     '/profile',
     '/startalks',
     '/messages',
     ...noHeaderRoutes,
     ...staticPages
   ];
-  
-const hideStarverseButton =
-  location.pathname === '/globe' ||
-  location.pathname === '/starverse' ||
-  location.pathname === '/login' ||
-  location.pathname === '/signup';
 
-  const isEditing = (location.pathname.includes('/edit') && location.pathname.includes('/project/')) || (location.pathname.includes('/edit') && location.pathname.includes('/asset/'));
-  const showFAB = currentUser && 
-    !hideFABRoutes.includes(location.pathname) && 
-    !location.pathname.startsWith('/team/') && 
-    !isEditing && 
+  const hideStarverseButton =
+    location.pathname === '/globe' ||
+    location.pathname === '/starverse' ||
+    location.pathname === '/login' ||
+    location.pathname === '/signup';
+
+  const isEditing =
+    (location.pathname.includes('/edit') &&
+      location.pathname.includes('/project/')) ||
+    (location.pathname.includes('/edit') &&
+      location.pathname.includes('/asset/'));
+
+  const showFAB =
+    currentUser &&
+    !hideFABRoutes.includes(location.pathname) &&
+    !location.pathname.startsWith('/team/') &&
+    !isEditing &&
     !location.pathname.includes('/apply') &&
     !location.pathname.startsWith('/idea/') &&
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  const showFooter = location.pathname === "/" && !currentUser;
- 
-  const isFullHeightPage = location.pathname.startsWith('/messages') || location.pathname.startsWith('/team/') || location.pathname === '/blueprint' || location.pathname.startsWith('/asset/');
+  const showFooter =
+    location.pathname === "/" &&
+    !currentUser;
 
-useEffect(() => {
-  console.log("Window Scroll:", window.scrollY);
+  const isFullHeightPage =
+    location.pathname.startsWith('/messages') ||
+    location.pathname.startsWith('/team/') ||
+    location.pathname === '/blueprint' ||
+    location.pathname.startsWith('/asset/');
 
-  const main = document.querySelector("main");
-  console.log("Main Scroll:", main?.scrollTop);
+  /*
+   * FIX:
+   * BottomNav sirf logged-in users ko dikhta hai.
+   * Isliye guest homepage par pb-16 nahi lagna chahiye.
+   */
+  const needsBottomNavPadding =
+    Boolean(currentUser) &&
+    !isFullHeightPage &&
+    !isChatOpen;
 
-  console.log("Scrolling Element:", document.scrollingElement);
-}, [location.pathname]);
+  useEffect(() => {
+    console.log("Window Scroll:", window.scrollY);
 
+    const main = document.querySelector("main");
+    console.log("Main Scroll:", main?.scrollTop);
+
+    console.log(
+      "Scrolling Element:",
+      document.scrollingElement
+    );
+  }, [location.pathname]);
 
   return (
-      <GoogleOAuthProvider clientId={googleClientId}>
-    <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
-      {authLoadingState.isLoading && location.pathname === "/login" && (
-  <FullScreenLoader messages={authLoadingState.messages} />
-)}
-      {currentUser && showOnboardingModal && <OnboardingPage />}
-      {showHeader && <Header />}
-<NotificationArea />
+    <GoogleOAuthProvider clientId={googleClientId}>
 
-      <main className={`flex-grow ${isFullHeightPage || isChatOpen ? '' : 'pb-16'} ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}`}>
+      <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
 
-        <Routes>
-          <Route
-  path="/"
-  element={
-    currentUser ? (
-      <Navigate to="/dashboard" replace />
-    ) : (
-      <HomePage />
-    )
-  }/>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="/user/:userId" element={<WithPageContainer><PublicProfilePage /></WithPageContainer>} />
-          <Route path="/about" element={<WithPageContainer><PlaceholderContentPage title="About us" /></WithPageContainer>} />
-          <Route path="/privacy-policy" element={<WithPageContainer><PlaceholderContentPage title="Privacy policy" /></WithPageContainer>} />
-          <Route path="/sponsorship" element={<WithPageContainer><PlaceholderContentPage title="Sponsorship" /></WithPageContainer>} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/new-password" element={<NewPasswordPage />} />
-          <Route path="/contact-us" element={<WithPageContainer><ContactUsPage /></WithPageContainer>} />
-          <Route path="/search" element={<WithPageContainer><SearchPage /></WithPageContainer>} />
-<Route
-  path="/builders"
-  element={
-    <ProtectedRoute>
-      <BuildersStoriesPage />
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/builders/:id"
-  element={
-    <ProtectedRoute>
-      <StoryDetailsPage />
-    </ProtectedRoute>
-  }
-/>
-<Route path="/blog"
-element={<WithPageContainer> <BlogPage />
-</WithPageContainer>}/>
-<Route path="/blog/:slug" element={<BlogDetailPage />} />
+        {authLoadingState.isLoading &&
+          location.pathname === "/login" && (
+            <FullScreenLoader
+              messages={authLoadingState.messages}
+            />
+          )}
 
-          <Route path="/dashboard" element={
-  <ProtectedRoute>
-    <DashboardPage />
-  </ProtectedRoute>
-} />
-          <Route path="/projects" element={<ProtectedRoute><ProjectsListPage /></ProtectedRoute>} />
-          <Route path="/startalks" element={<ProtectedRoute><StartalksPage /></ProtectedRoute>} />
-          <Route path="/blueprint" element={<ProtectedRoute><StartupStoriesPage /></ProtectedRoute>} />
-          <Route path="/asset/:assetId" element={<ProtectedRoute><AssetDetailsPage /></ProtectedRoute>} />
-          <Route path="/asset/:assetId/edit" element={<ProtectedRoute><WithPageContainer><EditAssetPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/submit-asset" element={<ProtectedRoute><WithPageContainer><SubmitAssetPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/post-idea" element={<ProtectedRoute><WithPageContainer><PostIdeaPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/idea/:ideaId" element={<ProtectedRoute><WithPageContainer><IdeaDetailPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/idea/:ideaId/position/:positionId/apply" element={<ProtectedRoute><WithPageContainer><ApplyPage /></WithPageContainer></ProtectedRoute>} />
-          
-          <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
-          <Route path="/team/:teamId" element={<ProtectedRoute><TeamDetailPage /></ProtectedRoute>} />
-          
-          <Route path="/profile" element={<ProtectedRoute><WithPageContainer><ProfilePage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/profile/edit" element={<ProtectedRoute><WithPageContainer><EditProfilePage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/project/:ideaId/edit" element={<ProtectedRoute><WithPageContainer><EditProjectPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/my-projects" element={<ProtectedRoute><WithPageContainer><MyProjectsPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/my-applications" element={<ProtectedRoute><WithPageContainer><MyApplicationsPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/connections" element={<ProtectedRoute><WithPageContainer><ConnectionsPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/saved-projects" element={<ProtectedRoute><WithPageContainer><SavedProjectsPage /></WithPageContainer></ProtectedRoute>} />
-          <Route path="/activity-log" element={<ProtectedRoute><WithPageContainer><ActivityLogPage /></WithPageContainer></ProtectedRoute>} />
-<Route
-  path="/globe"
-  element={
-    <ProtectedRoute>
-      <GlobalGlobe />
-    </ProtectedRoute>
-  }
-/>
+        {currentUser &&
+          showOnboardingModal && (
+            <OnboardingPage />
+          )}
 
+        {showHeader && <Header />}
 
-  
-          <Route path="*" element={currentUser ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />} />
-        </Routes>
-      </main>
-      {showFooter && <Footer />}
+        <NotificationArea />
 
-{currentUser && !isChatOpen && !['/', '/login', '/signup'].includes(location.pathname) && <BottomNav />}
+        {/* FIXED MAIN */}
+        <main
+          className={`
+            flex-grow
+            ${needsBottomNavPadding ? 'pb-16' : ''}
+            ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}
+          `}
+        >
 
-<FloatingActionMenu />
+          <Routes>
 
-{currentUser && !hideStarverseButton && (
-  <StarverseFloatingButton />
-)}
+            <Route
+              path="/"
+              element={
+                currentUser ? (
+                  <Navigate
+                    to="/dashboard"
+                    replace
+                  />
+                ) : (
+                  <HomePage />
+                )
+              }
+            />
 
-<LogoutConfirmModal
-  open={showLogoutModal}
-  onClose={() => setShowLogoutModal(false)}
-  onLogout={async () => {
-    setShowLogoutModal(false);
-    await logout();
-    navigate("/", { replace: true });
-  }}
-/>
+            <Route
+              path="/login"
+              element={<LoginPage />}
+            />
 
-    </div>
-        </GoogleOAuthProvider>
+            <Route
+              path="/signup"
+              element={<SignupPage />}
+            />
+
+            <Route
+              path="/verify-email"
+              element={<VerifyEmailPage />}
+            />
+
+            <Route
+              path="/user/:userId"
+              element={
+                <WithPageContainer>
+                  <PublicProfilePage />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/about"
+              element={
+                <WithPageContainer>
+                  <PlaceholderContentPage title="About us" />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/privacy-policy"
+              element={
+                <WithPageContainer>
+                  <PlaceholderContentPage title="Privacy policy" />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/sponsorship"
+              element={
+                <WithPageContainer>
+                  <PlaceholderContentPage title="Sponsorship" />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/forgot-password"
+              element={<ForgotPasswordPage />}
+            />
+
+            <Route
+              path="/new-password"
+              element={<NewPasswordPage />}
+            />
+
+            <Route
+              path="/contact-us"
+              element={
+                <WithPageContainer>
+                  <ContactUsPage />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/search"
+              element={
+                <WithPageContainer>
+                  <SearchPage />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/builders"
+              element={
+                <ProtectedRoute>
+                  <BuildersStoriesPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/builders/:id"
+              element={
+                <ProtectedRoute>
+                  <StoryDetailsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/blog"
+              element={
+                <WithPageContainer>
+                  <BlogPage />
+                </WithPageContainer>
+              }
+            />
+
+            <Route
+              path="/blog/:slug"
+              element={<BlogDetailPage />}
+            />
+
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/projects"
+              element={
+                <ProtectedRoute>
+                  <ProjectsListPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/startalks"
+              element={
+                <ProtectedRoute>
+                  <StartalksPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/blueprint"
+              element={
+                <ProtectedRoute>
+                  <StartupStoriesPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/asset/:assetId"
+              element={
+                <ProtectedRoute>
+                  <AssetDetailsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/asset/:assetId/edit"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <EditAssetPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/submit-asset"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <SubmitAssetPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/post-idea"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <PostIdeaPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/idea/:ideaId"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <IdeaDetailPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/idea/:ideaId/position/:positionId/apply"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <ApplyPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/messages"
+              element={
+                <ProtectedRoute>
+                  <MessagesPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/team/:teamId"
+              element={
+                <ProtectedRoute>
+                  <TeamDetailPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <ProfilePage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/profile/edit"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <EditProfilePage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/project/:ideaId/edit"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <EditProjectPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/my-projects"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <MyProjectsPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/my-applications"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <MyApplicationsPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/connections"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <ConnectionsPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/saved-projects"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <SavedProjectsPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/activity-log"
+              element={
+                <ProtectedRoute>
+                  <WithPageContainer>
+                    <ActivityLogPage />
+                  </WithPageContainer>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/globe"
+              element={
+                <ProtectedRoute>
+                  <GlobalGlobe />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="*"
+              element={
+                currentUser ? (
+                  <Navigate
+                    to="/dashboard"
+                    replace
+                  />
+                ) : (
+                  <Navigate
+                    to="/"
+                    replace
+                  />
+                )
+              }
+            />
+
+          </Routes>
+
+        </main>
+
+        {showFooter && <Footer />}
+
+        {currentUser &&
+          !isChatOpen &&
+          !['/', '/login', '/signup'].includes(
+            location.pathname
+          ) && (
+            <BottomNav />
+          )}
+
+        <FloatingActionMenu />
+
+        {currentUser &&
+          !hideStarverseButton && (
+            <StarverseFloatingButton />
+          )}
+
+        <LogoutConfirmModal
+          open={showLogoutModal}
+          onClose={() =>
+            setShowLogoutModal(false)
+          }
+          onLogout={async () => {
+            setShowLogoutModal(false);
+
+            await logout();
+
+            navigate("/", {
+              replace: true
+            });
+          }}
+        />
+
+      </div>
+
+    </GoogleOAuthProvider>
   );
 };
+
 export default App;
