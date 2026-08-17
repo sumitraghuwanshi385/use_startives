@@ -369,6 +369,7 @@ const HomePage: React.FC = () => {
     <div
       ref={pageRef}
       className="bg-white !bg-white text-[var(--text-primary)] overflow-x-hidden font-poppins"
+      style={{ backgroundColor: '#ffffff' }}
     >
       <script
         type="application/ld+json"
@@ -1106,6 +1107,12 @@ const HomePage: React.FC = () => {
           </Reveal>
 
         </section>
+
+        {/* Pure white background space below the button */}
+        <div
+          className="w-full bg-white !bg-white h-8 sm:h-10"
+          style={{ backgroundColor: '#ffffff' }}
+        />
 
       </div>
 
