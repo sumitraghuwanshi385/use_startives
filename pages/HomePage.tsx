@@ -708,9 +708,9 @@ const HomePage: React.FC = () => {
 
         {/* ------------------------------------------------------- CLOSING */}
         <section
-          className="relative overflow-hidden text-center py-20 sm:py-24 px-4"
+          className="relative overflow-hidden text-center py-16 sm:py-20 px-2"
           style={{
-            backgroundImage: "url('https://res.cloudinary.com/dp7avkarg/image/upload/v1786962987/file_000000009ca0820b9f680a868be24621_zvlfni.png')",
+            backgroundImage: "url('https://res.cloudinary.com/dp7avkarg/image/upload/v1786964058/Picsart_26-08-17_16-22-44-214_rmele4.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
