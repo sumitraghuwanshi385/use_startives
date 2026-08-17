@@ -274,7 +274,6 @@ const HomePage: React.FC = () => {
 
   return (
     <div ref={pageRef} className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins">
-      {/* Structured data — helps search engines understand the org & site */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -293,6 +292,7 @@ const HomePage: React.FC = () => {
       />
 
       <div className="relative z-10">
+
         {/* ------------------------------------------------------------ HERO */}
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
@@ -455,6 +455,7 @@ const HomePage: React.FC = () => {
                 From idea to launch, {APP_NAME} provides the tools and community to support your journey.
               </p>
             </Reveal>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => (
                 <Reveal key={index} delay={index * 90}>
@@ -620,6 +621,7 @@ const HomePage: React.FC = () => {
                 We're more than a platform; we're your strategic partner in innovation.
               </p>
             </Reveal>
+
             <div className="max-w-4xl mx-auto space-y-12">
               {whyChooseFeatures.map((feature, index) => (
                 <Reveal
@@ -650,6 +652,7 @@ const HomePage: React.FC = () => {
                 Innovators are building, connecting, and succeeding on {APP_NAME}.
               </p>
             </Reveal>
+
             <div className="relative w-full overflow-hidden mask-gradient">
               <div className="flex animate-marquee gap-8">
                 {[...testimonials, ...testimonials].map((testimonial, index) => (
@@ -661,6 +664,7 @@ const HomePage: React.FC = () => {
                         aria-hidden="true"
                         className="absolute -top-4 -right-4 w-24 h-24 opacity-5"
                       />
+
                       <div className="flex justify-between items-center z-10">
                         <div className="flex space-x-0.5 text-yellow-400">
                           {Array.from({ length: 5 }).map((_, i) => (
@@ -668,9 +672,11 @@ const HomePage: React.FC = () => {
                           ))}
                         </div>
                       </div>
+
                       <p className="text-[var(--text-secondary)] text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">
                         "{testimonial.quote}"
                       </p>
+
                       <div className="pt-4 border-t border-[var(--border-primary)] z-10">
                         <p className="font-bold text-[var(--text-primary)] text-sm">{testimonial.name}</p>
                         <p className="text-xs text-[var(--text-muted)]">{testimonial.role}</p>
@@ -690,10 +696,12 @@ const HomePage: React.FC = () => {
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight font-poppins uppercase">
                 Powering the next wave of startups
               </h2>
+
               <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 We are proud to be the launchpad for innovators from world-class companies and universities.
               </p>
             </Reveal>
+
             <Reveal className="flex justify-center items-center gap-x-16 sm:gap-x-24" delay={100}>
               {companyLogos.map((logo, index) => (
                 <div key={index} aria-label={logo.alt} className="transition-transform duration-300 hover:scale-110">
@@ -707,17 +715,16 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* ------------------------------------------------------- CLOSING */}
-        <section
-          className="relative overflow-hidden text-center py-20 sm:py-24 px-4"
-          style={{
-            backgroundImage: "url('https://res.cloudinary.com/dp7avkarg/image/upload/v1786964318/ca901cc2f63f58a11e60adeeb38c6d5b_bun8ao.gif')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px] pointer-events-none" />
+        <section className="relative w-full overflow-hidden min-h-[520px] sm:min-h-[500px] flex items-center justify-center px-4 py-16 sm:py-20">
 
-          <div className="relative z-10 container mx-auto max-w-3xl font-poppins">
+          <img
+            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786962987/file_000000009ca0820b9f680a868be24621_zvlfni.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-contain object-center"
+          />
+
+          <div className="relative z-10 w-full max-w-3xl mx-auto text-center font-poppins">
             <Reveal>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-[-0.04em] text-neutral-900 leading-tight">
                 Let’s build what’s next.
@@ -755,35 +762,56 @@ const HomePage: React.FC = () => {
           transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
           will-change: opacity, transform;
         }
+
         .reveal-item.is-visible {
           opacity: 1;
           transform: translateY(0);
         }
+
         .magnetic-btn::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(120px circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.35), transparent 70%);
+          background: radial-gradient(
+            120px circle at var(--x, 50%) var(--y, 50%),
+            rgba(255, 255, 255, 0.35),
+            transparent 70%
+          );
           opacity: 0;
           transition: opacity 0.3s ease;
           pointer-events: none;
         }
+
         .magnetic-btn:hover::before {
           opacity: 1;
         }
+
         @keyframes float-slow {
-          0%, 100% { transform: translate(0, 0); }
-          50% { transform: translate(12px, -18px); }
+          0%, 100% {
+            transform: translate(0, 0);
+          }
+          50% {
+            transform: translate(12px, -18px);
+          }
         }
+
         .animate-float-slow {
           animation: float-slow 8s ease-in-out infinite;
         }
+
+        @media (max-width: 639px) {
+          .closing-section-image {
+            object-fit: contain;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .reveal-item {
             opacity: 1 !important;
             transform: none !important;
             transition: none !important;
           }
+
           .animate-float-slow {
             animation: none !important;
           }
