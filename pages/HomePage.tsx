@@ -707,23 +707,41 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* ------------------------------------------------------- CLOSING */}
-        <section className="text-center py-16 px-4 bg-[var(--background-secondary)]">
-          <Reveal className="container mx-auto max-w-3xl font-poppins">
-            <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <h2 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
-              Ready to build what's next?
-            </h2>
-            <p className="text-[var(--text-secondary)] mt-2 text-xs sm:text-sm leading-relaxed font-medium">
-              Your next big opportunity is just a click away. Join a community of forward-thinkers and start building your legacy today.
-            </p>
-            <div className="mt-8">
-              <GradientButton to="/signup" icon={<ArrowRight className="w-4 h-4" />} className="!text-xs !py-2.5 !px-6">
-                Launch your vision
-              </GradientButton>
-            </div>
-          </Reveal>
+        <section
+          className="relative overflow-hidden text-center py-20 sm:py-24 px-4"
+          style={{
+            backgroundImage: "url('https://res.cloudinary.com/dp7avkarg/image/upload/v1786962987/file_000000009ca0820b9f680a868be24621_zvlfni.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px] pointer-events-none" />
+
+          <div className="relative z-10 container mx-auto max-w-3xl font-poppins">
+            <Reveal>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-[-0.04em] text-neutral-900 leading-tight">
+                Let’s build what’s next.
+              </h2>
+
+              <p className="mt-4 text-sm sm:text-base md:text-lg text-neutral-700 max-w-2xl mx-auto leading-relaxed font-medium">
+                Your next idea could become the next big thing. Find the people, energy, and momentum to turn your vision into something real.
+              </p>
+
+              <div className="mt-8 flex justify-center">
+                <GradientButton
+                  to="/signup"
+                  icon={
+                    <span className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-red-500/55 via-purple-400/40 to-blue-500/55 border border-white/70 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_4px_14px_rgba(60,80,180,0.18)] backdrop-blur-xl">
+                      <ArrowRight className="w-4 h-4 text-neutral-900 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </span>
+                  }
+                  className="!text-neutral-900 !font-bold !text-sm !py-1.5 !pl-6 !pr-2 rounded-full !bg-white/45 !border !border-white/80 !shadow-[inset_0_1px_2px_rgba(255,255,255,0.95),0_8px_30px_rgba(30,40,80,0.15)] !backdrop-blur-2xl !backdrop-saturate-150 hover:!bg-white/55 hover:!shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_12px_36px_rgba(30,40,80,0.2)]"
+                >
+                  Launch your vision
+                </GradientButton>
+              </div>
+            </Reveal>
+          </div>
         </section>
       </div>
 
@@ -745,7 +763,7 @@ const HomePage: React.FC = () => {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(120px circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.25), transparent 70%);
+          background: radial-gradient(120px circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.35), transparent 70%);
           opacity: 0;
           transition: opacity 0.3s ease;
           pointer-events: none;
