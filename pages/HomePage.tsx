@@ -368,7 +368,7 @@ const HomePage: React.FC = () => {
   return (
     <div
       ref={pageRef}
-      className="bg-white text-[var(--text-primary)] overflow-x-hidden font-poppins min-h-full"
+      className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins"
     >
       <script
         type="application/ld+json"
@@ -387,9 +387,8 @@ const HomePage: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10 bg-white">
+      <div className="relative z-10">
 
-        {/* HERO */}
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
 
@@ -492,7 +491,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* DISCOVER PROJECTS */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -543,7 +541,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ECOSYSTEM */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
 
@@ -594,7 +591,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* FEATURES */}
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -637,7 +633,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ASSET EXCHANGE */}
         <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
 
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none" />
@@ -755,7 +750,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* STARTALKS */}
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
 
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
@@ -863,7 +857,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* WHY STARTIVES */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -907,18 +900,17 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* FROM OUR COMMUNITY — PURE WHITE */}
-        <section className="community-section relative py-12 sm:py-16 bg-white !bg-white overflow-hidden">
+        <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
 
-          <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <div className="container mx-auto px-4 max-w-7xl">
 
             <Reveal className="text-center mb-10">
 
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 tracking-tight font-poppins uppercase">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 From our community
               </h2>
 
-              <p className="text-neutral-500 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
+              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 Innovators are building, connecting, and succeeding on {APP_NAME}.
               </p>
 
@@ -935,33 +927,18 @@ const HomePage: React.FC = () => {
                       className="flex-shrink-0 w-[90vw] sm:w-[420px]"
                     >
 
-                      {/* iOS 27 LIQUID GLASS TESTIMONIAL */}
-                      <div className="testimonial-liquid-glass group p-6 rounded-[24px] flex flex-col space-y-4 h-full relative overflow-hidden font-poppins">
+                      <div className="p-6 bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] flex flex-col space-y-4 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-purple-500/20 relative overflow-hidden font-poppins">
 
-                        {/* Glass base */}
-                        <div className="absolute inset-0 bg-white/55 pointer-events-none" />
-
-                        {/* Red → purple → blue glass refraction */}
-                        <div className="absolute -top-24 -right-20 w-52 h-52 rounded-full bg-gradient-to-br from-red-400/25 via-purple-400/15 to-blue-500/30 blur-3xl pointer-events-none" />
-
-                        <div className="absolute -bottom-24 -left-20 w-52 h-52 rounded-full bg-gradient-to-tr from-blue-500/20 via-purple-400/10 to-red-400/15 blur-3xl pointer-events-none" />
-
-                        {/* Top glass reflection */}
-                        <div className="absolute top-0 left-[8%] right-[8%] h-px bg-white/95 rounded-full pointer-events-none" />
-
-                        <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-white/65 via-transparent to-white/20 pointer-events-none" />
-
-                        {/* Brand watermark */}
                         <img
                           src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
                           alt=""
                           aria-hidden="true"
-                          className="absolute -top-4 -right-4 w-24 h-24 opacity-[0.035] pointer-events-none"
+                          className="absolute -top-4 -right-4 w-24 h-24 opacity-5"
                         />
 
-                        <div className="flex justify-between items-center relative z-10">
+                        <div className="flex justify-between items-center z-10">
 
-                          <div className="flex space-x-0.5 text-yellow-400 drop-shadow-sm">
+                          <div className="flex space-x-0.5 text-yellow-400">
 
                             {Array.from({ length: 5 }).map((_, i) => (
                               <Star
@@ -974,17 +951,17 @@ const HomePage: React.FC = () => {
 
                         </div>
 
-                        <p className="relative z-10 text-neutral-700 text-sm sm:text-base italic flex-grow leading-relaxed font-medium">
+                        <p className="text-[var(--text-secondary)] text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">
                           "{testimonial.quote}"
                         </p>
 
-                        <div className="relative z-10 pt-4 border-t border-white/60">
+                        <div className="pt-4 border-t border-[var(--border-primary)] z-10">
 
-                          <p className="font-bold text-neutral-900 text-sm">
+                          <p className="font-bold text-[var(--text-primary)] text-sm">
                             {testimonial.name}
                           </p>
 
-                          <p className="text-xs text-neutral-500">
+                          <p className="text-xs text-[var(--text-muted)]">
                             {testimonial.role}
                           </p>
 
@@ -1001,48 +978,26 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* FINAL CTA — FORCED WHITE */}
-        <section className="final-cta-section relative text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white !bg-white overflow-hidden">
+        <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white">
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
-            {/* Image wrapper prevents unwanted dark/grey visual strip */}
-            <div className="relative w-full overflow-hidden bg-white">
+            <img
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786985902/Picsart_26-08-17_22-27-13-732_dihtyk.jpg"
+              alt=""
+              aria-hidden="true"
+              className="
+                mx-auto
+                w-full
+                max-w-4xl
+                h-auto
+                object-contain
+                object-center
+                block
+              "
+            />
 
-              <img
-                src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
-                alt=""
-                aria-hidden="true"
-                className="
-                  mx-auto
-                  w-full
-                  max-w-4xl
-                  h-auto
-                  object-contain
-                  object-top
-                  block
-                "
-              />
-
-              {/* White bottom mask for any baked-in grey/black area */}
-              <div
-                className="
-                  absolute
-                  left-0
-                  right-0
-                  bottom-0
-                  h-[8%]
-                  min-h-[18px]
-                  bg-white
-                  pointer-events-none
-                  z-10
-                "
-              />
-
-            </div>
-
-            {/* Launch your vision — ~15% smaller */}
-            <div className="mt-3 sm:mt-4 flex justify-center relative z-20">
+            <div className="mt-4 sm:mt-5 flex justify-center">
 
               <Link
                 to="/signup"
@@ -1053,16 +1008,16 @@ const HomePage: React.FC = () => {
                   inline-flex
                   items-center
                   justify-center
-                  gap-2.5
+                  gap-3
                   rounded-full
                   px-2
-                  py-1.5
-                  pl-5
-                  sm:pl-6
+                  py-2
+                  pl-6
+                  sm:pl-7
                   text-neutral-900
                   font-bold
-                  text-[13px]
-                  sm:text-[13px]
+                  text-sm
+                  sm:text-[15px]
                   tracking-tight
                   select-none
                   overflow-hidden
@@ -1093,10 +1048,10 @@ const HomePage: React.FC = () => {
                     flex
                     items-center
                     justify-center
-                    w-8
-                    h-8
-                    sm:w-9
-                    sm:h-9
+                    w-9
+                    h-9
+                    sm:w-10
+                    sm:h-10
                     rounded-full
                     overflow-hidden
                     border
@@ -1131,10 +1086,10 @@ const HomePage: React.FC = () => {
                     className="
                       relative
                       z-10
-                      w-3.5
-                      h-3.5
-                      sm:w-4
-                      sm:h-4
+                      w-4
+                      h-4
+                      sm:w-[18px]
+                      sm:h-[18px]
                       text-neutral-900
                       transition-transform
                       duration-300
@@ -1150,18 +1105,11 @@ const HomePage: React.FC = () => {
 
           </Reveal>
 
-          {/* Absolute white continuation to guarantee no dark gap */}
-          <div className="absolute bottom-0 left-0 right-0 h-6 bg-white pointer-events-none" />
-
         </section>
 
       </div>
 
       <style>{`
-
-        /* =========================================
-           REVEAL ANIMATION
-        ========================================= */
 
         .reveal-item {
           opacity: 0;
@@ -1176,11 +1124,6 @@ const HomePage: React.FC = () => {
           opacity: 1;
           transform: translateY(0);
         }
-
-
-        /* =========================================
-           MAGNETIC BUTTON
-        ========================================= */
 
         .magnetic-btn::before {
           content: '';
@@ -1200,11 +1143,6 @@ const HomePage: React.FC = () => {
         .magnetic-btn:hover::before {
           opacity: 1;
         }
-
-
-        /* =========================================
-           LIQUID GLASS CTA
-        ========================================= */
 
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -1251,101 +1189,6 @@ const HomePage: React.FC = () => {
             0 12px 34px rgba(30, 40, 80, 0.17);
         }
 
-
-        /* =========================================
-           iOS 27 LIQUID GLASS TESTIMONIAL CARDS
-        ========================================= */
-
-        .testimonial-liquid-glass {
-          -webkit-backdrop-filter: blur(28px) saturate(185%);
-          backdrop-filter: blur(28px) saturate(185%);
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.72),
-              rgba(255, 255, 255, 0.42)
-            );
-
-          border: 1px solid rgba(255, 255, 255, 0.88);
-
-          box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.95),
-            inset 0 -1px 1px rgba(120, 130, 160, 0.07),
-            0 10px 35px rgba(35, 45, 80, 0.10);
-
-          isolation: isolate;
-
-          transition:
-            transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-            box-shadow 0.35s ease,
-            border-color 0.35s ease;
-        }
-
-        .testimonial-liquid-glass::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-
-          background:
-            linear-gradient(
-              120deg,
-              rgba(255, 255, 255, 0.62),
-              transparent 28%,
-              transparent 68%,
-              rgba(255, 255, 255, 0.28)
-            );
-
-          opacity: 0.8;
-          pointer-events: none;
-          z-index: 1;
-        }
-
-        .testimonial-liquid-glass::after {
-          content: '';
-          position: absolute;
-          left: 7%;
-          right: 7%;
-          top: 0;
-          height: 1px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.95);
-          box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-          pointer-events: none;
-          z-index: 2;
-        }
-
-        .testimonial-liquid-glass:hover {
-          transform: translateY(-5px) scale(1.01);
-
-          border-color: rgba(255, 255, 255, 0.98);
-
-          box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 1),
-            inset 0 -1px 1px rgba(100, 110, 150, 0.07),
-            0 18px 42px rgba(35, 45, 80, 0.14);
-        }
-
-
-        /* =========================================
-           FINAL CTA WHITE SAFETY
-        ========================================= */
-
-        .final-cta-section,
-        .community-section {
-          background-color: #ffffff !important;
-        }
-
-        .final-cta-section {
-          isolation: isolate;
-        }
-
-
-        /* =========================================
-           FLOAT ANIMATION
-        ========================================= */
-
         @keyframes float-slow {
           0%,
           100% {
@@ -1361,37 +1204,21 @@ const HomePage: React.FC = () => {
           animation: float-slow 8s ease-in-out infinite;
         }
 
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
         @media (max-width: 639px) {
 
           .liquid-glass-cta {
-            padding-top: 6px;
-            padding-bottom: 6px;
-            padding-left: 19px;
-            padding-right: 6px;
-            font-size: 13px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            padding-left: 22px;
+            padding-right: 7px;
+            font-size: 14px;
           }
 
           .liquid-glass-cta span {
             -webkit-tap-highlight-color: transparent;
           }
 
-          .testimonial-liquid-glass {
-            border-radius: 22px;
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            backdrop-filter: blur(24px) saturate(180%);
-          }
-
         }
-
-
-        /* =========================================
-           REDUCED MOTION
-        ========================================= */
 
         @media (prefers-reduced-motion: reduce) {
 
@@ -1405,8 +1232,7 @@ const HomePage: React.FC = () => {
             animation: none !important;
           }
 
-          .liquid-glass-cta,
-          .testimonial-liquid-glass {
+          .liquid-glass-cta {
             transition: none !important;
           }
 
