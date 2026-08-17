@@ -1011,13 +1011,13 @@ const HomePage: React.FC = () => {
                   gap-3
                   rounded-full
                   px-2
-                  py-2
-                  pl-6
-                  sm:pl-7
+                  py-[7px]
+                  pl-[21.6px]
+                  sm:pl-[25.2px]
                   text-neutral-900
                   font-bold
-                  text-sm
-                  sm:text-[15px]
+                  text-[12.6px]
+                  sm:text-[13.5px]
                   tracking-tight
                   select-none
                   overflow-hidden
@@ -1048,10 +1048,10 @@ const HomePage: React.FC = () => {
                     flex
                     items-center
                     justify-center
-                    w-9
-                    h-9
-                    sm:w-10
-                    sm:h-10
+                    w-[32.4px]
+                    h-[32.4px]
+                    sm:w-9
+                    sm:h-9
                     rounded-full
                     overflow-hidden
                     border
@@ -1086,10 +1086,10 @@ const HomePage: React.FC = () => {
                     className="
                       relative
                       z-10
-                      w-4
-                      h-4
-                      sm:w-[18px]
-                      sm:h-[18px]
+                      w-[14.4px]
+                      h-[14.4px]
+                      sm:w-[16.2px]
+                      sm:h-[16.2px]
                       text-neutral-900
                       transition-transform
                       duration-300
@@ -1106,6 +1106,9 @@ const HomePage: React.FC = () => {
           </Reveal>
 
         </section>
+
+        {/* Pure white background space below the button */}
+        <div className="w-full bg-white h-8 sm:h-10" />
 
       </div>
 
@@ -1207,11 +1210,11 @@ const HomePage: React.FC = () => {
         @media (max-width: 639px) {
 
           .liquid-glass-cta {
-            padding-top: 7px;
-            padding-bottom: 7px;
-            padding-left: 22px;
-            padding-right: 7px;
-            font-size: 14px;
+            padding-top: 6.3px;
+            padding-bottom: 6.3px;
+            padding-left: 19.8px;
+            padding-right: 6.3px;
+            font-size: 12.6px;
           }
 
           .liquid-glass-cta span {
