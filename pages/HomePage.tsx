@@ -23,9 +23,6 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
-/* ----------------------------------------------------------------------- */
-/*  Scroll-reveal hook — single source of truth for every "in view" fade   */
-/* ----------------------------------------------------------------------- */
 function useInView<T extends HTMLElement>(threshold = 0.2) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -52,9 +49,6 @@ function useInView<T extends HTMLElement>(threshold = 0.2) {
   return { ref, inView };
 }
 
-/* ----------------------------------------------------------------------- */
-/*  Reveal wrapper — pass a stagger delay (ms) for sequenced entrances     */
-/* ----------------------------------------------------------------------- */
 const Reveal: React.FC<{
   children: React.ReactNode;
   delay?: number;
@@ -75,9 +69,6 @@ const Reveal: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- */
-/*  Magnetic gradient button — subtle cursor-follow glow, premium feel     */
-/* ----------------------------------------------------------------------- */
 const GradientButton: React.FC<{
   to?: string;
   href?: string;
@@ -164,9 +155,6 @@ const GradientButton: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- */
-/*  Count-up stat card                                                     */
-/* ----------------------------------------------------------------------- */
 const useCountUp = (
   endValue: number,
   active: boolean,
@@ -178,7 +166,6 @@ const useCountUp = (
     if (!active) return;
 
     let start = 0;
-
     const totalFrames = Math.round(duration / (1000 / 60));
 
     const counter = setInterval(() => {
@@ -220,7 +207,6 @@ const EcosystemStatCard: React.FC<{
 }) => {
   const { theme } = useTheme();
   const { ref, inView } = useInView<HTMLDivElement>(0.4);
-
   const count = useCountUp(endValue, inView);
 
   const textGradient =
@@ -262,9 +248,6 @@ const EcosystemStatCard: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- */
-/*  Homepage                                                               */
-/* ----------------------------------------------------------------------- */
 const HomePage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -387,7 +370,6 @@ const HomePage: React.FC = () => {
       ref={pageRef}
       className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins"
     >
-      {/* Structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -406,8 +388,6 @@ const HomePage: React.FC = () => {
       />
 
       <div className="relative z-10">
-
-        {/* ------------------------------------------------------------ HERO */}
 
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
@@ -511,8 +491,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ DISCOVER */}
-
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -562,8 +540,6 @@ const HomePage: React.FC = () => {
             </Reveal>
           </div>
         </section>
-
-        {/* --------------------------------------------------- ECOSYSTEM */}
 
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
@@ -615,8 +591,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ----------------------------------------------------- FEATURES */}
-
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -658,8 +632,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </section>
-
-        {/* -------------------------------------------------- ASSET EXCHANGE */}
 
         <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
 
@@ -778,8 +750,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ STARTALKS */}
-
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
 
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
@@ -887,8 +857,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* --------------------------------------------------- WHY STARTIVES */}
-
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -931,8 +899,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </section>
-
-        {/* ---------------------------------------------------- TESTIMONIALS */}
 
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
 
@@ -1012,50 +978,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* -------------------------------------------------------- LOGOS */}
-
-        <section className="py-16 bg-[var(--background-primary)]">
-
-          <div className="container mx-auto px-4">
-
-            <Reveal className="text-center mb-10">
-
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight font-poppins uppercase">
-                Powering the next wave of startups
-              </h2>
-
-              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                We are proud to be the launchpad for innovators from world-class companies and universities.
-              </p>
-
-            </Reveal>
-
-            <Reveal
-              className="flex justify-center items-center gap-x-16 sm:gap-x-24"
-              delay={100}
-            >
-
-              {companyLogos.map((logo, index) => (
-                <div
-                  key={index}
-                  aria-label={logo.alt}
-                  className="transition-transform duration-300 hover:scale-110"
-                >
-                  {React.cloneElement(logo.component, {
-                    className:
-                      'h-7 w-7 text-[var(--text-muted)] opacity-70 hover:opacity-100 transition-opacity duration-300',
-                  })}
-                </div>
-              ))}
-
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------- CLOSING */}
-        {/* Pure white background + new image + liquid glass CTA */}
-
-        <section className="text-center pt-8 pb-7 sm:pt-10 sm:pb-9 px-4 bg-white">
+        <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white">
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
@@ -1074,11 +997,7 @@ const HomePage: React.FC = () => {
               "
             />
 
-            {/* --------------------------------------------------- */}
-            {/* Apple / iOS style Liquid Glass CTA */}
-            {/* --------------------------------------------------- */}
-
-            <div className="mt-5 sm:mt-6 flex justify-center">
+            <div className="mt-4 sm:mt-5 flex justify-center">
 
               <Link
                 to="/signup"
@@ -1112,25 +1031,15 @@ const HomePage: React.FC = () => {
                 "
               >
 
-                {/* Soft glass highlight */}
-
                 <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 pointer-events-none" />
-
-                {/* Subtle red → blue glass tint */}
 
                 <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/15 via-purple-400/10 to-blue-500/20 pointer-events-none" />
 
-                {/* Top glass shine */}
-
                 <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 rounded-full pointer-events-none" />
-
-                {/* Button text */}
 
                 <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
                 </span>
-
-                {/* Glass circular arrow */}
 
                 <span
                   className="
@@ -1156,8 +1065,6 @@ const HomePage: React.FC = () => {
                     group-hover:shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_5px_16px_rgba(40,50,100,0.16)]
                   "
                 >
-
-                  {/* Red → blue liquid glass glow */}
 
                   <span
                     className="
@@ -1202,10 +1109,6 @@ const HomePage: React.FC = () => {
 
       </div>
 
-      {/* -------------------------------------------------------------- */}
-      {/*  Scoped premium-motion styles — scroll reveals, glow, float      */}
-      {/* -------------------------------------------------------------- */}
-
       <style>{`
 
         .reveal-item {
@@ -1240,10 +1143,6 @@ const HomePage: React.FC = () => {
         .magnetic-btn:hover::before {
           opacity: 1;
         }
-
-        /* ------------------------------------------------------------ */
-        /* Liquid glass CTA                                            */
-        /* ------------------------------------------------------------ */
 
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(24px) saturate(180%);
