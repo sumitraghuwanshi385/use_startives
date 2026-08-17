@@ -23,9 +23,6 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
-/* ----------------------------------------------------------------------- */
-/*  Scroll-reveal hook — single source of truth for every "in view" fade   */
-/* ----------------------------------------------------------------------- */
 function useInView<T extends HTMLElement>(threshold = 0.2) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -49,9 +46,6 @@ function useInView<T extends HTMLElement>(threshold = 0.2) {
   return { ref, inView };
 }
 
-/* ----------------------------------------------------------------------- */
-/*  Reveal wrapper — pass a stagger delay (ms) for sequenced entrances     */
-/* ----------------------------------------------------------------------- */
 const Reveal: React.FC<{
   children: React.ReactNode;
   delay?: number;
@@ -71,9 +65,6 @@ const Reveal: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- */
-/*  Magnetic gradient button — subtle cursor-follow glow, premium feel     */
-/* ----------------------------------------------------------------------- */
 const GradientButton: React.FC<{
   to?: string;
   href?: string;
@@ -121,7 +112,6 @@ const GradientButton: React.FC<{
       </Link>
     );
   }
-
   if (href) {
     return (
       <a
@@ -137,7 +127,6 @@ const GradientButton: React.FC<{
       </a>
     );
   }
-
   return (
     <button
       ref={btnRef as any}
@@ -151,34 +140,24 @@ const GradientButton: React.FC<{
   );
 };
 
-/* ----------------------------------------------------------------------- */
-/*  Count-up stat card                                                     */
-/* ----------------------------------------------------------------------- */
 const useCountUp = (endValue: number, active: boolean, duration = 1800) => {
   const [count, setCount] = useState(0);
-
   useEffect(() => {
     if (!active) return;
-
     let start = 0;
     const totalFrames = Math.round(duration / (1000 / 60));
-
     const counter = setInterval(() => {
       start++;
       const progress = start / totalFrames;
       const eased = 1 - Math.pow(1 - progress, 3);
-
       setCount(Math.round(endValue * eased));
-
       if (start >= totalFrames) {
         clearInterval(counter);
         setCount(endValue);
       }
     }, 1000 / 60);
-
     return () => clearInterval(counter);
   }, [endValue, active, duration]);
-
   return count;
 };
 
@@ -194,11 +173,7 @@ const EcosystemStatCard: React.FC<{
   const { theme } = useTheme();
   const { ref, inView } = useInView<HTMLDivElement>(0.4);
   const count = useCountUp(endValue, inView);
-
-  const textGradient =
-    theme === 'dark'
-      ? 'from-white to-neutral-400'
-      : 'from-neutral-900 to-neutral-600';
+  const textGradient = theme === 'dark' ? 'from-white to-neutral-400' : 'from-neutral-900 to-neutral-600';
 
   return (
     <div
@@ -206,33 +181,19 @@ const EcosystemStatCard: React.FC<{
       className={`reveal-item ${inView ? 'is-visible' : ''} stat-card bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:-translate-y-2 hover:border-red-500/50 hover:shadow-xl`}
       style={{ transitionDelay: inView ? `${delay}ms` : '0ms' }}
     >
-      <div
-        className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br ${gradient} shadow-lg shadow-black/5`}
-      >
+      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br ${gradient} shadow-lg shadow-black/5`}>
         {icon}
       </div>
-
-      <p
-        className={`text-3xl font-bold bg-gradient-to-r ${textGradient} bg-clip-text text-transparent font-poppins tabular-nums`}
-      >
+      <p className={`text-3xl font-bold bg-gradient-to-r ${textGradient} bg-clip-text text-transparent font-poppins tabular-nums`}>
         {count}
         {suffix}
       </p>
-
-      <h3 className="text-base font-bold text-[var(--text-primary)] mt-3 font-poppins">
-        {label}
-      </h3>
-
-      <p className="text-[var(--text-secondary)] mt-1 text-xs font-poppins">
-        {description}
-      </p>
+      <h3 className="text-base font-bold text-[var(--text-primary)] mt-3 font-poppins">{label}</h3>
+      <p className="text-[var(--text-secondary)] mt-1 text-xs font-poppins">{description}</p>
     </div>
   );
 };
 
-/* ----------------------------------------------------------------------- */
-/*  Homepage                                                               */
-/* ----------------------------------------------------------------------- */
 const HomePage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -256,54 +217,16 @@ const HomePage: React.FC = () => {
   };
 
   const features = [
-    {
-      icon: <CheckCircle2 className="w-5 h-5 text-white" />,
-      title: 'Validate your idea',
-      description:
-        'Get feedback on your startup concept from a diverse community of experts and peers.',
-      gradient: 'from-sky-400 to-cyan-300',
-    },
-    {
-      icon: <Users className="w-5 h-5 text-white" />,
-      title: 'Find a co-founder',
-      description:
-        'Connect with passionate individuals who share your vision and have the skills to help you succeed.',
-      gradient: 'from-red-500 to-rose-400',
-    },
-    {
-      icon: <Box className="w-5 h-5 text-white" />,
-      title: 'Build your MVP',
-      description:
-        'Assemble a talented team to bring your Minimum Viable Product to life and start testing the market.',
-      gradient: 'from-orange-400 to-yellow-300',
-    },
-    {
-      icon: <Globe2 className="w-5 h-5 text-white" />,
-      title: 'Scale your venture',
-      description:
-        'Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.',
-      gradient: 'from-emerald-400 to-teal-300',
-    },
+    { icon: <CheckCircle2 className="w-5 h-5 text-white" />, title: 'Validate your idea', description: 'Get feedback on your startup concept from a diverse community of experts and peers.', gradient: 'from-sky-400 to-cyan-300' },
+    { icon: <Users className="w-5 h-5 text-white" />, title: 'Find a co-founder', description: 'Connect with passionate individuals who share your vision and have the skills to help you succeed.', gradient: 'from-red-500 to-rose-400' },
+    { icon: <Box className="w-5 h-5 text-white" />, title: 'Build your MVP', description: 'Assemble a talented team to bring your Minimum Viable Product to life and start testing the market.', gradient: 'from-orange-400 to-yellow-300' },
+    { icon: <Globe2 className="w-5 h-5 text-white" />, title: 'Scale your venture', description: 'Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.', gradient: 'from-emerald-400 to-teal-300' },
   ];
 
   const testimonials = [
-    {
-      name: 'Prince',
-      role: 'Founder, Apives',
-      quote: `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.`,
-    },
-    {
-      name: 'Sumit',
-      role: 'UX Designer',
-      quote:
-        'I was looking to join an exciting project and found the perfect fit here. The quality of ideas is amazing.',
-    },
-    {
-      name: 'Sonali Jaiswal',
-      role: 'Full-Stack Developer',
-      quote:
-        'As a developer, this platform is a goldmine. I get to work on innovative projects and build my portfolio.',
-    },
+    { name: 'Prince', role: 'Founder, Apives', quote: `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.` },
+    { name: 'Sumit', role: 'UX Designer', quote: 'I was looking to join an exciting project and found the perfect fit here. The quality of ideas is amazing.' },
+    { name: 'Sonali Jaiswal', role: 'Full-Stack Developer', quote: 'As a developer, this platform is a goldmine. I get to work on innovative projects and build my portfolio.' },
   ];
 
   const companyLogos = [
@@ -317,31 +240,25 @@ const HomePage: React.FC = () => {
     {
       align: 'left',
       title: 'Forge global alliances.',
-      description:
-        'Break geographical barriers. Connect with a diverse pool of innovators, mentors, and investors from every corner of the globe.',
+      description: 'Break geographical barriers. Connect with a diverse pool of innovators, mentors, and investors from every corner of the globe.',
       gradient: 'from-sky-400 to-cyan-300',
     },
     {
       align: 'right',
       title: 'Assemble your dream team.',
-      description:
-        'Find the missing piece to your puzzle. Our platform is the crucible where visionary founders meet brilliant developers and designers.',
+      description: 'Find the missing piece to your puzzle. Our platform is the crucible where visionary founders meet brilliant developers and designers.',
       gradient: 'from-red-500 to-red-400',
     },
     {
       align: 'left',
       title: 'Launchpad for legends.',
-      description:
-        'Go from a spark of genius to a market-ready MVP. We provide the tools and community support to validate your vision.',
+      description: 'Go from a spark of genius to a market-ready MVP. We provide the tools and community support to validate your vision.',
       gradient: 'from-orange-400 to-yellow-300',
     },
   ];
 
   return (
-    <div
-      ref={pageRef}
-      className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins"
-    >
+    <div ref={pageRef} className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -361,17 +278,11 @@ const HomePage: React.FC = () => {
 
       <div className="relative z-10">
 
-        {/* ------------------------------------------------------------ HERO */}
+        {/* HERO */}
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
-
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
-
-          <div
-            className="absolute -top-10 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow"
-            style={{ animationDelay: '1.5s' }}
-          />
-
+          <div className="absolute -top-10 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" style={{ animationDelay: '1.5s' }} />
           <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--background-primary)] to-transparent z-10" />
 
           <div className="relative z-20 max-w-4xl mx-auto">
@@ -393,52 +304,35 @@ const HomePage: React.FC = () => {
             <div className="reveal-item is-visible" style={{ transitionDelay: '160ms' }}>
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins">
                 Where visionaries &<br />
-                <span className="bg-gradient-to-r from-red-500 to-blue-500 gradient-text">
-                  builders connect
-                </span>
+                <span className="bg-gradient-to-r from-red-500 to-blue-500 gradient-text">builders connect</span>
               </h1>
-
               <p className="mt-6 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto font-medium font-poppins">
                 {APP_NAME} is your launchpad for turning visionary ideas into reality. Connect with
                 co-founders, assemble your dream team, and build the future, together.
               </p>
             </div>
 
-            <div
-              className="mt-10 flex items-center justify-center gap-4 reveal-item is-visible"
-              style={{ transitionDelay: '240ms' }}
-            >
+            <div className="mt-10 flex items-center justify-center gap-4 reveal-item is-visible" style={{ transitionDelay: '240ms' }}>
               <GradientButton to="/signup" icon={<ArrowRight className="w-4 h-4" />}>
                 Join the future
               </GradientButton>
             </div>
 
-            <div
-              className="mt-10 flex items-center justify-center gap-x-6 gap-y-2 flex-wrap text-sm text-[var(--text-secondary)] reveal-item is-visible"
-              style={{ transitionDelay: '320ms' }}
-            >
+            <div className="mt-10 flex items-center justify-center gap-x-6 gap-y-2 flex-wrap text-sm text-[var(--text-secondary)] reveal-item is-visible" style={{ transitionDelay: '320ms' }}>
               <span className="flex items-center gap-1.5">
                 <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
                   <Users className="w-2.5 h-2.5 text-white" />
                 </div>
                 Find co-founders
               </span>
-
-              <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">
-                •
-              </span>
-
+              <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">•</span>
               <span className="flex items-center gap-1.5">
                 <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
                   <Sparkles className="w-2.5 h-2.5 text-white" />
                 </div>
                 Validate ideas
               </span>
-
-              <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">
-                •
-              </span>
-
+              <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">•</span>
               <span className="flex items-center gap-1.5">
                 <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
                   <Box className="w-2.5 h-2.5 text-white" />
@@ -449,14 +343,13 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ DISCOVER */}
+        {/* DISCOVER */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
                 Discover Projects
               </h2>
-
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
                 Explore live startup ideas, apply to join teams, or submit your own and find co-founders.
               </p>
@@ -482,7 +375,6 @@ const HomePage: React.FC = () => {
               >
                 Explore Projects
               </button>
-
               <button
                 onClick={() => handleProtectedRoute('/submit-idea')}
                 className="bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 hover:bg-[var(--component-background-hover)]"
@@ -493,14 +385,13 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* --------------------------------------------------- ECOSYSTEM */}
+        {/* ECOSYSTEM */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins">
                 An ecosystem in motion
               </h2>
-
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
                 Witness the pulse of innovation. Our platform is a dynamic network where connections
                 spark, ideas ignite, and ventures take flight every day.
@@ -516,7 +407,6 @@ const HomePage: React.FC = () => {
                 icon={<BarChart3 className="w-7 h-7 text-white" />}
                 gradient="from-sky-500 to-cyan-400"
               />
-
               <EcosystemStatCard
                 endValue={200}
                 suffix="+"
@@ -526,7 +416,6 @@ const HomePage: React.FC = () => {
                 gradient="from-red-500 to-red-600"
                 delay={100}
               />
-
               <EcosystemStatCard
                 endValue={500}
                 suffix="+"
@@ -540,14 +429,13 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ----------------------------------------------------- FEATURES */}
+        {/* FEATURES */}
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
               <h2 className="text-2xl font-extrabold text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
                 Everything you need to start
               </h2>
-
               <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
                 From idea to launch, {APP_NAME} provides the tools and community to support your journey.
               </p>
@@ -557,19 +445,11 @@ const HomePage: React.FC = () => {
               {features.map((feature, index) => (
                 <Reveal key={index} delay={index * 90}>
                   <div className="feature-card-item bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-2 hover:border-red-500/50 hover:shadow-lg text-center flex flex-col items-center h-full">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 bg-gradient-to-br ${feature.gradient} transition-transform duration-300 group-hover:rotate-6`}
-                    >
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 bg-gradient-to-br ${feature.gradient} transition-transform duration-300 group-hover:rotate-6`}>
                       {feature.icon}
                     </div>
-
-                    <h3 className="text-base font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">
-                      {feature.title}
-                    </h3>
-
-                    <p className="text-[var(--text-secondary)] text-xs font-medium leading-relaxed font-poppins">
-                      {feature.description}
-                    </p>
+                    <h3 className="text-base font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">{feature.title}</h3>
+                    <p className="text-[var(--text-secondary)] text-xs font-medium leading-relaxed font-poppins">{feature.description}</p>
                   </div>
                 </Reveal>
               ))}
@@ -577,7 +457,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* -------------------------------------------------- ASSET EXCHANGE */}
+        {/* ASSET EXCHANGE */}
         <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-[100px] -ml-40 -mb-40 pointer-events-none" />
@@ -587,9 +467,7 @@ const HomePage: React.FC = () => {
               <h2 className="text-xl md:text-2xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins">
                 The asset exchange
               </h2>
-
               <div className="w-12 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto my-3 rounded-full" />
-
               <p className="text-[var(--text-secondary)] text-xs sm:text-sm leading-relaxed font-medium opacity-90 font-poppins">
                 A premium ecosystem where validated digital products find new growth. We facilitate
                 direct introductions between high-level builders and strategic acquirers.
@@ -602,11 +480,7 @@ const HomePage: React.FC = () => {
                   <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-4">
                     <DollarSign className="w-6 h-6" />
                   </div>
-
-                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
-                    Vetted inventory
-                  </h3>
-
+                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">Vetted inventory</h3>
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
                     Access startups with proven revenue, verified MRR, and clean codebases. Every listing undergoes an internal audit process.
                   </p>
@@ -618,11 +492,7 @@ const HomePage: React.FC = () => {
                   <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 mb-4">
                     <ShieldCheck className="w-6 h-6" />
                   </div>
-
-                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
-                    Secured handover
-                  </h3>
-
+                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">Secured handover</h3>
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
                     Gain access to standardized migration checklists for code, domains, and documentation to ensure a predictable transfer.
                   </p>
@@ -634,11 +504,7 @@ const HomePage: React.FC = () => {
                   <div className="w-12 h-12 rounded-2xl bg-sky-100 dark:bg-sky-500/10 flex items-center justify-center text-sky-600 mb-4">
                     <Users className="w-6 h-6" />
                   </div>
-
-                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
-                    Founder access
-                  </h3>
-
+                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">Founder access</h3>
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
                     Skip the middleman. Chat directly with original builders for due diligence. We provide the room, you finalize the transaction.
                   </p>
@@ -653,15 +519,11 @@ const HomePage: React.FC = () => {
 
                 <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-8">
                   <div className="text-center sm:text-left max-w-lg">
-                    <h3 className="text-xl font-black tracking-tight mb-2 italic font-poppins">
-                      Ready to cash out?
-                    </h3>
-
+                    <h3 className="text-xl font-black tracking-tight mb-2 italic font-poppins">Ready to cash out?</h3>
                     <p className="text-neutral-500 dark:text-neutral-400 text-sm font-medium leading-relaxed font-poppins">
                       List your digital assets in front of thousands of potential acquirers. High-intent, zero commissions, and founder-focused.
                     </p>
                   </div>
-
                   <Link
                     to="/submit-asset"
                     className="w-full sm:w-auto px-10 py-3 button-gradient text-white font-black uppercase text-[11px] tracking-widest rounded-full transition-transform duration-300 hover:scale-105 active:scale-95 text-center font-poppins"
@@ -674,22 +536,19 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ STARTALKS */}
+        {/* STARTALKS */}
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
-
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col lg:flex-row items-center gap-10 max-w-5xl mx-auto">
               <Reveal className="lg:w-1/2 space-y-6 text-center lg:text-left">
                 <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins uppercase">
                   The pulse of innovation
                 </h2>
-
                 <p className="text-sm sm:text-base text-[var(--text-secondary)] font-medium leading-relaxed font-poppins">
                   Explore real-time thoughts, wins, and pivots from founders building the next big
                   things. Startalks is the social layer where the community breathes.
                 </p>
-
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
                   <Link
                     to="/startalks"
@@ -697,7 +556,6 @@ const HomePage: React.FC = () => {
                   >
                     Enter the feed
                   </Link>
-
                   <Link
                     to="/signup"
                     className="bg-[var(--background-tertiary)] text-[var(--text-primary)] border border-[var(--border-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[var(--component-background-hover)] transition-all font-poppins"
@@ -710,26 +568,10 @@ const HomePage: React.FC = () => {
               <Reveal className="lg:w-1/2 relative" delay={120}>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    {
-                      name: 'Sarah J.',
-                      content: 'Just secured beta testers!',
-                      emoji: '🎉',
-                    },
-                    {
-                      name: 'Mike R.',
-                      content: 'Pivot was the best decision.',
-                      emoji: '💡',
-                    },
-                    {
-                      name: 'Elena W.',
-                      content: 'Scaling to 10k MRR today.',
-                      emoji: '📈',
-                    },
-                    {
-                      name: 'Liam P.',
-                      content: 'Building in public is hard but worth it.',
-                      emoji: '🔨',
-                    },
+                    { name: 'Sarah J.', content: 'Just secured beta testers!', emoji: '🎉' },
+                    { name: 'Mike R.', content: 'Pivot was the best decision.', emoji: '💡' },
+                    { name: 'Elena W.', content: 'Scaling to 10k MRR today.', emoji: '📈' },
+                    { name: 'Liam P.', content: 'Building in public is hard but worth it.', emoji: '🔨' },
                   ].map((talk, idx) => (
                     <div
                       key={idx}
@@ -739,42 +581,27 @@ const HomePage: React.FC = () => {
                         <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-[10px] text-white font-bold">
                           {talk.name[0]}
                         </div>
-
-                        <span className="text-[10px] font-bold text-[var(--text-primary)]">
-                          {talk.name}
-                        </span>
+                        <span className="text-[10px] font-bold text-[var(--text-primary)]">{talk.name}</span>
                       </div>
-
-                      <p className="text-[11px] text-[var(--text-secondary)] font-medium italic">
-                        "{talk.content}"
-                      </p>
-
-                      <div className="mt-2 text-right text-xs">
-                        {talk.emoji}
-                      </div>
+                      <p className="text-[11px] text-[var(--text-secondary)] font-medium italic">"{talk.content}"</p>
+                      <div className="mt-2 text-right text-xs">{talk.emoji}</div>
                     </div>
                   ))}
                 </div>
-
                 <div className="absolute -top-6 -right-6 w-12 h-12 bg-purple-500/10 rounded-full animate-orbit blur-xl" />
-
-                <div
-                  className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl"
-                  style={{ animationDirection: 'reverse' }}
-                />
+                <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl" style={{ animationDirection: 'reverse' }} />
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* --------------------------------------------------- WHY STARTIVES */}
+        {/* WHY STARTIVES */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 Why Startives exists?
               </h2>
-
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 We're more than a platform; we're your strategic partner in innovation.
               </p>
@@ -785,18 +612,11 @@ const HomePage: React.FC = () => {
                 <Reveal
                   key={index}
                   delay={index * 100}
-                  className={`flex flex-col ${
-                    index % 2 === 0
-                      ? 'md:items-start text-center md:text-left'
-                      : 'md:items-end text-center md:text-right'
-                  }`}
+                  className={`flex flex-col ${index % 2 === 0 ? 'md:items-start text-center md:text-left' : 'md:items-end text-center md:text-right'}`}
                 >
-                  <h3
-                    className={`text-2xl font-bold bg-gradient-to-r ${feature.gradient} gradient-text mb-3 inline-block tracking-tight font-poppins`}
-                  >
+                  <h3 className={`text-2xl font-bold bg-gradient-to-r ${feature.gradient} gradient-text mb-3 inline-block tracking-tight font-poppins`}>
                     {feature.title}
                   </h3>
-
                   <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
                     {feature.description}
                   </p>
@@ -806,14 +626,13 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ---------------------------------------------------- TESTIMONIALS */}
+        {/* TESTIMONIALS */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 From our community
               </h2>
-
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 Innovators are building, connecting, and succeeding on {APP_NAME}.
               </p>
@@ -822,10 +641,7 @@ const HomePage: React.FC = () => {
             <div className="relative w-full overflow-hidden mask-gradient">
               <div className="flex animate-marquee gap-8">
                 {[...testimonials, ...testimonials].map((testimonial, index) => (
-                  <div
-                    key={index}
-                    className="flex-shrink-0 w-[90vw] sm:w-[420px]"
-                  >
+                  <div key={index} className="flex-shrink-0 w-[90vw] sm:w-[420px]">
                     <div className="p-6 bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] flex flex-col space-y-4 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-purple-500/20 relative overflow-hidden font-poppins">
                       <img
                         src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
@@ -837,10 +653,7 @@ const HomePage: React.FC = () => {
                       <div className="flex justify-between items-center z-10">
                         <div className="flex space-x-0.5 text-yellow-400">
                           {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className="w-4 h-4 fill-current"
-                            />
+                            <Star key={i} className="w-4 h-4 fill-current" />
                           ))}
                         </div>
                       </div>
@@ -850,13 +663,8 @@ const HomePage: React.FC = () => {
                       </p>
 
                       <div className="pt-4 border-t border-[var(--border-primary)] z-10">
-                        <p className="font-bold text-[var(--text-primary)] text-sm">
-                          {testimonial.name}
-                        </p>
-
-                        <p className="text-xs text-[var(--text-muted)]">
-                          {testimonial.role}
-                        </p>
+                        <p className="font-bold text-[var(--text-primary)] text-sm">{testimonial.name}</p>
+                        <p className="text-xs text-[var(--text-muted)]">{testimonial.role}</p>
                       </div>
                     </div>
                   </div>
@@ -866,7 +674,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* -------------------------------------------------------- LOGOS */}
+        {/* LOGOS */}
         <section className="py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -879,19 +687,11 @@ const HomePage: React.FC = () => {
               </p>
             </Reveal>
 
-            <Reveal
-              className="flex justify-center items-center gap-x-16 sm:gap-x-24"
-              delay={100}
-            >
+            <Reveal className="flex justify-center items-center gap-x-16 sm:gap-x-24" delay={100}>
               {companyLogos.map((logo, index) => (
-                <div
-                  key={index}
-                  aria-label={logo.alt}
-                  className="transition-transform duration-300 hover:scale-110"
-                >
+                <div key={index} aria-label={logo.alt} className="transition-transform duration-300 hover:scale-110">
                   {React.cloneElement(logo.component, {
-                    className:
-                      'h-7 w-7 text-[var(--text-muted)] opacity-70 hover:opacity-100 transition-opacity duration-300',
+                    className: 'h-7 w-7 text-[var(--text-muted)] opacity-70 hover:opacity-100 transition-opacity duration-300',
                   })}
                 </div>
               ))}
@@ -899,29 +699,26 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------- CLOSING */}
-        <section className="closing-section relative w-full overflow-hidden min-h-[468px] sm:min-h-[450px] flex items-center justify-center px-4 py-0">
-
+        {/* CLOSING */}
+        <section className="relative w-full overflow-hidden min-h-[468px] sm:min-h-[550px] flex items-center justify-center px-4 py-10 sm:py-14">
           <img
             src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786965415/IMG_20260817_164534_reb6bx.png"
             alt=""
             aria-hidden="true"
-            className="closing-section-image absolute inset-0 w-full h-full object-cover object-center block"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
 
-          <div className="relative z-10 w-full max-w-3xl mx-auto text-center font-poppins flex items-center justify-center">
-
-            <Reveal className="w-full flex flex-col items-center justify-center">
-
+          <div className="relative z-10 w-full max-w-3xl mx-auto text-center font-poppins">
+            <Reveal>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-[-0.04em] text-neutral-900 leading-tight">
                 Let’s build what’s next.
               </h2>
 
-              <p className="mt-4 text-[12.5px] sm:text-sm md:text-base text-neutral-700 max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="mt-3 text-xs sm:text-sm md:text-base text-neutral-700 max-w-2xl mx-auto leading-relaxed font-medium">
                 Your next idea could become the next big thing. Find the people, energy, and momentum to turn your vision into something real.
               </p>
 
-              <div className="mt-7 flex justify-center">
+              <div className="mt-6 flex justify-center">
                 <GradientButton
                   to="/signup"
                   icon={
@@ -934,23 +731,16 @@ const HomePage: React.FC = () => {
                   Launch your vision
                 </GradientButton>
               </div>
-
             </Reveal>
-
           </div>
         </section>
       </div>
 
-      {/* -------------------------------------------------------------- */}
-      {/*  Scoped premium-motion styles — scroll reveals, glow, float      */}
-      {/* -------------------------------------------------------------- */}
       <style>{`
         .reveal-item {
           opacity: 0;
           transform: translateY(24px);
-          transition:
-            opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
           will-change: opacity, transform;
         }
 
@@ -977,21 +767,10 @@ const HomePage: React.FC = () => {
           opacity: 1;
         }
 
-        .closing-section {
-          isolation: isolate;
-        }
-
-        .closing-section-image {
-          transform: none !important;
-          rotate: 0deg !important;
-          filter: none !important;
-        }
-
         @keyframes float-slow {
           0%, 100% {
             transform: translate(0, 0);
           }
-
           50% {
             transform: translate(12px, -18px);
           }
@@ -999,32 +778,6 @@ const HomePage: React.FC = () => {
 
         .animate-float-slow {
           animation: float-slow 8s ease-in-out infinite;
-        }
-
-        @media (max-width: 639px) {
-          .closing-section {
-            min-height: 468px;
-          }
-
-          .closing-section-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center center;
-          }
-        }
-
-        @media (min-width: 640px) {
-          .closing-section {
-            min-height: 450px;
-          }
-
-          .closing-section-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center center;
-          }
         }
 
         @media (prefers-reduced-motion: reduce) {
