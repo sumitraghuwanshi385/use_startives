@@ -23,6 +23,9 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
+/* ----------------------------------------------------------------------- */
+/*  Scroll-reveal hook — single source of truth for every "in view" fade   */
+/* ----------------------------------------------------------------------- */
 function useInView<T extends HTMLElement>(threshold = 0.2) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -46,6 +49,9 @@ function useInView<T extends HTMLElement>(threshold = 0.2) {
   return { ref, inView };
 }
 
+/* ----------------------------------------------------------------------- */
+/*  Reveal wrapper — pass a stagger delay (ms) for sequenced entrances     */
+/* ----------------------------------------------------------------------- */
 const Reveal: React.FC<{
   children: React.ReactNode;
   delay?: number;
@@ -65,6 +71,9 @@ const Reveal: React.FC<{
   );
 };
 
+/* ----------------------------------------------------------------------- */
+/*  Magnetic gradient button — subtle cursor-follow glow, premium feel     */
+/* ----------------------------------------------------------------------- */
 const GradientButton: React.FC<{
   to?: string;
   href?: string;
@@ -140,6 +149,9 @@ const GradientButton: React.FC<{
   );
 };
 
+/* ----------------------------------------------------------------------- */
+/*  Count-up stat card                                                     */
+/* ----------------------------------------------------------------------- */
 const useCountUp = (endValue: number, active: boolean, duration = 1800) => {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -194,6 +206,9 @@ const EcosystemStatCard: React.FC<{
   );
 };
 
+/* ----------------------------------------------------------------------- */
+/*  Homepage                                                                */
+/* ----------------------------------------------------------------------- */
 const HomePage: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -259,6 +274,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div ref={pageRef} className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins">
+      {/* Structured data — helps search engines understand the org & site */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -277,7 +293,7 @@ const HomePage: React.FC = () => {
       />
 
       <div className="relative z-10">
-
+        {/* ------------------------------------------------------------ HERO */}
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
@@ -342,6 +358,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* ------------------------------------------------------ DISCOVER */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -383,6 +400,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* --------------------------------------------------- ECOSYSTEM */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -426,6 +444,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* ----------------------------------------------------- FEATURES */}
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -436,7 +455,6 @@ const HomePage: React.FC = () => {
                 From idea to launch, {APP_NAME} provides the tools and community to support your journey.
               </p>
             </Reveal>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => (
                 <Reveal key={index} delay={index * 90}>
@@ -453,6 +471,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* -------------------------------------------------- ASSET EXCHANGE */}
         <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-[100px] -ml-40 -mb-40 pointer-events-none" />
@@ -531,6 +550,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* ------------------------------------------------------ STARTALKS */}
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
           <div className="container mx-auto px-4 relative z-10">
@@ -589,6 +609,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* --------------------------------------------------- WHY STARTIVES */}
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
@@ -599,7 +620,6 @@ const HomePage: React.FC = () => {
                 We're more than a platform; we're your strategic partner in innovation.
               </p>
             </Reveal>
-
             <div className="max-w-4xl mx-auto space-y-12">
               {whyChooseFeatures.map((feature, index) => (
                 <Reveal
@@ -619,6 +639,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* ---------------------------------------------------- TESTIMONIALS */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal className="text-center mb-10">
@@ -629,7 +650,6 @@ const HomePage: React.FC = () => {
                 Innovators are building, connecting, and succeeding on {APP_NAME}.
               </p>
             </Reveal>
-
             <div className="relative w-full overflow-hidden mask-gradient">
               <div className="flex animate-marquee gap-8">
                 {[...testimonials, ...testimonials].map((testimonial, index) => (
@@ -641,7 +661,6 @@ const HomePage: React.FC = () => {
                         aria-hidden="true"
                         className="absolute -top-4 -right-4 w-24 h-24 opacity-5"
                       />
-
                       <div className="flex justify-between items-center z-10">
                         <div className="flex space-x-0.5 text-yellow-400">
                           {Array.from({ length: 5 }).map((_, i) => (
@@ -649,11 +668,9 @@ const HomePage: React.FC = () => {
                           ))}
                         </div>
                       </div>
-
                       <p className="text-[var(--text-secondary)] text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">
                         "{testimonial.quote}"
                       </p>
-
                       <div className="pt-4 border-t border-[var(--border-primary)] z-10">
                         <p className="font-bold text-[var(--text-primary)] text-sm">{testimonial.name}</p>
                         <p className="text-xs text-[var(--text-muted)]">{testimonial.role}</p>
@@ -666,18 +683,17 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* -------------------------------------------------------- LOGOS */}
         <section className="py-16 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
             <Reveal className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight font-poppins uppercase">
                 Powering the next wave of startups
               </h2>
-
               <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 We are proud to be the launchpad for innovators from world-class companies and universities.
               </p>
             </Reveal>
-
             <Reveal className="flex justify-center items-center gap-x-16 sm:gap-x-24" delay={100}>
               {companyLogos.map((logo, index) => (
                 <div key={index} aria-label={logo.alt} className="transition-transform duration-300 hover:scale-110">
@@ -690,43 +706,30 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Updated Closing Section */}
-        <section className="relative w-full overflow-hidden min-h-[470px] sm:min-h-[550px] flex items-center justify-center px-4">
-          <img
-            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786965415/IMG_20260817_164534_reb6bx.png"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-
-          <div className="relative z-10 w-full max-w-3xl mx-auto text-center font-poppins">
-            <Reveal>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-[-0.04em] text-neutral-900 leading-tight">
-                Let’s build what’s next.
-              </h2>
-
-              <p className="mt-4 text-xs sm:text-sm md:text-base text-neutral-700 max-w-2xl mx-auto leading-relaxed font-medium">
-                Your next idea could become the next big thing. Find the people, energy, and momentum to turn your vision into something real.
-              </p>
-
-              <div className="mt-8 flex justify-center">
-                <GradientButton
-                  to="/signup"
-                  icon={
-                    <span className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-red-500/55 via-purple-400/40 to-blue-500/55 border border-white/70 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_4px_14px_rgba(60,80,180,0.18)] backdrop-blur-xl">
-                      <ArrowRight className="w-4 h-4 text-neutral-900 transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </span>
-                  }
-                  className="!text-neutral-900 !font-bold !text-sm !py-1.5 !pl-6 !pr-2 rounded-full !bg-white/45 !border !border-white/80 !shadow-[inset_0_1px_2px_rgba(255,255,255,0.95),0_8px_30px_rgba(30,40,80,0.15)] !backdrop-blur-2xl !backdrop-saturate-150 hover:!bg-white/55 hover:!shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_12px_36px_rgba(30,40,80,0.2)]"
-                >
-                  Launch your vision
-                </GradientButton>
-              </div>
-            </Reveal>
-          </div>
+        {/* ------------------------------------------------------- CLOSING */}
+        <section className="text-center py-16 px-4 bg-[var(--background-secondary)]">
+          <Reveal className="container mx-auto max-w-3xl font-poppins">
+            <div className="w-12 h-12 rounded-full icon-bg-gradient flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
+              Ready to build what's next?
+            </h2>
+            <p className="text-[var(--text-secondary)] mt-2 text-xs sm:text-sm leading-relaxed font-medium">
+              Your next big opportunity is just a click away. Join a community of forward-thinkers and start building your legacy today.
+            </p>
+            <div className="mt-8">
+              <GradientButton to="/signup" icon={<ArrowRight className="w-4 h-4" />} className="!text-xs !py-2.5 !px-6">
+                Launch your vision
+              </GradientButton>
+            </div>
+          </Reveal>
         </section>
       </div>
 
+      {/* -------------------------------------------------------------- */}
+      {/*  Scoped premium-motion styles — scroll reveals, glow, float      */}
+      {/* -------------------------------------------------------------- */}
       <style>{`
         .reveal-item {
           opacity: 0;
@@ -734,50 +737,35 @@ const HomePage: React.FC = () => {
           transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
           will-change: opacity, transform;
         }
-
         .reveal-item.is-visible {
           opacity: 1;
           transform: translateY(0);
         }
-
         .magnetic-btn::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(
-            120px circle at var(--x, 50%) var(--y, 50%),
-            rgba(255, 255, 255, 0.35),
-            transparent 70%
-          );
+          background: radial-gradient(120px circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.25), transparent 70%);
           opacity: 0;
           transition: opacity 0.3s ease;
           pointer-events: none;
         }
-
         .magnetic-btn:hover::before {
           opacity: 1;
         }
-
         @keyframes float-slow {
-          0%, 100% {
-            transform: translate(0, 0);
-          }
-          50% {
-            transform: translate(12px, -18px);
-          }
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(12px, -18px); }
         }
-
         .animate-float-slow {
           animation: float-slow 8s ease-in-out infinite;
         }
-
         @media (prefers-reduced-motion: reduce) {
           .reveal-item {
             opacity: 1 !important;
             transform: none !important;
             transition: none !important;
           }
-
           .animate-float-slow {
             animation: none !important;
           }
