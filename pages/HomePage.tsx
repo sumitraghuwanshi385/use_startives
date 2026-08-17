@@ -710,7 +710,7 @@ const HomePage: React.FC = () => {
         <section className="text-center pt-8 pb-6 sm:pt-10 sm:pb-8 px-4 bg-[var(--background-secondary)]">
           <Reveal className="container mx-auto max-w-5xl font-poppins">
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786958396/Picsart_26-08-17_14-42-18-697_ur9urg.jpg"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786958821/Picsart_26-08-17_14-42-11-533_y8v8ip.png"
               alt="Ready to build what's next?"
               className="mx-auto w-full max-w-4xl h-auto object-contain rounded-2xl"
             />
