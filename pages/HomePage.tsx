@@ -710,12 +710,12 @@ const HomePage: React.FC = () => {
         <section className="text-center pt-8 pb-6 sm:pt-10 sm:pb-8 px-4 bg-[var(--background-secondary)]">
           <Reveal className="container mx-auto max-w-5xl font-poppins">
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786959419/Picsart_26-08-17_15-06-23-528_y0l4kj.png"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786811390/ec21de5aed22d8441b1d6c0f17c9db3e_f6jcif.gif"
               alt="Ready to build what's next?"
               className="mx-auto w-full max-w-4xl h-auto object-contain rounded-2xl"
             />
 
-            <div className="mt-6">
+            <div className="mt-5">
               <GradientButton to="/signup" icon={<ArrowRight className="w-4 h-4" />} className="!text-xs !py-2.5 !px-6">
                 Launch your vision
               </GradientButton>
