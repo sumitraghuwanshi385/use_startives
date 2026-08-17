@@ -368,7 +368,7 @@ const HomePage: React.FC = () => {
   return (
     <div
       ref={pageRef}
-      className="bg-[var(--background-primary)] text-[var(--text-primary)] overflow-x-hidden font-poppins"
+      className="bg-white !bg-white text-[var(--text-primary)] overflow-x-hidden font-poppins"
     >
       <script
         type="application/ld+json"
@@ -1106,9 +1106,6 @@ const HomePage: React.FC = () => {
           </Reveal>
 
         </section>
-
-        {/* Pure white background space below the button */}
-        <div className="w-full bg-white h-8 sm:h-10" />
 
       </div>
 
