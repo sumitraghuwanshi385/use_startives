@@ -983,7 +983,7 @@ const HomePage: React.FC = () => {
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786985902/Picsart_26-08-17_22-27-13-732_dihtyk.jpg"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
               alt=""
               aria-hidden="true"
               className="
