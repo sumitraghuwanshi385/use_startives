@@ -233,8 +233,7 @@ const handleBellClick = async () => {
   
   const commonIconButtonClasses = "relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60";
 
-  const isLandingPage = location.pathname === '/' && !currentUser;
-  const showGlassHeader = !isLandingPage || isScrolled;
+  const showGlassHeader = isScrolled;
 
   return (
     <>
@@ -363,6 +362,9 @@ const handleBellClick = async () => {
                   )}
                 </div>
 
+                {/* Divider */}
+                <div className="mx-1.5 h-6 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
+
                 {/* ☰ Hamburger Menu */}
                 <div ref={profileDropdownRef} className="relative">
                   <button
@@ -472,17 +474,17 @@ const handleBellClick = async () => {
                     inline-flex
                     items-center
                     justify-center
-                    gap-2
+                    gap-[1.8px]
                     rounded-full
-                    px-[5px]
-                    py-[4px]
-                    pl-[12px]
-                    sm:pl-[15px]
-                    pr-[4px]
+                    px-[4.5px]
+                    py-[3.6px]
+                    pl-[10.8px]
+                    sm:pl-[13.5px]
+                    pr-[3.6px]
                     text-neutral-900
                     font-bold
-                    text-[8px]
-                    sm:text-[8.5px]
+                    text-[7.2px]
+                    sm:text-[7.65px]
                     tracking-tight
                     select-none
                     overflow-hidden
@@ -515,17 +517,17 @@ const handleBellClick = async () => {
                       flex
                       items-center
                       justify-center
-                      w-[20px]
-                      h-[20px]
-                      sm:w-[22px]
-                      sm:h-[22px]
+                      w-[18px]
+                      h-[18px]
+                      sm:w-[19.8px]
+                      sm:h-[19.8px]
                       rounded-full
                       overflow-hidden
                       border
                       border-white/85
                       bg-white/40
                       backdrop-blur-xl
-                      shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_10px_rgba(20,30,60,0.12)]
+                      shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
                       transition-all
                       duration-300
                       group-hover:bg-white/55
@@ -551,10 +553,10 @@ const handleBellClick = async () => {
                       className="
                         relative
                         z-10
-                        w-[9px]
-                        h-[9px]
-                        sm:w-[10px]
-                        sm:h-[10px]
+                        w-[8.1px]
+                        h-[8.1px]
+                        sm:w-[9px]
+                        sm:h-[9px]
                         text-neutral-900
                         transition-transform
                         duration-300
@@ -772,11 +774,11 @@ const handleBellClick = async () => {
 
         @media (max-width: 639px) {
           .liquid-glass-cta {
-            padding-top: 4px;
-            padding-bottom: 4px;
-            padding-left: 12px;
-            padding-right: 4px;
-            font-size: 8px;
+            padding-top: 3.6px;
+            padding-bottom: 3.6px;
+            padding-left: 10.8px;
+            padding-right: 3.6px;
+            font-size: 7.2px;
           }
 
           .liquid-glass-cta span {
