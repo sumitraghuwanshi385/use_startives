@@ -113,20 +113,27 @@ const Header: React.FC = () => {
   const prevCountRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const main = document.querySelector('main');
+
+    if (!main) {
+      setIsScrolled(false);
+      return;
+    }
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 8);
+      setIsScrolled(main.scrollTop > 8);
     };
 
     handleScroll();
 
-    window.addEventListener('scroll', handleScroll, {
+    main.addEventListener('scroll', handleScroll, {
       passive: true,
     });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      main.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (prevCountRef.current === null) {
@@ -320,17 +327,18 @@ const Header: React.FC = () => {
           ${
             showGlassHeader
               ? `
-                !bg-white/72
-                dark:!bg-neutral-900/72
+                bg-white/72
+                dark:bg-neutral-900/72
                 backdrop-blur-[30px]
                 backdrop-saturate-[200%]
                 shadow-[0_8px_30px_rgba(30,40,80,0.06)]
               `
               : `
-                !bg-transparent
-                !backdrop-blur-0
-                !backdrop-saturate-100
-                !shadow-none
+                bg-transparent
+                dark:bg-transparent
+                backdrop-blur-0
+                backdrop-saturate-100
+                shadow-none
               `
           }
         `}
@@ -343,12 +351,10 @@ const Header: React.FC = () => {
             transition-opacity
             duration-500
             ease-out
-
             bg-gradient-to-b
             from-white/65
             via-white/25
             to-white/10
-
             dark:from-white/10
             dark:via-white/5
             dark:to-transparent
@@ -356,7 +362,7 @@ const Header: React.FC = () => {
             ${
               showGlassHeader
                 ? 'opacity-100'
-                : '!opacity-0'
+                : 'opacity-0'
             }
           `}
         />
@@ -375,7 +381,7 @@ const Header: React.FC = () => {
             ${
               showGlassHeader
                 ? 'opacity-100 bg-white/80 dark:bg-white/15'
-                : '!opacity-0'
+                : 'opacity-0'
             }
           `}
         />
@@ -718,174 +724,154 @@ const Header: React.FC = () => {
                     inline-flex
                     items-center
                     justify-center
-
-                    gap-[4.5px]
-
+                    gap-[4px]
                     rounded-full
-
-                    px-[4.32px]
-                    py-[3.46px]
-                    pl-[10.40px]
-                    sm:pl-[13px]
-                    pr-[3.46px]
-
+                    px-[3.9px]
+                    py-[3.1px]
+                    pl-[9.35px]
+                    sm:pl-[11.7px]
+                    pr-[3.1px]
                     text-neutral-900
                     font-bold
-                    text-[6.93px]
-                    sm:text-[7.37px]
+                    text-[6.58px]
+                    sm:text-[7px]
                     tracking-tight
                     select-none
                     overflow-hidden
-
                     transition-all
                     duration-300
-
                     hover:scale-[1.035]
                     active:scale-[0.97]
-
                     focus:outline-none
                     focus:ring-0
                     focus-visible:outline-none
                     focus-visible:ring-0
-                  "
-                >
-                  <span
-                    className="
-                      absolute
-                      inset-0
-                      rounded-full
-                      bg-gradient-to-b
-                      from-white/95
-                      via-white/70
-                      to-white/45
-                      pointer-events-none
-                    "
-                  />
-
-                  <span
-                    className="
-                      absolute
-                      inset-0
-                      rounded-full
-                      bg-gradient-to-r
-                      from-red-400/20
-                      via-purple-400/15
-                      to-blue-500/25
-                      pointer-events-none
-                    "
-                  />
-
-                  <span
-                    className="
-                      absolute
-                      inset-0
-                      rounded-full
-                      bg-white/20
-                      backdrop-blur-xl
-                      pointer-events-none
-                    "
-                  />
-
-                  <span
-                    className="
-                      absolute
-                      left-[10%]
-                      right-[10%]
-                      top-0
-                      h-px
-                      bg-white/95
-                      rounded-full
-                      pointer-events-none
-                    "
-                  />
-
-                  <span
-                    className="
-                      relative
-                      z-10
-                      whitespace-nowrap
-                      translate-x-[-0.5px]
-                    "
-                  >
-                    Join Now
-                  </span>
-
-                  <span
-                    className="
-                      relative
-                      z-10
-                      flex
-                      items-center
-                      justify-center
-
-                      w-[20.02px]
-                      h-[20.02px]
-
-                      sm:w-[22.02px]
-                      sm:h-[22.02px]
-
-                      rounded-full
-                      overflow-hidden
-
-                      border
-                      border-white/85
-                      bg-white/40
-                      backdrop-blur-xl
-
-                      shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
-
-                      transition-all
-                      duration-300
-
-                      group-hover:bg-white/55
-                    "
                   >
                     <span
                       className="
                         absolute
                         inset-0
                         rounded-full
-                        bg-gradient-to-br
-                        from-red-500/55
-                        via-purple-400/30
-                        to-blue-500/60
-                        opacity-80
-                        blur-[0.5px]
+                        bg-gradient-to-b
+                        from-white/95
+                        via-white/70
+                        to-white/45
+                        pointer-events-none
                       "
                     />
 
                     <span
                       className="
                         absolute
-                        inset-[1px]
+                        inset-0
                         rounded-full
-                        bg-white/20
-                        backdrop-blur-md
+                        bg-gradient-to-r
+                        from-red-400/20
+                        via-purple-400/15
+                        to-blue-500/25
+                        pointer-events-none
                       "
                     />
 
-                    <ArrowRight
+                    <span
+                      className="
+                        absolute
+                        inset-0
+                        rounded-full
+                        bg-white/20
+                        backdrop-blur-xl
+                        pointer-events-none
+                      "
+                    />
+
+                    <span
+                      className="
+                        absolute
+                        left-[10%]
+                        right-[10%]
+                        top-0
+                        h-px
+                        bg-white/95
+                        rounded-full
+                        pointer-events-none
+                      "
+                    />
+
+                    <span
                       className="
                         relative
                         z-10
-
-                        w-[8.58px]
-                        h-[8.58px]
-
-                        sm:w-[9.53px]
-                        sm:h-[9.53px]
-
-                        text-neutral-900
-
-                        transition-transform
-                        duration-300
-
-                        group-hover:translate-x-0.5
+                        whitespace-nowrap
+                        translate-x-[-0.5px]
                       "
-                    />
-                  </span>
-                </button>
-              </div>
+                    >
+                      Join Now
+                    </span>
+
+                    <span
+                      className="
+                        relative
+                        z-10
+                        flex
+                        items-center
+                        justify-center
+                        w-[20.02px]
+                        h-[20.02px]
+                        sm:w-[22.02px]
+                        sm:h-[22.02px]
+                        rounded-full
+                        overflow-hidden
+                        border
+                        border-white/85
+                        bg-white/40
+                        backdrop-blur-xl
+                        shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
+                        transition-all
+                        duration-300
+                        group-hover:bg-white/55
+                      "
+                    >
+                      <span
+                        className="
+                          absolute
+                          inset-0
+                          rounded-full
+                          bg-gradient-to-br
+                          from-red-500/55
+                          via-purple-400/30
+                          to-blue-500/60
+                          opacity-80
+                          blur-[0.5px]
+                        "
+                      />
+
+                      <span
+                        className="
+                          absolute
+                          inset-[1px]
+                          rounded-full
+                          bg-white/20
+                          backdrop-blur-md
+                        "
+                      />
+
+                      <ArrowRight
+                        className="
+                          relative
+                          z-10
+                          w-[8.58px]
+                          h-[8.58px]
+                          sm:w-[9.53px]
+                          sm:h-[9.53px]
+                          text-neutral-900
+                          transition-transform
+                          duration-300
+                          group-hover:translate-x-0.5
+                        "
+                      />
+                    </span>
+                  </button>
+                </div>
             )}
           </div>
         </div>
@@ -1107,11 +1093,11 @@ const Header: React.FC = () => {
 
         @media (max-width: 639px) {
           .liquid-glass-cta {
-            padding-top: 3.46px;
-            padding-bottom: 3.46px;
-            padding-left: 10.40px;
-            padding-right: 3.46px;
-            font-size: 6.93px;
+            padding-top: 3.1px;
+            padding-bottom: 3.1px;
+            padding-left: 9.35px;
+            padding-right: 3.1px;
+            font-size: 6.58px;
           }
 
           .liquid-glass-cta span {
