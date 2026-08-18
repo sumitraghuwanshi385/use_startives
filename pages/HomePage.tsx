@@ -197,11 +197,11 @@ const EcosystemStat: React.FC<{
         transitionDelay: inView ? `${delay}ms` : '0ms',
       }}
     >
-      <div className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 tabular-nums font-poppins">
+      <div className="text-3xl sm:text-4xl md:text-[42px] font-black tracking-[-0.04em] text-neutral-900 tabular-nums font-poppins">
         {count}+
       </div>
 
-      <div className="mt-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em] text-neutral-500 font-poppins">
+      <div className="mt-1 text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-500 font-poppins">
         {label}
       </div>
     </div>
@@ -503,16 +503,16 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* An ecosystem in motion */}
-        <section className="py-12 sm:py-16 bg-white !bg-white relative overflow-hidden">
-          <div className="w-full">
+        <section className="py-9 sm:py-12 bg-white !bg-white relative overflow-hidden">
+          <div className="container mx-auto px-4">
 
-            <Reveal className="text-center mb-10 px-4">
+            <Reveal className="text-center mb-5 sm:mb-6">
 
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
 
-              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
+              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
                 Witness the pulse of innovation. Our platform is a dynamic
                 network where connections spark, ideas ignite, and ventures take
                 flight every day.
@@ -520,23 +520,30 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-            <Reveal className="w-full" delay={80}>
+            <Reveal className="w-full" delay={70}>
 
-              {/* Full-width image */}
-              <div className="ecosystem-image-wrap relative w-full overflow-hidden bg-white">
+              {/* Ecosystem image */}
+              <div className="ecosystem-image-wrap w-full flex justify-center">
 
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
                   alt="Startives ecosystem"
-                  className="block w-full h-auto min-h-0 object-contain object-center"
+                  className="
+                    block
+                    w-full
+                    max-w-[1100px]
+                    h-auto
+                    object-contain
+                    object-center
+                  "
                 />
 
               </div>
 
-              {/* Stats directly underneath image */}
-              <div className="w-full px-6 sm:px-10 md:px-16 lg:px-24 mt-7 sm:mt-9">
+              {/* Stats directly below image */}
+              <div className="w-full max-w-4xl mx-auto mt-3 sm:mt-5">
 
-                <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-0 md:divide-x md:divide-neutral-200">
+                <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3">
 
                   <EcosystemStat
                     endValue={50}
@@ -560,54 +567,69 @@ const HomePage: React.FC = () => {
               </div>
 
             </Reveal>
-
           </div>
         </section>
 
         {/* Everything you need to start */}
-        <section className="py-12 bg-[var(--background-primary)]">
+        <section className="py-10 sm:py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
-            <Reveal className="text-center mb-10">
+            <Reveal className="text-center mb-8 sm:mb-9">
+
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-2 tracking-tight font-poppins uppercase">
                 Everything you need to start
               </h2>
 
-              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
+              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-[15px] font-medium font-poppins">
                 From idea to launch, {APP_NAME} provides the tools and community
                 to support your journey.
               </p>
+
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
               {features.map((feature, index) => (
                 <Reveal key={index} delay={index * 90}>
 
-                  <div className="feature-liquid-card group relative overflow-hidden min-h-[390px] sm:min-h-[420px] p-7 sm:p-8 rounded-[2rem] border border-white/70 flex flex-col transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_24px_70px_rgba(30,50,120,0.16)]">
+                  <div className="feature-liquid-card group relative overflow-hidden min-h-[350px] sm:min-h-[370px] p-6 sm:p-6.5 rounded-[1.8rem] border border-white/70 flex flex-col transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_22px_60px_rgba(30,50,120,0.14)]">
 
                     <div className="absolute inset-0 bg-white/55 backdrop-blur-2xl" />
 
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
 
-                    <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-72 h-48 rounded-full bg-blue-500/[0.16] blur-[70px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.24]" />
+                    <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-64 h-40 rounded-full bg-blue-500/[0.15] blur-[65px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
 
-                    <div className="absolute -top-24 -right-20 w-48 h-48 rounded-full bg-red-500/[0.08] blur-[65px] pointer-events-none" />
+                    <div className="absolute -top-20 -right-16 w-40 h-40 rounded-full bg-red-500/[0.08] blur-[60px] pointer-events-none" />
 
-                    <div className="absolute inset-[1px] rounded-[calc(2rem-1px)] border border-white/60 pointer-events-none" />
+                    <div className="absolute inset-[1px] rounded-[calc(1.8rem-1px)] border border-white/60 pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col h-full">
 
                       <div className="flex-1 flex items-center justify-center">
 
-                        <div className="relative w-full h-[210px] sm:h-[230px] flex items-center justify-center">
+                        <div className="relative w-full h-[180px] sm:h-[195px] flex items-center justify-center">
 
-                          <div className="absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
+                          <div className="absolute w-40 h-40 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
 
                           <img
                             src={feature.image}
                             alt={feature.title}
-                            className="relative z-10 w-[175px] h-[175px] sm:w-[200px] sm:h-[200px] object-contain drop-shadow-[0_18px_30px_rgba(20,50,140,0.18)] transition-transform duration-500 ease-out group-hover:scale-[1.07] group-hover:-translate-y-1"
+                            className="
+                              relative
+                              z-10
+                              w-[150px]
+                              h-[150px]
+                              sm:w-[170px]
+                              sm:h-[170px]
+                              object-contain
+                              drop-shadow-[0_15px_26px_rgba(20,50,140,0.17)]
+                              transition-transform
+                              duration-500
+                              ease-out
+                              group-hover:scale-[1.06]
+                              group-hover:-translate-y-1
+                            "
                           />
 
                         </div>
@@ -616,11 +638,11 @@ const HomePage: React.FC = () => {
 
                       <div className="text-center">
 
-                        <h3 className="feature-title text-lg sm:text-xl font-bold text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
+                        <h3 className="text-[17px] sm:text-[18px] font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">
                           {feature.title}
                         </h3>
 
-                        <p className="feature-description text-xs sm:text-[13px] font-medium leading-relaxed font-poppins max-w-[280px] mx-auto text-[var(--text-secondary)]">
+                        <p className="text-[11.5px] sm:text-[12px] font-medium leading-[1.55] font-poppins max-w-[260px] mx-auto text-[var(--text-secondary)]">
                           {feature.description}
                         </p>
 
@@ -1036,9 +1058,33 @@ const HomePage: React.FC = () => {
           opacity: 1;
         }
 
+        /* =========================================
+           ECOSYSTEM
+        ========================================= */
+
+        .ecosystem-image-wrap {
+          margin-top: 0;
+        }
+
+        .ecosystem-stats {
+          width: 100%;
+        }
+
+        .ecosystem-stat {
+          min-width: 0;
+        }
+
+        .ecosystem-stat + .ecosystem-stat {
+          border-left: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* =========================================
+           EVERYTHING YOU NEED TO START
+        ========================================= */
+
         .feature-liquid-card {
-          -webkit-backdrop-filter: blur(28px) saturate(180%);
-          backdrop-filter: blur(28px) saturate(180%);
+          -webkit-backdrop-filter: blur(26px) saturate(180%);
+          backdrop-filter: blur(26px) saturate(180%);
 
           background:
             linear-gradient(
@@ -1050,7 +1096,7 @@ const HomePage: React.FC = () => {
           box-shadow:
             inset 0 1px 2px rgba(255, 255, 255, 0.95),
             inset 0 -1px 1px rgba(90, 100, 150, 0.06),
-            0 12px 40px rgba(30, 40, 90, 0.08);
+            0 10px 34px rgba(30, 40, 90, 0.075);
         }
 
         .feature-liquid-card::before {
@@ -1092,11 +1138,16 @@ const HomePage: React.FC = () => {
 
         .feature-liquid-card:hover {
           border-color: rgba(255, 255, 255, 0.95);
+
           box-shadow:
             inset 0 1px 2px rgba(255, 255, 255, 1),
             inset 0 -1px 1px rgba(80, 90, 140, 0.05),
-            0 24px 70px rgba(30, 50, 120, 0.16);
+            0 22px 60px rgba(30, 50, 120, 0.14);
         }
+
+        /* =========================================
+           CTA
+        ========================================= */
 
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -1172,35 +1223,33 @@ const HomePage: React.FC = () => {
             -webkit-tap-highlight-color: transparent;
           }
 
-          .feature-liquid-card {
-            min-height: 380px;
-          }
-
-          /* 15% larger feature text on mobile */
-          .feature-title {
-            font-size: 1.15rem;
-          }
-
-          .feature-description {
-            font-size: 14.95px;
-            max-width: 300px;
-          }
-
-          /* Stats stay vertical on mobile */
+          /* Ecosystem stats become vertical on mobile */
           .ecosystem-stats {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 24px;
+            gap: 0;
           }
 
           .ecosystem-stat {
             width: 100%;
+            padding: 10px 0;
           }
 
           .ecosystem-stat + .ecosystem-stat {
-            padding-top: 20px;
+            border-left: 0;
             border-top: 1px solid rgba(0, 0, 0, 0.08);
+          }
+
+          .ecosystem-image-wrap {
+            margin-top: -2px;
+          }
+
+          /* Slightly smaller feature cards on mobile */
+          .feature-liquid-card {
+            min-height: 350px;
+            padding: 24px;
+            border-radius: 1.8rem;
           }
 
         }
@@ -1208,7 +1257,6 @@ const HomePage: React.FC = () => {
         @media (min-width: 640px) {
 
           .ecosystem-stats {
-            display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
 
