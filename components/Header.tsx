@@ -80,92 +80,98 @@ const ThemeSwitch: React.FC = () => {
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
 
-const rawUnreadCount = Array.isArray(appNotifications)
-  ? appNotifications.filter((n: any) => !n.isRead).length
-  : 0;
-const unreadCount = rawUnreadCount;
+  const rawUnreadCount = Array.isArray(appNotifications)
+    ? appNotifications.filter((n: any) => !n.isRead).length
+    : 0;
+
+  const unreadCount = rawUnreadCount;
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
-const bellRef = useRef<HTMLDivElement>(null);
+  const bellRef = useRef<HTMLDivElement>(null);
 
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
-const [showNotifications, setShowNotifications] = useState(false);
-const [shake, setShake] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [shake, setShake] = useState(false);
 
-const prevCountRef = useRef<number | null>(null);
+  const prevCountRef = useRef<number | null>(null);
 
-useEffect(() => {
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 8);
-  };
+  // -------------------------------------------------------
+  // SCROLL STATE
+  // Landing page = glass always
+  // Logged in = transparent at top, glass after scrolling
+  // -------------------------------------------------------
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 8);
+    };
 
-  handleScroll();
+    handleScroll();
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
-useEffect(() => {
-  if (prevCountRef.current === null) {
+  useEffect(() => {
+    if (prevCountRef.current === null) {
+      prevCountRef.current = rawUnreadCount;
+      return;
+    }
+
+    if (rawUnreadCount > prevCountRef.current) {
+      const audio = new Audio("/notification.mp3");
+      audio.volume = 0.6;
+      audio.play().catch(() => {});
+
+      setShake(true);
+      setTimeout(() => setShake(false), 600);
+    }
+
     prevCountRef.current = rawUnreadCount;
-    return;
-  }
+  }, [rawUnreadCount]);
 
-  if (rawUnreadCount > prevCountRef.current) {
-    const audio = new Audio("/notification.mp3");
-    audio.volume = 0.6;
-    audio.play().catch(() => {});
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target as Node)
+      ) {
+        setProfileDropdownOpen(false);
+      }
+    };
 
-    setShake(true);
-    setTimeout(() => setShake(false), 600);
-  }
+    document.addEventListener("click", handleClickOutside);
 
-  prevCountRef.current = rawUnreadCount;
-}, [rawUnreadCount]);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
-useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      profileDropdownRef.current &&
-      !profileDropdownRef.current.contains(event.target as Node)
-    ) {
-      setProfileDropdownOpen(false);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutsideBell = (event: MouseEvent) => {
+      if (
+        bellRef.current &&
+        !bellRef.current.contains(event.target as Node)
+      ) {
+        setShowNotifications(false);
+      }
+    };
 
-  document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutsideBell);
 
-  return () => {
-    document.removeEventListener("click", handleClickOutside);
-  };
-}, []);
-
-useEffect(() => {
-  const handleClickOutsideBell = (event: MouseEvent) => {
-    if (
-      bellRef.current &&
-      !bellRef.current.contains(event.target as Node)
-    ) {
-      setShowNotifications(false);
-    }
-  };
-
-  document.addEventListener("mousedown", handleClickOutsideBell);
-
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutsideBell);
-  };
-}, []);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideBell);
+    };
+  }, []);
 
   useEffect(() => {
     setProfileDropdownOpen(false);
@@ -178,62 +184,79 @@ useEffect(() => {
   };
   
   const handleMenuClick = () => {
-  setIsMenuAnimating(true);
-  setTimeout(() => setIsMenuAnimating(false), 300);
+    setIsMenuAnimating(true);
+    setTimeout(() => setIsMenuAnimating(false), 300);
 
-  setShowNotifications(false);
+    setShowNotifications(false);
 
-  setProfileDropdownOpen(prev => !prev);
-};
+    setProfileDropdownOpen(prev => !prev);
+  };
   
-const handleBellClick = async () => {
-  const nextState = !showNotifications;
-  setShowNotifications(nextState);
+  const handleBellClick = async () => {
+    const nextState = !showNotifications;
+    setShowNotifications(nextState);
 
-  if (nextState) {
-    try {
-      await fetch("/api/notifications/read-all", {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
+    if (nextState) {
+      try {
+        await fetch("/api/notifications/read-all", {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
 
-      markAllNotificationsAsRead();
-    } catch (err) {
-      console.log("Read-all failed");
+        markAllNotificationsAsRead();
+      } catch (err) {
+        console.log("Read-all failed");
+      }
     }
-  }
-};
+  };
 
   // Desktop Nav Links
   const navLinks = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Marketplace', path: '/blueprint' },
     { name: 'Builder Stories', path: '/builders' },
-{ name: 'Starverse', path: '/globe' },
+    { name: 'Starverse', path: '/globe' },
   ];
 
-  // Mobile Menu Links (Dropdown)
+  // Mobile Menu Links
   const mobileMenuLinks = [
     { name: 'Dashboard', path: '/dashboard' }, 
     { name: 'Discover Projects', path: '/projects' },
-{ name: 'Builders Stories', path: '/builders' },
+    { name: 'Builders Stories', path: '/builders' },
     { name: 'Marketplace', path: '/blueprint' },
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
-{ name: 'Starverse', path: '/globe' },
+    { name: 'Starverse', path: '/globe' },
   ];
 
   const getInitials = (name?: string): string => {
     if (!name || name.trim() === '') return 'U';
+
     const parts = name.match(/\b\w/g) || [];
-    return (parts.map(part => part.toUpperCase()).join('') || 'U').substring(0, 2);
+
+    return (
+      parts.map(part => part.toUpperCase()).join('') || 'U'
+    ).substring(0, 2);
   };
   
-  const commonIconButtonClasses = "relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60";
+  const commonIconButtonClasses =
+    "relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60";
 
-  const showGlassHeader = isScrolled;
+  /*
+   * IMPORTANT:
+   *
+   * Landing page:
+   *   Always glass.
+   *
+   * Logged-in / other pages:
+   *   Top = transparent.
+   *   Scroll = glass.
+   */
+  const isLandingPage = location.pathname === '/' && !currentUser;
+
+  const showGlassHeader = isLandingPage || isScrolled;
 
   return (
     <>
@@ -251,6 +274,7 @@ const handleBellClick = async () => {
           transition-all
           duration-500
           ease-out
+
           ${
             showGlassHeader
               ? `
@@ -271,6 +295,8 @@ const handleBellClick = async () => {
           }
         `}
       >
+
+        {/* Glass Gradient */}
         <div
           className={`
             absolute
@@ -286,6 +312,7 @@ const handleBellClick = async () => {
             dark:from-white/10
             dark:via-white/5
             dark:to-transparent
+
             ${
               showGlassHeader
                 ? "opacity-100"
@@ -294,6 +321,7 @@ const handleBellClick = async () => {
           `}
         />
 
+        {/* Top Glass Highlight */}
         <div
           className={`
             absolute
@@ -304,6 +332,7 @@ const handleBellClick = async () => {
             pointer-events-none
             transition-opacity
             duration-500
+
             ${
               showGlassHeader
                 ? "opacity-100 bg-white/80 dark:bg-white/15"
@@ -313,13 +342,20 @@ const handleBellClick = async () => {
         />
 
         <div className="relative z-10 w-full min-h-[57px] sm:min-h-[61px] flex items-center justify-between px-2 sm:px-4 py-2.5">
+
+          {/* LEFT */}
           <div className="flex items-center space-x-8">
-            <Link to={currentUser ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0">
+
+            <Link
+              to={currentUser ? "/dashboard" : "/"}
+              className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0"
+            >
               <img 
                 src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" 
                 alt="Startives Logo" 
                 className="h-9" 
               />
+
               <span className="font-startives-brand tracking-tighter gradient-text bg-gradient-to-r from-red-500 to-blue-500 text-2xl">
                 {APP_NAME}
               </span>
@@ -327,19 +363,26 @@ const handleBellClick = async () => {
             
             <nav className="hidden md:flex items-center space-x-6">
               {navLinks.map(link => (
-                <Link key={link.path} to={link.path} className="text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                >
                   {link.name}
                 </Link>
               ))}
             </nav>
+
           </div>
 
+          {/* RIGHT */}
           <div className="flex items-center gap-1">
-        
+
             {currentUser ? (
               <>
-                {/* 🔔 Notification Bell */}
+                {/* Notification */}
                 <div ref={bellRef} className="relative">
+
                   <button
                     onClick={handleBellClick}
                     className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
@@ -360,13 +403,18 @@ const handleBellClick = async () => {
                       onClose={() => setShowNotifications(false)}
                     />
                   )}
+
                 </div>
 
-                {/* Divider */}
+                {/* LOGGED-IN DIVIDER — RESTORED */}
                 <div className="mx-1.5 h-6 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
 
-                {/* ☰ Hamburger Menu */}
-                <div ref={profileDropdownRef} className="relative">
+                {/* PROFILE */}
+                <div
+                  ref={profileDropdownRef}
+                  className="relative"
+                >
+
                   <button
                     onClick={handleMenuClick}
                     className={commonIconButtonClasses}
@@ -387,12 +435,28 @@ const handleBellClick = async () => {
 
                   {/* Dropdown */}
                   <div
-                    className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] border border-[var(--border-primary)] shadow-2xl transition duration-200 ${
-                      profileDropdownOpen
-                        ? "opacity-100 scale-100"
-                        : "opacity-0 scale-95 pointer-events-none"
-                    }`}
+                    className={`
+                      origin-top-right
+                      absolute
+                      right-0
+                      mt-3
+                      w-64
+                      rounded-xl
+                      bg-[var(--component-background)]
+                      border
+                      border-[var(--border-primary)]
+                      shadow-2xl
+                      transition
+                      duration-200
+
+                      ${
+                        profileDropdownOpen
+                          ? "opacity-100 scale-100"
+                          : "opacity-0 scale-95 pointer-events-none"
+                      }
+                    `}
                   >
+
                     <div className="py-1">
 
                       {/* Profile */}
@@ -401,7 +465,9 @@ const handleBellClick = async () => {
                         className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]"
                       >
                         <div className="flex items-center space-x-3">
+
                           <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm ring-2 ring-white/20">
+
                             {currentUser.profilePictureUrl ? (
                               <img
                                 src={currentUser.profilePictureUrl}
@@ -411,9 +477,11 @@ const handleBellClick = async () => {
                             ) : (
                               getInitials(currentUser.name)
                             )}
+
                           </div>
 
                           <div className="overflow-hidden">
+
                             <p className="text-sm font-semibold truncate">
                               {currentUser.name}
                             </p>
@@ -421,11 +489,13 @@ const handleBellClick = async () => {
                             <p className="text-xs text-[var(--text-muted)] truncate">
                               {currentUser.email}
                             </p>
+
                           </div>
+
                         </div>
                       </Link>
 
-                      {/* Menu Links */}
+                      {/* Menu */}
                       {mobileMenuLinks.map((link) => (
                         <Link
                           key={link.name}
@@ -438,17 +508,22 @@ const handleBellClick = async () => {
 
                       {/* Theme */}
                       <div className="border-t border-[var(--border-primary)] px-4 py-2">
+
                         <div className="flex items-center justify-between">
+
                           <span className="text-sm text-[var(--text-secondary)]">
                             Appearance
                           </span>
 
                           <ThemeSwitch />
+
                         </div>
+
                       </div>
 
                       {/* Logout */}
                       <div className="border-t border-[var(--border-primary)]">
+
                         <button
                           onClick={handleLogout}
                           className="w-full text-left flex items-center space-x-2 px-4 py-3 text-sm text-[var(--accent-danger-text)] hover:bg-[var(--accent-danger-background)]"
@@ -456,14 +531,23 @@ const handleBellClick = async () => {
                           <LogOut className="w-5 h-5" />
                           <span>Logout</span>
                         </button>
+
                       </div>
+
                     </div>
                   </div>
                 </div>
               </>
             ) : (
+
+              /* LANDING / LOGGED OUT */
               <div className="flex items-center space-x-1.5">
-                {location.pathname !== '/' && <ThemeIconButton />}
+
+                {location.pathname !== '/' && (
+                  <ThemeIconButton />
+                )}
+
+                {/* NO DIVIDER ON LANDING PAGE */}
 
                 <button
                   onClick={() => navigate('/signup')}
@@ -474,17 +558,17 @@ const handleBellClick = async () => {
                     inline-flex
                     items-center
                     justify-center
-                    gap-[1.8px]
+                    gap-[1.62px]
                     rounded-full
-                    px-[4.5px]
-                    py-[3.6px]
-                    pl-[10.8px]
-                    sm:pl-[13.5px]
-                    pr-[3.6px]
+                    px-[4.05px]
+                    py-[3.24px]
+                    pl-[9.72px]
+                    sm:pl-[12.15px]
+                    pr-[3.24px]
                     text-neutral-900
                     font-bold
-                    text-[7.2px]
-                    sm:text-[7.65px]
+                    text-[6.48px]
+                    sm:text-[6.89px]
                     tracking-tight
                     select-none
                     overflow-hidden
@@ -498,6 +582,7 @@ const handleBellClick = async () => {
                     focus-visible:ring-0
                   "
                 >
+
                   <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/95 via-white/70 to-white/45 pointer-events-none" />
 
                   <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/20 via-purple-400/15 to-blue-500/25 pointer-events-none" />
@@ -510,6 +595,7 @@ const handleBellClick = async () => {
                     Join Now
                   </span>
 
+                  {/* Arrow Circle */}
                   <span
                     className="
                       relative
@@ -517,10 +603,10 @@ const handleBellClick = async () => {
                       flex
                       items-center
                       justify-center
-                      w-[18px]
-                      h-[18px]
-                      sm:w-[19.8px]
-                      sm:h-[19.8px]
+                      w-[16.2px]
+                      h-[16.2px]
+                      sm:w-[17.82px]
+                      sm:h-[17.82px]
                       rounded-full
                       overflow-hidden
                       border
@@ -533,6 +619,7 @@ const handleBellClick = async () => {
                       group-hover:bg-white/55
                     "
                   >
+
                     <span
                       className="
                         absolute
@@ -553,25 +640,34 @@ const handleBellClick = async () => {
                       className="
                         relative
                         z-10
-                        w-[8.1px]
-                        h-[8.1px]
-                        sm:w-[9px]
-                        sm:h-[9px]
+                        w-[7.29px]
+                        h-[7.29px]
+                        sm:w-[8.1px]
+                        sm:h-[8.1px]
                         text-neutral-900
                         transition-transform
                         duration-300
                         group-hover:translate-x-0.5
                       "
                     />
+
                   </span>
+
                 </button>
+
               </div>
             )}
+
           </div>
         </div>
       </header>
 
       <style>{`
+
+        /* =====================================================
+           JOIN NOW — 10% SMALLER
+        ===================================================== */
+
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(30px) saturate(200%);
           backdrop-filter: blur(30px) saturate(200%);
@@ -629,6 +725,10 @@ const handleBellClick = async () => {
             inset 0 -1px 1px rgba(120, 130, 160, 0.08),
             0 6px 20px rgba(30, 40, 80, 0.11);
         }
+
+        /* =====================================================
+           THEME SWITCH
+        ===================================================== */
 
         .theme-glass-switch {
           position: relative;
@@ -773,12 +873,13 @@ const handleBellClick = async () => {
         }
 
         @media (max-width: 639px) {
+
           .liquid-glass-cta {
-            padding-top: 3.6px;
-            padding-bottom: 3.6px;
-            padding-left: 10.8px;
-            padding-right: 3.6px;
-            font-size: 7.2px;
+            padding-top: 3.24px;
+            padding-bottom: 3.24px;
+            padding-left: 9.72px;
+            padding-right: 3.24px;
+            font-size: 6.48px;
           }
 
           .liquid-glass-cta span {
@@ -804,6 +905,7 @@ const handleBellClick = async () => {
             height: 25px;
           }
         }
+
       `}</style>
     </>
   );
