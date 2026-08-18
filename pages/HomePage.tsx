@@ -1467,6 +1467,28 @@ const HomePage: React.FC = () => {
             -webkit-tap-highlight-color: transparent;
           }
 
+          /* FORCE ECOSYSTEM NUMBERS TO USE THE SAME
+             BUTTON GRADIENT ON MOBILE */
+
+          .ecosystem-stat-number.button-gradient {
+            background-image: linear-gradient(
+              90deg,
+              #ef4444 0%,
+              #8b5cf6 50%,
+              #3b82f6 100%
+            ) !important;
+
+            background-color: transparent !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            color: transparent !important;
+            -webkit-text-fill-color: transparent !important;
+
+            background-size: 100% 100% !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+          }
+
           /* Compact ecosystem mobile layout */
 
           .ecosystem-stats {
