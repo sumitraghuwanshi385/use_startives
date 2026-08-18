@@ -104,7 +104,6 @@ const Header: React.FC = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [shake, setShake] = useState(false);
 
@@ -148,9 +147,13 @@ const Header: React.FC = () => {
 
       setShake(true);
 
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setShake(false);
       }, 600);
+
+      prevCountRef.current = rawUnreadCount;
+
+      return () => clearTimeout(timer);
     }
 
     prevCountRef.current = rawUnreadCount;
@@ -207,12 +210,6 @@ const Header: React.FC = () => {
   };
 
   const handleMenuClick = () => {
-    setIsMenuAnimating(true);
-
-    setTimeout(() => {
-      setIsMenuAnimating(false);
-    }, 300);
-
     setShowNotifications(false);
     setProfileDropdownOpen(prev => !prev);
   };
@@ -529,7 +526,7 @@ const Header: React.FC = () => {
                     className={commonIconButtonClasses}
                     aria-label="Open menu"
                   >
-                    {currentUser?.profilePictureUrl ? (
+                    {currentUser.profilePictureUrl ? (
                       <img
                         src={currentUser.profilePictureUrl}
                         alt={currentUser.name}
@@ -617,9 +614,7 @@ const Header: React.FC = () => {
                           >
                             {currentUser.profilePictureUrl ? (
                               <img
-                                src={
-                                  currentUser.profilePictureUrl
-                                }
+                                src={currentUser.profilePictureUrl}
                                 alt={currentUser.name}
                                 className="
                                   w-full
@@ -872,6 +867,7 @@ const Header: React.FC = () => {
                     </span>
                   </button>
                 </div>
+              </>
             )}
           </div>
         </div>
@@ -951,16 +947,12 @@ const Header: React.FC = () => {
 
         .theme-switch-track {
           position: relative;
-
           width: 64px;
           height: 33px;
-
           display: flex;
           align-items: center;
           justify-content: space-between;
-
           padding: 3.5px;
-
           border-radius: 999px;
           overflow: hidden;
 
@@ -1005,16 +997,12 @@ const Header: React.FC = () => {
         .theme-switch-icon {
           position: relative;
           z-index: 2;
-
           width: 26px;
           height: 26px;
-
           display: flex;
           align-items: center;
           justify-content: center;
-
           color: #737780;
-
           transition: opacity 0.25s ease;
         }
 
@@ -1025,14 +1013,10 @@ const Header: React.FC = () => {
         .theme-switch-thumb {
           position: absolute;
           z-index: 3;
-
           top: 3.5px;
-
           width: 26px;
           height: 26px;
-
           border-radius: 50%;
-
           display: flex;
           align-items: center;
           justify-content: center;
