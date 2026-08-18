@@ -4,19 +4,46 @@ import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants'; 
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
-import {
-  LogOut,
-  Bell,
-  Menu,
-  Sun,
-  Moon,
-} from 'lucide-react';
 
 // --- Icons ---
+const ArrowRightOnRectangleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
+);
+
+
 export const BellIcon: React.FC<{ className?: string }> = ({
   className = "w-6 h-6",
 }) => (
-  <Bell className={className} />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className={className}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
+    />
+  </svg>
+);
+
+const HamburgerIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+);
+const SunIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+    </svg>
+);
+const MoonIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+    </svg>
 );
 
 const ThemeIconButton: React.FC = () => {
@@ -30,8 +57,8 @@ const ThemeIconButton: React.FC = () => {
             aria-label="Toggle theme"
         >
             {isDark ? 
-                <Moon className="w-5 h-5 text-sky-400" /> : 
-                <Sun className="w-5 h-5 text-yellow-500" />
+                <MoonIcon className="w-5 h-5 text-sky-400" /> : 
+                <SunIcon className="w-5 h-5 text-yellow-500" />
             }
         </button>
     );
@@ -179,25 +206,8 @@ const handleBellClick = async () => {
   const commonIconButtonClasses = "relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60";
 
   return (
-    <header
-      className="
-        sticky
-        top-0
-        z-40
-        w-full
-        min-h-[57px]
-        sm:min-h-[61px]
-        bg-white/55
-        dark:bg-neutral-900/55
-        backdrop-blur-2xl
-        backdrop-saturate-[180%]
-        border-b
-        border-white/60
-        dark:border-white/10
-        shadow-[0_1px_0_rgba(255,255,255,0.7),0_8px_30px_rgba(30,40,80,0.06)]
-      "
-    >
-     <div className="w-full min-h-[57px] sm:min-h-[61px] flex items-center justify-between px-2 sm:px-4 py-2.5">
+    <header className="sticky top-0 z-40 w-full bg-[var(--background-primary)] border-b border-[var(--border-primary)]">
+     <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2">
         <div className="flex items-center space-x-8">
           <Link to={currentUser ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0">
             <img 
@@ -323,7 +333,7 @@ const handleBellClick = async () => {
                 onClick={handleLogout}
                 className="w-full text-left flex items-center space-x-2 px-4 py-3 text-sm text-[var(--accent-danger-text)] hover:bg-[var(--accent-danger-background)]"
               >
-                <LogOut className="w-5 h-5" />
+                <ArrowRightOnRectangleIcon className="w-5 h-5" />
                 <span>Logout</span>
               </button>
             </div>
