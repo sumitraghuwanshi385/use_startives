@@ -14,9 +14,9 @@ import {
 
 export const BellIcon: React.FC<{ className?: string }> = ({
   className = 'w-6 h-6',
-}) => (
-  <Bell className={className} />
-);
+}) => {
+  return <Bell className={className} />;
+};
 
 const ThemeIconButton: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -25,6 +25,7 @@ const ThemeIconButton: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
+      type="button"
       className="p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60"
       aria-label="Toggle theme"
     >
@@ -147,13 +148,15 @@ const Header: React.FC = () => {
 
       setShake(true);
 
-      const timer = setTimeout(() => {
+      const timer = window.setTimeout(() => {
         setShake(false);
       }, 600);
 
       prevCountRef.current = rawUnreadCount;
 
-      return () => clearTimeout(timer);
+      return () => {
+        window.clearTimeout(timer);
+      };
     }
 
     prevCountRef.current = rawUnreadCount;
@@ -201,6 +204,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setProfileDropdownOpen(false);
+    setShowNotifications(false);
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -355,7 +359,6 @@ const Header: React.FC = () => {
             dark:from-white/10
             dark:via-white/5
             dark:to-transparent
-
             ${
               showGlassHeader
                 ? 'opacity-100'
@@ -374,7 +377,6 @@ const Header: React.FC = () => {
             pointer-events-none
             transition-opacity
             duration-500
-
             ${
               showGlassHeader
                 ? 'opacity-100 bg-white/80 dark:bg-white/15'
@@ -459,6 +461,7 @@ const Header: React.FC = () => {
                 >
                   <button
                     onClick={handleBellClick}
+                    type="button"
                     className="
                       relative
                       p-2
@@ -468,6 +471,7 @@ const Header: React.FC = () => {
                       hover:bg-[var(--component-background-hover)]
                       transition
                     "
+                    aria-label="Notifications"
                   >
                     <div className={shake ? 'shake' : ''}>
                       <BellIcon className="w-6 h-6" />
@@ -523,6 +527,7 @@ const Header: React.FC = () => {
                 >
                   <button
                     onClick={handleMenuClick}
+                    type="button"
                     className={commonIconButtonClasses}
                     aria-label="Open menu"
                   >
@@ -575,7 +580,6 @@ const Header: React.FC = () => {
                       shadow-2xl
                       transition
                       duration-200
-
                       ${
                         profileDropdownOpen
                           ? 'opacity-100 scale-100'
@@ -610,6 +614,7 @@ const Header: React.FC = () => {
                               text-sm
                               ring-2
                               ring-white/20
+                              overflow-hidden
                             "
                           >
                             {currentUser.profilePictureUrl ? (
@@ -683,6 +688,7 @@ const Header: React.FC = () => {
                       >
                         <button
                           onClick={handleLogout}
+                          type="button"
                           className="
                             w-full
                             text-left
@@ -712,6 +718,7 @@ const Header: React.FC = () => {
 
                 <button
                   onClick={() => navigate('/signup')}
+                  type="button"
                   className="
                     liquid-glass-cta
                     group
@@ -741,133 +748,133 @@ const Header: React.FC = () => {
                     focus:ring-0
                     focus-visible:outline-none
                     focus-visible:ring-0
+                  "
+                >
+                  <span
+                    className="
+                      absolute
+                      inset-0
+                      rounded-full
+                      bg-gradient-to-b
+                      from-white/95
+                      via-white/70
+                      to-white/45
+                      pointer-events-none
+                    "
+                  />
+
+                  <span
+                    className="
+                      absolute
+                      inset-0
+                      rounded-full
+                      bg-gradient-to-r
+                      from-red-400/20
+                      via-purple-400/15
+                      to-blue-500/25
+                      pointer-events-none
+                    "
+                  />
+
+                  <span
+                    className="
+                      absolute
+                      inset-0
+                      rounded-full
+                      bg-white/20
+                      backdrop-blur-xl
+                      pointer-events-none
+                    "
+                  />
+
+                  <span
+                    className="
+                      absolute
+                      left-[10%]
+                      right-[10%]
+                      top-0
+                      h-px
+                      bg-white/95
+                      rounded-full
+                      pointer-events-none
+                    "
+                  />
+
+                  <span
+                    className="
+                      relative
+                      z-10
+                      whitespace-nowrap
+                      translate-x-[-0.5px]
+                    "
+                  >
+                    Join Now
+                  </span>
+
+                  <span
+                    className="
+                      relative
+                      z-10
+                      flex
+                      items-center
+                      justify-center
+                      w-[20.02px]
+                      h-[20.02px]
+                      sm:w-[22.02px]
+                      sm:h-[22.02px]
+                      rounded-full
+                      overflow-hidden
+                      border
+                      border-white/85
+                      bg-white/40
+                      backdrop-blur-xl
+                      shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
+                      transition-all
+                      duration-300
+                      group-hover:bg-white/55
+                    "
                   >
                     <span
                       className="
                         absolute
                         inset-0
                         rounded-full
-                        bg-gradient-to-b
-                        from-white/95
-                        via-white/70
-                        to-white/45
-                        pointer-events-none
+                        bg-gradient-to-br
+                        from-red-500/55
+                        via-purple-400/30
+                        to-blue-500/60
+                        opacity-80
+                        blur-[0.5px]
                       "
                     />
 
                     <span
                       className="
                         absolute
-                        inset-0
-                        rounded-full
-                        bg-gradient-to-r
-                        from-red-400/20
-                        via-purple-400/15
-                        to-blue-500/25
-                        pointer-events-none
-                      "
-                    />
-
-                    <span
-                      className="
-                        absolute
-                        inset-0
+                        inset-[1px]
                         rounded-full
                         bg-white/20
-                        backdrop-blur-xl
-                        pointer-events-none
+                        backdrop-blur-md
                       "
                     />
 
-                    <span
-                      className="
-                        absolute
-                        left-[10%]
-                        right-[10%]
-                        top-0
-                        h-px
-                        bg-white/95
-                        rounded-full
-                        pointer-events-none
-                      "
-                    />
-
-                    <span
+                    <ArrowRight
                       className="
                         relative
                         z-10
-                        whitespace-nowrap
-                        translate-x-[-0.5px]
-                      "
-                    >
-                      Join Now
-                    </span>
-
-                    <span
-                      className="
-                        relative
-                        z-10
-                        flex
-                        items-center
-                        justify-center
-                        w-[20.02px]
-                        h-[20.02px]
-                        sm:w-[22.02px]
-                        sm:h-[22.02px]
-                        rounded-full
-                        overflow-hidden
-                        border
-                        border-white/85
-                        bg-white/40
-                        backdrop-blur-xl
-                        shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
-                        transition-all
+                        w-[8.58px]
+                        h-[8.58px]
+                        sm:w-[9.53px]
+                        sm:h-[9.53px]
+                        text-neutral-900
+                        transition-transform
                         duration-300
-                        group-hover:bg-white/55
+                        group-hover:translate-x-0.5
                       "
-                    >
-                      <span
-                        className="
-                          absolute
-                          inset-0
-                          rounded-full
-                          bg-gradient-to-br
-                          from-red-500/55
-                          via-purple-400/30
-                          to-blue-500/60
-                          opacity-80
-                          blur-[0.5px]
-                        "
-                      />
-
-                      <span
-                        className="
-                          absolute
-                          inset-[1px]
-                          rounded-full
-                          bg-white/20
-                          backdrop-blur-md
-                        "
-                      />
-
-                      <ArrowRight
-                        className="
-                          relative
-                          z-10
-                          w-[8.58px]
-                          h-[8.58px]
-                          sm:w-[9.53px]
-                          sm:h-[9.53px]
-                          text-neutral-900
-                          transition-transform
-                          duration-300
-                          group-hover:translate-x-0.5
-                        "
-                      />
-                    </span>
-                  </button>
-                </div>
-              </>
+                    />
+                  </span>
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -895,10 +902,8 @@ const Header: React.FC = () => {
 
         .liquid-glass-cta::after {
           content: '';
-
           position: absolute;
           inset: 0;
-
           border-radius: inherit;
 
           background:
@@ -911,7 +916,6 @@ const Header: React.FC = () => {
             );
 
           opacity: 0.8;
-
           pointer-events: none;
         }
 
@@ -947,12 +951,16 @@ const Header: React.FC = () => {
 
         .theme-switch-track {
           position: relative;
+
           width: 64px;
           height: 33px;
+
           display: flex;
           align-items: center;
           justify-content: space-between;
+
           padding: 3.5px;
+
           border-radius: 999px;
           overflow: hidden;
 
@@ -997,12 +1005,16 @@ const Header: React.FC = () => {
         .theme-switch-icon {
           position: relative;
           z-index: 2;
+
           width: 26px;
           height: 26px;
+
           display: flex;
           align-items: center;
           justify-content: center;
+
           color: #737780;
+
           transition: opacity 0.25s ease;
         }
 
@@ -1013,10 +1025,14 @@ const Header: React.FC = () => {
         .theme-switch-thumb {
           position: absolute;
           z-index: 3;
+
           top: 3.5px;
+
           width: 26px;
           height: 26px;
+
           border-radius: 50%;
+
           display: flex;
           align-items: center;
           justify-content: center;
