@@ -192,7 +192,7 @@ const EcosystemStat: React.FC<{
   return (
     <div
       ref={ref}
-      className="reveal-item text-center"
+      className="ecosystem-stat reveal-item text-center"
       style={{
         transitionDelay: inView ? `${delay}ms` : '0ms',
       }}
@@ -503,10 +503,11 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* An ecosystem in motion */}
-        <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
-          <div className="container mx-auto px-4">
+        <section className="py-12 sm:py-16 bg-white !bg-white relative overflow-hidden">
+          <div className="w-full">
 
-            <Reveal className="text-center mb-10">
+            <Reveal className="text-center mb-10 px-4">
+
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
@@ -516,62 +517,50 @@ const HomePage: React.FC = () => {
                 network where connections spark, ideas ignite, and ventures take
                 flight every day.
               </p>
+
             </Reveal>
 
-            <Reveal className="max-w-5xl mx-auto" delay={80}>
+            <Reveal className="w-full" delay={80}>
 
-              <div className="ecosystem-liquid-card relative overflow-hidden rounded-[2.5rem] sm:rounded-[3rem] border border-white/80">
+              {/* Full-width image */}
+              <div className="ecosystem-image-wrap relative w-full overflow-hidden bg-white">
 
-                <div className="absolute inset-0 bg-white/65 backdrop-blur-3xl" />
+                <img
+                  src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
+                  alt="Startives ecosystem"
+                  className="block w-full h-auto min-h-0 object-contain object-center"
+                />
 
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.07] via-purple-500/[0.05] to-blue-500/[0.12] pointer-events-none" />
+              </div>
 
-                <div className="absolute -top-32 -right-24 w-80 h-80 bg-blue-500/[0.12] rounded-full blur-[100px] pointer-events-none" />
+              {/* Stats directly underneath image */}
+              <div className="w-full px-6 sm:px-10 md:px-16 lg:px-24 mt-7 sm:mt-9">
 
-                <div className="absolute -bottom-32 -left-24 w-80 h-80 bg-purple-500/[0.09] rounded-full blur-[100px] pointer-events-none" />
+                <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-0 md:divide-x md:divide-neutral-200">
 
-                <div className="absolute inset-[1px] rounded-[calc(2.5rem-1px)] sm:rounded-[calc(3rem-1px)] border border-white/60 pointer-events-none" />
+                  <EcosystemStat
+                    endValue={50}
+                    label="Projects Launched"
+                  />
 
-                <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-10">
+                  <EcosystemStat
+                    endValue={200}
+                    label="Founders Connected"
+                    delay={100}
+                  />
 
-                  <div className="ecosystem-image-shell relative w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] border border-white/70 bg-white/40 backdrop-blur-xl">
-
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-white/15 to-blue-500/[0.08] pointer-events-none" />
-
-                    <img
-                      src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
-                      alt="Startives ecosystem"
-                      className="relative z-10 block w-full h-auto max-h-[560px] object-contain object-center mx-auto"
-                    />
-
-                  </div>
-
-                  <div className="mt-6 sm:mt-8 grid grid-cols-3 divide-x divide-neutral-300/60">
-
-                    <EcosystemStat
-                      endValue={50}
-                      label="Projects Launched"
-                    />
-
-                    <EcosystemStat
-                      endValue={200}
-                      label="Founders Connected"
-                      delay={100}
-                    />
-
-                    <EcosystemStat
-                      endValue={500}
-                      label="Innovators"
-                      delay={200}
-                    />
-
-                  </div>
+                  <EcosystemStat
+                    endValue={500}
+                    label="Innovators"
+                    delay={200}
+                  />
 
                 </div>
 
               </div>
 
             </Reveal>
+
           </div>
         </section>
 
@@ -627,11 +616,11 @@ const HomePage: React.FC = () => {
 
                       <div className="text-center">
 
-                        <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
+                        <h3 className="feature-title text-lg sm:text-xl font-bold text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
                           {feature.title}
                         </h3>
 
-                        <p className="text-[var(--text-secondary)] text-xs sm:text-[13px] font-medium leading-relaxed font-poppins max-w-[280px] mx-auto">
+                        <p className="feature-description text-xs sm:text-[13px] font-medium leading-relaxed font-poppins max-w-[280px] mx-auto text-[var(--text-secondary)]">
                           {feature.description}
                         </p>
 
@@ -1047,68 +1036,6 @@ const HomePage: React.FC = () => {
           opacity: 1;
         }
 
-        .ecosystem-liquid-card {
-          -webkit-backdrop-filter: blur(32px) saturate(185%);
-          backdrop-filter: blur(32px) saturate(185%);
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.86),
-              rgba(255, 255, 255, 0.52)
-            );
-
-          box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.98),
-            inset 0 -1px 1px rgba(90, 100, 150, 0.05),
-            0 18px 55px rgba(30, 40, 100, 0.10);
-        }
-
-        .ecosystem-liquid-card::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-
-          background:
-            linear-gradient(
-              115deg,
-              rgba(255, 255, 255, 0.7),
-              transparent 30%,
-              transparent 65%,
-              rgba(255, 255, 255, 0.3)
-            );
-
-          opacity: 0.8;
-          pointer-events: none;
-        }
-
-        .ecosystem-liquid-card::after {
-          content: '';
-          position: absolute;
-          left: 8%;
-          right: 8%;
-          top: 0;
-          height: 1px;
-
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(255, 255, 255, 1),
-              transparent
-            );
-
-          pointer-events: none;
-        }
-
-        .ecosystem-image-shell {
-          box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.95),
-            inset 0 -1px 2px rgba(80, 90, 130, 0.05),
-            0 10px 35px rgba(30, 50, 110, 0.08);
-        }
-
         .feature-liquid-card {
           -webkit-backdrop-filter: blur(28px) saturate(180%);
           backdrop-filter: blur(28px) saturate(180%);
@@ -1249,12 +1176,40 @@ const HomePage: React.FC = () => {
             min-height: 380px;
           }
 
-          .ecosystem-liquid-card {
-            border-radius: 2rem;
+          /* 15% larger feature text on mobile */
+          .feature-title {
+            font-size: 1.15rem;
           }
 
-          .ecosystem-image-shell {
-            border-radius: 1.5rem;
+          .feature-description {
+            font-size: 14.95px;
+            max-width: 300px;
+          }
+
+          /* Stats stay vertical on mobile */
+          .ecosystem-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+          }
+
+          .ecosystem-stat {
+            width: 100%;
+          }
+
+          .ecosystem-stat + .ecosystem-stat {
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+          }
+
+        }
+
+        @media (min-width: 640px) {
+
+          .ecosystem-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
           }
 
         }
