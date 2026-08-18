@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { APP_NAME } from '../constants'; 
+import { APP_NAME } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
 import {
@@ -12,7 +12,6 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-// --- Icons ---
 export const BellIcon: React.FC<{ className?: string }> = ({
   className = "w-6 h-6",
 }) => (
@@ -20,65 +19,73 @@ export const BellIcon: React.FC<{ className?: string }> = ({
 );
 
 const ThemeIconButton: React.FC = () => {
-    const { theme, toggleTheme } = useTheme();
-    const isDark = theme === 'dark';
-    
-    return (
-        <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60"
-            aria-label="Toggle theme"
-        >
-            {isDark ? 
-                <Moon className="w-5 h-5 text-sky-400" /> : 
-                <Sun className="w-5 h-5 text-yellow-500" />
-            }
-        </button>
-    );
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className="p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60"
+      aria-label="Toggle theme"
+    >
+      {isDark ? (
+        <Moon className="w-5 h-5 text-sky-400" />
+      ) : (
+        <Sun className="w-5 h-5 text-yellow-500" />
+      )}
+    </button>
+  );
 };
 
 const ThemeSwitch: React.FC = () => {
-    const { theme, toggleTheme } = useTheme();
-    const isDark = theme === 'dark';
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
-    return (
-        <button
-            onClick={toggleTheme}
-            type="button"
-            aria-label="Toggle theme"
-            className="theme-glass-switch"
-        >
-            <span className={`theme-switch-track ${isDark ? 'is-dark' : 'is-light'}`}>
-                <span className="theme-switch-icon left">
-                    <Sun
-                        className={`w-3.5 h-3.5 ${
-                            isDark ? 'opacity-35' : 'opacity-100'
-                        }`}
-                    />
-                </span>
+  return (
+    <button
+      onClick={toggleTheme}
+      type="button"
+      aria-label="Toggle theme"
+      className="theme-glass-switch"
+    >
+      <span className={`theme-switch-track ${isDark ? 'is-dark' : 'is-light'}`}>
 
-                <span className={`theme-switch-thumb ${isDark ? 'dark' : 'light'}`}>
-                    {isDark ? (
-                        <Moon className="w-3.5 h-3.5 text-sky-300" />
-                    ) : (
-                        <Sun className="w-3.5 h-3.5 text-yellow-500" />
-                    )}
-                </span>
+        <span className="theme-switch-icon left">
+          <Sun
+            className={`w-3.5 h-3.5 ${
+              isDark ? 'opacity-35' : 'opacity-100'
+            }`}
+          />
+        </span>
 
-                <span className="theme-switch-icon right">
-                    <Moon
-                        className={`w-3.5 h-3.5 ${
-                            isDark ? 'opacity-100' : 'opacity-35'
-                        }`}
-                    />
-                </span>
-            </span>
-        </button>
-    );
+        <span className={`theme-switch-thumb ${isDark ? 'dark' : 'light'}`}>
+          {isDark ? (
+            <Moon className="w-3.5 h-3.5 text-sky-300" />
+          ) : (
+            <Sun className="w-3.5 h-3.5 text-yellow-500" />
+          )}
+        </span>
+
+        <span className="theme-switch-icon right">
+          <Moon
+            className={`w-3.5 h-3.5 ${
+              isDark ? 'opacity-100' : 'opacity-35'
+            }`}
+          />
+        </span>
+
+      </span>
+    </button>
+  );
 };
 
 const Header: React.FC = () => {
-  const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
+  const {
+    currentUser,
+    logout,
+    appNotifications,
+    markAllNotificationsAsRead
+  } = useAppContext();
 
   const rawUnreadCount = Array.isArray(appNotifications)
     ? appNotifications.filter((n: any) => !n.isRead).length
@@ -90,23 +97,24 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   const [isScrolled, setIsScrolled] = useState(false);
-
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const profileDropdownRef = useRef<HTMLDivElement>(null);
-
-  const bellRef = useRef<HTMLDivElement>(null);
-
-  const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [shake, setShake] = useState(false);
+  const [isMenuAnimating, setIsMenuAnimating] = useState(false);
 
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const bellRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef<number | null>(null);
 
-  // -------------------------------------------------------
-  // SCROLL STATE
-  // Landing page = glass always
-  // Logged in = transparent at top, glass after scrolling
-  // -------------------------------------------------------
+  // --------------------------------------------------
+  // SAME SCROLL BEHAVIOUR FOR EVERY PAGE
+  //
+  // TOP:
+  // transparent / no background
+  //
+  // SCROLL:
+  // glass background
+  // --------------------------------------------------
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 8);
@@ -114,13 +122,16 @@ const Header: React.FC = () => {
 
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
+  // Notification sound
   useEffect(() => {
     if (prevCountRef.current === null) {
       prevCountRef.current = rawUnreadCount;
@@ -139,6 +150,7 @@ const Header: React.FC = () => {
     prevCountRef.current = rawUnreadCount;
   }, [rawUnreadCount]);
 
+  // Outside profile click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -156,6 +168,7 @@ const Header: React.FC = () => {
     };
   }, []);
 
+  // Outside notification click
   useEffect(() => {
     const handleClickOutsideBell = (event: MouseEvent) => {
       if (
@@ -182,18 +195,21 @@ const Header: React.FC = () => {
     setProfileDropdownOpen(false);
     navigate('/login');
   };
-  
+
   const handleMenuClick = () => {
     setIsMenuAnimating(true);
-    setTimeout(() => setIsMenuAnimating(false), 300);
+
+    setTimeout(() => {
+      setIsMenuAnimating(false);
+    }, 300);
 
     setShowNotifications(false);
-
     setProfileDropdownOpen(prev => !prev);
   };
-  
+
   const handleBellClick = async () => {
     const nextState = !showNotifications;
+
     setShowNotifications(nextState);
 
     if (nextState) {
@@ -212,7 +228,6 @@ const Header: React.FC = () => {
     }
   };
 
-  // Desktop Nav Links
   const navLinks = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Marketplace', path: '/blueprint' },
@@ -220,9 +235,8 @@ const Header: React.FC = () => {
     { name: 'Starverse', path: '/globe' },
   ];
 
-  // Mobile Menu Links
   const mobileMenuLinks = [
-    { name: 'Dashboard', path: '/dashboard' }, 
+    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Discover Projects', path: '/projects' },
     { name: 'Builders Stories', path: '/builders' },
     { name: 'Marketplace', path: '/blueprint' },
@@ -240,23 +254,18 @@ const Header: React.FC = () => {
       parts.map(part => part.toUpperCase()).join('') || 'U'
     ).substring(0, 2);
   };
-  
+
   const commonIconButtonClasses =
     "relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60";
 
-  /*
-   * IMPORTANT:
-   *
-   * Landing page:
-   *   Always glass.
-   *
-   * Logged-in / other pages:
-   *   Top = transparent.
-   *   Scroll = glass.
-   */
-  const isLandingPage = location.pathname === '/' && !currentUser;
-
-  const showGlassHeader = isLandingPage || isScrolled;
+  // =====================================================
+  // IMPORTANT:
+  // BOTH BEFORE LOGIN + AFTER LOGIN USE THIS.
+  //
+  // Top      -> transparent
+  // Scrolled -> glass
+  // =====================================================
+  const showGlassHeader = isScrolled;
 
   return (
     <>
@@ -296,7 +305,7 @@ const Header: React.FC = () => {
         `}
       >
 
-        {/* Glass Gradient */}
+        {/* Glass gradient */}
         <div
           className={`
             absolute
@@ -305,10 +314,12 @@ const Header: React.FC = () => {
             transition-opacity
             duration-500
             ease-out
+
             bg-gradient-to-b
             from-white/65
             via-white/25
             to-white/10
+
             dark:from-white/10
             dark:via-white/5
             dark:to-transparent
@@ -321,7 +332,7 @@ const Header: React.FC = () => {
           `}
         />
 
-        {/* Top Glass Highlight */}
+        {/* Glass top highlight */}
         <div
           className={`
             absolute
@@ -350,17 +361,17 @@ const Header: React.FC = () => {
               to={currentUser ? "/dashboard" : "/"}
               className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0"
             >
-              <img 
-                src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png" 
-                alt="Startives Logo" 
-                className="h-9" 
+              <img
+                src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
+                alt="Startives Logo"
+                className="h-9"
               />
 
               <span className="font-startives-brand tracking-tighter gradient-text bg-gradient-to-r from-red-500 to-blue-500 text-2xl">
                 {APP_NAME}
               </span>
             </Link>
-            
+
             <nav className="hidden md:flex items-center space-x-6">
               {navLinks.map(link => (
                 <Link
@@ -406,10 +417,10 @@ const Header: React.FC = () => {
 
                 </div>
 
-                {/* LOGGED-IN DIVIDER — RESTORED */}
+                {/* Logged-in divider */}
                 <div className="mx-1.5 h-6 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
 
-                {/* PROFILE */}
+                {/* Profile */}
                 <div
                   ref={profileDropdownRef}
                   className="relative"
@@ -508,7 +519,6 @@ const Header: React.FC = () => {
 
                       {/* Theme */}
                       <div className="border-t border-[var(--border-primary)] px-4 py-2">
-
                         <div className="flex items-center justify-between">
 
                           <span className="text-sm text-[var(--text-secondary)]">
@@ -518,7 +528,6 @@ const Header: React.FC = () => {
                           <ThemeSwitch />
 
                         </div>
-
                       </div>
 
                       {/* Logout */}
@@ -540,14 +549,12 @@ const Header: React.FC = () => {
               </>
             ) : (
 
-              /* LANDING / LOGGED OUT */
+              /* LOGGED OUT */
               <div className="flex items-center space-x-1.5">
 
                 {location.pathname !== '/' && (
                   <ThemeIconButton />
                 )}
-
-                {/* NO DIVIDER ON LANDING PAGE */}
 
                 <button
                   onClick={() => navigate('/signup')}
@@ -558,13 +565,18 @@ const Header: React.FC = () => {
                     inline-flex
                     items-center
                     justify-center
-                    gap-[1.62px]
+
+                    /* Balanced spacing */
+                    gap-[2.1px]
+
                     rounded-full
+
                     px-[4.05px]
                     py-[3.24px]
                     pl-[9.72px]
                     sm:pl-[12.15px]
                     pr-[3.24px]
+
                     text-neutral-900
                     font-bold
                     text-[6.48px]
@@ -595,7 +607,7 @@ const Header: React.FC = () => {
                     Join Now
                   </span>
 
-                  {/* Arrow Circle */}
+                  {/* Arrow circle — 10% larger */}
                   <span
                     className="
                       relative
@@ -603,17 +615,22 @@ const Header: React.FC = () => {
                       flex
                       items-center
                       justify-center
-                      w-[16.2px]
-                      h-[16.2px]
-                      sm:w-[17.82px]
-                      sm:h-[17.82px]
+
+                      w-[17.82px]
+                      h-[17.82px]
+
+                      sm:w-[19.6px]
+                      sm:h-[19.6px]
+
                       rounded-full
                       overflow-hidden
                       border
                       border-white/85
                       bg-white/40
                       backdrop-blur-xl
+
                       shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
+
                       transition-all
                       duration-300
                       group-hover:bg-white/55
@@ -640,10 +657,13 @@ const Header: React.FC = () => {
                       className="
                         relative
                         z-10
-                        w-[7.29px]
-                        h-[7.29px]
-                        sm:w-[8.1px]
-                        sm:h-[8.1px]
+
+                        w-[8px]
+                        h-[8px]
+
+                        sm:w-[8.9px]
+                        sm:h-[8.9px]
+
                         text-neutral-900
                         transition-transform
                         duration-300
@@ -665,7 +685,7 @@ const Header: React.FC = () => {
       <style>{`
 
         /* =====================================================
-           JOIN NOW — 10% SMALLER
+           LIQUID GLASS JOIN NOW
         ===================================================== */
 
         .liquid-glass-cta {
@@ -746,10 +766,13 @@ const Header: React.FC = () => {
           position: relative;
           width: 64px;
           height: 33px;
+
           display: flex;
           align-items: center;
           justify-content: space-between;
+
           padding: 3.5px;
+
           border-radius: 999px;
           overflow: hidden;
 
@@ -794,12 +817,16 @@ const Header: React.FC = () => {
         .theme-switch-icon {
           position: relative;
           z-index: 2;
+
           width: 26px;
           height: 26px;
+
           display: flex;
           align-items: center;
           justify-content: center;
+
           color: #737780;
+
           transition: opacity 0.25s ease;
         }
 
@@ -810,10 +837,14 @@ const Header: React.FC = () => {
         .theme-switch-thumb {
           position: absolute;
           z-index: 3;
+
           top: 3.5px;
+
           width: 26px;
           height: 26px;
+
           border-radius: 50%;
+
           display: flex;
           align-items: center;
           justify-content: center;
