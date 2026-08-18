@@ -112,18 +112,6 @@ const Header: React.FC = () => {
   const bellRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef<number | null>(null);
 
-  // =====================================================
-  // HEADER SCROLL STATE
-  //
-  // TOP:
-  // transparent / no background / no blur / no shadow
-  //
-  // SCROLLED:
-  // glass background / blur / shadow
-  //
-  // SAME BEHAVIOUR:
-  // landing + logged-in + every other page
-  // =====================================================
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 8);
@@ -140,9 +128,6 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // =====================================================
-  // NOTIFICATION SOUND
-  // =====================================================
   useEffect(() => {
     if (prevCountRef.current === null) {
       prevCountRef.current = rawUnreadCount;
@@ -164,9 +149,6 @@ const Header: React.FC = () => {
     prevCountRef.current = rawUnreadCount;
   }, [rawUnreadCount]);
 
-  // =====================================================
-  // OUTSIDE PROFILE CLICK
-  // =====================================================
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -184,9 +166,6 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // =====================================================
-  // OUTSIDE NOTIFICATION CLICK
-  // =====================================================
   useEffect(() => {
     const handleClickOutsideBell = (event: MouseEvent) => {
       if (
@@ -214,18 +193,12 @@ const Header: React.FC = () => {
     setProfileDropdownOpen(false);
   }, [location.pathname]);
 
-  // =====================================================
-  // LOGOUT
-  // =====================================================
   const handleLogout = () => {
     logout();
     setProfileDropdownOpen(false);
     navigate('/login');
   };
 
-  // =====================================================
-  // MENU
-  // =====================================================
   const handleMenuClick = () => {
     setIsMenuAnimating(true);
 
@@ -237,9 +210,6 @@ const Header: React.FC = () => {
     setProfileDropdownOpen(prev => !prev);
   };
 
-  // =====================================================
-  // NOTIFICATIONS
-  // =====================================================
   const handleBellClick = async () => {
     const nextState = !showNotifications;
 
@@ -263,9 +233,6 @@ const Header: React.FC = () => {
     }
   };
 
-  // =====================================================
-  // NAV LINKS
-  // =====================================================
   const navLinks = [
     {
       name: 'Dashboard',
@@ -316,9 +283,6 @@ const Header: React.FC = () => {
     },
   ];
 
-  // =====================================================
-  // INITIALS
-  // =====================================================
   const getInitials = (name?: string): string => {
     if (!name || name.trim() === '') {
       return 'U';
@@ -334,19 +298,10 @@ const Header: React.FC = () => {
   const commonIconButtonClasses =
     'relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60';
 
-  // =====================================================
-  // SINGLE SOURCE OF TRUTH
-  //
-  // false = transparent
-  // true  = glass
-  // =====================================================
   const showGlassHeader = isScrolled;
 
   return (
     <>
-      {/* =================================================
-          HEADER
-      ================================================= */}
       <header
         className={`
           sticky
@@ -380,10 +335,6 @@ const Header: React.FC = () => {
           }
         `}
       >
-
-        {/* ===============================================
-            GLASS GRADIENT
-        =============================================== */}
         <div
           className={`
             absolute
@@ -410,9 +361,6 @@ const Header: React.FC = () => {
           `}
         />
 
-        {/* ===============================================
-            GLASS TOP HIGHLIGHT
-        =============================================== */}
         <div
           className={`
             absolute
@@ -432,9 +380,6 @@ const Header: React.FC = () => {
           `}
         />
 
-        {/* ===============================================
-            HEADER CONTENT
-        =============================================== */}
         <div
           className="
             relative
@@ -450,12 +395,7 @@ const Header: React.FC = () => {
             py-2.5
           "
         >
-
-          {/* =============================================
-              LEFT
-          ============================================= */}
           <div className="flex items-center space-x-8">
-
             <Link
               to={currentUser ? '/dashboard' : '/'}
               className="
@@ -505,19 +445,11 @@ const Header: React.FC = () => {
                 </Link>
               ))}
             </nav>
-
           </div>
 
-          {/* =============================================
-              RIGHT
-          ============================================= */}
           <div className="flex items-center gap-1">
-
             {currentUser ? (
               <>
-                {/* =======================================
-                    NOTIFICATION
-                ======================================= */}
                 <div
                   ref={bellRef}
                   className="relative"
@@ -572,9 +504,6 @@ const Header: React.FC = () => {
                   )}
                 </div>
 
-                {/* =======================================
-                    LOGGED-IN DIVIDER
-                ======================================= */}
                 <div
                   className="
                     mx-1.5
@@ -585,9 +514,6 @@ const Header: React.FC = () => {
                   "
                 />
 
-                {/* =======================================
-                    PROFILE
-                ======================================= */}
                 <div
                   ref={profileDropdownRef}
                   className="relative"
@@ -632,9 +558,6 @@ const Header: React.FC = () => {
                     )}
                   </button>
 
-                  {/* =====================================
-                      DROPDOWN
-                  ===================================== */}
                   <div
                     className={`
                       origin-top-right
@@ -658,8 +581,6 @@ const Header: React.FC = () => {
                     `}
                   >
                     <div className="py-1">
-
-                      {/* PROFILE */}
                       <Link
                         to="/profile"
                         className="
@@ -672,7 +593,6 @@ const Header: React.FC = () => {
                         "
                       >
                         <div className="flex items-center space-x-3">
-
                           <div
                             className="
                               w-10
@@ -716,11 +636,9 @@ const Header: React.FC = () => {
                               {currentUser.email}
                             </p>
                           </div>
-
                         </div>
                       </Link>
 
-                      {/* MENU LINKS */}
                       {mobileMenuLinks.map(link => (
                         <Link
                           key={link.name}
@@ -739,7 +657,6 @@ const Header: React.FC = () => {
                         </Link>
                       ))}
 
-                      {/* APPEARANCE */}
                       <div
                         className="
                           border-t
@@ -749,17 +666,14 @@ const Header: React.FC = () => {
                         "
                       >
                         <div className="flex items-center justify-between">
-
                           <span className="text-sm text-[var(--text-secondary)]">
                             Appearance
                           </span>
 
                           <ThemeSwitch />
-
                         </div>
                       </div>
 
-                      {/* LOGOUT */}
                       <div
                         className="
                           border-t
@@ -785,26 +699,16 @@ const Header: React.FC = () => {
                           <span>Logout</span>
                         </button>
                       </div>
-
                     </div>
                   </div>
                 </div>
               </>
             ) : (
-
-              /* =========================================
-                 LOGGED OUT / LANDING
-              ========================================= */
               <div className="flex items-center space-x-1.5">
-
                 {location.pathname !== '/' && (
                   <ThemeIconButton />
                 )}
 
-                {/* =====================================
-                    JOIN NOW
-                    7% LARGER THAN PREVIOUS VERSION
-                ===================================== */}
                 <button
                   onClick={() => navigate('/signup')}
                   className="
@@ -815,7 +719,7 @@ const Header: React.FC = () => {
                     items-center
                     justify-center
 
-                    gap-[2.25px]
+                    gap-[4.5px]
 
                     rounded-full
 
@@ -845,8 +749,6 @@ const Header: React.FC = () => {
                     focus-visible:ring-0
                   "
                 >
-
-                  {/* Base glass */}
                   <span
                     className="
                       absolute
@@ -860,7 +762,6 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Color tint */}
                   <span
                     className="
                       absolute
@@ -874,7 +775,6 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Blur layer */}
                   <span
                     className="
                       absolute
@@ -886,7 +786,6 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Top highlight */}
                   <span
                     className="
                       absolute
@@ -900,15 +799,17 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Text */}
-                  <span className="relative z-10 whitespace-nowrap">
+                  <span
+                    className="
+                      relative
+                      z-10
+                      whitespace-nowrap
+                      translate-x-[-0.5px]
+                    "
+                  >
                     Join Now
                   </span>
 
-                  {/* =================================
-                      ARROW CIRCLE
-                      7% LARGER
-                  ================================= */}
                   <span
                     className="
                       relative
@@ -917,11 +818,11 @@ const Header: React.FC = () => {
                       items-center
                       justify-center
 
-                      w-[19.07px]
-                      h-[19.07px]
+                      w-[20.02px]
+                      h-[20.02px]
 
-                      sm:w-[20.97px]
-                      sm:h-[20.97px]
+                      sm:w-[22.02px]
+                      sm:h-[22.02px]
 
                       rounded-full
                       overflow-hidden
@@ -939,8 +840,6 @@ const Header: React.FC = () => {
                       group-hover:bg-white/55
                     "
                   >
-
-                    {/* Arrow circle gradient */}
                     <span
                       className="
                         absolute
@@ -955,7 +854,6 @@ const Header: React.FC = () => {
                       "
                     />
 
-                    {/* Inner glass */}
                     <span
                       className="
                         absolute
@@ -966,7 +864,6 @@ const Header: React.FC = () => {
                       "
                     />
 
-                    {/* Arrow */}
                     <ArrowRight
                       className="
                         relative
@@ -986,24 +883,15 @@ const Header: React.FC = () => {
                         group-hover:translate-x-0.5
                       "
                     />
-
                   </span>
-
                 </button>
-
               </div>
             )}
-
           </div>
         </div>
       </header>
 
       <style>{`
-
-        /* =====================================================
-           LIQUID GLASS JOIN NOW
-        ===================================================== */
-
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(30px) saturate(200%);
           backdrop-filter: blur(30px) saturate(200%);
@@ -1062,10 +950,6 @@ const Header: React.FC = () => {
             inset 0 -1px 1px rgba(120, 130, 160, 0.08),
             0 6px 20px rgba(30, 40, 80, 0.11);
         }
-
-        /* =====================================================
-           THEME SWITCH
-        ===================================================== */
 
         .theme-glass-switch {
           position: relative;
@@ -1221,12 +1105,7 @@ const Header: React.FC = () => {
           transform: scale(0.94);
         }
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
         @media (max-width: 639px) {
-
           .liquid-glass-cta {
             padding-top: 3.46px;
             padding-bottom: 3.46px;
@@ -1258,7 +1137,6 @@ const Header: React.FC = () => {
             height: 25px;
           }
         }
-
       `}</style>
     </>
   );
