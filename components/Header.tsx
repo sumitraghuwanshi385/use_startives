@@ -4,79 +4,20 @@ import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants'; 
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
+import {
+  LogOut,
+  Bell,
+  Sun,
+  Moon,
+  ArrowRight,
+} from 'lucide-react';
 
 // --- Icons ---
-const ArrowRightOnRectangleIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
-);
-
-
 export const BellIcon: React.FC<{ className?: string }> = ({
   className = "w-6 h-6",
 }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className={className}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
-    />
-  </svg>
+  <Bell className={className} />
 );
-
-const HamburgerIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-    </svg>
-);
-const SunIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-    </svg>
-);
-const MoonIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-    </svg>
-);
-
-const ThemeSwitch: React.FC = () => {
-    const { theme, toggleTheme } = useTheme();
-    const isDark = theme === 'dark';
-    
-    return (
-        <button
-            onClick={toggleTheme}
-            className="theme-glass-switch"
-            aria-label="Toggle theme"
-            type="button"
-        >
-            <span className={`theme-switch-track ${isDark ? 'is-dark' : 'is-light'}`}>
-                <span className="theme-switch-icon left">
-                    <SunIcon className={`w-3.5 h-3.5 ${isDark ? 'opacity-40' : 'opacity-100'}`} />
-                </span>
-
-                <span className={`theme-switch-thumb ${isDark ? 'dark' : 'light'}`}>
-                    {isDark ? (
-                        <MoonIcon className="w-3.5 h-3.5 text-sky-300" />
-                    ) : (
-                        <SunIcon className="w-3.5 h-3.5 text-yellow-500" />
-                    )}
-                </span>
-
-                <span className="theme-switch-icon right">
-                    <MoonIcon className={`w-3.5 h-3.5 ${isDark ? 'opacity-100' : 'opacity-35'}`} />
-                </span>
-            </span>
-        </button>
-    );
-};
 
 const ThemeIconButton: React.FC = () => {
     const { theme, toggleTheme } = useTheme();
@@ -89,9 +30,49 @@ const ThemeIconButton: React.FC = () => {
             aria-label="Toggle theme"
         >
             {isDark ? 
-                <MoonIcon className="w-5 h-5 text-sky-400" /> : 
-                <SunIcon className="w-5 h-5 text-yellow-500" />
+                <Moon className="w-5 h-5 text-sky-400" /> : 
+                <Sun className="w-5 h-5 text-yellow-500" />
             }
+        </button>
+    );
+};
+
+const ThemeSwitch: React.FC = () => {
+    const { theme, toggleTheme } = useTheme();
+    const isDark = theme === 'dark';
+
+    return (
+        <button
+            onClick={toggleTheme}
+            type="button"
+            aria-label="Toggle theme"
+            className="theme-glass-switch"
+        >
+            <span className={`theme-switch-track ${isDark ? 'is-dark' : 'is-light'}`}>
+                <span className="theme-switch-icon left">
+                    <Sun
+                        className={`w-3.5 h-3.5 ${
+                            isDark ? 'opacity-35' : 'opacity-100'
+                        }`}
+                    />
+                </span>
+
+                <span className={`theme-switch-thumb ${isDark ? 'dark' : 'light'}`}>
+                    {isDark ? (
+                        <Moon className="w-3.5 h-3.5 text-sky-300" />
+                    ) : (
+                        <Sun className="w-3.5 h-3.5 text-yellow-500" />
+                    )}
+                </span>
+
+                <span className="theme-switch-icon right">
+                    <Moon
+                        className={`w-3.5 h-3.5 ${
+                            isDark ? 'opacity-100' : 'opacity-35'
+                        }`}
+                    />
+                </span>
+            </span>
         </button>
     );
 };
@@ -244,16 +225,18 @@ const handleBellClick = async () => {
           top-0
           z-40
           w-full
-          min-h-[54px]
-          sm:min-h-[58px]
+          min-h-[57px]
+          sm:min-h-[61px]
           overflow-visible
-          backdrop-blur-[30px]
-          backdrop-saturate-[190%]
           bg-white/72
           dark:bg-neutral-900/72
+          backdrop-blur-[30px]
+          backdrop-saturate-[200%]
+          supports-[backdrop-filter]:bg-white/58
+          dark:supports-[backdrop-filter]:bg-neutral-900/58
           border-0
           outline-none
-          shadow-[0_5px_24px_rgba(30,40,80,0.055)]
+          shadow-[0_8px_30px_rgba(30,40,80,0.06)]
         "
       >
         <div
@@ -262,29 +245,29 @@ const handleBellClick = async () => {
             inset-0
             pointer-events-none
             bg-gradient-to-b
-            from-[#f3f3f5]/78
-            via-white/58
-            to-white/42
-            dark:from-neutral-900/78
-            dark:via-neutral-900/58
-            dark:to-neutral-900/42
+            from-white/65
+            via-white/25
+            to-white/10
+            dark:from-white/10
+            dark:via-white/5
+            dark:to-transparent
           "
         />
 
         <div
           className="
             absolute
-            left-[5%]
-            right-[5%]
+            left-[4%]
+            right-[4%]
             top-0
             h-px
-            bg-white/85
+            bg-white/80
             dark:bg-white/15
             pointer-events-none
           "
         />
 
-        <div className="relative z-10 w-full flex items-center justify-between px-2 sm:px-4 py-[6.5px] sm:py-[7px]">
+        <div className="relative z-10 w-full min-h-[57px] sm:min-h-[61px] flex items-center justify-between px-2 sm:px-4 py-2.5">
           <div className="flex items-center space-x-8">
             <Link to={currentUser ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center space-x-2 focus:outline-none ml-0">
               <img 
@@ -308,165 +291,291 @@ const handleBellClick = async () => {
 
           <div className="flex items-center gap-1">
         
-  {currentUser ? (
-    <>
-      {/* 🔔 Notification Bell */}
-      <div ref={bellRef} className="relative">
-        <button
-          onClick={handleBellClick}
-          className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
-        >
-          <div className={shake ? "shake" : ""}>
-            <BellIcon className="w-6 h-6" />
-          </div>
+            {currentUser ? (
+              <>
+                {/* 🔔 Notification Bell */}
+                <div ref={bellRef} className="relative">
+                  <button
+                    onClick={handleBellClick}
+                    className="relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] transition"
+                  >
+                    <div className={shake ? "shake" : ""}>
+                      <BellIcon className="w-6 h-6" />
+                    </div>
 
-          {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-semibold min-w-[16px] h-4 px-1 flex items-center justify-center rounded-full shadow-sm">
-              {unreadCount}
-            </span>
-          )}
-        </button>
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-semibold min-w-[16px] h-4 px-1 flex items-center justify-center rounded-full shadow-sm">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </button>
 
-        {showNotifications && (
-          <NotificationDropdown
-            onClose={() => setShowNotifications(false)}
-          />
-        )}
-      </div>
-
-      {/* ☰ Hamburger Menu */}
-      <div ref={profileDropdownRef} className="relative">
-        <button
-          onClick={handleMenuClick}
-          className={commonIconButtonClasses}
-          aria-label="Open menu"
-        >
-          {currentUser?.profilePictureUrl ? (
-            <img
-              src={currentUser.profilePictureUrl}
-              alt={currentUser.name}
-              className="w-8 h-8 rounded-full object-cover border border-[var(--border-primary)]"
-            />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
-              {getInitials(currentUser.name)}
-            </div>
-          )}
-        </button>
-
-        {/* Dropdown */}
-        <div
-          className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] border border-[var(--border-primary)] shadow-2xl transition duration-200 ${
-            profileDropdownOpen
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none"
-          }`}
-        >
-          <div className="py-1">
-
-            {/* Profile */}
-            <Link
-              to="/profile"
-              className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm ring-2 ring-white/20">
-                  {currentUser.profilePictureUrl ? (
-                    <img
-                      src={currentUser.profilePictureUrl}
-                      alt={currentUser.name}
-                      className="w-full h-full object-cover rounded-full"
+                  {showNotifications && (
+                    <NotificationDropdown
+                      onClose={() => setShowNotifications(false)}
                     />
-                  ) : (
-                    getInitials(currentUser.name)
                   )}
                 </div>
 
-                <div className="overflow-hidden">
-                  <p className="text-sm font-semibold truncate">
-                    {currentUser.name}
-                  </p>
+                {/* Divider */}
+                <div className="mx-1.5 h-6 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
 
-                  <p className="text-xs text-[var(--text-muted)] truncate">
-                    {currentUser.email}
-                  </p>
-                </div>
-              </div>
-            </Link>
+                {/* ☰ Hamburger Menu */}
+                <div ref={profileDropdownRef} className="relative">
+                  <button
+                    onClick={handleMenuClick}
+                    className={commonIconButtonClasses}
+                    aria-label="Open menu"
+                  >
+                    {currentUser?.profilePictureUrl ? (
+                      <img
+                        src={currentUser.profilePictureUrl}
+                        alt={currentUser.name}
+                        className="w-8 h-8 rounded-full object-cover border border-[var(--border-primary)]"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                        {getInitials(currentUser.name)}
+                      </div>
+                    )}
+                  </button>
 
-            {/* Menu Links */}
-            {mobileMenuLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="block px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]"
-              >
-                {link.name}
-              </Link>
-            ))}
+                  {/* Dropdown */}
+                  <div
+                    className={`origin-top-right absolute right-0 mt-3 w-64 rounded-xl bg-[var(--component-background)] border border-[var(--border-primary)] shadow-2xl transition duration-200 ${
+                      profileDropdownOpen
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 scale-95 pointer-events-none"
+                    }`}
+                  >
+                    <div className="py-1">
 
-            {/* Theme Switch */}
-            <div className="border-t border-[var(--border-primary)] px-4 py-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-white/45 dark:bg-white/10 backdrop-blur-xl border border-white/70 dark:border-white/15 flex items-center justify-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.8)]">
-                    <SunIcon className="w-4 h-4 text-yellow-500 dark:hidden" />
-                    <MoonIcon className="w-4 h-4 text-sky-400 hidden dark:block" />
+                      {/* Profile */}
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-3 border-b border-[var(--border-primary)] hover:bg-[var(--component-background-hover)]"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 rounded-full icon-bg-gradient flex items-center justify-center text-white font-semibold text-sm ring-2 ring-white/20">
+                            {currentUser.profilePictureUrl ? (
+                              <img
+                                src={currentUser.profilePictureUrl}
+                                alt={currentUser.name}
+                                className="w-full h-full object-cover rounded-full"
+                              />
+                            ) : (
+                              getInitials(currentUser.name)
+                            )}
+                          </div>
+
+                          <div className="overflow-hidden">
+                            <p className="text-sm font-semibold truncate">
+                              {currentUser.name}
+                            </p>
+
+                            <p className="text-xs text-[var(--text-muted)] truncate">
+                              {currentUser.email}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+
+                      {/* Menu Links */}
+                      {mobileMenuLinks.map((link) => (
+                        <Link
+                          key={link.name}
+                          to={link.path}
+                          className="block px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]"
+                        >
+                          {link.name}
+                        </Link>
+                      ))}
+
+                      {/* Theme */}
+                      <div className="border-t border-[var(--border-primary)] px-4 py-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-[var(--text-secondary)]">
+                            Appearance
+                          </span>
+
+                          <ThemeSwitch />
+                        </div>
+                      </div>
+
+                      {/* Logout */}
+                      <div className="border-t border-[var(--border-primary)]">
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left flex items-center space-x-2 px-4 py-3 text-sm text-[var(--accent-danger-text)] hover:bg-[var(--accent-danger-background)]"
+                        >
+                          <LogOut className="w-5 h-5" />
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-
-                  <span className="text-sm font-semibold text-[var(--text-secondary)]">
-                    Appearance
-                  </span>
                 </div>
+              </>
+            ) : (
+              <div className="flex items-center space-x-1.5">
+                {location.pathname !== '/' && <ThemeIconButton />}
 
-                <ThemeSwitch />
+                <div className="h-5 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
+
+                <button
+                  onClick={() => navigate('/signup')}
+                  className="
+                    liquid-glass-cta
+                    group
+                    relative
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-full
+                    px-[5px]
+                    py-[4px]
+                    pl-[12px]
+                    sm:pl-[15px]
+                    pr-[4px]
+                    text-neutral-900
+                    font-bold
+                    text-[8px]
+                    sm:text-[8.5px]
+                    tracking-tight
+                    select-none
+                    overflow-hidden
+                    transition-all
+                    duration-300
+                    hover:scale-[1.035]
+                    active:scale-[0.97]
+                    focus:outline-none
+                    focus-visible:ring-4
+                    focus-visible:ring-blue-400/20
+                  "
+                >
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/95 via-white/70 to-white/45 pointer-events-none" />
+
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/20 via-purple-400/15 to-blue-500/25 pointer-events-none" />
+
+                  <span className="absolute inset-0 rounded-full bg-white/20 backdrop-blur-xl pointer-events-none" />
+
+                  <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 rounded-full pointer-events-none" />
+
+                  <span className="relative z-10 whitespace-nowrap">
+                    Join Now
+                  </span>
+
+                  <span
+                    className="
+                      relative
+                      z-10
+                      flex
+                      items-center
+                      justify-center
+                      w-[20px]
+                      h-[20px]
+                      sm:w-[22px]
+                      sm:h-[22px]
+                      rounded-full
+                      overflow-hidden
+                      border
+                      border-white/85
+                      bg-white/40
+                      backdrop-blur-xl
+                      shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_10px_rgba(20,30,60,0.12)]
+                      transition-all
+                      duration-300
+                      group-hover:bg-white/55
+                    "
+                  >
+                    <span
+                      className="
+                        absolute
+                        inset-0
+                        rounded-full
+                        bg-gradient-to-br
+                        from-red-500/55
+                        via-purple-400/30
+                        to-blue-500/60
+                        opacity-80
+                        blur-[0.5px]
+                      "
+                    />
+
+                    <span className="absolute inset-[1px] rounded-full bg-white/20 backdrop-blur-md" />
+
+                    <ArrowRight
+                      className="
+                        relative
+                        z-10
+                        w-[9px]
+                        h-[9px]
+                        sm:w-[10px]
+                        sm:h-[10px]
+                        text-neutral-900
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-0.5
+                      "
+                    />
+                  </span>
+                </button>
               </div>
-            </div>
-
-            {/* Logout */}
-            <div className="border-t border-[var(--border-primary)]">
-              <button
-                onClick={handleLogout}
-                className="w-full text-left flex items-center space-x-2 px-4 py-3 text-sm text-[var(--accent-danger-text)] hover:bg-[var(--accent-danger-background)]"
-              >
-                <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                <span>Logout</span>
-              </button>
-            </div>
+            )}
           </div>
-        </div>
-      </div>
-    </>
-  ) : (
-    <div className="flex items-center space-x-2">
-      {location.pathname !== '/' && <ThemeIconButton />}
-
-      <button
-        onClick={() => navigate('/signup')}
-        className="
-          button-gradient
-          text-white
-          font-semibold
-          rounded-full
-          py-[4px]
-          px-[10px]
-          text-[8px]
-          sm:text-[8.5px]
-          transition-transform
-          duration-300
-          hover:scale-[1.03]
-          active:scale-[0.97]
-        "
-      >
-        Join Now
-      </button>
-    </div>
-  )}
-</div>
         </div>
       </header>
 
       <style>{`
+        .liquid-glass-cta {
+          -webkit-backdrop-filter: blur(30px) saturate(200%);
+          backdrop-filter: blur(30px) saturate(200%);
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.82),
+              rgba(255, 255, 255, 0.58)
+            );
+
+          border: 1px solid rgba(255, 255, 255, 0.92);
+
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 0.98),
+            inset 0 -1px 1px rgba(120, 130, 160, 0.08),
+            0 6px 20px rgba(30, 40, 80, 0.11);
+        }
+
+        .liquid-glass-cta::after {
+          content: '';
+
+          position: absolute;
+          inset: 0;
+
+          border-radius: inherit;
+
+          background:
+            linear-gradient(
+              115deg,
+              rgba(255, 255, 255, 0.58),
+              transparent 35%,
+              transparent 65%,
+              rgba(255, 255, 255, 0.30)
+            );
+
+          opacity: 0.8;
+
+          pointer-events: none;
+        }
+
+        .liquid-glass-cta:hover {
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 1),
+            inset 0 -1px 1px rgba(100, 110, 150, 0.08),
+            0 9px 25px rgba(30, 40, 80, 0.15);
+        }
+
         .theme-glass-switch {
           position: relative;
           display: inline-flex;
@@ -481,23 +590,23 @@ const handleBellClick = async () => {
 
         .theme-switch-track {
           position: relative;
-          width: 58px;
-          height: 30px;
+          width: 64px;
+          height: 33px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 3px;
+          padding: 3.5px;
           border-radius: 999px;
           overflow: hidden;
 
           background:
             linear-gradient(
               135deg,
-              rgba(255,255,255,0.82),
-              rgba(225,227,232,0.58)
+              rgba(255,255,255,0.84),
+              rgba(225,227,232,0.60)
             );
 
-          border: 1px solid rgba(255,255,255,0.9);
+          border: 1px solid rgba(255,255,255,0.92);
 
           -webkit-backdrop-filter: blur(22px) saturate(180%);
           backdrop-filter: blur(22px) saturate(180%);
@@ -516,8 +625,8 @@ const handleBellClick = async () => {
           background:
             linear-gradient(
               135deg,
-              rgba(45,48,58,0.82),
-              rgba(25,27,34,0.72)
+              rgba(45,48,58,0.84),
+              rgba(25,27,34,0.74)
             );
 
           border-color: rgba(255,255,255,0.14);
@@ -531,8 +640,8 @@ const handleBellClick = async () => {
         .theme-switch-icon {
           position: relative;
           z-index: 2;
-          width: 24px;
-          height: 24px;
+          width: 26px;
+          height: 26px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -547,9 +656,9 @@ const handleBellClick = async () => {
         .theme-switch-thumb {
           position: absolute;
           z-index: 3;
-          top: 3px;
-          width: 24px;
-          height: 24px;
+          top: 3.5px;
+          width: 26px;
+          height: 26px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -573,15 +682,16 @@ const handleBellClick = async () => {
 
           transition:
             left 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-            background 0.3s ease;
+            background 0.3s ease,
+            transform 0.15s ease;
         }
 
         .theme-switch-thumb.light {
-          left: 3px;
+          left: 3.5px;
         }
 
         .theme-switch-thumb.dark {
-          left: 31px;
+          left: 34.5px;
 
           background:
             linear-gradient(
@@ -609,23 +719,35 @@ const handleBellClick = async () => {
         }
 
         @media (max-width: 639px) {
+          .liquid-glass-cta {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-left: 12px;
+            padding-right: 4px;
+            font-size: 8px;
+          }
+
+          .liquid-glass-cta span {
+            -webkit-tap-highlight-color: transparent;
+          }
+
           .theme-switch-track {
-            width: 56px;
-            height: 29px;
+            width: 62px;
+            height: 32px;
           }
 
           .theme-switch-thumb {
-            width: 23px;
-            height: 23px;
+            width: 25px;
+            height: 25px;
           }
 
           .theme-switch-thumb.dark {
-            left: 30px;
+            left: 33px;
           }
 
           .theme-switch-icon {
-            width: 23px;
-            height: 23px;
+            width: 25px;
+            height: 25px;
           }
         }
       `}</style>
