@@ -172,7 +172,6 @@ const useCountUp = (
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Smooth ease-out
       const eased = 1 - Math.pow(1 - progress, 3);
 
       setCount(Math.round(endValue * eased));
@@ -201,8 +200,14 @@ const useCountUp = (
 const EcosystemStat: React.FC<{
   endValue: number;
   label: string;
+  description: string;
   delay?: number;
-}> = ({ endValue, label, delay = 0 }) => {
+}> = ({
+  endValue,
+  label,
+  description,
+  delay = 0,
+}) => {
   const { ref, inView } = useInView<HTMLDivElement>(0.15);
   const [shouldAnimate, setShouldAnimate] = useState(false);
 
@@ -227,43 +232,80 @@ const EcosystemStat: React.FC<{
       ref={ref}
       className="ecosystem-stat text-center"
     >
+      {/* Number */}
       <div
         className={`
+          ecosystem-stat-number
           text-3xl
           sm:text-4xl
           md:text-[42px]
           font-black
           tracking-[-0.04em]
-          text-neutral-900
           tabular-nums
           font-poppins
+          bg-gradient-to-r
+          from-red-500
+          via-purple-500
+          to-blue-500
+          bg-clip-text
+          text-transparent
           transition-all
           duration-500
-          ${shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
+          ${shouldAnimate
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-2'
+          }
         `}
       >
         {count}+
       </div>
 
+      {/* Label */}
       <div
         className={`
-          mt-1
+          mt-0.5
           text-[9px]
           sm:text-[10px]
           md:text-[11px]
           font-bold
           uppercase
           tracking-[0.14em]
-          text-neutral-500
+          text-neutral-700
           font-poppins
           transition-all
           duration-500
-          delay-150
-          ${shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}
+          ${shouldAnimate
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-1'
+          }
         `}
       >
         {label}
       </div>
+
+      {/* Description */}
+      <p
+        className={`
+          mt-1.5
+          max-w-[210px]
+          mx-auto
+          text-[10px]
+          sm:text-[10.5px]
+          md:text-[11px]
+          leading-[1.45]
+          font-medium
+          text-neutral-500
+          font-poppins
+          transition-all
+          duration-500
+          ${shouldAnimate
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-1'
+          }
+        `}
+      >
+        {description}
+      </p>
     </div>
   );
 };
@@ -415,6 +457,7 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
+
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
 
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
@@ -522,6 +565,7 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
+
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-10">
@@ -584,12 +628,12 @@ const HomePage: React.FC = () => {
             AN ECOSYSTEM IN MOTION
         ===================================================== */}
 
-        <section className="py-9 sm:py-12 bg-white !bg-white relative overflow-hidden">
+        <section className="py-8 sm:py-10 bg-white !bg-white relative overflow-hidden">
 
           <div className="container mx-auto px-4">
 
             {/* Heading */}
-            <Reveal className="text-center mb-5 sm:mb-6">
+            <Reveal className="text-center mb-2 sm:mb-3">
 
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 An ecosystem in motion
@@ -597,10 +641,24 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
+            {/* Description ABOVE image */}
+            <Reveal
+              className="text-center mb-3 sm:mb-4"
+              delay={50}
+            >
+
+              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
+                Witness the pulse of innovation. Our platform is a dynamic
+                network where connections spark, ideas ignite, and ventures take
+                flight every day.
+              </p>
+
+            </Reveal>
+
             {/* Image */}
             <Reveal
               className="w-full"
-              delay={70}
+              delay={90}
             >
 
               <div className="ecosystem-image-wrap w-full flex justify-center">
@@ -622,24 +680,10 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-            {/* Description BELOW image */}
+            {/* Stats */}
             <Reveal
-              className="text-center mt-4 sm:mt-6"
-              delay={120}
-            >
-
-              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
-                Witness the pulse of innovation. Our platform is a dynamic
-                network where connections spark, ideas ignite, and ventures take
-                flight every day.
-              </p>
-
-            </Reveal>
-
-            {/* Animated stats BELOW description */}
-            <Reveal
-              className="w-full mt-5 sm:mt-7"
-              delay={160}
+              className="w-full mt-4 sm:mt-5"
+              delay={130}
             >
 
               <div className="w-full max-w-4xl mx-auto">
@@ -649,18 +693,21 @@ const HomePage: React.FC = () => {
                   <EcosystemStat
                     endValue={50}
                     label="Projects Launched"
+                    description="Ideas turning into real products, teams, and ventures."
                     delay={0}
                   />
 
                   <EcosystemStat
                     endValue={200}
                     label="Founders Connected"
+                    description="Builders finding the right people to bring their vision to life."
                     delay={120}
                   />
 
                   <EcosystemStat
                     endValue={500}
                     label="Innovators"
+                    description="A growing community of creators, developers, and ambitious minds."
                     delay={240}
                   />
 
@@ -1248,19 +1295,21 @@ const HomePage: React.FC = () => {
 
         .ecosystem-stat {
           min-width: 0;
-          padding: 0 20px;
+          padding: 0 18px;
         }
 
         .ecosystem-stat + .ecosystem-stat {
           border-left: 1px solid rgba(0, 0, 0, 0.08);
         }
 
+        .ecosystem-stat-number {
+          line-height: 1;
+        }
+
         /* =====================================================
            FEATURE CARDS
            
-           IMPORTANT:
-           No shadow here.
-           No shadow on hover either.
+           NO SHADOW
         ===================================================== */
 
         .feature-liquid-card {
@@ -1274,7 +1323,6 @@ const HomePage: React.FC = () => {
               rgba(255, 255, 255, 0.55)
             );
 
-          /* NO SHADOW */
           box-shadow: none !important;
         }
 
@@ -1323,8 +1371,6 @@ const HomePage: React.FC = () => {
 
         .feature-liquid-card:hover {
           border-color: rgba(255, 255, 255, 0.95);
-
-          /* STILL NO SHADOW */
           box-shadow: none !important;
         }
 
@@ -1417,7 +1463,8 @@ const HomePage: React.FC = () => {
             -webkit-tap-highlight-color: transparent;
           }
 
-          /* Ecosystem stats vertical */
+          /* Compact ecosystem mobile layout */
+
           .ecosystem-stats {
             display: flex;
             flex-direction: column;
@@ -1427,7 +1474,7 @@ const HomePage: React.FC = () => {
 
           .ecosystem-stat {
             width: 100%;
-            padding: 10px 0;
+            padding: 9px 0;
           }
 
           .ecosystem-stat + .ecosystem-stat {
@@ -1435,7 +1482,12 @@ const HomePage: React.FC = () => {
             border-top: 1px solid rgba(0, 0, 0, 0.08);
           }
 
+          .ecosystem-image-wrap {
+            margin-top: 0;
+          }
+
           /* Feature cards */
+
           .feature-liquid-card {
             min-height: 315px;
             padding: 20px;
