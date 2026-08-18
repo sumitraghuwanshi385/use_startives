@@ -606,7 +606,21 @@ const HomePage: React.FC = () => {
 
               <button
                 onClick={() => handleProtectedRoute('/discover')}
-                className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-transform duration-300 hover:scale-105 active:scale-95"
+                className="
+                  button-gradient
+                  text-white
+                  px-8
+                  py-2.5
+                  rounded-full
+                  text-[11px]
+                  font-black
+                  uppercase
+                  tracking-widest
+                  transition-transform
+                  duration-300
+                  hover:scale-105
+                  active:scale-95
+                "
               >
                 Explore Projects
               </button>
@@ -631,7 +645,6 @@ const HomePage: React.FC = () => {
 
           <div className="container mx-auto px-4">
 
-            {/* Heading */}
             <Reveal className="text-center mb-2 sm:mb-3">
 
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
@@ -640,7 +653,6 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-            {/* Description ABOVE image */}
             <Reveal
               className="text-center mb-3 sm:mb-4"
               delay={50}
@@ -654,7 +666,6 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-            {/* Image */}
             <Reveal
               className="w-full"
               delay={90}
@@ -679,7 +690,6 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-            {/* Stats */}
             <Reveal
               className="w-full mt-4 sm:mt-5"
               delay={130}
@@ -766,6 +776,14 @@ const HomePage: React.FC = () => {
                       hover:-translate-y-2
                     "
                   >
+
+                    {/* =================================================
+                        CARD NUMBER — NEW
+                    ================================================= */}
+
+                    <span className="feature-card-number">
+                      #{index + 1}
+                    </span>
 
                     <div className="absolute inset-0 bg-white/55 backdrop-blur-2xl" />
 
@@ -1311,6 +1329,31 @@ const HomePage: React.FC = () => {
         }
 
         /* =====================================================
+           FEATURE CARD NUMBER
+        ===================================================== */
+
+        .feature-card-number {
+          position: absolute;
+          top: 13px;
+          left: 18px;
+          z-index: 30;
+
+          font-family: Poppins, sans-serif;
+          font-size: 19px;
+          line-height: 1;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+
+          color: rgba(85, 92, 105, 0.30);
+
+          text-shadow:
+            0 2px 5px rgba(70, 75, 85, 0.16);
+
+          pointer-events: none;
+          user-select: none;
+        }
+
+        /* =====================================================
            FEATURE CARDS
            
            NO SHADOW
@@ -1451,6 +1494,10 @@ const HomePage: React.FC = () => {
 
         /* =====================================================
            MOBILE
+           
+           IMPORTANT:
+           No separate mobile color override.
+           Desktop gradient is preserved exactly.
         ===================================================== */
 
         @media (max-width: 639px) {
@@ -1467,26 +1514,12 @@ const HomePage: React.FC = () => {
             -webkit-tap-highlight-color: transparent;
           }
 
-          /* FORCE ECOSYSTEM NUMBERS TO USE THE SAME
-             BUTTON GRADIENT ON MOBILE */
-
+          /* Keep ecosystem number gradient identical to desktop */
           .ecosystem-stat-number.button-gradient {
-            background-image: linear-gradient(
-              90deg,
-              #ef4444 0%,
-              #8b5cf6 50%,
-              #3b82f6 100%
-            ) !important;
-
-            background-color: transparent !important;
             background-clip: text !important;
             -webkit-background-clip: text !important;
             color: transparent !important;
             -webkit-text-fill-color: transparent !important;
-
-            background-size: 100% 100% !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
           }
 
           /* Compact ecosystem mobile layout */
@@ -1518,6 +1551,13 @@ const HomePage: React.FC = () => {
             min-height: 315px;
             padding: 20px;
             border-radius: 1.7rem;
+          }
+
+          /* Card numbers stay subtle on mobile */
+          .feature-card-number {
+            top: 13px;
+            left: 18px;
+            font-size: 19px;
           }
 
         }
