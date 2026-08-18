@@ -96,7 +96,6 @@ const GradientButton: React.FC<{
   const content = (
     <span className="relative z-10 flex items-center gap-2">
       {children}
-
       {icon && (
         <span className="transition-transform duration-300 group-hover:translate-x-1">
           {icon}
@@ -149,7 +148,7 @@ const GradientButton: React.FC<{
 };
 
 /* =========================================================
-   SMOOTH COUNT-UP
+SMOOTH COUNT-UP
 ========================================================= */
 
 const useCountUp = (
@@ -194,7 +193,7 @@ const useCountUp = (
 };
 
 /* =========================================================
-   ECOSYSTEM STAT
+ECOSYSTEM STAT
 ========================================================= */
 
 const EcosystemStat: React.FC<{
@@ -243,10 +242,7 @@ const EcosystemStat: React.FC<{
           tracking-[-0.04em]
           tabular-nums
           font-poppins
-          bg-gradient-to-r
-          from-red-500
-          via-purple-500
-          to-blue-500
+          button-gradient
           bg-clip-text
           text-transparent
           transition-all
@@ -451,13 +447,11 @@ const HomePage: React.FC = () => {
       />
 
       <div className="relative z-10">
-
         {/* =====================================================
             HERO
         ===================================================== */}
 
         <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
-
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
 
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow" />
@@ -470,7 +464,6 @@ const HomePage: React.FC = () => {
           <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--background-primary)] to-transparent z-10" />
 
           <div className="relative z-20 max-w-4xl mx-auto">
-
             <div
               className="reveal-item is-visible"
               style={{ transitionDelay: '0ms' }}
@@ -556,7 +549,6 @@ const HomePage: React.FC = () => {
                 Assemble teams
               </span>
             </div>
-
           </div>
         </section>
 
@@ -565,11 +557,8 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
-
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-10">
-
               <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase text-black">
                 Discover Projects
               </h2>
@@ -578,14 +567,11 @@ const HomePage: React.FC = () => {
                 Explore live startup ideas, apply to join teams, or submit your
                 own and find co-founders.
               </p>
-
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
               {recentProjects.map((idea, i) => (
                 <Reveal key={idea.id} delay={i * 80}>
-
                   <div
                     onClick={() =>
                       handleProtectedRoute(`/idea/${idea.id}`)
@@ -594,17 +580,14 @@ const HomePage: React.FC = () => {
                   >
                     <ProjectCard idea={idea} />
                   </div>
-
                 </Reveal>
               ))}
-
             </div>
 
             <Reveal
               className="flex justify-center gap-4 mt-10"
               delay={160}
             >
-
               <button
                 onClick={() => handleProtectedRoute('/discover')}
                 className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-transform duration-300 hover:scale-105 active:scale-95"
@@ -618,9 +601,7 @@ const HomePage: React.FC = () => {
               >
                 Submit Idea
               </button>
-
             </Reveal>
-
           </div>
         </section>
 
@@ -629,16 +610,12 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-8 sm:py-10 bg-white !bg-white relative overflow-hidden">
-
           <div className="container mx-auto px-4">
-
             {/* Heading */}
             <Reveal className="text-center mb-2 sm:mb-3">
-
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
-
             </Reveal>
 
             {/* Description ABOVE image */}
@@ -646,13 +623,11 @@ const HomePage: React.FC = () => {
               className="text-center mb-3 sm:mb-4"
               delay={50}
             >
-
               <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
                 Witness the pulse of innovation. Our platform is a dynamic
                 network where connections spark, ideas ignite, and ventures take
                 flight every day.
               </p>
-
             </Reveal>
 
             {/* Image */}
@@ -660,9 +635,7 @@ const HomePage: React.FC = () => {
               className="w-full"
               delay={90}
             >
-
               <div className="ecosystem-image-wrap w-full flex justify-center">
-
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
                   alt="Startives ecosystem"
@@ -675,9 +648,7 @@ const HomePage: React.FC = () => {
                     object-center
                   "
                 />
-
               </div>
-
             </Reveal>
 
             {/* Stats */}
@@ -685,11 +656,8 @@ const HomePage: React.FC = () => {
               className="w-full mt-4 sm:mt-5"
               delay={130}
             >
-
               <div className="w-full max-w-4xl mx-auto">
-
                 <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3">
-
                   <EcosystemStat
                     endValue={50}
                     label="Projects Launched"
@@ -710,15 +678,10 @@ const HomePage: React.FC = () => {
                     description="A growing community of creators, developers, and ambitious minds."
                     delay={240}
                   />
-
                 </div>
-
               </div>
-
             </Reveal>
-
           </div>
-
         </section>
 
         {/* =====================================================
@@ -726,11 +689,8 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-10 sm:py-12 bg-[var(--background-primary)]">
-
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-8 sm:mb-9">
-
               <h2 className="text-[21px] sm:text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-2 tracking-tight font-poppins uppercase">
                 Everything you need to start
               </h2>
@@ -739,14 +699,11 @@ const HomePage: React.FC = () => {
                 From idea to launch, {APP_NAME} provides the tools and community
                 to support your journey.
               </p>
-
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-
               {features.map((feature, index) => (
                 <Reveal key={index} delay={index * 90}>
-
                   <div
                     className="
                       feature-liquid-card
@@ -767,7 +724,6 @@ const HomePage: React.FC = () => {
                       hover:-translate-y-2
                     "
                   >
-
                     <div className="absolute inset-0 bg-white/55 backdrop-blur-2xl" />
 
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
@@ -779,11 +735,8 @@ const HomePage: React.FC = () => {
                     <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/60 pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col h-full">
-
                       <div className="flex-1 flex items-center justify-center">
-
                         <div className="relative w-full h-[165px] sm:h-[175px] flex items-center justify-center">
-
                           <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
 
                           <img
@@ -804,13 +757,10 @@ const HomePage: React.FC = () => {
                               group-hover:-translate-y-1
                             "
                           />
-
                         </div>
-
                       </div>
 
                       <div className="text-center">
-
                         <h3 className="text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">
                           {feature.title}
                         </h3>
@@ -818,20 +768,13 @@ const HomePage: React.FC = () => {
                         <p className="text-[10.5px] sm:text-[11px] font-medium leading-[1.5] font-poppins max-w-[245px] mx-auto text-[var(--text-secondary)]">
                           {feature.description}
                         </p>
-
                       </div>
-
                     </div>
-
                   </div>
-
                 </Reveal>
               ))}
-
             </div>
-
           </div>
-
         </section>
 
         {/* =====================================================
@@ -839,15 +782,11 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
-
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
 
           <div className="container mx-auto px-4 relative z-10">
-
             <div className="flex flex-col lg:flex-row items-center gap-10 max-w-5xl mx-auto">
-
               <Reveal className="lg:w-1/2 space-y-6 text-center lg:text-left">
-
                 <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins uppercase">
                   The pulse of innovation
                 </h2>
@@ -859,7 +798,6 @@ const HomePage: React.FC = () => {
                 </p>
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
-
                   <Link
                     to="/startalks"
                     className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-transform duration-300 hover:scale-105 font-poppins"
@@ -873,18 +811,14 @@ const HomePage: React.FC = () => {
                   >
                     Join the talk
                   </Link>
-
                 </div>
-
               </Reveal>
 
               <Reveal
                 className="lg:w-1/2 relative"
                 delay={120}
               >
-
                 <div className="grid grid-cols-2 gap-4">
-
                   {[
                     {
                       name: 'Sarah J.',
@@ -912,9 +846,7 @@ const HomePage: React.FC = () => {
                       key={idx}
                       className="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg font-poppins"
                     >
-
                       <div className="flex items-center gap-2 mb-2">
-
                         <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-[10px] text-white font-bold">
                           {talk.name[0]}
                         </div>
@@ -922,7 +854,6 @@ const HomePage: React.FC = () => {
                         <span className="text-[10px] font-bold text-[var(--text-primary)]">
                           {talk.name}
                         </span>
-
                       </div>
 
                       <p className="text-[11px] text-[var(--text-secondary)] font-medium italic">
@@ -932,10 +863,8 @@ const HomePage: React.FC = () => {
                       <div className="mt-2 text-right text-xs">
                         {talk.emoji}
                       </div>
-
                     </div>
                   ))}
-
                 </div>
 
                 <div className="absolute -top-6 -right-6 w-12 h-12 bg-purple-500/10 rounded-full animate-orbit blur-xl" />
@@ -944,13 +873,9 @@ const HomePage: React.FC = () => {
                   className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl"
                   style={{ animationDirection: 'reverse' }}
                 />
-
               </Reveal>
-
             </div>
-
           </div>
-
         </section>
 
         {/* =====================================================
@@ -958,11 +883,8 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
-
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-10">
-
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 Why Startives exists?
               </h2>
@@ -970,11 +892,9 @@ const HomePage: React.FC = () => {
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 We're more than a platform; we're your strategic partner in innovation.
               </p>
-
             </Reveal>
 
             <div className="max-w-4xl mx-auto space-y-12">
-
               {whyChooseFeatures.map((feature, index) => (
                 <Reveal
                   key={index}
@@ -985,7 +905,6 @@ const HomePage: React.FC = () => {
                       : 'md:items-end text-center md:text-right'
                   }`}
                 >
-
                   <h3
                     className={`text-2xl font-bold bg-gradient-to-r ${feature.gradient} gradient-text mb-3 inline-block tracking-tight font-poppins`}
                   >
@@ -995,14 +914,10 @@ const HomePage: React.FC = () => {
                   <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
                     {feature.description}
                   </p>
-
                 </Reveal>
               ))}
-
             </div>
-
           </div>
-
         </section>
 
         {/* =====================================================
@@ -1010,11 +925,8 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
-
           <div className="container mx-auto px-4 max-w-7xl">
-
             <Reveal className="text-center mb-10">
-
               <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 From our community
               </h2>
@@ -1022,22 +934,17 @@ const HomePage: React.FC = () => {
               <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 Innovators are building, connecting, and succeeding on {APP_NAME}.
               </p>
-
             </Reveal>
 
             <div className="relative w-full overflow-hidden mask-gradient">
-
               <div className="flex animate-marquee gap-8">
-
                 {[...testimonials, ...testimonials].map(
                   (testimonial, index) => (
                     <div
                       key={index}
                       className="flex-shrink-0 w-[90vw] sm:w-[420px]"
                     >
-
                       <div className="p-6 bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] flex flex-col space-y-4 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-purple-500/20 relative overflow-hidden font-poppins">
-
                         <img
                           src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
                           alt=""
@@ -1046,18 +953,14 @@ const HomePage: React.FC = () => {
                         />
 
                         <div className="flex justify-between items-center z-10">
-
                           <div className="flex space-x-0.5 text-yellow-400">
-
                             {Array.from({ length: 5 }).map((_, i) => (
                               <Star
                                 key={i}
                                 className="w-4 h-4 fill-current"
                               />
                             ))}
-
                           </div>
-
                         </div>
 
                         <p className="text-[var(--text-secondary)] text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">
@@ -1065,7 +968,6 @@ const HomePage: React.FC = () => {
                         </p>
 
                         <div className="pt-4 border-t border-[var(--border-primary)] z-10">
-
                           <p className="font-bold text-[var(--text-primary)] text-sm">
                             {testimonial.name}
                           </p>
@@ -1073,21 +975,14 @@ const HomePage: React.FC = () => {
                           <p className="text-xs text-[var(--text-muted)]">
                             {testimonial.role}
                           </p>
-
                         </div>
-
                       </div>
-
                     </div>
                   )
                 )}
-
               </div>
-
             </div>
-
           </div>
-
         </section>
 
         {/* =====================================================
@@ -1095,9 +990,7 @@ const HomePage: React.FC = () => {
         ===================================================== */}
 
         <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white">
-
           <Reveal className="container mx-auto max-w-5xl font-poppins">
-
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
               alt=""
@@ -1114,7 +1007,6 @@ const HomePage: React.FC = () => {
             />
 
             <div className="mt-4 sm:mt-5 flex justify-center">
-
               <Link
                 to="/signup"
                 className="
@@ -1146,7 +1038,6 @@ const HomePage: React.FC = () => {
                   focus-visible:ring-blue-400/20
                 "
               >
-
                 <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 pointer-events-none" />
 
                 <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/15 via-purple-400/10 to-blue-500/20 pointer-events-none" />
@@ -1181,7 +1072,6 @@ const HomePage: React.FC = () => {
                     group-hover:shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_5px_16px_rgba(40,50,100,0.16)]
                   "
                 >
-
                   <span
                     className="
                       absolute
@@ -1212,26 +1102,19 @@ const HomePage: React.FC = () => {
                       group-hover:translate-x-0.5
                     "
                   />
-
                 </span>
-
               </Link>
-
             </div>
-
           </Reveal>
-
         </section>
 
         <div
           className="w-full bg-white !bg-white h-8 sm:h-10"
           style={{ backgroundColor: '#ffffff' }}
         />
-
       </div>
 
       <style>{`
-
         /* =====================================================
            REVEAL
         ===================================================== */
@@ -1450,7 +1333,6 @@ const HomePage: React.FC = () => {
         ===================================================== */
 
         @media (max-width: 639px) {
-
           .liquid-glass-cta {
             padding-top: 6.3px;
             padding-bottom: 6.3px;
@@ -1493,15 +1375,12 @@ const HomePage: React.FC = () => {
             padding: 20px;
             border-radius: 1.7rem;
           }
-
         }
 
         @media (min-width: 640px) {
-
           .ecosystem-stats {
             grid-template-columns: repeat(3, minmax(0, 1fr));
           }
-
         }
 
         /* =====================================================
@@ -1509,7 +1388,6 @@ const HomePage: React.FC = () => {
         ===================================================== */
 
         @media (prefers-reduced-motion: reduce) {
-
           .reveal-item {
             opacity: 1 !important;
             transform: none !important;
@@ -1527,9 +1405,7 @@ const HomePage: React.FC = () => {
           .feature-liquid-card {
             transition: none !important;
           }
-
         }
-
       `}</style>
     </div>
   );
