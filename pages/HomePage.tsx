@@ -9,10 +9,8 @@ import {
   Sparkles,
   Box,
   Globe2,
-  CheckCircle2,
   BarChart3,
   Zap,
-  DollarSign,
   ArrowRight,
   Star,
   Github,
@@ -20,7 +18,6 @@ import {
   Facebook,
   Twitter,
   Rocket,
-  ShieldCheck,
 } from 'lucide-react';
 
 function useInView<T extends HTMLElement>(threshold = 0.2) {
@@ -273,32 +270,32 @@ const HomePage: React.FC = () => {
 
   const features = [
     {
-      icon: <CheckCircle2 className="w-5 h-5 text-white" />,
+      image:
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038743/Picsart_26-08-18_12-56-10-554_wbodvi.png',
       title: 'Validate your idea',
       description:
         'Get feedback on your startup concept from a diverse community of experts and peers.',
-      gradient: 'from-sky-400 to-cyan-300',
     },
     {
-      icon: <Users className="w-5 h-5 text-white" />,
+      image:
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038741/Picsart_26-08-18_12-56-57-760_w19zpa.png',
       title: 'Find a co-founder',
       description:
         'Connect with passionate individuals who share your vision and have the skills to help you succeed.',
-      gradient: 'from-red-500 to-rose-400',
     },
     {
-      icon: <Box className="w-5 h-5 text-white" />,
+      image:
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038734/Picsart_26-08-18_12-58-14-816_srheoi.png',
       title: 'Build your MVP',
       description:
         'Assemble a talented team to bring your Minimum Viable Product to life and start testing the market.',
-      gradient: 'from-orange-400 to-yellow-300',
     },
     {
-      icon: <Globe2 className="w-5 h-5 text-white" />,
+      image:
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038746/IMG_20260818_125849_rh0bg4.png',
       title: 'Scale your venture',
       description:
         'Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.',
-      gradient: 'from-emerald-400 to-teal-300',
     },
   ];
 
@@ -592,6 +589,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* Everything you need to start */}
         <section className="py-12 bg-[var(--background-primary)]">
           <div className="container mx-auto px-4">
 
@@ -610,144 +608,62 @@ const HomePage: React.FC = () => {
 
               {features.map((feature, index) => (
                 <Reveal key={index} delay={index * 90}>
-                  <div className="feature-card-item bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-2 hover:border-red-500/50 hover:shadow-lg text-center flex flex-col items-center h-full">
 
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 bg-gradient-to-br ${feature.gradient} transition-transform duration-300 group-hover:rotate-6`}
-                    >
-                      {feature.icon}
+                  <div className="feature-liquid-card group relative overflow-hidden min-h-[390px] sm:min-h-[420px] p-7 sm:p-8 rounded-[2rem] border border-white/70 flex flex-col transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_24px_70px_rgba(30,50,120,0.16)]">
+
+                    {/* Glass surface */}
+                    <div className="absolute inset-0 bg-white/55 backdrop-blur-2xl" />
+
+                    {/* Startives red-purple-blue atmosphere */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
+
+                    {/* Soft blue lower glow */}
+                    <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-72 h-48 rounded-full bg-blue-500/[0.16] blur-[70px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.24]" />
+
+                    {/* Red side glow */}
+                    <div className="absolute -top-24 -right-20 w-48 h-48 rounded-full bg-red-500/[0.08] blur-[65px] pointer-events-none" />
+
+                    {/* Glass highlight */}
+                    <div className="absolute inset-[1px] rounded-[calc(2rem-1px)] border border-white/60 pointer-events-none" />
+
+                    <div className="relative z-10 flex flex-col h-full">
+
+                      <div className="flex-1 flex items-center justify-center">
+
+                        <div className="relative w-full h-[210px] sm:h-[230px] flex items-center justify-center">
+
+                          <div className="absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
+
+                          <img
+                            src={feature.image}
+                            alt={feature.title}
+                            className="relative z-10 w-[175px] h-[175px] sm:w-[200px] sm:h-[200px] object-contain drop-shadow-[0_18px_30px_rgba(20,50,140,0.18)] transition-transform duration-500 ease-out group-hover:scale-[1.07] group-hover:-translate-y-1"
+                          />
+
+                        </div>
+
+                      </div>
+
+                      <div className="text-center">
+
+                        <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
+                          {feature.title}
+                        </h3>
+
+                        <p className="text-[var(--text-secondary)] text-xs sm:text-[13px] font-medium leading-relaxed font-poppins max-w-[280px] mx-auto">
+                          {feature.description}
+                        </p>
+
+                      </div>
+
                     </div>
 
-                    <h3 className="text-base font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">
-                      {feature.title}
-                    </h3>
-
-                    <p className="text-[var(--text-secondary)] text-xs font-medium leading-relaxed font-poppins">
-                      {feature.description}
-                    </p>
-
                   </div>
+
                 </Reveal>
               ))}
 
             </div>
-          </div>
-        </section>
-
-        <section className="py-10 bg-[var(--background-secondary)] relative overflow-hidden">
-
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none" />
-
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-[100px] -ml-40 -mb-40 pointer-events-none" />
-
-          <div className="container mx-auto px-4 relative z-10">
-
-            <Reveal className="max-w-3xl mx-auto text-center mb-6">
-              <h2 className="text-xl md:text-2xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins">
-                The asset exchange
-              </h2>
-
-              <div className="w-12 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto my-3 rounded-full" />
-
-              <p className="text-[var(--text-secondary)] text-xs sm:text-sm leading-relaxed font-medium opacity-90 font-poppins">
-                A premium ecosystem where validated digital products find new
-                growth. We facilitate direct introductions between high-level
-                builders and strategic acquirers.
-              </p>
-            </Reveal>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
-              <Reveal>
-                <div className="bg-[var(--component-background)] p-6 rounded-3xl border border-[var(--border-primary)] flex flex-col items-center text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-4">
-                    <DollarSign className="w-6 h-6" />
-                  </div>
-
-                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
-                    Vetted inventory
-                  </h3>
-
-                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
-                    Access startups with proven revenue, verified MRR, and clean
-                    codebases. Every listing undergoes an internal audit process.
-                  </p>
-
-                </div>
-              </Reveal>
-
-              <Reveal delay={90}>
-                <div className="bg-[var(--component-background)] p-6 rounded-3xl border border-[var(--border-primary)] flex flex-col items-center text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                  <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 mb-4">
-                    <ShieldCheck className="w-6 h-6" />
-                  </div>
-
-                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
-                    Secured handover
-                  </h3>
-
-                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
-                    Gain access to standardized migration checklists for code,
-                    domains, and documentation to ensure a predictable transfer.
-                  </p>
-
-                </div>
-              </Reveal>
-
-              <Reveal delay={180}>
-                <div className="bg-[var(--component-background)] p-6 rounded-3xl border border-[var(--border-primary)] flex flex-col items-center text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                  <div className="w-12 h-12 rounded-2xl bg-sky-100 dark:bg-sky-500/10 flex items-center justify-center text-sky-600 mb-4">
-                    <Users className="w-6 h-6" />
-                  </div>
-
-                  <h3 className="text-base font-black text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
-                    Founder access
-                  </h3>
-
-                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-medium opacity-80 font-poppins">
-                    Skip the middleman. Chat directly with original builders for
-                    due diligence. We provide the room, you finalize the transaction.
-                  </p>
-
-                </div>
-              </Reveal>
-
-            </div>
-
-            <Reveal>
-              <div className="p-6 sm:p-8 rounded-[2.5rem] bg-white dark:bg-black border border-gray-100 dark:border-neutral-900 relative overflow-hidden text-neutral-900 dark:text-white max-w-4xl mx-auto">
-
-                <div className="absolute inset-0 dot-pattern-bg opacity-[0.03] pointer-events-none" />
-
-                <div className="absolute -top-20 -right-20 w-56 h-56 bg-emerald-50 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-60" />
-
-                <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-8">
-
-                  <div className="text-center sm:text-left max-w-lg">
-                    <h3 className="text-xl font-black tracking-tight mb-2 italic font-poppins">
-                      Ready to cash out?
-                    </h3>
-
-                    <p className="text-neutral-500 dark:text-neutral-400 text-sm font-medium leading-relaxed font-poppins">
-                      List your digital assets in front of thousands of potential
-                      acquirers. High-intent, zero commissions, and founder-focused.
-                    </p>
-                  </div>
-
-                  <Link
-                    to="/submit-asset"
-                    className="w-full sm:w-auto px-10 py-3 button-gradient text-white font-black uppercase text-[11px] tracking-widest rounded-full transition-transform duration-300 hover:scale-105 active:scale-95 text-center font-poppins"
-                  >
-                    Enroll your asset
-                  </Link>
-
-                </div>
-              </div>
-            </Reveal>
-
           </div>
         </section>
 
@@ -1151,6 +1067,68 @@ const HomePage: React.FC = () => {
           opacity: 1;
         }
 
+        .feature-liquid-card {
+          -webkit-backdrop-filter: blur(28px) saturate(180%);
+          backdrop-filter: blur(28px) saturate(180%);
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.82),
+              rgba(255, 255, 255, 0.55)
+            );
+
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 0.95),
+            inset 0 -1px 1px rgba(90, 100, 150, 0.06),
+            0 12px 40px rgba(30, 40, 90, 0.08);
+        }
+
+        .feature-liquid-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+
+          background:
+            linear-gradient(
+              115deg,
+              rgba(255, 255, 255, 0.72),
+              transparent 28%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.35)
+            );
+
+          opacity: 0.75;
+          pointer-events: none;
+        }
+
+        .feature-liquid-card::after {
+          content: '';
+          position: absolute;
+          left: 8%;
+          right: 8%;
+          top: 0;
+          height: 1px;
+
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.95),
+            transparent
+          );
+
+          pointer-events: none;
+        }
+
+        .feature-liquid-card:hover {
+          border-color: rgba(255, 255, 255, 0.95);
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 1),
+            inset 0 -1px 1px rgba(80, 90, 140, 0.05),
+            0 24px 70px rgba(30, 50, 120, 0.16);
+        }
+
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(24px) saturate(180%);
           backdrop-filter: blur(24px) saturate(180%);
@@ -1225,6 +1203,10 @@ const HomePage: React.FC = () => {
             -webkit-tap-highlight-color: transparent;
           }
 
+          .feature-liquid-card {
+            min-height: 380px;
+          }
+
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1240,6 +1222,10 @@ const HomePage: React.FC = () => {
           }
 
           .liquid-glass-cta {
+            transition: none !important;
+          }
+
+          .feature-liquid-card {
             transition: none !important;
           }
 
