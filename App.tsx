@@ -1,12 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
-
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -18,7 +11,6 @@ import SubmitAssetPage from './pages/SubmitAssetPage';
 import EditAssetPage from './pages/EditAssetPage';
 import ApplyPage from './pages/ApplyPage';
 import NotificationArea from './components/NotificationArea';
-
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
@@ -28,47 +20,33 @@ import StartupStoriesPage from './pages/StartupStoriesPage';
 import MessagesPage from './pages/MessagesPage';
 import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
-
 import ProtectedRoute from './components/ProtectedRoute';
-
 import MyProjectsPage from './pages/MyProjectsPage';
 import { MyApplicationsPage } from './pages/MyApplicationsPage';
 import { ConnectionsPage } from './pages/ConnectionsPage';
-
 import PublicProfilePage from './pages/PublicProfilePage';
 import SavedProjectsPage from './pages/SavedProjectsPage';
 import ActivityLogPage from './pages/ActivityLogPage';
 import PlaceholderContentPage from './pages/PlaceholderContentPage';
-
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import NewPasswordPage from './pages/NewPasswordPage';
-
 import { TeamDetailPage } from './pages/TeamDetailPage';
-
 import OnboardingPage from './components/OnboardingModal';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import EditProjectPage from './pages/EditProjectPage';
 import FullScreenLoader from './components/FullScreenLoader';
-
 import ContactUsPage from './pages/ContactUsPage';
 import SearchPage from './pages/SearchPage';
-
 import { useAppContext } from './contexts/AppContext';
-
 import FloatingActionMenu from './components/FloatingActionMenu';
 import StarverseFloatingButton from './components/StarverseFloatingButton';
-
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
 import GlobalGlobe from './pages/GlobalGlobe';
-
-import BuildersStoriesPage from './pages/BuildersStoriesPage';
-import StoryDetailsPage from './pages/StoryDetailsPage';
-
+import BuildersStoriesPage from "./pages/BuildersStoriesPage";
+import StoryDetailsPage from "./pages/StoryDetailsPage";
 import BlogPage from './pages/BlogPage';
 import BlogDetailPage from './pages/BlogDetailPage';
-
-import LogoutConfirmModal from './components/LogoutConfirmModal';
+import LogoutConfirmModal from "./components/LogoutConfirmModal";
 
 interface PageTitleProps {
   title: string;
@@ -79,7 +57,7 @@ interface PageTitleProps {
 export const PageTitle: React.FC<PageTitleProps> = ({
   title,
   description,
-  className = '',
+  className = ""
 }) => (
   <div className={`mb-8 ${className}`}>
     <h1 className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight font-poppins">
@@ -99,7 +77,7 @@ const WithPageContainer: React.FC<{
   pageClassName?: string;
 }> = ({
   children,
-  pageClassName = 'w-full px-6 lg:px-16 py-8',
+  pageClassName = "w-full px-6 lg:px-16 py-8"
 }) => (
   <div className={pageClassName}>
     {children}
@@ -117,52 +95,27 @@ const App: React.FC = () => {
     currentUser,
     showOnboardingModal,
     authLoadingState,
-    logout,
+    logout
   } = useAppContext();
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-  /*
-   * =========================================================
-   * BACKEND WARM-UP
-   * =========================================================
-   */
   useEffect(() => {
     const warmServer = async () => {
       try {
-        fetch(
-          'https://use-startives.onrender.com/test123'
-        ).catch(() => {});
-
-        fetch(
-          'https://use-startives.onrender.com/api/ideas'
-        ).catch(() => {});
-
-        fetch(
-          'https://use-startives.onrender.com/api/assets'
-        ).catch(() => {});
-
-        fetch(
-          'https://use-startives.onrender.com/api/startalks'
-        ).catch(() => {});
-      } catch (err) {
-        // Ignore warm-up errors.
-      }
+        fetch("https://use-startives.onrender.com/test123").catch(() => {});
+        fetch("https://use-startives.onrender.com/api/ideas").catch(() => {});
+        fetch("https://use-startives.onrender.com/api/assets").catch(() => {});
+        fetch("https://use-startives.onrender.com/api/startalks").catch(() => {});
+      } catch (err) {}
     };
 
     warmServer();
   }, []);
 
-  /*
-   * =========================================================
-   * CHAT OPEN STATE
-   * =========================================================
-   */
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      const hasClass =
-        document.body.classList.contains('chat-open');
-
+      const hasClass = document.body.classList.contains('chat-open');
       setIsChatOpen(hasClass);
     });
 
@@ -174,20 +127,15 @@ const App: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  /*
-   * =========================================================
-   * PROTECTED BACK NAVIGATION
-   * =========================================================
-   */
   useEffect(() => {
     if (!currentUser) return;
 
     const protectedBackRoutes = [
-      '/dashboard',
-      '/projects',
-      '/startalks',
-      '/messages',
-      '/globe',
+      "/dashboard",
+      "/projects",
+      "/startalks",
+      "/messages",
+      "/globe",
     ];
 
     const shouldIntercept =
@@ -195,69 +143,40 @@ const App: React.FC = () => {
 
     if (!shouldIntercept) return;
 
-    window.history.pushState(
-      null,
-      '',
-      window.location.href
-    );
+    window.history.pushState(null, "", window.location.href);
 
     const handleBack = () => {
       if (showLogoutModal) return;
 
       setShowLogoutModal(true);
 
-      window.history.pushState(
-        null,
-        '',
-        window.location.href
-      );
+      window.history.pushState(null, "", window.location.href);
     };
 
-    window.addEventListener(
-      'popstate',
-      handleBack
-    );
+    window.addEventListener("popstate", handleBack);
 
     return () => {
-      window.removeEventListener(
-        'popstate',
-        handleBack
-      );
+      window.removeEventListener("popstate", handleBack);
     };
-  }, [
-    currentUser,
-    location.pathname,
-    showLogoutModal,
-  ]);
+  }, [currentUser, location.pathname, showLogoutModal]);
 
-  /*
-   * =========================================================
-   * HEADER
-   * =========================================================
-   */
   const noHeaderRoutes = [
     '/login',
     '/signup',
     '/verify-email',
     '/forgot-password',
-    '/new-password',
+    '/new-password'
   ];
 
   const staticPages = [
     '/about',
     '/privacy-policy',
     '/contact-us',
-    '/sponsorship',
+    '/sponsorship'
   ];
 
-  const showHeader =
-    !noHeaderRoutes.includes(location.pathname);
+  const showHeader = !noHeaderRoutes.includes(location.pathname);
 
-  /*
-   * =========================================================
-   * FAB
-   * =========================================================
-   */
   const hideFABRoutes = [
     '/post-idea',
     '/submit-asset',
@@ -266,7 +185,7 @@ const App: React.FC = () => {
     '/startalks',
     '/messages',
     ...noHeaderRoutes,
-    ...staticPages,
+    ...staticPages
   ];
 
   const hideStarverseButton =
@@ -282,7 +201,7 @@ const App: React.FC = () => {
       location.pathname.includes('/asset/'));
 
   const showFAB =
-    Boolean(currentUser) &&
+    currentUser &&
     !hideFABRoutes.includes(location.pathname) &&
     !location.pathname.startsWith('/team/') &&
     !isEditing &&
@@ -291,20 +210,10 @@ const App: React.FC = () => {
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  /*
-   * =========================================================
-   * FOOTER
-   * =========================================================
-   */
   const showFooter =
-    location.pathname === '/' &&
+    location.pathname === "/" &&
     !currentUser;
 
-  /*
-   * =========================================================
-   * FULL HEIGHT PAGES
-   * =========================================================
-   */
   const isFullHeightPage =
     location.pathname.startsWith('/messages') ||
     location.pathname.startsWith('/team/') ||
@@ -312,114 +221,59 @@ const App: React.FC = () => {
     location.pathname.startsWith('/asset/');
 
   /*
-   * =========================================================
-   * BOTTOM NAV
-   * =========================================================
+   * FIX:
+   * BottomNav sirf logged-in users ko dikhta hai.
+   * Isliye guest homepage par pb-16 nahi lagna chahiye.
    */
   const needsBottomNavPadding =
     Boolean(currentUser) &&
     !isFullHeightPage &&
     !isChatOpen;
 
-  /*
-   * IMPORTANT:
-   *
-   * Homepage gets its own class.
-   *
-   * We KEEP the scroll container because Header.tsx
-   * depends on main.scrollTop.
-   *
-   * But homepage gets min-height + shrink-0 so it cannot
-   * collapse underneath the footer.
-   */
-  const isHomePage =
-    location.pathname === '/' && !currentUser;
+  useEffect(() => {
+    console.log("Window Scroll:", window.scrollY);
+
+    const main = document.querySelector("main");
+    console.log("Main Scroll:", main?.scrollTop);
+
+    console.log(
+      "Scrolling Element:",
+      document.scrollingElement
+    );
+  }, [location.pathname]);
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
 
-      <div
-        className="
-          flex
-          h-screen
-          min-h-screen
-          w-full
-          flex-col
-          overflow-hidden
-          bg-[var(--background-secondary)]
-        "
-      >
+      <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
 
-        {/* =================================================
-            AUTH LOADER
-        ================================================= */}
         {authLoadingState.isLoading &&
-          location.pathname === '/login' && (
+          location.pathname === "/login" && (
             <FullScreenLoader
               messages={authLoadingState.messages}
             />
           )}
 
-        {/* =================================================
-            ONBOARDING
-        ================================================= */}
         {currentUser &&
           showOnboardingModal && (
             <OnboardingPage />
           )}
 
-        {/* =================================================
-            HEADER
-        ================================================= */}
         {showHeader && <Header />}
 
-        {/* =================================================
-            NOTIFICATION AREA
-        ================================================= */}
         <NotificationArea />
 
-        {/* =================================================
-            MAIN SCROLL CONTAINER
-        ================================================= */}
+        {/* FIXED MAIN */}
         <main
           className={`
-            flex-1
-            min-h-0
-            min-w-0
-            w-full
-            overflow-y-auto
-            overflow-x-hidden
-            overscroll-contain
-
-            ${
-              isHomePage
-                ? 'shrink-0 min-h-[calc(100vh-61px)]'
-                : ''
-            }
-
-            ${
-              needsBottomNavPadding
-                ? 'pb-16'
-                : ''
-            }
-
-            ${
-              isFullHeightPage
-                ? 'flex flex-col'
-                : ''
-            }
+            flex-grow
+            ${needsBottomNavPadding ? 'pb-16' : ''}
+            ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}
           `}
         >
 
           <Routes>
 
-            {/* =================================================
-                HOME PAGE
-
-                IMPORTANT:
-                Keep HomePage directly inside main.
-                Do NOT wrap it in WithPageContainer.
-            ================================================= */}
             <Route
               path="/"
               element={
@@ -429,16 +283,11 @@ const App: React.FC = () => {
                     replace
                   />
                 ) : (
-                  <div className="w-full min-h-full">
-                    <HomePage />
-                  </div>
+                  <HomePage />
                 )
               }
             />
 
-            {/* =================================================
-                AUTH
-            ================================================= */}
             <Route
               path="/login"
               element={<LoginPage />}
@@ -455,19 +304,6 @@ const App: React.FC = () => {
             />
 
             <Route
-              path="/forgot-password"
-              element={<ForgotPasswordPage />}
-            />
-
-            <Route
-              path="/new-password"
-              element={<NewPasswordPage />}
-            />
-
-            {/* =================================================
-                PUBLIC PROFILE
-            ================================================= */}
-            <Route
               path="/user/:userId"
               element={
                 <WithPageContainer>
@@ -476,16 +312,11 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                STATIC
-            ================================================= */}
             <Route
               path="/about"
               element={
                 <WithPageContainer>
-                  <PlaceholderContentPage
-                    title="About us"
-                  />
+                  <PlaceholderContentPage title="About us" />
                 </WithPageContainer>
               }
             />
@@ -494,9 +325,7 @@ const App: React.FC = () => {
               path="/privacy-policy"
               element={
                 <WithPageContainer>
-                  <PlaceholderContentPage
-                    title="Privacy policy"
-                  />
+                  <PlaceholderContentPage title="Privacy policy" />
                 </WithPageContainer>
               }
             />
@@ -505,11 +334,19 @@ const App: React.FC = () => {
               path="/sponsorship"
               element={
                 <WithPageContainer>
-                  <PlaceholderContentPage
-                    title="Sponsorship"
-                  />
+                  <PlaceholderContentPage title="Sponsorship" />
                 </WithPageContainer>
               }
+            />
+
+            <Route
+              path="/forgot-password"
+              element={<ForgotPasswordPage />}
+            />
+
+            <Route
+              path="/new-password"
+              element={<NewPasswordPage />}
             />
 
             <Route
@@ -530,9 +367,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                BUILDERS
-            ================================================= */}
             <Route
               path="/builders"
               element={
@@ -551,9 +385,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                BLOG
-            ================================================= */}
             <Route
               path="/blog"
               element={
@@ -568,9 +399,6 @@ const App: React.FC = () => {
               element={<BlogDetailPage />}
             />
 
-            {/* =================================================
-                DASHBOARD
-            ================================================= */}
             <Route
               path="/dashboard"
               element={
@@ -580,9 +408,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                PROJECTS
-            ================================================= */}
             <Route
               path="/projects"
               element={
@@ -592,9 +417,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                STARTALKS
-            ================================================= */}
             <Route
               path="/startalks"
               element={
@@ -604,9 +426,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                MARKETPLACE
-            ================================================= */}
             <Route
               path="/blueprint"
               element={
@@ -616,9 +435,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                ASSETS
-            ================================================= */}
             <Route
               path="/asset/:assetId"
               element={
@@ -650,9 +466,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                IDEAS
-            ================================================= */}
             <Route
               path="/post-idea"
               element={
@@ -686,9 +499,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                MESSAGES
-            ================================================= */}
             <Route
               path="/messages"
               element={
@@ -698,9 +508,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                TEAM
-            ================================================= */}
             <Route
               path="/team/:teamId"
               element={
@@ -710,9 +517,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                PROFILE
-            ================================================= */}
             <Route
               path="/profile"
               element={
@@ -735,9 +539,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                EDIT PROJECT
-            ================================================= */}
             <Route
               path="/project/:ideaId/edit"
               element={
@@ -749,9 +550,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                USER DATA
-            ================================================= */}
             <Route
               path="/my-projects"
               element={
@@ -807,9 +605,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                STARVERSE
-            ================================================= */}
             <Route
               path="/globe"
               element={
@@ -819,9 +614,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                FALLBACK
-            ================================================= */}
             <Route
               path="*"
               element={
@@ -843,17 +635,8 @@ const App: React.FC = () => {
 
         </main>
 
-        {/* =================================================
-            FOOTER
-
-            Still outside main.
-            Homepage content appears above it.
-        ================================================= */}
         {showFooter && <Footer />}
 
-        {/* =================================================
-            BOTTOM NAV
-        ================================================= */}
         {currentUser &&
           !isChatOpen &&
           !['/', '/login', '/signup'].includes(
@@ -862,22 +645,13 @@ const App: React.FC = () => {
             <BottomNav />
           )}
 
-        {/* =================================================
-            FAB
-        ================================================= */}
-        {showFAB && <FloatingActionMenu />}
+        <FloatingActionMenu />
 
-        {/* =================================================
-            STARVERSE FLOATING BUTTON
-        ================================================= */}
         {currentUser &&
           !hideStarverseButton && (
             <StarverseFloatingButton />
           )}
 
-        {/* =================================================
-            LOGOUT MODAL
-        ================================================= */}
         <LogoutConfirmModal
           open={showLogoutModal}
           onClose={() =>
@@ -888,13 +662,14 @@ const App: React.FC = () => {
 
             await logout();
 
-            navigate('/', {
-              replace: true,
+            navigate("/", {
+              replace: true
             });
           }}
         />
 
       </div>
+
     </GoogleOAuthProvider>
   );
 };
