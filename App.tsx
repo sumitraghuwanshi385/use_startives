@@ -220,11 +220,6 @@ const App: React.FC = () => {
     location.pathname === '/blueprint' ||
     location.pathname.startsWith('/asset/');
 
-  /*
-   * FIX:
-   * BottomNav sirf logged-in users ko dikhta hai.
-   * Isliye guest homepage par pb-16 nahi lagna chahiye.
-   */
   const needsBottomNavPadding =
     Boolean(currentUser) &&
     !isFullHeightPage &&
@@ -263,10 +258,10 @@ const App: React.FC = () => {
 
         <NotificationArea />
 
-        {/* FIXED MAIN */}
         <main
           className={`
             flex-grow
+            min-h-0
             ${needsBottomNavPadding ? 'pb-16' : ''}
             ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}
           `}
