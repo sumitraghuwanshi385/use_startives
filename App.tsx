@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -42,11 +48,11 @@ import FloatingActionMenu from './components/FloatingActionMenu';
 import StarverseFloatingButton from './components/StarverseFloatingButton';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GlobalGlobe from './pages/GlobalGlobe';
-import BuildersStoriesPage from "./pages/BuildersStoriesPage";
-import StoryDetailsPage from "./pages/StoryDetailsPage";
+import BuildersStoriesPage from './pages/BuildersStoriesPage';
+import StoryDetailsPage from './pages/StoryDetailsPage';
 import BlogPage from './pages/BlogPage';
 import BlogDetailPage from './pages/BlogDetailPage';
-import LogoutConfirmModal from "./components/LogoutConfirmModal";
+import LogoutConfirmModal from './components/LogoutConfirmModal';
 
 interface PageTitleProps {
   title: string;
@@ -57,7 +63,7 @@ interface PageTitleProps {
 export const PageTitle: React.FC<PageTitleProps> = ({
   title,
   description,
-  className = ""
+  className = '',
 }) => (
   <div className={`mb-8 ${className}`}>
     <h1 className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight font-poppins">
@@ -77,7 +83,7 @@ const WithPageContainer: React.FC<{
   pageClassName?: string;
 }> = ({
   children,
-  pageClassName = "w-full px-6 lg:px-16 py-8"
+  pageClassName = 'w-full px-6 lg:px-16 py-8',
 }) => (
   <div className={pageClassName}>
     {children}
@@ -95,7 +101,7 @@ const App: React.FC = () => {
     currentUser,
     showOnboardingModal,
     authLoadingState,
-    logout
+    logout,
   } = useAppContext();
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -103,10 +109,10 @@ const App: React.FC = () => {
   useEffect(() => {
     const warmServer = async () => {
       try {
-        fetch("https://use-startives.onrender.com/test123").catch(() => {});
-        fetch("https://use-startives.onrender.com/api/ideas").catch(() => {});
-        fetch("https://use-startives.onrender.com/api/assets").catch(() => {});
-        fetch("https://use-startives.onrender.com/api/startalks").catch(() => {});
+        fetch('https://use-startives.onrender.com/test123').catch(() => {});
+        fetch('https://use-startives.onrender.com/api/ideas').catch(() => {});
+        fetch('https://use-startives.onrender.com/api/assets').catch(() => {});
+        fetch('https://use-startives.onrender.com/api/startalks').catch(() => {});
       } catch (err) {}
     };
 
@@ -131,11 +137,11 @@ const App: React.FC = () => {
     if (!currentUser) return;
 
     const protectedBackRoutes = [
-      "/dashboard",
-      "/projects",
-      "/startalks",
-      "/messages",
-      "/globe",
+      '/dashboard',
+      '/projects',
+      '/startalks',
+      '/messages',
+      '/globe',
     ];
 
     const shouldIntercept =
@@ -143,20 +149,20 @@ const App: React.FC = () => {
 
     if (!shouldIntercept) return;
 
-    window.history.pushState(null, "", window.location.href);
+    window.history.pushState(null, '', window.location.href);
 
     const handleBack = () => {
       if (showLogoutModal) return;
 
       setShowLogoutModal(true);
 
-      window.history.pushState(null, "", window.location.href);
+      window.history.pushState(null, '', window.location.href);
     };
 
-    window.addEventListener("popstate", handleBack);
+    window.addEventListener('popstate', handleBack);
 
     return () => {
-      window.removeEventListener("popstate", handleBack);
+      window.removeEventListener('popstate', handleBack);
     };
   }, [currentUser, location.pathname, showLogoutModal]);
 
@@ -165,14 +171,14 @@ const App: React.FC = () => {
     '/signup',
     '/verify-email',
     '/forgot-password',
-    '/new-password'
+    '/new-password',
   ];
 
   const staticPages = [
     '/about',
     '/privacy-policy',
     '/contact-us',
-    '/sponsorship'
+    '/sponsorship',
   ];
 
   const showHeader = !noHeaderRoutes.includes(location.pathname);
@@ -185,7 +191,7 @@ const App: React.FC = () => {
     '/startalks',
     '/messages',
     ...noHeaderRoutes,
-    ...staticPages
+    ...staticPages,
   ];
 
   const hideStarverseButton =
@@ -211,7 +217,7 @@ const App: React.FC = () => {
     !location.pathname.startsWith('/user/');
 
   const showFooter =
-    location.pathname === "/" &&
+    location.pathname === '/' &&
     !currentUser;
 
   const isFullHeightPage =
@@ -225,34 +231,20 @@ const App: React.FC = () => {
     !isFullHeightPage &&
     !isChatOpen;
 
-  useEffect(() => {
-    console.log("Window Scroll:", window.scrollY);
-
-    const main = document.querySelector("main");
-    console.log("Main Scroll:", main?.scrollTop);
-
-    console.log(
-      "Scrolling Element:",
-      document.scrollingElement
-    );
-  }, [location.pathname]);
-
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
-
-      <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
+      <div className="flex h-screen min-h-screen w-full flex-col overflow-hidden bg-[var(--background-secondary)]">
 
         {authLoadingState.isLoading &&
-          location.pathname === "/login" && (
+          location.pathname === '/login' && (
             <FullScreenLoader
               messages={authLoadingState.messages}
             />
           )}
 
-        {currentUser &&
-          showOnboardingModal && (
-            <OnboardingPage />
-          )}
+        {currentUser && showOnboardingModal && (
+          <OnboardingPage />
+        )}
 
         {showHeader && <Header />}
 
@@ -260,13 +252,16 @@ const App: React.FC = () => {
 
         <main
           className={`
-            flex-grow
+            flex-1
             min-h-0
+            w-full
+            overflow-y-auto
+            overflow-x-hidden
+            overscroll-contain
             ${needsBottomNavPadding ? 'pb-16' : ''}
-            ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}
+            ${isFullHeightPage ? 'flex flex-col' : ''}
           `}
         >
-
           <Routes>
 
             <Route
@@ -627,7 +622,6 @@ const App: React.FC = () => {
             />
 
           </Routes>
-
         </main>
 
         {showFooter && <Footer />}
@@ -640,31 +634,27 @@ const App: React.FC = () => {
             <BottomNav />
           )}
 
-        <FloatingActionMenu />
+        {showFAB && <FloatingActionMenu />}
 
-        {currentUser &&
-          !hideStarverseButton && (
-            <StarverseFloatingButton />
-          )}
+        {currentUser && !hideStarverseButton && (
+          <StarverseFloatingButton />
+        )}
 
         <LogoutConfirmModal
           open={showLogoutModal}
-          onClose={() =>
-            setShowLogoutModal(false)
-          }
+          onClose={() => setShowLogoutModal(false)}
           onLogout={async () => {
             setShowLogoutModal(false);
 
             await logout();
 
-            navigate("/", {
-              replace: true
+            navigate('/', {
+              replace: true,
             });
           }}
         />
 
       </div>
-
     </GoogleOAuthProvider>
   );
 };
