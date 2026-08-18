@@ -87,6 +87,8 @@ const unreadCount = rawUnreadCount;
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isScrolled, setIsScrolled] = useState(false);
   
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
@@ -98,6 +100,20 @@ const [showNotifications, setShowNotifications] = useState(false);
 const [shake, setShake] = useState(false);
 
 const prevCountRef = useRef<number | null>(null);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 8);
+  };
+
+  handleScroll();
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
 
 useEffect(() => {
   if (prevCountRef.current === null) {
@@ -217,10 +233,13 @@ const handleBellClick = async () => {
   
   const commonIconButtonClasses = "relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60";
 
+  const isLandingPage = location.pathname === '/' && !currentUser;
+  const showGlassHeader = !isLandingPage || isScrolled;
+
   return (
     <>
       <header
-        className="
+        className={`
           sticky
           top-0
           z-40
@@ -228,22 +247,39 @@ const handleBellClick = async () => {
           min-h-[57px]
           sm:min-h-[61px]
           overflow-visible
-          bg-white/72
-          dark:bg-neutral-900/72
-          backdrop-blur-[30px]
-          backdrop-saturate-[200%]
-          supports-[backdrop-filter]:bg-white/58
-          dark:supports-[backdrop-filter]:bg-neutral-900/58
           border-0
           outline-none
-          shadow-[0_8px_30px_rgba(30,40,80,0.06)]
-        "
+          transition-all
+          duration-500
+          ease-out
+          ${
+            showGlassHeader
+              ? `
+                bg-white/72
+                dark:bg-neutral-900/72
+                backdrop-blur-[30px]
+                backdrop-saturate-[200%]
+                supports-[backdrop-filter]:bg-white/58
+                dark:supports-[backdrop-filter]:bg-neutral-900/58
+                shadow-[0_8px_30px_rgba(30,40,80,0.06)]
+              `
+              : `
+                bg-transparent
+                backdrop-blur-0
+                backdrop-saturate-100
+                shadow-none
+              `
+          }
+        `}
       >
         <div
-          className="
+          className={`
             absolute
             inset-0
             pointer-events-none
+            transition-opacity
+            duration-500
+            ease-out
             bg-gradient-to-b
             from-white/65
             via-white/25
@@ -251,20 +287,30 @@ const handleBellClick = async () => {
             dark:from-white/10
             dark:via-white/5
             dark:to-transparent
-          "
+            ${
+              showGlassHeader
+                ? "opacity-100"
+                : "opacity-0"
+            }
+          `}
         />
 
         <div
-          className="
+          className={`
             absolute
             left-[4%]
             right-[4%]
             top-0
             h-px
-            bg-white/80
-            dark:bg-white/15
             pointer-events-none
-          "
+            transition-opacity
+            duration-500
+            ${
+              showGlassHeader
+                ? "opacity-100 bg-white/80 dark:bg-white/15"
+                : "opacity-0"
+            }
+          `}
         />
 
         <div className="relative z-10 w-full min-h-[57px] sm:min-h-[61px] flex items-center justify-between px-2 sm:px-4 py-2.5">
@@ -316,9 +362,6 @@ const handleBellClick = async () => {
                     />
                   )}
                 </div>
-
-                {/* Divider */}
-                <div className="mx-1.5 h-6 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
 
                 {/* ☰ Hamburger Menu */}
                 <div ref={profileDropdownRef} className="relative">
@@ -392,7 +435,7 @@ const handleBellClick = async () => {
                       ))}
 
                       {/* Theme */}
-                      <div className="border-t border-[var(--border-primary)] px-4 py-3">
+                      <div className="border-t border-[var(--border-primary)] px-4 py-2">
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-[var(--text-secondary)]">
                             Appearance
@@ -419,8 +462,6 @@ const handleBellClick = async () => {
             ) : (
               <div className="flex items-center space-x-1.5">
                 {location.pathname !== '/' && <ThemeIconButton />}
-
-                <div className="h-5 w-px bg-neutral-300/70 dark:bg-neutral-700/70" />
 
                 <button
                   onClick={() => navigate('/signup')}
@@ -450,8 +491,9 @@ const handleBellClick = async () => {
                     hover:scale-[1.035]
                     active:scale-[0.97]
                     focus:outline-none
-                    focus-visible:ring-4
-                    focus-visible:ring-blue-400/20
+                    focus:ring-0
+                    focus-visible:outline-none
+                    focus-visible:ring-0
                   "
                 >
                   <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/95 via-white/70 to-white/45 pointer-events-none" />
@@ -574,6 +616,16 @@ const handleBellClick = async () => {
             inset 0 1px 2px rgba(255, 255, 255, 1),
             inset 0 -1px 1px rgba(100, 110, 150, 0.08),
             0 9px 25px rgba(30, 40, 80, 0.15);
+        }
+
+        .liquid-glass-cta:focus,
+        .liquid-glass-cta:focus-visible,
+        .liquid-glass-cta:active {
+          outline: none !important;
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 0.98),
+            inset 0 -1px 1px rgba(120, 130, 160, 0.08),
+            0 6px 20px rgba(30, 40, 80, 0.11);
         }
 
         .theme-glass-switch {
