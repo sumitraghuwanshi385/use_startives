@@ -122,9 +122,11 @@ const App: React.FC = () => {
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-  // =====================================================
-  // WARM BACKEND
-  // =====================================================
+  /*
+   * =========================================================
+   * BACKEND WARM-UP
+   * =========================================================
+   */
   useEffect(() => {
     const warmServer = async () => {
       try {
@@ -151,9 +153,11 @@ const App: React.FC = () => {
     warmServer();
   }, []);
 
-  // =====================================================
-  // CHAT STATE
-  // =====================================================
+  /*
+   * =========================================================
+   * CHAT OPEN STATE
+   * =========================================================
+   */
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const hasClass =
@@ -167,14 +171,14 @@ const App: React.FC = () => {
       attributeFilter: ['class'],
     });
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
-  // =====================================================
-  // PROTECTED BACK NAVIGATION
-  // =====================================================
+  /*
+   * =========================================================
+   * PROTECTED BACK NAVIGATION
+   * =========================================================
+   */
   useEffect(() => {
     if (!currentUser) return;
 
@@ -226,9 +230,11 @@ const App: React.FC = () => {
     showLogoutModal,
   ]);
 
-  // =====================================================
-  // HEADER VISIBILITY
-  // =====================================================
+  /*
+   * =========================================================
+   * HEADER
+   * =========================================================
+   */
   const noHeaderRoutes = [
     '/login',
     '/signup',
@@ -247,9 +253,11 @@ const App: React.FC = () => {
   const showHeader =
     !noHeaderRoutes.includes(location.pathname);
 
-  // =====================================================
-  // FAB
-  // =====================================================
+  /*
+   * =========================================================
+   * FAB
+   * =========================================================
+   */
   const hideFABRoutes = [
     '/post-idea',
     '/submit-asset',
@@ -283,46 +291,64 @@ const App: React.FC = () => {
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  // =====================================================
-  // FOOTER
-  // =====================================================
+  /*
+   * =========================================================
+   * FOOTER
+   * =========================================================
+   */
   const showFooter =
     location.pathname === '/' &&
     !currentUser;
 
-  // =====================================================
-  // FULL HEIGHT PAGES
-  //
-  // These pages already manage their own layout.
-  // Homepage is intentionally NOT here.
-  // =====================================================
+  /*
+   * =========================================================
+   * FULL HEIGHT PAGES
+   * =========================================================
+   */
   const isFullHeightPage =
     location.pathname.startsWith('/messages') ||
     location.pathname.startsWith('/team/') ||
     location.pathname === '/blueprint' ||
     location.pathname.startsWith('/asset/');
 
-  // =====================================================
-  // BOTTOM NAV
-  // =====================================================
+  /*
+   * =========================================================
+   * BOTTOM NAV
+   * =========================================================
+   */
   const needsBottomNavPadding =
     Boolean(currentUser) &&
     !isFullHeightPage &&
     !isChatOpen;
 
+  /*
+   * IMPORTANT:
+   *
+   * Homepage gets its own class.
+   *
+   * We KEEP the scroll container because Header.tsx
+   * depends on main.scrollTop.
+   *
+   * But homepage gets min-height + shrink-0 so it cannot
+   * collapse underneath the footer.
+   */
+  const isHomePage =
+    location.pathname === '/' && !currentUser;
+
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
 
-      {/* =================================================
-          ROOT APP CONTAINER
-
-          IMPORTANT:
-          No h-screen
-          No overflow-hidden
-
-          This keeps HomePage in normal document flow.
-      ================================================= */}
-      <div className="flex min-h-screen w-full flex-col bg-[var(--background-secondary)]">
+      <div
+        className="
+          flex
+          h-screen
+          min-h-screen
+          w-full
+          flex-col
+          overflow-hidden
+          bg-[var(--background-secondary)]
+        "
+      >
 
         {/* =================================================
             AUTH LOADER
@@ -348,29 +374,39 @@ const App: React.FC = () => {
         {showHeader && <Header />}
 
         {/* =================================================
-            NOTIFICATIONS
+            NOTIFICATION AREA
         ================================================= */}
         <NotificationArea />
 
         {/* =================================================
-            MAIN CONTENT
-
-            IMPORTANT:
-            Homepage gets normal document scrolling.
-
-            Header.tsx listens to this <main>'s scrollTop,
-            so top = transparent and scroll = glass.
+            MAIN SCROLL CONTAINER
         ================================================= */}
         <main
           className={`
-            flex-grow
+            flex-1
             min-h-0
+            min-w-0
             w-full
-            ${needsBottomNavPadding ? 'pb-16' : ''}
+            overflow-y-auto
+            overflow-x-hidden
+            overscroll-contain
+
+            ${
+              isHomePage
+                ? 'shrink-0 min-h-[calc(100vh-61px)]'
+                : ''
+            }
+
+            ${
+              needsBottomNavPadding
+                ? 'pb-16'
+                : ''
+            }
+
             ${
               isFullHeightPage
                 ? 'flex flex-col'
-                : 'overflow-y-auto'
+                : ''
             }
           `}
         >
@@ -378,7 +414,11 @@ const App: React.FC = () => {
           <Routes>
 
             {/* =================================================
-                HOME
+                HOME PAGE
+
+                IMPORTANT:
+                Keep HomePage directly inside main.
+                Do NOT wrap it in WithPageContainer.
             ================================================= */}
             <Route
               path="/"
@@ -389,7 +429,9 @@ const App: React.FC = () => {
                     replace
                   />
                 ) : (
-                  <HomePage />
+                  <div className="w-full min-h-full">
+                    <HomePage />
+                  </div>
                 )
               }
             />
@@ -435,13 +477,15 @@ const App: React.FC = () => {
             />
 
             {/* =================================================
-                STATIC PAGES
+                STATIC
             ================================================= */}
             <Route
               path="/about"
               element={
                 <WithPageContainer>
-                  <PlaceholderContentPage title="About us" />
+                  <PlaceholderContentPage
+                    title="About us"
+                  />
                 </WithPageContainer>
               }
             />
@@ -450,7 +494,9 @@ const App: React.FC = () => {
               path="/privacy-policy"
               element={
                 <WithPageContainer>
-                  <PlaceholderContentPage title="Privacy policy" />
+                  <PlaceholderContentPage
+                    title="Privacy policy"
+                  />
                 </WithPageContainer>
               }
             />
@@ -459,7 +505,9 @@ const App: React.FC = () => {
               path="/sponsorship"
               element={
                 <WithPageContainer>
-                  <PlaceholderContentPage title="Sponsorship" />
+                  <PlaceholderContentPage
+                    title="Sponsorship"
+                  />
                 </WithPageContainer>
               }
             />
@@ -798,8 +846,8 @@ const App: React.FC = () => {
         {/* =================================================
             FOOTER
 
-            Only homepage + logged out.
-            It remains AFTER main content.
+            Still outside main.
+            Homepage content appears above it.
         ================================================= */}
         {showFooter && <Footer />}
 
@@ -815,12 +863,12 @@ const App: React.FC = () => {
           )}
 
         {/* =================================================
-            FLOATING ACTION MENU
+            FAB
         ================================================= */}
         {showFAB && <FloatingActionMenu />}
 
         {/* =================================================
-            STARVERSE BUTTON
+            STARVERSE FLOATING BUTTON
         ================================================= */}
         {currentUser &&
           !hideStarverseButton && (
@@ -828,7 +876,7 @@ const App: React.FC = () => {
           )}
 
         {/* =================================================
-            LOGOUT CONFIRM
+            LOGOUT MODAL
         ================================================= */}
         <LogoutConfirmModal
           open={showLogoutModal}
@@ -847,7 +895,6 @@ const App: React.FC = () => {
         />
 
       </div>
-
     </GoogleOAuthProvider>
   );
 };
