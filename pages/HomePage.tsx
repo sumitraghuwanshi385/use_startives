@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { useTheme } from '../contexts/ThemeContext';
 import { APP_NAME } from '../constants';
 import { ProjectCard } from '../pages/ProjectsListPage';
 import {
   Users,
   Sparkles,
   Box,
-  Globe2,
-  BarChart3,
-  Zap,
   ArrowRight,
   Star,
   Github,
@@ -185,62 +181,29 @@ const useCountUp = (
   return count;
 };
 
-const EcosystemStatCard: React.FC<{
+const EcosystemStat: React.FC<{
   endValue: number;
   label: string;
-  description: string;
-  icon: React.ReactNode;
-  suffix?: string;
-  gradient: string;
   delay?: number;
-}> = ({
-  endValue,
-  label,
-  description,
-  icon,
-  suffix,
-  gradient,
-  delay = 0,
-}) => {
-  const { theme } = useTheme();
-  const { ref, inView } = useInView<HTMLDivElement>(0.4);
+}> = ({ endValue, label, delay = 0 }) => {
+  const { ref, inView } = useInView<HTMLDivElement>(0.25);
   const count = useCountUp(endValue, inView);
-
-  const textGradient =
-    theme === 'dark'
-      ? 'from-white to-neutral-400'
-      : 'from-neutral-900 to-neutral-600';
 
   return (
     <div
       ref={ref}
-      className={`reveal-item ${
-        inView ? 'is-visible' : ''
-      } stat-card bg-[var(--component-background)] p-6 rounded-2xl border border-[var(--border-primary)] transition-all duration-500 hover:-translate-y-2 hover:border-red-500/50 hover:shadow-xl`}
+      className="reveal-item text-center"
       style={{
         transitionDelay: inView ? `${delay}ms` : '0ms',
       }}
     >
-      <div
-        className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br ${gradient} shadow-lg shadow-black/5`}
-      >
-        {icon}
+      <div className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 tabular-nums font-poppins">
+        {count}+
       </div>
 
-      <p
-        className={`text-3xl font-bold bg-gradient-to-r ${textGradient} bg-clip-text text-transparent font-poppins tabular-nums`}
-      >
-        {count}
-        {suffix}
-      </p>
-
-      <h3 className="text-base font-bold text-[var(--text-primary)] mt-3 font-poppins">
+      <div className="mt-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em] text-neutral-500 font-poppins">
         {label}
-      </h3>
-
-      <p className="text-[var(--text-secondary)] mt-1 text-xs font-poppins">
-        {description}
-      </p>
+      </div>
     </div>
   );
 };
@@ -272,28 +235,28 @@ const HomePage: React.FC = () => {
     {
       image:
         'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038743/Picsart_26-08-18_12-56-10-554_wbodvi.png',
-      title: 'Validate your idea',
+      title: 'VALIDATE YOUR IDEA',
       description:
         'Get feedback on your startup concept from a diverse community of experts and peers.',
     },
     {
       image:
         'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038741/Picsart_26-08-18_12-56-57-760_w19zpa.png',
-      title: 'Find a co-founder',
+      title: 'FIND A CO-FOUNDER',
       description:
         'Connect with passionate individuals who share your vision and have the skills to help you succeed.',
     },
     {
       image:
         'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038734/Picsart_26-08-18_12-58-14-816_srheoi.png',
-      title: 'Build your MVP',
+      title: 'BUILD YOUR MVP',
       description:
         'Assemble a talented team to bring your Minimum Viable Product to life and start testing the market.',
     },
     {
       image:
         'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038746/IMG_20260818_125849_rh0bg4.png',
-      title: 'Scale your venture',
+      title: 'SCALE YOUR VENTURE',
       description:
         'Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.',
     },
@@ -493,7 +456,7 @@ const HomePage: React.FC = () => {
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
+              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase text-black">
                 Discover Projects
               </h2>
 
@@ -539,11 +502,12 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* An ecosystem in motion */}
         <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
 
@@ -554,38 +518,60 @@ const HomePage: React.FC = () => {
               </p>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Reveal className="max-w-5xl mx-auto" delay={80}>
 
-              <EcosystemStatCard
-                endValue={50}
-                suffix="+"
-                label="Projects launched"
-                description="From initial spark to successful launch, ventures are taking off."
-                icon={<BarChart3 className="w-7 h-7 text-white" />}
-                gradient="from-sky-500 to-cyan-400"
-              />
+              <div className="ecosystem-liquid-card relative overflow-hidden rounded-[2.5rem] sm:rounded-[3rem] border border-white/80">
 
-              <EcosystemStatCard
-                endValue={200}
-                suffix="+"
-                label="Founders connected"
-                description="Building powerful partnerships and lasting co-founder relationships."
-                icon={<Users className="w-7 h-7 text-white" />}
-                gradient="from-red-500 to-red-600"
-                delay={100}
-              />
+                <div className="absolute inset-0 bg-white/65 backdrop-blur-3xl" />
 
-              <EcosystemStatCard
-                endValue={500}
-                suffix="+"
-                label="Innovators"
-                description="A growing community of developers, designers, and strategists."
-                icon={<Zap className="w-7 h-7 text-white" />}
-                gradient="from-orange-400 to-yellow-300"
-                delay={200}
-              />
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.07] via-purple-500/[0.05] to-blue-500/[0.12] pointer-events-none" />
 
-            </div>
+                <div className="absolute -top-32 -right-24 w-80 h-80 bg-blue-500/[0.12] rounded-full blur-[100px] pointer-events-none" />
+
+                <div className="absolute -bottom-32 -left-24 w-80 h-80 bg-purple-500/[0.09] rounded-full blur-[100px] pointer-events-none" />
+
+                <div className="absolute inset-[1px] rounded-[calc(2.5rem-1px)] sm:rounded-[calc(3rem-1px)] border border-white/60 pointer-events-none" />
+
+                <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-10">
+
+                  <div className="ecosystem-image-shell relative w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] border border-white/70 bg-white/40 backdrop-blur-xl">
+
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-white/15 to-blue-500/[0.08] pointer-events-none" />
+
+                    <img
+                      src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
+                      alt="Startives ecosystem"
+                      className="relative z-10 block w-full h-auto max-h-[560px] object-contain object-center mx-auto"
+                    />
+
+                  </div>
+
+                  <div className="mt-6 sm:mt-8 grid grid-cols-3 divide-x divide-neutral-300/60">
+
+                    <EcosystemStat
+                      endValue={50}
+                      label="Projects Launched"
+                    />
+
+                    <EcosystemStat
+                      endValue={200}
+                      label="Founders Connected"
+                      delay={100}
+                    />
+
+                    <EcosystemStat
+                      endValue={500}
+                      label="Innovators"
+                      delay={200}
+                    />
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </Reveal>
           </div>
         </section>
 
@@ -594,7 +580,7 @@ const HomePage: React.FC = () => {
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-10">
-              <h2 className="text-2xl font-extrabold text-[var(--text-primary)] mb-2 tracking-tight font-poppins">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-2 tracking-tight font-poppins uppercase">
                 Everything you need to start
               </h2>
 
@@ -611,19 +597,14 @@ const HomePage: React.FC = () => {
 
                   <div className="feature-liquid-card group relative overflow-hidden min-h-[390px] sm:min-h-[420px] p-7 sm:p-8 rounded-[2rem] border border-white/70 flex flex-col transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_24px_70px_rgba(30,50,120,0.16)]">
 
-                    {/* Glass surface */}
                     <div className="absolute inset-0 bg-white/55 backdrop-blur-2xl" />
 
-                    {/* Startives red-purple-blue atmosphere */}
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
 
-                    {/* Soft blue lower glow */}
                     <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-72 h-48 rounded-full bg-blue-500/[0.16] blur-[70px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.24]" />
 
-                    {/* Red side glow */}
                     <div className="absolute -top-24 -right-20 w-48 h-48 rounded-full bg-red-500/[0.08] blur-[65px] pointer-events-none" />
 
-                    {/* Glass highlight */}
                     <div className="absolute inset-[1px] rounded-[calc(2rem-1px)] border border-white/60 pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col h-full">
@@ -1024,7 +1005,6 @@ const HomePage: React.FC = () => {
 
         </section>
 
-        {/* Pure white background space below the button */}
         <div
           className="w-full bg-white !bg-white h-8 sm:h-10"
           style={{ backgroundColor: '#ffffff' }}
@@ -1065,6 +1045,68 @@ const HomePage: React.FC = () => {
 
         .magnetic-btn:hover::before {
           opacity: 1;
+        }
+
+        .ecosystem-liquid-card {
+          -webkit-backdrop-filter: blur(32px) saturate(185%);
+          backdrop-filter: blur(32px) saturate(185%);
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.86),
+              rgba(255, 255, 255, 0.52)
+            );
+
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 0.98),
+            inset 0 -1px 1px rgba(90, 100, 150, 0.05),
+            0 18px 55px rgba(30, 40, 100, 0.10);
+        }
+
+        .ecosystem-liquid-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+
+          background:
+            linear-gradient(
+              115deg,
+              rgba(255, 255, 255, 0.7),
+              transparent 30%,
+              transparent 65%,
+              rgba(255, 255, 255, 0.3)
+            );
+
+          opacity: 0.8;
+          pointer-events: none;
+        }
+
+        .ecosystem-liquid-card::after {
+          content: '';
+          position: absolute;
+          left: 8%;
+          right: 8%;
+          top: 0;
+          height: 1px;
+
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 1),
+              transparent
+            );
+
+          pointer-events: none;
+        }
+
+        .ecosystem-image-shell {
+          box-shadow:
+            inset 0 1px 2px rgba(255, 255, 255, 0.95),
+            inset 0 -1px 2px rgba(80, 90, 130, 0.05),
+            0 10px 35px rgba(30, 50, 110, 0.08);
         }
 
         .feature-liquid-card {
@@ -1205,6 +1247,14 @@ const HomePage: React.FC = () => {
 
           .feature-liquid-card {
             min-height: 380px;
+          }
+
+          .ecosystem-liquid-card {
+            border-radius: 2rem;
+          }
+
+          .ecosystem-image-shell {
+            border-radius: 1.5rem;
           }
 
         }
