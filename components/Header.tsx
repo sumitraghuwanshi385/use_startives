@@ -49,15 +49,24 @@ const Header: React.FC = () => {
   const prevCountRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+  const main = document.querySelector('main');
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+  if (!main) return;
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleScroll = () => {
+    setScrolled(main.scrollTop > 10);
+  };
+
+  main.addEventListener('scroll', handleScroll, {
+    passive: true,
+  });
+
+  handleScroll();
+
+  return () => {
+    main.removeEventListener('scroll', handleScroll);
+  };
+}, []);
 
   useEffect(() => {
     if (prevCountRef.current === null) {
