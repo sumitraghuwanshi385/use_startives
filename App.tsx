@@ -279,20 +279,10 @@ const App: React.FC = () => {
     !isFullHeightPage &&
     !isChatOpen;
 
-  const isHomePage =
-    location.pathname === '/' && !currentUser;
-
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
-      <div
-        className="
-          flex
-          min-h-screen
-          w-full
-          flex-col
-          bg-[var(--background-secondary)]
-        "
-      >
+      <div className="flex min-h-screen w-full flex-col bg-[var(--background-secondary)]">
+
         {authLoadingState.isLoading &&
           location.pathname === '/login' && (
             <FullScreenLoader
@@ -318,27 +308,12 @@ const App: React.FC = () => {
             overflow-y-auto
             overflow-x-hidden
             overscroll-contain
-
-            ${
-              isHomePage
-                ? 'min-h-[calc(100vh-61px)]'
-                : ''
-            }
-
-            ${
-              needsBottomNavPadding
-                ? 'pb-16'
-                : ''
-            }
-
-            ${
-              isFullHeightPage
-                ? 'flex flex-col'
-                : ''
-            }
+            ${needsBottomNavPadding ? 'pb-16' : ''}
+            ${isFullHeightPage ? 'flex flex-col' : ''}
           `}
         >
           <Routes>
+
             <Route
               path="/"
               element={
@@ -348,7 +323,7 @@ const App: React.FC = () => {
                     replace
                   />
                 ) : (
-                  <div className="w-full min-h-full">
+                  <div className="w-full">
                     <HomePage />
                   </div>
                 )
@@ -703,10 +678,11 @@ const App: React.FC = () => {
                 )
               }
             />
-          </Routes>
-        </main>
 
-        {showFooter && <Footer />}
+          </Routes>
+
+          {showFooter && <Footer />}
+        </main>
 
         {currentUser &&
           !isChatOpen &&
