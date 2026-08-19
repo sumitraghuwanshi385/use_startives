@@ -14,9 +14,9 @@ import {
 
 export const BellIcon: React.FC<{ className?: string }> = ({
   className = 'w-6 h-6',
-}) => (
-  <Bell className={className} />
-);
+}) => {
+  return <Bell className={className} />;
+};
 
 const ThemeIconButton: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -25,6 +25,7 @@ const ThemeIconButton: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
+      type="button"
       className="p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60"
       aria-label="Toggle theme"
     >
@@ -104,7 +105,6 @@ const Header: React.FC = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [shake, setShake] = useState(false);
 
@@ -112,37 +112,29 @@ const Header: React.FC = () => {
   const bellRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef<number | null>(null);
 
-  // =====================================================
-  // HEADER SCROLL STATE
-  //
-  // TOP:
-  // transparent / no background / no blur / no shadow
-  //
-  // SCROLLED:
-  // glass background / blur / shadow
-  //
-  // SAME BEHAVIOUR:
-  // landing + logged-in + every other page
-  // =====================================================
   useEffect(() => {
+    const main = document.querySelector('main');
+
+    if (!main) {
+      setIsScrolled(false);
+      return;
+    }
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 8);
+      setIsScrolled(main.scrollTop > 8);
     };
 
     handleScroll();
 
-    window.addEventListener('scroll', handleScroll, {
+    main.addEventListener('scroll', handleScroll, {
       passive: true,
     });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      main.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [location.pathname]);
 
-  // =====================================================
-  // NOTIFICATION SOUND
-  // =====================================================
   useEffect(() => {
     if (prevCountRef.current === null) {
       prevCountRef.current = rawUnreadCount;
@@ -156,17 +148,20 @@ const Header: React.FC = () => {
 
       setShake(true);
 
-      setTimeout(() => {
+      const timer = window.setTimeout(() => {
         setShake(false);
       }, 600);
+
+      prevCountRef.current = rawUnreadCount;
+
+      return () => {
+        window.clearTimeout(timer);
+      };
     }
 
     prevCountRef.current = rawUnreadCount;
   }, [rawUnreadCount]);
 
-  // =====================================================
-  // OUTSIDE PROFILE CLICK
-  // =====================================================
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -184,9 +179,6 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // =====================================================
-  // OUTSIDE NOTIFICATION CLICK
-  // =====================================================
   useEffect(() => {
     const handleClickOutsideBell = (event: MouseEvent) => {
       if (
@@ -212,34 +204,20 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setProfileDropdownOpen(false);
+    setShowNotifications(false);
   }, [location.pathname]);
 
-  // =====================================================
-  // LOGOUT
-  // =====================================================
   const handleLogout = () => {
     logout();
     setProfileDropdownOpen(false);
     navigate('/login');
   };
 
-  // =====================================================
-  // MENU
-  // =====================================================
   const handleMenuClick = () => {
-    setIsMenuAnimating(true);
-
-    setTimeout(() => {
-      setIsMenuAnimating(false);
-    }, 300);
-
     setShowNotifications(false);
     setProfileDropdownOpen(prev => !prev);
   };
 
-  // =====================================================
-  // NOTIFICATIONS
-  // =====================================================
   const handleBellClick = async () => {
     const nextState = !showNotifications;
 
@@ -263,9 +241,6 @@ const Header: React.FC = () => {
     }
   };
 
-  // =====================================================
-  // NAV LINKS
-  // =====================================================
   const navLinks = [
     {
       name: 'Dashboard',
@@ -316,9 +291,6 @@ const Header: React.FC = () => {
     },
   ];
 
-  // =====================================================
-  // INITIALS
-  // =====================================================
   const getInitials = (name?: string): string => {
     if (!name || name.trim() === '') {
       return 'U';
@@ -334,19 +306,10 @@ const Header: React.FC = () => {
   const commonIconButtonClasses =
     'relative p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60';
 
-  // =====================================================
-  // SINGLE SOURCE OF TRUTH
-  //
-  // false = transparent
-  // true  = glass
-  // =====================================================
   const showGlassHeader = isScrolled;
 
   return (
     <>
-      {/* =================================================
-          HEADER
-      ================================================= */}
       <header
         className={`
           sticky
@@ -365,25 +328,22 @@ const Header: React.FC = () => {
           ${
             showGlassHeader
               ? `
-                !bg-white/72
-                dark:!bg-neutral-900/72
+                bg-white/72
+                dark:bg-neutral-900/72
                 backdrop-blur-[30px]
                 backdrop-saturate-[200%]
                 shadow-[0_8px_30px_rgba(30,40,80,0.06)]
               `
               : `
-                !bg-transparent
-                !backdrop-blur-0
-                !backdrop-saturate-100
-                !shadow-none
+                bg-transparent
+                dark:bg-transparent
+                backdrop-blur-0
+                backdrop-saturate-100
+                shadow-none
               `
           }
         `}
       >
-
-        {/* ===============================================
-            GLASS GRADIENT
-        =============================================== */}
         <div
           className={`
             absolute
@@ -392,27 +352,21 @@ const Header: React.FC = () => {
             transition-opacity
             duration-500
             ease-out
-
             bg-gradient-to-b
             from-white/65
             via-white/25
             to-white/10
-
             dark:from-white/10
             dark:via-white/5
             dark:to-transparent
-
             ${
               showGlassHeader
                 ? 'opacity-100'
-                : '!opacity-0'
+                : 'opacity-0'
             }
           `}
         />
 
-        {/* ===============================================
-            GLASS TOP HIGHLIGHT
-        =============================================== */}
         <div
           className={`
             absolute
@@ -423,18 +377,14 @@ const Header: React.FC = () => {
             pointer-events-none
             transition-opacity
             duration-500
-
             ${
               showGlassHeader
                 ? 'opacity-100 bg-white/80 dark:bg-white/15'
-                : '!opacity-0'
+                : 'opacity-0'
             }
           `}
         />
 
-        {/* ===============================================
-            HEADER CONTENT
-        =============================================== */}
         <div
           className="
             relative
@@ -450,12 +400,7 @@ const Header: React.FC = () => {
             py-2.5
           "
         >
-
-          {/* =============================================
-              LEFT
-          ============================================= */}
           <div className="flex items-center space-x-8">
-
             <Link
               to={currentUser ? '/dashboard' : '/'}
               className="
@@ -505,25 +450,18 @@ const Header: React.FC = () => {
                 </Link>
               ))}
             </nav>
-
           </div>
 
-          {/* =============================================
-              RIGHT
-          ============================================= */}
           <div className="flex items-center gap-1">
-
             {currentUser ? (
               <>
-                {/* =======================================
-                    NOTIFICATION
-                ======================================= */}
                 <div
                   ref={bellRef}
                   className="relative"
                 >
                   <button
                     onClick={handleBellClick}
+                    type="button"
                     className="
                       relative
                       p-2
@@ -533,6 +471,7 @@ const Header: React.FC = () => {
                       hover:bg-[var(--component-background-hover)]
                       transition
                     "
+                    aria-label="Notifications"
                   >
                     <div className={shake ? 'shake' : ''}>
                       <BellIcon className="w-6 h-6" />
@@ -572,9 +511,6 @@ const Header: React.FC = () => {
                   )}
                 </div>
 
-                {/* =======================================
-                    LOGGED-IN DIVIDER
-                ======================================= */}
                 <div
                   className="
                     mx-1.5
@@ -585,19 +521,17 @@ const Header: React.FC = () => {
                   "
                 />
 
-                {/* =======================================
-                    PROFILE
-                ======================================= */}
                 <div
                   ref={profileDropdownRef}
                   className="relative"
                 >
                   <button
                     onClick={handleMenuClick}
+                    type="button"
                     className={commonIconButtonClasses}
                     aria-label="Open menu"
                   >
-                    {currentUser?.profilePictureUrl ? (
+                    {currentUser.profilePictureUrl ? (
                       <img
                         src={currentUser.profilePictureUrl}
                         alt={currentUser.name}
@@ -632,9 +566,6 @@ const Header: React.FC = () => {
                     )}
                   </button>
 
-                  {/* =====================================
-                      DROPDOWN
-                  ===================================== */}
                   <div
                     className={`
                       origin-top-right
@@ -649,7 +580,6 @@ const Header: React.FC = () => {
                       shadow-2xl
                       transition
                       duration-200
-
                       ${
                         profileDropdownOpen
                           ? 'opacity-100 scale-100'
@@ -658,8 +588,6 @@ const Header: React.FC = () => {
                     `}
                   >
                     <div className="py-1">
-
-                      {/* PROFILE */}
                       <Link
                         to="/profile"
                         className="
@@ -672,7 +600,6 @@ const Header: React.FC = () => {
                         "
                       >
                         <div className="flex items-center space-x-3">
-
                           <div
                             className="
                               w-10
@@ -687,13 +614,12 @@ const Header: React.FC = () => {
                               text-sm
                               ring-2
                               ring-white/20
+                              overflow-hidden
                             "
                           >
                             {currentUser.profilePictureUrl ? (
                               <img
-                                src={
-                                  currentUser.profilePictureUrl
-                                }
+                                src={currentUser.profilePictureUrl}
                                 alt={currentUser.name}
                                 className="
                                   w-full
@@ -716,11 +642,9 @@ const Header: React.FC = () => {
                               {currentUser.email}
                             </p>
                           </div>
-
                         </div>
                       </Link>
 
-                      {/* MENU LINKS */}
                       {mobileMenuLinks.map(link => (
                         <Link
                           key={link.name}
@@ -739,7 +663,6 @@ const Header: React.FC = () => {
                         </Link>
                       ))}
 
-                      {/* APPEARANCE */}
                       <div
                         className="
                           border-t
@@ -749,17 +672,14 @@ const Header: React.FC = () => {
                         "
                       >
                         <div className="flex items-center justify-between">
-
                           <span className="text-sm text-[var(--text-secondary)]">
                             Appearance
                           </span>
 
                           <ThemeSwitch />
-
                         </div>
                       </div>
 
-                      {/* LOGOUT */}
                       <div
                         className="
                           border-t
@@ -768,6 +688,7 @@ const Header: React.FC = () => {
                       >
                         <button
                           onClick={handleLogout}
+                          type="button"
                           className="
                             w-full
                             text-left
@@ -785,28 +706,19 @@ const Header: React.FC = () => {
                           <span>Logout</span>
                         </button>
                       </div>
-
                     </div>
                   </div>
                 </div>
               </>
             ) : (
-
-              /* =========================================
-                 LOGGED OUT / LANDING
-              ========================================= */
               <div className="flex items-center space-x-1.5">
-
                 {location.pathname !== '/' && (
                   <ThemeIconButton />
                 )}
 
-                {/* =====================================
-                    JOIN NOW
-                    7% LARGER THAN PREVIOUS VERSION
-                ===================================== */}
                 <button
                   onClick={() => navigate('/signup')}
+                  type="button"
                   className="
                     liquid-glass-cta
                     group
@@ -814,39 +726,30 @@ const Header: React.FC = () => {
                     inline-flex
                     items-center
                     justify-center
-
-                    gap-[2.25px]
-
+                    gap-[4px]
                     rounded-full
-
-                    px-[4.32px]
-                    py-[3.46px]
-                    pl-[10.40px]
-                    sm:pl-[13px]
-                    pr-[3.46px]
-
+                    px-[3.9px]
+                    py-[3.1px]
+                    pl-[9.35px]
+                    sm:pl-[11.7px]
+                    pr-[3.1px]
                     text-neutral-900
                     font-bold
-                    text-[6.93px]
-                    sm:text-[7.37px]
+                    text-[6.58px]
+                    sm:text-[7px]
                     tracking-tight
                     select-none
                     overflow-hidden
-
                     transition-all
                     duration-300
-
                     hover:scale-[1.035]
                     active:scale-[0.97]
-
                     focus:outline-none
                     focus:ring-0
                     focus-visible:outline-none
                     focus-visible:ring-0
                   "
                 >
-
-                  {/* Base glass */}
                   <span
                     className="
                       absolute
@@ -860,7 +763,6 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Color tint */}
                   <span
                     className="
                       absolute
@@ -874,7 +776,6 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Blur layer */}
                   <span
                     className="
                       absolute
@@ -886,7 +787,6 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Top highlight */}
                   <span
                     className="
                       absolute
@@ -900,15 +800,17 @@ const Header: React.FC = () => {
                     "
                   />
 
-                  {/* Text */}
-                  <span className="relative z-10 whitespace-nowrap">
+                  <span
+                    className="
+                      relative
+                      z-10
+                      whitespace-nowrap
+                      translate-x-[-0.5px]
+                    "
+                  >
                     Join Now
                   </span>
 
-                  {/* =================================
-                      ARROW CIRCLE
-                      7% LARGER
-                  ================================= */}
                   <span
                     className="
                       relative
@@ -916,31 +818,22 @@ const Header: React.FC = () => {
                       flex
                       items-center
                       justify-center
-
-                      w-[19.07px]
-                      h-[19.07px]
-
-                      sm:w-[20.97px]
-                      sm:h-[20.97px]
-
+                      w-[20.02px]
+                      h-[20.02px]
+                      sm:w-[22.02px]
+                      sm:h-[22.02px]
                       rounded-full
                       overflow-hidden
-
                       border
                       border-white/85
                       bg-white/40
                       backdrop-blur-xl
-
                       shadow-[inset_0_1px_2px_rgba(255,255,255,0.98),0_3px_9px_rgba(20,30,60,0.12)]
-
                       transition-all
                       duration-300
-
                       group-hover:bg-white/55
                     "
                   >
-
-                    {/* Arrow circle gradient */}
                     <span
                       className="
                         absolute
@@ -955,7 +848,6 @@ const Header: React.FC = () => {
                       "
                     />
 
-                    {/* Inner glass */}
                     <span
                       className="
                         absolute
@@ -966,44 +858,29 @@ const Header: React.FC = () => {
                       "
                     />
 
-                    {/* Arrow */}
                     <ArrowRight
                       className="
                         relative
                         z-10
-
                         w-[8.58px]
                         h-[8.58px]
-
                         sm:w-[9.53px]
                         sm:h-[9.53px]
-
                         text-neutral-900
-
                         transition-transform
                         duration-300
-
                         group-hover:translate-x-0.5
                       "
                     />
-
                   </span>
-
                 </button>
-
               </div>
             )}
-
           </div>
         </div>
       </header>
 
       <style>{`
-
-        /* =====================================================
-           LIQUID GLASS JOIN NOW
-        ===================================================== */
-
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(30px) saturate(200%);
           backdrop-filter: blur(30px) saturate(200%);
@@ -1025,10 +902,8 @@ const Header: React.FC = () => {
 
         .liquid-glass-cta::after {
           content: '';
-
           position: absolute;
           inset: 0;
-
           border-radius: inherit;
 
           background:
@@ -1041,7 +916,6 @@ const Header: React.FC = () => {
             );
 
           opacity: 0.8;
-
           pointer-events: none;
         }
 
@@ -1062,10 +936,6 @@ const Header: React.FC = () => {
             inset 0 -1px 1px rgba(120, 130, 160, 0.08),
             0 6px 20px rgba(30, 40, 80, 0.11);
         }
-
-        /* =====================================================
-           THEME SWITCH
-        ===================================================== */
 
         .theme-glass-switch {
           position: relative;
@@ -1221,18 +1091,13 @@ const Header: React.FC = () => {
           transform: scale(0.94);
         }
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
         @media (max-width: 639px) {
-
           .liquid-glass-cta {
-            padding-top: 3.46px;
-            padding-bottom: 3.46px;
-            padding-left: 10.40px;
-            padding-right: 3.46px;
-            font-size: 6.93px;
+            padding-top: 3.1px;
+            padding-bottom: 3.1px;
+            padding-left: 9.35px;
+            padding-right: 3.1px;
+            font-size: 6.58px;
           }
 
           .liquid-glass-cta span {
@@ -1258,7 +1123,6 @@ const Header: React.FC = () => {
             height: 25px;
           }
         }
-
       `}</style>
     </>
   );
