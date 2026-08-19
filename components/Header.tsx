@@ -50,10 +50,12 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 8);
+      setScrolled(window.scrollY > 10);
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    handleScroll(); // initial check
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -173,10 +175,10 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-500 ease-out ${
+      className={`sticky top-0 z-40 w-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
         scrolled
-          ? "bg-[var(--background-primary)]/65 dark:bg-[var(--background-primary)]/55 backdrop-blur-2xl backdrop-saturate-150 border-b border-[var(--border-primary)]/40 shadow-[0_4px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
-          : "bg-transparent border-b border-transparent"
+          ? "bg-white/70 dark:bg-black/55 backdrop-blur-2xl backdrop-saturate-150 border-b border-black/10 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]"
+          : "bg-transparent border-b border-transparent shadow-none"
       }`}
     >
       <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2">
@@ -234,7 +236,7 @@ const Header: React.FC = () => {
                 )}
               </div>
 
-              {/* ☰ Profile / Menu */}
+              {/* Profile / Menu */}
               <div ref={profileDropdownRef} className="relative">
                 <button
                   onClick={handleMenuClick}
