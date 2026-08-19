@@ -527,7 +527,7 @@ const HomePage: React.FC = () => {
 
       <div className="relative z-10 bg-white dark:bg-black">
 
-        {/* ================= HERO ================= */}
+        {/* HERO */}
 
         <section className="hero-animated-bg relative bg-white dark:bg-black pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
 
@@ -649,7 +649,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= DISCOVER PROJECTS ================= */}
+        {/* DISCOVER PROJECTS */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -760,7 +760,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= ECOSYSTEM ================= */}
+        {/* ECOSYSTEM */}
 
         <section className="py-8 sm:py-10 bg-white dark:bg-black relative overflow-hidden">
 
@@ -792,8 +792,6 @@ const HomePage: React.FC = () => {
             >
               <div className="ecosystem-image-wrap w-full flex justify-center">
 
-                {/* LIGHT MODE — NEW IMAGE */}
-
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787123288/file_000000005e3881fab327925e0e8d2e28_kbpxgq.png"
                   alt="Startives ecosystem"
@@ -807,8 +805,6 @@ const HomePage: React.FC = () => {
                     object-center
                   "
                 />
-
-                {/* DARK MODE */}
 
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787122074/file_00000000b90081fab560a74114540bc4_vea15j.png"
@@ -864,7 +860,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= FEATURES ================= */}
+        {/* FEATURES */}
 
         <section className="py-10 sm:py-12 bg-white dark:bg-black">
 
@@ -914,16 +910,10 @@ const HomePage: React.FC = () => {
                       "
                     >
 
-                      {/* PREMIUM NUMBER PILL */}
+                      {/* CLEAN NUMBER */}
 
                       <div className="feature-card-number">
-
-                        <span className="feature-card-number-glow" />
-
-                        <span className="feature-card-number-text">
-                          #{index + 1}
-                        </span>
-
+                        #{index + 1}
                       </div>
 
                       <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
@@ -988,7 +978,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= STARTALKS ================= */}
+        {/* STARTALKS */}
 
         <section className="py-12 bg-white dark:bg-black relative overflow-hidden">
 
@@ -1158,7 +1148,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= WHY STARTIVES ================= */}
+        {/* WHY STARTIVES */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -1219,7 +1209,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= TESTIMONIALS ================= */}
+        {/* TESTIMONIALS */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -1333,13 +1323,11 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ================= LAUNCH YOUR VISION ================= */}
+        {/* LAUNCH YOUR VISION */}
 
         <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-black">
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
-
-            {/* LIGHT MODE */}
 
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
@@ -1356,8 +1344,6 @@ const HomePage: React.FC = () => {
                 dark:hidden
               "
             />
-
-            {/* DARK MODE — NEW IMAGE */}
 
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787123361/Picsart_26-08-19_12-39-00-989_qik3t4.jpg"
@@ -1499,13 +1485,19 @@ const HomePage: React.FC = () => {
 
         .reveal-item {
           opacity: 0;
-          transform: translateY(24px);
+
+          transform:
+            translateY(24px);
 
           transition:
-            opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity 0.7s
+              cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.7s
+              cubic-bezier(0.16, 1, 0.3, 1);
 
-          will-change: opacity, transform;
+          will-change:
+            opacity,
+            transform;
         }
 
         .reveal-item.is-visible {
@@ -1526,14 +1518,17 @@ const HomePage: React.FC = () => {
 
           background:
             radial-gradient(
-              120px circle at var(--x, 50%) var(--y, 50%),
+              120px circle at
+              var(--x, 50%)
+              var(--y, 50%),
               rgba(255, 255, 255, 0.25),
               transparent 70%
             );
 
           opacity: 0;
 
-          transition: opacity 0.3s ease;
+          transition:
+            opacity 0.3s ease;
 
           pointer-events: none;
         }
@@ -1561,149 +1556,131 @@ const HomePage: React.FC = () => {
           padding: 0 18px;
         }
 
-        .ecosystem-stat + .ecosystem-stat {
-          border-left: 1px solid rgba(0, 0, 0, 0.08);
+        .ecosystem-stat
+        + .ecosystem-stat {
+          border-left:
+            1px solid
+            rgba(0, 0, 0, 0.08);
         }
 
-        .dark .ecosystem-stat + .ecosystem-stat {
-          border-left-color: rgba(255, 255, 255, 0.10);
+        .dark
+        .ecosystem-stat
+        + .ecosystem-stat {
+          border-left-color:
+            rgba(255, 255, 255, 0.10);
         }
 
         .ecosystem-stat-number {
           line-height: 1;
 
-          background-clip: text !important;
-          -webkit-background-clip: text !important;
+          background-clip:
+            text !important;
 
-          color: transparent !important;
-          -webkit-text-fill-color: transparent !important;
+          -webkit-background-clip:
+            text !important;
+
+          color:
+            transparent !important;
+
+          -webkit-text-fill-color:
+            transparent !important;
         }
 
 
         /* =========================================
-           FEATURE NUMBER — PREMIUM ANIMATED PILL
+           FEATURE NUMBERS
+           CLEAN TEXT ONLY
+           NO PILL
+           NO GRADIENT
         ========================================= */
 
         .feature-card-number {
           position: absolute;
 
-          top: 14px;
-          left: 16px;
+          top: 13px;
+          left: 18px;
 
-          z-index: 40;
+          z-index: 30;
 
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
+          font-family:
+            Poppins,
+            sans-serif;
 
-          min-width: 42px;
-          height: 25px;
+          font-size: 27px;
 
-          padding: 0 10px;
-
-          border-radius: 999px;
-
-          background:
-            linear-gradient(
-              135deg,
-              #ef4444 0%,
-              #a855f7 48%,
-              #3b82f6 100%
-            );
-
-          color: #ffffff;
-
-          box-shadow:
-            0 5px 18px rgba(239, 68, 68, 0.16),
-            0 3px 12px rgba(59, 130, 246, 0.14);
-
-          overflow: hidden;
-
-          font-family: Poppins, sans-serif;
-          font-size: 10px;
           line-height: 1;
+
           font-weight: 900;
-          letter-spacing: 0.08em;
 
-          transform: translateZ(0);
+          letter-spacing:
+            -0.055em;
 
-          transition:
-            transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-            box-shadow 0.4s ease;
-        }
-
-        .feature-card-number::before {
-          content: '';
-
-          position: absolute;
-
-          top: 0;
-          bottom: 0;
-          left: -70%;
-
-          width: 45%;
-
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(255, 255, 255, 0.55),
-              transparent
-            );
-
-          transform: skewX(-20deg);
-
-          animation:
-            number-shine 4s ease-in-out infinite;
-
-          pointer-events: none;
-        }
-
-        .feature-card-number-glow {
-          position: absolute;
-
-          inset: -5px;
-
-          border-radius: inherit;
-
-          background:
-            linear-gradient(
-              135deg,
-              #ef4444,
-              #a855f7,
-              #3b82f6
-            );
-
-          filter: blur(9px);
-
-          opacity: 0.18;
-
-          z-index: -1;
-
-          animation:
-            number-glow 3s ease-in-out infinite;
-        }
-
-        .feature-card-number-text {
-          position: relative;
-
-          z-index: 2;
-
-          color: #ffffff;
+          color:
+            rgba(72, 78, 88, 0.48);
 
           text-shadow:
-            0 1px 2px rgba(0, 0, 0, 0.18);
+            0 2px 0
+              rgba(255, 255, 255, 0.85),
+            0 5px 12px
+              rgba(80, 85, 95, 0.20),
+            0 10px 22px
+              rgba(80, 85, 95, 0.12);
+
+          pointer-events: none;
+
+          user-select: none;
+
+          transition:
+            transform 0.4s
+              cubic-bezier(0.16, 1, 0.3, 1),
+            color 0.4s ease,
+            text-shadow 0.4s ease;
+        }
+
+        .dark .feature-card-number {
+          color:
+            rgba(255, 255, 255, 0.42);
+
+          text-shadow:
+            0 2px 0
+              rgba(0, 0, 0, 0.65),
+            0 5px 13px
+              rgba(0, 0, 0, 0.65),
+            0 10px 25px
+              rgba(0, 0, 0, 0.45);
         }
 
         .feature-liquid-card:hover
         .feature-card-number {
           transform:
             translateY(-2px)
-            scale(1.06);
+            scale(1.05);
 
-          box-shadow:
-            0 8px 24px rgba(239, 68, 68, 0.22),
-            0 5px 18px rgba(59, 130, 246, 0.20);
+          color:
+            rgba(58, 64, 74, 0.58);
+
+          text-shadow:
+            0 2px 0
+              rgba(255, 255, 255, 0.9),
+            0 6px 16px
+              rgba(70, 75, 85, 0.24),
+            0 12px 28px
+              rgba(70, 75, 85, 0.15);
+        }
+
+        .dark
+        .feature-liquid-card:hover
+        .feature-card-number {
+          color:
+            rgba(255, 255, 255, 0.52);
+
+          text-shadow:
+            0 2px 0
+              rgba(0, 0, 0, 0.7),
+            0 6px 16px
+              rgba(0, 0, 0, 0.75),
+            0 12px 28px
+              rgba(0, 0, 0, 0.55);
         }
 
 
@@ -1713,10 +1690,12 @@ const HomePage: React.FC = () => {
 
         .feature-liquid-card {
           -webkit-backdrop-filter:
-            blur(26px) saturate(180%);
+            blur(26px)
+            saturate(180%);
 
           backdrop-filter:
-            blur(26px) saturate(180%);
+            blur(26px)
+            saturate(180%);
 
           background:
             linear-gradient(
@@ -1725,12 +1704,16 @@ const HomePage: React.FC = () => {
               rgba(255, 255, 255, 0.55)
             );
 
-          box-shadow: none !important;
+          box-shadow:
+            none !important;
         }
 
         .dark .feature-liquid-card {
-          background: #000000 !important;
-          box-shadow: none !important;
+          background:
+            #000000 !important;
+
+          box-shadow:
+            none !important;
         }
 
         .feature-liquid-card::before {
@@ -1739,7 +1722,8 @@ const HomePage: React.FC = () => {
           position: absolute;
           inset: 0;
 
-          border-radius: inherit;
+          border-radius:
+            inherit;
 
           background:
             linear-gradient(
@@ -1755,8 +1739,11 @@ const HomePage: React.FC = () => {
           pointer-events: none;
         }
 
-        .dark .feature-liquid-card::before {
-          background: transparent;
+        .dark
+        .feature-liquid-card::before {
+          background:
+            transparent;
+
           opacity: 0;
         }
 
@@ -1782,7 +1769,8 @@ const HomePage: React.FC = () => {
           pointer-events: none;
         }
 
-        .dark .feature-liquid-card::after {
+        .dark
+        .feature-liquid-card::after {
           background:
             linear-gradient(
               90deg,
@@ -1800,7 +1788,8 @@ const HomePage: React.FC = () => {
             none !important;
         }
 
-        .dark .feature-liquid-card:hover {
+        .dark
+        .feature-liquid-card:hover {
           border-color:
             rgba(255, 255, 255, 0.18);
 
@@ -1815,10 +1804,12 @@ const HomePage: React.FC = () => {
 
         .liquid-glass-cta {
           -webkit-backdrop-filter:
-            blur(24px) saturate(180%);
+            blur(24px)
+            saturate(180%);
 
           backdrop-filter:
-            blur(24px) saturate(180%);
+            blur(24px)
+            saturate(180%);
 
           background:
             linear-gradient(
@@ -1828,24 +1819,32 @@ const HomePage: React.FC = () => {
             );
 
           border:
-            1px solid rgba(255, 255, 255, 0.9);
+            1px solid
+            rgba(255, 255, 255, 0.9);
 
           box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.95),
-            inset 0 -1px 1px rgba(120, 130, 160, 0.08),
-            0 8px 28px rgba(30, 40, 80, 0.13);
+            inset 0 1px 2px
+              rgba(255, 255, 255, 0.95),
+            inset 0 -1px 1px
+              rgba(120, 130, 160, 0.08),
+            0 8px 28px
+              rgba(30, 40, 80, 0.13);
         }
 
         .dark .liquid-glass-cta {
-          background: #000000 !important;
+          background:
+            #000000 !important;
 
           border-color:
             rgba(255, 255, 255, 0.14);
 
           box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.10),
-            inset 0 -1px 1px rgba(0, 0, 0, 0.25),
-            0 8px 28px rgba(0, 0, 0, 0.30);
+            inset 0 1px 2px
+              rgba(255, 255, 255, 0.10),
+            inset 0 -1px 1px
+              rgba(0, 0, 0, 0.25),
+            0 8px 28px
+              rgba(0, 0, 0, 0.30);
         }
 
         .liquid-glass-cta::after {
@@ -1854,7 +1853,8 @@ const HomePage: React.FC = () => {
           position: absolute;
           inset: 0;
 
-          border-radius: inherit;
+          border-radius:
+            inherit;
 
           background:
             linear-gradient(
@@ -1870,57 +1870,33 @@ const HomePage: React.FC = () => {
           pointer-events: none;
         }
 
-        .dark .liquid-glass-cta::after {
-          background: transparent;
+        .dark
+        .liquid-glass-cta::after {
+          background:
+            transparent;
+
           opacity: 0;
         }
 
         .liquid-glass-cta:hover {
           box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 1),
-            inset 0 -1px 1px rgba(100, 110, 150, 0.08),
-            0 12px 34px rgba(30, 40, 80, 0.17);
+            inset 0 1px 2px
+              rgba(255, 255, 255, 1),
+            inset 0 -1px 1px
+              rgba(100, 110, 150, 0.08),
+            0 12px 34px
+              rgba(30, 40, 80, 0.17);
         }
 
-        .dark .liquid-glass-cta:hover {
+        .dark
+        .liquid-glass-cta:hover {
           box-shadow:
-            inset 0 1px 2px rgba(255, 255, 255, 0.14),
-            inset 0 -1px 1px rgba(0, 0, 0, 0.20),
-            0 12px 34px rgba(0, 0, 0, 0.35);
-        }
-
-
-        /* =========================================
-           NUMBER ANIMATIONS
-        ========================================= */
-
-        @keyframes number-shine {
-
-          0%,
-          65%,
-          100% {
-            left: -70%;
-          }
-
-          80% {
-            left: 130%;
-          }
-
-        }
-
-        @keyframes number-glow {
-
-          0%,
-          100% {
-            opacity: 0.14;
-            transform: scale(0.96);
-          }
-
-          50% {
-            opacity: 0.25;
-            transform: scale(1.06);
-          }
-
+            inset 0 1px 2px
+              rgba(255, 255, 255, 0.14),
+            inset 0 -1px 1px
+              rgba(0, 0, 0, 0.20),
+            0 12px 34px
+              rgba(0, 0, 0, 0.35);
         }
 
 
@@ -1932,18 +1908,23 @@ const HomePage: React.FC = () => {
 
           0%,
           100% {
-            transform: translate(0, 0);
+            transform:
+              translate(0, 0);
           }
 
           50% {
-            transform: translate(12px, -18px);
+            transform:
+              translate(12px, -18px);
           }
 
         }
 
         .animate-float-slow {
           animation:
-            float-slow 8s ease-in-out infinite;
+            float-slow
+            8s
+            ease-in-out
+            infinite;
         }
 
 
@@ -1954,11 +1935,20 @@ const HomePage: React.FC = () => {
         @media (max-width: 639px) {
 
           .liquid-glass-cta {
-            padding-top: 6.3px;
-            padding-bottom: 6.3px;
-            padding-left: 19.8px;
-            padding-right: 6.3px;
-            font-size: 12.6px;
+            padding-top:
+              6.3px;
+
+            padding-bottom:
+              6.3px;
+
+            padding-left:
+              19.8px;
+
+            padding-right:
+              6.3px;
+
+            font-size:
+              12.6px;
           }
 
           .liquid-glass-cta span {
@@ -1967,12 +1957,14 @@ const HomePage: React.FC = () => {
           }
 
           .ecosystem-stat-number.button-gradient {
-            background-clip: text !important;
+            background-clip:
+              text !important;
 
             -webkit-background-clip:
               text !important;
 
-            color: transparent !important;
+            color:
+              transparent !important;
 
             -webkit-text-fill-color:
               transparent !important;
@@ -1981,23 +1973,29 @@ const HomePage: React.FC = () => {
           .ecosystem-stats {
             display: flex;
 
-            flex-direction: column;
+            flex-direction:
+              column;
 
-            align-items: center;
+            align-items:
+              center;
 
             gap: 0;
           }
 
           .ecosystem-stat {
             width: 100%;
-            padding: 9px 0;
+
+            padding:
+              9px 0;
           }
 
-          .ecosystem-stat + .ecosystem-stat {
+          .ecosystem-stat
+          + .ecosystem-stat {
             border-left: 0;
 
             border-top:
-              1px solid rgba(0, 0, 0, 0.08);
+              1px solid
+              rgba(0, 0, 0, 0.08);
           }
 
           .dark
@@ -2012,23 +2010,28 @@ const HomePage: React.FC = () => {
           }
 
           .feature-liquid-card {
-            min-height: 315px;
+            min-height:
+              315px;
 
-            padding: 20px;
+            padding:
+              20px;
 
-            border-radius: 1.7rem;
+            border-radius:
+              1.7rem;
           }
 
           .feature-card-number {
-            top: 13px;
-            left: 16px;
+            top:
+              14px;
 
-            min-width: 40px;
-            height: 24px;
+            left:
+              17px;
 
-            padding: 0 9px;
+            font-size:
+              24px;
 
-            font-size: 9.5px;
+            letter-spacing:
+              -0.055em;
           }
 
         }
@@ -2048,6 +2051,17 @@ const HomePage: React.FC = () => {
               );
           }
 
+          .feature-card-number {
+            top:
+              14px;
+
+            left:
+              18px;
+
+            font-size:
+              27px;
+          }
+
         }
 
 
@@ -2058,32 +2072,34 @@ const HomePage: React.FC = () => {
         @media (prefers-reduced-motion: reduce) {
 
           .reveal-item {
-            opacity: 1 !important;
+            opacity:
+              1 !important;
 
-            transform: none !important;
+            transform:
+              none !important;
 
-            transition: none !important;
+            transition:
+              none !important;
           }
 
           .animate-float-slow {
-            animation: none !important;
+            animation:
+              none !important;
           }
 
           .liquid-glass-cta {
-            transition: none !important;
+            transition:
+              none !important;
           }
 
           .feature-liquid-card {
-            transition: none !important;
-          }
-
-          .feature-card-number::before,
-          .feature-card-number-glow {
-            animation: none !important;
+            transition:
+              none !important;
           }
 
           .feature-card-number {
-            transition: none !important;
+            transition:
+              none !important;
           }
 
         }
