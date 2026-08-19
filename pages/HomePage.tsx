@@ -416,31 +416,39 @@ const HomePage: React.FC = () => {
     }
   };
 
+  /*
+   * FEATURE IMAGES
+   *
+   * #1 = original requested replacement
+   * #2 = latest replacement
+   * #3 = latest replacement
+   * #4 = latest replacement
+   */
   const features = [
     {
       image:
-        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038743/Picsart_26-08-18_12-56-10-554_wbodvi.png',
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787154013/Picsart_26-08-19_13-36-32-114_bfyrev.png',
       title: 'VALIDATE YOUR IDEA',
       description:
         'Get feedback on your startup concept from a diverse community of experts and peers.',
     },
     {
       image:
-        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038741/Picsart_26-08-18_12-56-57-760_w19zpa.png',
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787157337/IMG_20260819_215220_locmpg.png',
       title: 'FIND A CO-FOUNDER',
       description:
         'Connect with passionate individuals who share your vision and have the skills to help you succeed.',
     },
     {
       image:
-        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038734/Picsart_26-08-18_12-58-14-816_srheoi.png',
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787157294/IMG_20260819_214812_ggu5mx.png',
       title: 'BUILD YOUR MVP',
       description:
         'Assemble a talented team to bring your Minimum Viable Product to life and start testing the market.',
     },
     {
       image:
-        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787038746/IMG_20260818_125849_rh0bg4.png',
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787157305/IMG_20260819_214853_ygg5xd.png',
       title: 'SCALE YOUR VENTURE',
       description:
         'Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.',
@@ -527,7 +535,7 @@ const HomePage: React.FC = () => {
 
       <div className="relative z-10 bg-white dark:bg-black">
 
-        {/* HERO */}
+        {/* ================= HERO ================= */}
 
         <section className="hero-animated-bg relative bg-white dark:bg-black pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
 
@@ -649,7 +657,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* DISCOVER PROJECTS */}
+        {/* ================= DISCOVER PROJECTS ================= */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -760,7 +768,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* ECOSYSTEM */}
+        {/* ================= ECOSYSTEM ================= */}
 
         <section className="py-8 sm:py-10 bg-white dark:bg-black relative overflow-hidden">
 
@@ -860,7 +868,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* FEATURES */}
+        {/* ================= FEATURES ================= */}
 
         <section className="py-10 sm:py-12 bg-white dark:bg-black">
 
@@ -910,8 +918,6 @@ const HomePage: React.FC = () => {
                       "
                     >
 
-                      {/* CLEAN NUMBER */}
-
                       <div className="feature-card-number">
                         #{index + 1}
                       </div>
@@ -940,10 +946,10 @@ const HomePage: React.FC = () => {
                               className="
                                 relative
                                 z-10
-                                w-[135px]
-                                h-[135px]
-                                sm:w-[153px]
-                                sm:h-[153px]
+                                w-[162px]
+                                h-[162px]
+                                sm:w-[184px]
+                                sm:h-[184px]
                                 object-contain
                                 transition-transform
                                 duration-500
@@ -978,7 +984,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* STARTALKS */}
+        {/* ================= STARTALKS ================= */}
 
         <section className="py-12 bg-white dark:bg-black relative overflow-hidden">
 
@@ -1148,7 +1154,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* WHY STARTIVES */}
+        {/* ================= WHY STARTIVES ================= */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -1209,7 +1215,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
+        {/* ================= TESTIMONIALS ================= */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -1323,14 +1329,16 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* LAUNCH YOUR VISION */}
+        {/* ================= LAUNCH YOUR VISION ================= */}
 
         <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-black">
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
+            {/* LIGHT MODE — NEW IMAGE */}
+
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157268/IMG_20260819_215632_awnsfq.png"
               alt=""
               aria-hidden="true"
               className="
@@ -1345,8 +1353,10 @@ const HomePage: React.FC = () => {
               "
             />
 
+            {/* DARK MODE — NEW IMAGE */}
+
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787123361/Picsart_26-08-19_12-39-00-989_qik3t4.jpg"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157287/IMG_20260819_215700_hjgsna.png"
               alt=""
               aria-hidden="true"
               className="
@@ -1485,9 +1495,7 @@ const HomePage: React.FC = () => {
 
         .reveal-item {
           opacity: 0;
-
-          transform:
-            translateY(24px);
+          transform: translateY(24px);
 
           transition:
             opacity 0.7s
@@ -1592,6 +1600,7 @@ const HomePage: React.FC = () => {
            CLEAN TEXT ONLY
            NO PILL
            NO GRADIENT
+           20% LARGER
         ========================================= */
 
         .feature-card-number {
@@ -1606,7 +1615,7 @@ const HomePage: React.FC = () => {
             Poppins,
             sans-serif;
 
-          font-size: 27px;
+          font-size: 32.4px;
 
           line-height: 1;
 
@@ -2020,6 +2029,7 @@ const HomePage: React.FC = () => {
               1.7rem;
           }
 
+          /* Mobile number: 20% larger */
           .feature-card-number {
             top:
               14px;
@@ -2028,10 +2038,19 @@ const HomePage: React.FC = () => {
               17px;
 
             font-size:
-              24px;
+              28.8px;
 
             letter-spacing:
               -0.055em;
+          }
+
+          /* Feature artwork remains 20% larger */
+          .feature-liquid-card img {
+            width:
+              162px;
+
+            height:
+              162px;
           }
 
         }
@@ -2051,6 +2070,7 @@ const HomePage: React.FC = () => {
               );
           }
 
+          /* Desktop number: 20% larger */
           .feature-card-number {
             top:
               14px;
@@ -2059,7 +2079,7 @@ const HomePage: React.FC = () => {
               18px;
 
             font-size:
-              27px;
+              32.4px;
           }
 
         }
