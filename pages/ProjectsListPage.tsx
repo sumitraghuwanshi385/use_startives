@@ -135,10 +135,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
 };
 
 // --- Project Card Component ---
-export const ProjectCard: React.FC<{
-  idea: StartupIdea;
-  landingPage?: boolean;
-}> = ({ idea, landingPage = false }) => {
+export const ProjectCard: React.FC<{ idea: StartupIdea }> = ({ idea }) => {
   const navigate = useNavigate();
   const { toggleSaveProject, isProjectSaved, currentUser, getUserById, users } = useAppContext();
   const isSaved = currentUser ? isProjectSaved(idea.id) : false;
@@ -156,254 +153,168 @@ export const ProjectCard: React.FC<{
   const websiteUrl = (idea as any).websiteUrl || idea.website || null;
 
   return (
-    <>
-      <article
-        className={`group relative ${
-          landingPage
-            ? 'landing-project-card-light bg-white text-black border-gray-300'
-            : 'bg-[var(--component-background)] border-gray-300 dark:border-[var(--border-primary)]'
-        } rounded-2xl border transition-all duration-500 hover:border-purple-500/30 overflow-hidden cursor-pointer flex flex-col h-full shadow-none font-poppins`}
-        style={
-          landingPage
-            ? ({
-                colorScheme: 'light',
-                '--component-background': '#ffffff',
-                '--component-background-hover': '#f9fafb',
-                '--background-primary': '#ffffff',
-                '--background-secondary': '#ffffff',
-                '--background-tertiary': '#f9fafb',
-                '--text-primary': '#111111',
-                '--text-secondary': '#525252',
-                '--text-muted': '#737373',
-                '--border-primary': '#d1d5db',
-              } as React.CSSProperties)
-            : undefined
-        }
-        onClick={() => navigate(`/idea/${idea.id}`)}
-      >
-        <div className="absolute top-0 left-0 z-20">
-          <span className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-br-2xl border-r border-b border-[var(--border-primary)] shadow-none inline-block ${STAGE_COLOR_MAP[idea.stage] || "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"}`}>
-            {idea.stage}
-          </span>
-        </div>
+    <article
+      className="group relative bg-[var(--component-background)] rounded-2xl border border-gray-300 dark:border-[var(--border-primary)] transition-all duration-500 hover:border-purple-500/30 overflow-hidden cursor-pointer flex flex-col h-full shadow-none font-poppins"
+      onClick={() => navigate(`/idea/${idea.id}`)}
+    >
+      <div className="absolute top-0 left-0 z-20">
+        <span className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-br-2xl border-r border-b border-[var(--border-primary)] shadow-none inline-block ${STAGE_COLOR_MAP[idea.stage] || "bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300"}`}>
+          {idea.stage}
+        </span>
+      </div>
 
-        <div className="absolute top-0 right-0 z-20">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!currentUser) {
-                navigate('/login');
-                return;
-              }
-              toggleSaveProject(idea.id);
-            }}
-            className={`w-12 h-12 rounded-bl-2xl flex items-center justify-center transition-all duration-300 border-l border-b border-[var(--border-primary)] ${isSaved ? 'bg-red-500 text-white border-red-600' : 'bg-white dark:bg-neutral-950 text-neutral-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}
-          >
-            <BookmarkIcon className="w-5 h-5" solid={isSaved} />
-          </button>
-        </div>
-
-        <div className="px-5 pt-14 pb-5 flex-grow flex flex-col">
-          <div className="flex gap-4 items-center mb-5">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-[var(--border-primary)] shadow-none group-hover:scale-105 transition-transform duration-500 bg-neutral-100 dark:bg-neutral-800">
-              {idea.imageUrl ? (
-                <img src={idea.imageUrl} alt={idea.title} className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] bg-neutral-200 dark:bg-neutral-700">
-                  <BookmarkSquareIcon className="w-8 h-8 opacity-40" />
-                </div>
-              )}
-            </div>
-
-            <div className="flex-grow overflow-hidden">
-    
-    {/* Title + icon */}
-    <div className="flex items-center gap-2">
-      
-      <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins">
-        {idea.title}
-      </h3>
-
-      {websiteUrl && (
+      <div className="absolute top-0 right-0 z-20">
         <button
           onClick={(e) => {
             e.stopPropagation();
-            window.open(websiteUrl, "_blank", "noopener,noreferrer");
+            if (!currentUser) {
+              navigate('/login');
+              return;
+            }
+            toggleSaveProject(idea.id);
           }}
-          className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full 
-          bg-gradient-to-r from-red-500 to-blue-500 
-          hover:scale-110 transition-all duration-300"
-          title="Visit website"
+          className={`w-12 h-12 rounded-bl-2xl flex items-center justify-center transition-all duration-300 border-l border-b border-[var(--border-primary)] ${isSaved ? 'bg-red-500 text-white border-red-600' : 'bg-white dark:bg-neutral-950 text-neutral-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}
         >
-          <Globe className="w-3.5 h-3.5 text-white" />
+          <BookmarkIcon className="w-5 h-5" solid={isSaved} />
         </button>
-      )}
+      </div>
 
-    </div>
-
-    <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
-      {idea.tagline}
-    </p>
-  </div>
+      <div className="px-5 pt-14 pb-5 flex-grow flex flex-col">
+        <div className="flex gap-4 items-center mb-5">
+          <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-[var(--border-primary)] shadow-none group-hover:scale-105 transition-transform duration-500 bg-neutral-100 dark:bg-neutral-800">
+            {idea.imageUrl ? (
+              <img src={idea.imageUrl} alt={idea.title} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] bg-neutral-200 dark:bg-neutral-700">
+                <BookmarkSquareIcon className="w-8 h-8 opacity-40" />
+              </div>
+            )}
           </div>
 
-          <p className="text-sm text-[var(--text-secondary)] line-clamp-4 leading-relaxed mb-6 font-medium opacity-80 flex-grow">
-            {idea.description}
-          </p>
+          <div className="flex-grow overflow-hidden">
+  
+  {/* Title + icon */}
+  <div className="flex items-center gap-2">
+    
+    <h3 className="text-xl font-semibold text-[var(--text-primary)] leading-tight line-clamp-1 tracking-tight font-poppins">
+      {idea.title}
+    </h3>
 
-          <div className="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-            {[
-              { label: 'Category', val: idea.category || 'Venture' },
-              { label: 'Model', val: idea.businessModel || 'Other' },
-              { label: 'Mode', val: idea.workMode || 'N/A' },
-              { label: 'Base', val: idea.location ? idea.location.split(',')[0] : 'Global' }
-            ].map(item => (
-              <div key={item.label} className="flex items-center justify-center bg-gray-50 dark:bg-neutral-900 rounded-xl border border-[var(--border-primary)] shadow-none group-hover:border-purple-500/30 transition-all text-center py-1.5 px-1 overflow-hidden">
-                <div className="flex flex-col items-center w-full">
-                  <span className="text-[7px] text-[var(--text-muted)] uppercase font-black tracking-widest leading-none mb-1">{item.label}</span>
-                  <span className="text-[9px] font-bold text-[var(--text-primary)] leading-none truncate w-full">{item.val}</span>
+    {websiteUrl && (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open(websiteUrl, "_blank", "noopener,noreferrer");
+        }}
+        className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full 
+        bg-gradient-to-r from-red-500 to-blue-500 
+        hover:scale-110 transition-all duration-300"
+        title="Visit website"
+      >
+        <Globe className="w-3.5 h-3.5 text-white" />
+      </button>
+    )}
+
+  </div>
+
+  <p className="text-sm text-purple-600 dark:text-purple-400 font-medium line-clamp-1 mt-1 font-poppins">
+    {idea.tagline}
+  </p>
+</div>
+        </div>
+
+        <p className="text-sm text-[var(--text-secondary)] line-clamp-4 leading-relaxed mb-6 font-medium opacity-80 flex-grow">
+          {idea.description}
+        </p>
+
+        <div className="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+          {[
+            { label: 'Category', val: idea.category || 'Venture' },
+            { label: 'Model', val: idea.businessModel || 'Other' },
+            { label: 'Mode', val: idea.workMode || 'N/A' },
+            { label: 'Base', val: idea.location ? idea.location.split(',')[0] : 'Global' }
+          ].map(item => (
+            <div key={item.label} className="flex items-center justify-center bg-gray-50 dark:bg-neutral-900 rounded-xl border border-[var(--border-primary)] shadow-none group-hover:border-purple-500/30 transition-all text-center py-1.5 px-1 overflow-hidden">
+              <div className="flex flex-col items-center w-full">
+                <span className="text-[7px] text-[var(--text-muted)] uppercase font-black tracking-widest leading-none mb-1">{item.label}</span>
+                <span className="text-[9px] font-bold text-[var(--text-primary)] leading-none truncate w-full">{item.val}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Join the Build */}
+        <div className="space-y-2 mt-auto border-t border-[var(--border-primary)] pt-4">
+          <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2">Join the Build</h4>
+          <div className="flex flex-col gap-1.5">
+            {idea.positions.slice(0, 2).map(pos => (
+              <div
+                key={pos.id}
+                className="flex items-center justify-between bg-gray-100 dark:bg-neutral-800 rounded-xl px-3 py-2 border border-gray-200 dark:border-neutral-700/60"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-6 h-6 rounded-lg bg-[linear-gradient(135deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-white">
+                      <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-semibold text-gray-700 dark:text-white/80 font-poppins">
+                    Apply for{' '}
+                    <span className="text-purple-600 dark:text-purple-400 font-bold">{pos.title}</span>
+                    {' '}role
+                  </span>
+                </div>
+                <div className="w-7 h-7 rounded-lg bg-gray-200 dark:bg-neutral-700/60 flex items-center justify-center shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gray-600 dark:text-white/70">
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Join the Build */}
-          <div className="space-y-2 mt-auto border-t border-[var(--border-primary)] pt-4">
-            <h4 className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2">Join the Build</h4>
-            <div className="flex flex-col gap-1.5">
-              {idea.positions.slice(0, 2).map(pos => (
-                <div
-                  key={pos.id}
-                  className="flex items-center justify-between bg-gray-100 dark:bg-neutral-800 rounded-xl px-3 py-2 border border-gray-200 dark:border-neutral-700/60"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-6 h-6 rounded-lg bg-[linear-gradient(135deg,_rgb(239,68,68)_0%,_rgb(59,130,246)_100%)] flex items-center justify-center shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-white">
-                        <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                      </svg>
-                    </div>
-                    <span className="text-[11px] font-semibold text-gray-700 dark:text-white/80 font-poppins">
-                      Apply for{' '}
-                      <span className="text-purple-600 dark:text-purple-400 font-bold">{pos.title}</span>
-                      {' '}role
-                    </span>
-                  </div>
-                  <div className="w-7 h-7 rounded-lg bg-gray-200 dark:bg-neutral-700/60 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gray-600 dark:text-white/70">
-                      <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              ))}
-              {idea.positions.length > 2 && (
-                <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 py-1 px-1">
-                  +{idea.positions.length - 2} more
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
-          <div className="flex items-center gap-2">
-            {idea.founderId && (
-              <div
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/user/${idea.founderId}`);
-                }}
-              >
-                {displayAvatar ? (
-                  <img src={displayAvatar} className="w-5 h-5 rounded-full object-cover" />
-                ) : (
-                  <div className="w-5 h-5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-[8px] font-bold">
-                    {displayName.charAt(0)}
-                  </div>
-                )}
-                <span className="text-xs font-black text-[var(--text-secondary)]">
-                  {displayName.split(" ")[0]}
-                </span>
-              </div>
+            {idea.positions.length > 2 && (
+              <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 py-1 px-1">
+                +{idea.positions.length - 2} more
+              </span>
             )}
-            <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
-              <span className="opacity-30">•</span>
-              {timeAgo(idea.postedDate)}
-            </span>
-          </div>
-          <div className="flex items-center text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 group-hover:translate-x-1 transition-transform">
-            Details
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
-              <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 11-1.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
-            </svg>
           </div>
         </div>
-      </article>
+      </div>
 
-      {landingPage && (
-        <style>{`
-          .landing-project-card-light,
-          .landing-project-card-light * {
-            color-scheme: light !important;
-          }
-
-          .landing-project-card-light {
-            --component-background: #ffffff !important;
-            --component-background-hover: #f9fafb !important;
-            --background-primary: #ffffff !important;
-            --background-secondary: #ffffff !important;
-            --background-tertiary: #f9fafb !important;
-            --text-primary: #111111 !important;
-            --text-secondary: #525252 !important;
-            --text-muted: #737373 !important;
-            --border-primary: #d1d5db !important;
-          }
-
-          .landing-project-card-light .dark\\:bg-neutral-950 {
-            background-color: #ffffff !important;
-          }
-
-          .landing-project-card-light .dark\\:bg-neutral-900 {
-            background-color: #f9fafb !important;
-          }
-
-          .landing-project-card-light .dark\\:bg-neutral-800 {
-            background-color: #f3f4f6 !important;
-          }
-
-          .landing-project-card-light .dark\\:bg-neutral-700 {
-            background-color: #e5e7eb !important;
-          }
-
-          .landing-project-card-light .dark\\:text-white,
-          .landing-project-card-light .dark\\:text-white\\/80 {
-            color: #111111 !important;
-          }
-
-          .landing-project-card-light .dark\\:text-neutral-300,
-          .landing-project-card-light .dark\\:text-neutral-400 {
-            color: #525252 !important;
-          }
-
-          .landing-project-card-light .dark\\:text-purple-400 {
-            color: #9333ea !important;
-          }
-
-          .landing-project-card-light .dark\\:border-neutral-700,
-          .landing-project-card-light .dark\\:border-neutral-700\\/60 {
-            border-color: #e5e7eb !important;
-          }
-
-          .landing-project-card-light .dark\\:hover\\:bg-red-500\\/10:hover {
-            background-color: #fef2f2 !important;
-          }
-
-          .landing-project-card-light .dark\\:group-hover\\:bg-purple-900\\/5:hover {
-            background-color: rgba(250, 245, 255, 0.5) !important;
-          }
-        `}</style>
-      )}
-    </>
+      <div className="flex justify-between items-center px-5 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-[var(--border-primary)] transition-colors group-hover:bg-purple-50/20 dark:group-hover:bg-purple-900/5">
+        <div className="flex items-center gap-2">
+          {idea.founderId && (
+            <div
+              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/user/${idea.founderId}`);
+              }}
+            >
+              {displayAvatar ? (
+                <img src={displayAvatar} className="w-5 h-5 rounded-full object-cover" />
+              ) : (
+                <div className="w-5 h-5 rounded-full bg-gradient-to-r from-red-500 to-blue-500 flex items-center justify-center text-white text-[8px] font-bold">
+                  {displayName.charAt(0)}
+                </div>
+              )}
+              <span className="text-xs font-black text-[var(--text-secondary)]">
+                {displayName.split(" ")[0]}
+              </span>
+            </div>
+          )}
+          <span className="text-[10px] text-[var(--text-muted)] font-bold flex items-center gap-1.5">
+            <span className="opacity-30">•</span>
+            {timeAgo(idea.postedDate)}
+          </span>
+        </div>
+        <div className="flex items-center text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest gap-1 group-hover:translate-x-1 transition-transform">
+          Details
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+            <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </article>
   );
 };
 
