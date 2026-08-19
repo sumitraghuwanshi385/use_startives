@@ -6,7 +6,6 @@ import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
 import { Bell, LogOut, Sun, Moon } from 'lucide-react';
 
-
 const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -348,8 +347,8 @@ const Header: React.FC = () => {
                           Appearance
                         </p>
                         <p className="text-[10px] text-[var(--text-muted)] leading-tight mt-0.5">
-                          Switch between light<br />
-                          and dark mode
+                          Switch between light and<br />
+                          dark mode
                         </p>
                       </div>
                       <LiquidGlassToggle />
@@ -370,6 +369,7 @@ const Header: React.FC = () => {
               </div>
             </>
           ) : (
+
             /* Landing / Guest header */
             <div className="flex items-center space-x-3">
               <LiquidGlassToggle />
