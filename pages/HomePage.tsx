@@ -417,15 +417,13 @@ const HomePage: React.FC = () => {
   };
 
   /*
-   * =========================================
-   * FEATURE IMAGES
-   * =========================================
-   *
-   * #1 = latest replacement
-   * #2 = latest replacement
-   * #3 = previous final replacement
-   * #4 = previous final replacement
-   */
+    FEATURE IMAGES
+
+    #1 = NEW REQUESTED IMAGE
+    #2 = NEW REQUESTED IMAGE
+    #3 = UNCHANGED
+    #4 = UNCHANGED
+  */
 
   const features = [
     {
@@ -925,9 +923,9 @@ const HomePage: React.FC = () => {
                         #{index + 1}
                       </div>
 
-                      <div className="absolute inset-0 feature-card-base" />
+                      <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
 
-                      <div className="absolute inset-0 feature-card-gradient pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
 
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
 
@@ -1600,6 +1598,11 @@ const HomePage: React.FC = () => {
 
         /* =========================================
            FEATURE NUMBERS
+           
+           LIGHT + DARK MODE USE THE SAME UI
+           CLEAN TEXT
+           NO PILL
+           NO DARK-MODE WHITE GLOW
         ========================================= */
 
         .feature-card-number {
@@ -1645,6 +1648,12 @@ const HomePage: React.FC = () => {
             text-shadow 0.4s ease;
         }
 
+        /*
+          IMPORTANT:
+          Dark mode intentionally keeps the
+          exact same number styling as light mode.
+        */
+
         .dark .feature-card-number {
           color:
             rgba(72, 78, 88, 0.48);
@@ -1676,6 +1685,10 @@ const HomePage: React.FC = () => {
               rgba(70, 75, 85, 0.15);
         }
 
+        /*
+          DARK HOVER = SAME AS LIGHT HOVER
+        */
+
         .dark
         .feature-liquid-card:hover
         .feature-card-number {
@@ -1694,10 +1707,6 @@ const HomePage: React.FC = () => {
 
         /* =========================================
            FEATURE CARDS
-           
-           IMPORTANT:
-           DARK MODE USES THE SAME CARD UI
-           AS LIGHT MODE.
         ========================================= */
 
         .feature-liquid-card {
@@ -1720,74 +1729,12 @@ const HomePage: React.FC = () => {
             none !important;
         }
 
-        /*
-         * Do NOT turn the feature cards black
-         * in dark mode.
-         *
-         * The page remains black, while the
-         * feature cards retain the exact same
-         * premium light/liquid visual treatment.
-         */
-
         .dark .feature-liquid-card {
           background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.82),
-              rgba(255, 255, 255, 0.55)
-            ) !important;
-
-          border-color:
-            rgba(255, 255, 255, 0.55) !important;
+            #000000 !important;
 
           box-shadow:
             none !important;
-        }
-
-        .feature-card-base {
-          position: absolute;
-          inset: 0;
-
-          background:
-            rgba(255, 255, 255, 0.70);
-
-          backdrop-filter:
-            blur(26px)
-            saturate(180%);
-
-          -webkit-backdrop-filter:
-            blur(26px)
-            saturate(180%);
-
-          pointer-events: none;
-        }
-
-        .feature-card-gradient {
-          position: absolute;
-          inset: 0;
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.20),
-              rgba(255, 255, 255, 0.08)
-            );
-
-          pointer-events: none;
-        }
-
-        .dark .feature-card-base {
-          background:
-            rgba(255, 255, 255, 0.70) !important;
-        }
-
-        .dark .feature-card-gradient {
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.20),
-              rgba(255, 255, 255, 0.08)
-            ) !important;
         }
 
         .feature-liquid-card::before {
@@ -1816,15 +1763,9 @@ const HomePage: React.FC = () => {
         .dark
         .feature-liquid-card::before {
           background:
-            linear-gradient(
-              115deg,
-              rgba(255, 255, 255, 0.72),
-              transparent 28%,
-              transparent 70%,
-              rgba(255, 255, 255, 0.35)
-            );
+            transparent;
 
-          opacity: 0.75;
+          opacity: 0;
         }
 
         .feature-liquid-card::after {
@@ -1855,7 +1796,7 @@ const HomePage: React.FC = () => {
             linear-gradient(
               90deg,
               transparent,
-              rgba(255, 255, 255, 0.95),
+              rgba(255, 255, 255, 0.12),
               transparent
             );
         }
@@ -1871,28 +1812,10 @@ const HomePage: React.FC = () => {
         .dark
         .feature-liquid-card:hover {
           border-color:
-            rgba(255, 255, 255, 0.95) !important;
+            rgba(255, 255, 255, 0.18);
 
           box-shadow:
             none !important;
-        }
-
-
-        /* =========================================
-           DARK MODE FEATURE TEXT
-           
-           Since cards remain light like
-           light-mode UI, text also stays dark.
-        ========================================= */
-
-        .dark .feature-liquid-card h3 {
-          color:
-            #000000 !important;
-        }
-
-        .dark .feature-liquid-card p {
-          color:
-            rgb(82, 82, 91) !important;
         }
 
 
@@ -2117,6 +2040,11 @@ const HomePage: React.FC = () => {
             border-radius:
               1.7rem;
           }
+
+          /*
+            Mobile number stays visually identical
+            in both themes.
+          */
 
           .feature-card-number {
             top:
