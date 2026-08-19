@@ -98,8 +98,6 @@ const Header: React.FC = () => {
     ? appNotifications.filter((n: any) => !n.isRead).length
     : 0;
 
-  const unreadCount = rawUnreadCount;
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -113,27 +111,20 @@ const Header: React.FC = () => {
   const prevCountRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const main = document.querySelector('main');
-
-    if (!main) {
-      setIsScrolled(false);
-      return;
-    }
-
     const handleScroll = () => {
-      setIsScrolled(main.scrollTop > 8);
+      setIsScrolled(window.scrollY > 10);
     };
 
     handleScroll();
 
-    main.addEventListener('scroll', handleScroll, {
+    window.addEventListener('scroll', handleScroll, {
       passive: true,
     });
 
     return () => {
-      main.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [location.pathname]);
+  }, []);
 
   useEffect(() => {
     if (prevCountRef.current === null) {
@@ -205,6 +196,11 @@ const Header: React.FC = () => {
   useEffect(() => {
     setProfileDropdownOpen(false);
     setShowNotifications(false);
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -324,7 +320,6 @@ const Header: React.FC = () => {
           transition-all
           duration-500
           ease-out
-
           ${
             showGlassHeader
               ? `
@@ -477,7 +472,7 @@ const Header: React.FC = () => {
                       <BellIcon className="w-6 h-6" />
                     </div>
 
-                    {unreadCount > 0 && (
+                    {rawUnreadCount > 0 && (
                       <span
                         className="
                           absolute
@@ -497,7 +492,7 @@ const Header: React.FC = () => {
                           shadow-sm
                         "
                       >
-                        {unreadCount}
+                        {rawUnreadCount}
                       </span>
                     )}
                   </button>
@@ -711,10 +706,8 @@ const Header: React.FC = () => {
                 </div>
               </>
             ) : (
-              <div className="flex items-center space-x-1.5">
-                {location.pathname !== '/' && (
-                  <ThemeIconButton />
-                )}
+              <div className="flex items-center space-x-2">
+                <ThemeSwitch />
 
                 <button
                   onClick={() => navigate('/signup')}
