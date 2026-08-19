@@ -343,7 +343,7 @@ const handleBellClick = async () => {
     </>
   ) : (
     <div className="flex items-center space-x-2">
-      {location.pathname !== '/' && <ThemeIconButton />}
+      <ThemeIconButton />
       <button
         onClick={() => navigate('/signup')}
         className="button-gradient text-white font-semibold rounded-full py-1.5 px-4 text-xs"
