@@ -122,11 +122,6 @@ const App: React.FC = () => {
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-  /*
-   * =========================================================
-   * BACKEND WARM-UP
-   * =========================================================
-   */
   useEffect(() => {
     const warmServer = async () => {
       try {
@@ -145,19 +140,12 @@ const App: React.FC = () => {
         fetch(
           'https://use-startives.onrender.com/api/startalks'
         ).catch(() => {});
-      } catch (err) {
-        // Ignore warm-up errors.
-      }
+      } catch (err) {}
     };
 
     warmServer();
   }, []);
 
-  /*
-   * =========================================================
-   * CHAT OPEN STATE
-   * =========================================================
-   */
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const hasClass =
@@ -174,11 +162,6 @@ const App: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  /*
-   * =========================================================
-   * PROTECTED BACK NAVIGATION
-   * =========================================================
-   */
   useEffect(() => {
     if (!currentUser) return;
 
@@ -230,11 +213,6 @@ const App: React.FC = () => {
     showLogoutModal,
   ]);
 
-  /*
-   * =========================================================
-   * HEADER
-   * =========================================================
-   */
   const noHeaderRoutes = [
     '/login',
     '/signup',
@@ -253,11 +231,6 @@ const App: React.FC = () => {
   const showHeader =
     !noHeaderRoutes.includes(location.pathname);
 
-  /*
-   * =========================================================
-   * FAB
-   * =========================================================
-   */
   const hideFABRoutes = [
     '/post-idea',
     '/submit-asset',
@@ -291,68 +264,35 @@ const App: React.FC = () => {
     !location.pathname.startsWith('/asset/') &&
     !location.pathname.startsWith('/user/');
 
-  /*
-   * =========================================================
-   * FOOTER
-   * =========================================================
-   */
   const showFooter =
     location.pathname === '/' &&
     !currentUser;
 
-  /*
-   * =========================================================
-   * FULL HEIGHT PAGES
-   * =========================================================
-   */
   const isFullHeightPage =
     location.pathname.startsWith('/messages') ||
     location.pathname.startsWith('/team/') ||
     location.pathname === '/blueprint' ||
     location.pathname.startsWith('/asset/');
 
-  /*
-   * =========================================================
-   * BOTTOM NAV
-   * =========================================================
-   */
   const needsBottomNavPadding =
     Boolean(currentUser) &&
     !isFullHeightPage &&
     !isChatOpen;
 
-  /*
-   * IMPORTANT:
-   *
-   * Homepage gets its own class.
-   *
-   * We KEEP the scroll container because Header.tsx
-   * depends on main.scrollTop.
-   *
-   * But homepage gets min-height + shrink-0 so it cannot
-   * collapse underneath the footer.
-   */
   const isHomePage =
     location.pathname === '/' && !currentUser;
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
-
       <div
         className="
           flex
-          h-screen
           min-h-screen
           w-full
           flex-col
-          overflow-hidden
           bg-[var(--background-secondary)]
         "
       >
-
-        {/* =================================================
-            AUTH LOADER
-        ================================================= */}
         {authLoadingState.isLoading &&
           location.pathname === '/login' && (
             <FullScreenLoader
@@ -360,27 +300,15 @@ const App: React.FC = () => {
             />
           )}
 
-        {/* =================================================
-            ONBOARDING
-        ================================================= */}
         {currentUser &&
           showOnboardingModal && (
             <OnboardingPage />
           )}
 
-        {/* =================================================
-            HEADER
-        ================================================= */}
         {showHeader && <Header />}
 
-        {/* =================================================
-            NOTIFICATION AREA
-        ================================================= */}
         <NotificationArea />
 
-        {/* =================================================
-            MAIN SCROLL CONTAINER
-        ================================================= */}
         <main
           className={`
             flex-1
@@ -393,7 +321,7 @@ const App: React.FC = () => {
 
             ${
               isHomePage
-                ? 'shrink-0 min-h-[calc(100vh-61px)]'
+                ? 'min-h-[calc(100vh-61px)]'
                 : ''
             }
 
@@ -410,16 +338,7 @@ const App: React.FC = () => {
             }
           `}
         >
-
           <Routes>
-
-            {/* =================================================
-                HOME PAGE
-
-                IMPORTANT:
-                Keep HomePage directly inside main.
-                Do NOT wrap it in WithPageContainer.
-            ================================================= */}
             <Route
               path="/"
               element={
@@ -436,9 +355,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                AUTH
-            ================================================= */}
             <Route
               path="/login"
               element={<LoginPage />}
@@ -464,9 +380,6 @@ const App: React.FC = () => {
               element={<NewPasswordPage />}
             />
 
-            {/* =================================================
-                PUBLIC PROFILE
-            ================================================= */}
             <Route
               path="/user/:userId"
               element={
@@ -476,9 +389,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                STATIC
-            ================================================= */}
             <Route
               path="/about"
               element={
@@ -530,9 +440,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                BUILDERS
-            ================================================= */}
             <Route
               path="/builders"
               element={
@@ -551,9 +458,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                BLOG
-            ================================================= */}
             <Route
               path="/blog"
               element={
@@ -568,9 +472,6 @@ const App: React.FC = () => {
               element={<BlogDetailPage />}
             />
 
-            {/* =================================================
-                DASHBOARD
-            ================================================= */}
             <Route
               path="/dashboard"
               element={
@@ -580,9 +481,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                PROJECTS
-            ================================================= */}
             <Route
               path="/projects"
               element={
@@ -592,9 +490,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                STARTALKS
-            ================================================= */}
             <Route
               path="/startalks"
               element={
@@ -604,9 +499,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                MARKETPLACE
-            ================================================= */}
             <Route
               path="/blueprint"
               element={
@@ -616,9 +508,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                ASSETS
-            ================================================= */}
             <Route
               path="/asset/:assetId"
               element={
@@ -650,9 +539,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                IDEAS
-            ================================================= */}
             <Route
               path="/post-idea"
               element={
@@ -686,9 +572,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                MESSAGES
-            ================================================= */}
             <Route
               path="/messages"
               element={
@@ -698,9 +581,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                TEAM
-            ================================================= */}
             <Route
               path="/team/:teamId"
               element={
@@ -710,9 +590,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                PROFILE
-            ================================================= */}
             <Route
               path="/profile"
               element={
@@ -735,9 +612,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                EDIT PROJECT
-            ================================================= */}
             <Route
               path="/project/:ideaId/edit"
               element={
@@ -749,9 +623,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                USER DATA
-            ================================================= */}
             <Route
               path="/my-projects"
               element={
@@ -807,9 +678,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                STARVERSE
-            ================================================= */}
             <Route
               path="/globe"
               element={
@@ -819,9 +687,6 @@ const App: React.FC = () => {
               }
             />
 
-            {/* =================================================
-                FALLBACK
-            ================================================= */}
             <Route
               path="*"
               element={
@@ -838,22 +703,11 @@ const App: React.FC = () => {
                 )
               }
             />
-
           </Routes>
-
         </main>
 
-        {/* =================================================
-            FOOTER
-
-            Still outside main.
-            Homepage content appears above it.
-        ================================================= */}
         {showFooter && <Footer />}
 
-        {/* =================================================
-            BOTTOM NAV
-        ================================================= */}
         {currentUser &&
           !isChatOpen &&
           !['/', '/login', '/signup'].includes(
@@ -862,22 +716,13 @@ const App: React.FC = () => {
             <BottomNav />
           )}
 
-        {/* =================================================
-            FAB
-        ================================================= */}
         {showFAB && <FloatingActionMenu />}
 
-        {/* =================================================
-            STARVERSE FLOATING BUTTON
-        ================================================= */}
         {currentUser &&
           !hideStarverseButton && (
             <StarverseFloatingButton />
           )}
 
-        {/* =================================================
-            LOGOUT MODAL
-        ================================================= */}
         <LogoutConfirmModal
           open={showLogoutModal}
           onClose={() =>
@@ -893,7 +738,6 @@ const App: React.FC = () => {
             });
           }}
         />
-
       </div>
     </GoogleOAuthProvider>
   );
