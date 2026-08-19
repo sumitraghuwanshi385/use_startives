@@ -417,24 +417,27 @@ const HomePage: React.FC = () => {
   };
 
   /*
+   * =========================================
    * FEATURE IMAGES
+   * =========================================
    *
-   * #1 = original requested replacement
+   * #1 = latest replacement
    * #2 = latest replacement
-   * #3 = latest replacement
-   * #4 = latest replacement
+   * #3 = previous final replacement
+   * #4 = previous final replacement
    */
+
   const features = [
     {
       image:
-        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787154013/Picsart_26-08-19_13-36-32-114_bfyrev.png',
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787158996/IMG_20260819_223103_x51spd.png',
       title: 'VALIDATE YOUR IDEA',
       description:
         'Get feedback on your startup concept from a diverse community of experts and peers.',
     },
     {
       image:
-        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787157337/IMG_20260819_215220_locmpg.png',
+        'https://res.cloudinary.com/dp7avkarg/image/upload/v1787158996/Picsart_26-08-19_22-32-32-425_auwqt9.png',
       title: 'FIND A CO-FOUNDER',
       description:
         'Connect with passionate individuals who share your vision and have the skills to help you succeed.',
@@ -922,9 +925,9 @@ const HomePage: React.FC = () => {
                         #{index + 1}
                       </div>
 
-                      <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
+                      <div className="absolute inset-0 feature-card-base" />
 
-                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
+                      <div className="absolute inset-0 feature-card-gradient pointer-events-none" />
 
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
 
@@ -1335,7 +1338,7 @@ const HomePage: React.FC = () => {
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
-            {/* LIGHT MODE — NEW IMAGE */}
+            {/* LIGHT MODE */}
 
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157268/IMG_20260819_215632_awnsfq.png"
@@ -1353,7 +1356,7 @@ const HomePage: React.FC = () => {
               "
             />
 
-            {/* DARK MODE — NEW IMAGE */}
+            {/* DARK MODE */}
 
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157287/IMG_20260819_215700_hjgsna.png"
@@ -1597,10 +1600,6 @@ const HomePage: React.FC = () => {
 
         /* =========================================
            FEATURE NUMBERS
-           CLEAN TEXT ONLY
-           NO PILL
-           NO GRADIENT
-           20% LARGER
         ========================================= */
 
         .feature-card-number {
@@ -1648,15 +1647,15 @@ const HomePage: React.FC = () => {
 
         .dark .feature-card-number {
           color:
-            rgba(255, 255, 255, 0.42);
+            rgba(72, 78, 88, 0.48);
 
           text-shadow:
             0 2px 0
-              rgba(0, 0, 0, 0.65),
-            0 5px 13px
-              rgba(0, 0, 0, 0.65),
-            0 10px 25px
-              rgba(0, 0, 0, 0.45);
+              rgba(255, 255, 255, 0.85),
+            0 5px 12px
+              rgba(80, 85, 95, 0.20),
+            0 10px 22px
+              rgba(80, 85, 95, 0.12);
         }
 
         .feature-liquid-card:hover
@@ -1681,20 +1680,24 @@ const HomePage: React.FC = () => {
         .feature-liquid-card:hover
         .feature-card-number {
           color:
-            rgba(255, 255, 255, 0.52);
+            rgba(58, 64, 74, 0.58);
 
           text-shadow:
             0 2px 0
-              rgba(0, 0, 0, 0.7),
+              rgba(255, 255, 255, 0.9),
             0 6px 16px
-              rgba(0, 0, 0, 0.75),
+              rgba(70, 75, 85, 0.24),
             0 12px 28px
-              rgba(0, 0, 0, 0.55);
+              rgba(70, 75, 85, 0.15);
         }
 
 
         /* =========================================
            FEATURE CARDS
+           
+           IMPORTANT:
+           DARK MODE USES THE SAME CARD UI
+           AS LIGHT MODE.
         ========================================= */
 
         .feature-liquid-card {
@@ -1717,12 +1720,74 @@ const HomePage: React.FC = () => {
             none !important;
         }
 
+        /*
+         * Do NOT turn the feature cards black
+         * in dark mode.
+         *
+         * The page remains black, while the
+         * feature cards retain the exact same
+         * premium light/liquid visual treatment.
+         */
+
         .dark .feature-liquid-card {
           background:
-            #000000 !important;
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.82),
+              rgba(255, 255, 255, 0.55)
+            ) !important;
+
+          border-color:
+            rgba(255, 255, 255, 0.55) !important;
 
           box-shadow:
             none !important;
+        }
+
+        .feature-card-base {
+          position: absolute;
+          inset: 0;
+
+          background:
+            rgba(255, 255, 255, 0.70);
+
+          backdrop-filter:
+            blur(26px)
+            saturate(180%);
+
+          -webkit-backdrop-filter:
+            blur(26px)
+            saturate(180%);
+
+          pointer-events: none;
+        }
+
+        .feature-card-gradient {
+          position: absolute;
+          inset: 0;
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.20),
+              rgba(255, 255, 255, 0.08)
+            );
+
+          pointer-events: none;
+        }
+
+        .dark .feature-card-base {
+          background:
+            rgba(255, 255, 255, 0.70) !important;
+        }
+
+        .dark .feature-card-gradient {
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.20),
+              rgba(255, 255, 255, 0.08)
+            ) !important;
         }
 
         .feature-liquid-card::before {
@@ -1751,9 +1816,15 @@ const HomePage: React.FC = () => {
         .dark
         .feature-liquid-card::before {
           background:
-            transparent;
+            linear-gradient(
+              115deg,
+              rgba(255, 255, 255, 0.72),
+              transparent 28%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.35)
+            );
 
-          opacity: 0;
+          opacity: 0.75;
         }
 
         .feature-liquid-card::after {
@@ -1784,7 +1855,7 @@ const HomePage: React.FC = () => {
             linear-gradient(
               90deg,
               transparent,
-              rgba(255, 255, 255, 0.12),
+              rgba(255, 255, 255, 0.95),
               transparent
             );
         }
@@ -1800,10 +1871,28 @@ const HomePage: React.FC = () => {
         .dark
         .feature-liquid-card:hover {
           border-color:
-            rgba(255, 255, 255, 0.18);
+            rgba(255, 255, 255, 0.95) !important;
 
           box-shadow:
             none !important;
+        }
+
+
+        /* =========================================
+           DARK MODE FEATURE TEXT
+           
+           Since cards remain light like
+           light-mode UI, text also stays dark.
+        ========================================= */
+
+        .dark .feature-liquid-card h3 {
+          color:
+            #000000 !important;
+        }
+
+        .dark .feature-liquid-card p {
+          color:
+            rgb(82, 82, 91) !important;
         }
 
 
@@ -2029,7 +2118,6 @@ const HomePage: React.FC = () => {
               1.7rem;
           }
 
-          /* Mobile number: 20% larger */
           .feature-card-number {
             top:
               14px;
@@ -2044,7 +2132,6 @@ const HomePage: React.FC = () => {
               -0.055em;
           }
 
-          /* Feature artwork remains 20% larger */
           .feature-liquid-card img {
             width:
               162px;
@@ -2070,7 +2157,6 @@ const HomePage: React.FC = () => {
               );
           }
 
-          /* Desktop number: 20% larger */
           .feature-card-number {
             top:
               14px;
