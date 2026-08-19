@@ -220,6 +220,11 @@ const App: React.FC = () => {
     location.pathname === '/blueprint' ||
     location.pathname.startsWith('/asset/');
 
+  /*
+   * FIX:
+   * BottomNav sirf logged-in users ko dikhta hai.
+   * Isliye guest homepage par pb-16 nahi lagna chahiye.
+   */
   const needsBottomNavPadding =
     Boolean(currentUser) &&
     !isFullHeightPage &&
@@ -239,7 +244,9 @@ const App: React.FC = () => {
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
-      <div className="min-h-screen bg-[var(--background-secondary)]">
+
+      <div className="flex flex-col min-h-screen bg-[var(--background-secondary)]">
+
         {authLoadingState.isLoading &&
           location.pathname === "/login" && (
             <FullScreenLoader
@@ -259,13 +266,14 @@ const App: React.FC = () => {
         {/* FIXED MAIN */}
         <main
           className={`
-            min-h-screen
-            pt-[57px]
+            flex-grow
             ${needsBottomNavPadding ? 'pb-16' : ''}
             ${isFullHeightPage ? 'flex flex-col' : 'overflow-y-auto'}
           `}
         >
+
           <Routes>
+
             <Route
               path="/"
               element={
@@ -622,7 +630,9 @@ const App: React.FC = () => {
                 )
               }
             />
+
           </Routes>
+
         </main>
 
         {showFooter && <Footer />}
@@ -657,7 +667,9 @@ const App: React.FC = () => {
             });
           }}
         />
+
       </div>
+
     </GoogleOAuthProvider>
   );
 };
