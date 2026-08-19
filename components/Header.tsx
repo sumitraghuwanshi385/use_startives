@@ -6,9 +6,6 @@ import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
 import { Bell, LogOut, Sun, Moon } from 'lucide-react';
 
-/* =========================================================
-   iOS 27 Pure Liquid Glass Toggle
-   ========================================================= */
 const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -16,7 +13,7 @@ const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' })
   return (
     <button
       onClick={toggleTheme}
-      className={`relative w-[52px] h-[30px] rounded-full overflow-hidden
+      className={`relative w-[48px] h-[28px] rounded-full overflow-hidden
         focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
         focus-visible:ring-offset-transparent focus-visible:ring-neutral-400/50
         ${className}`}
@@ -47,11 +44,11 @@ const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' })
 
       {/* Thumb */}
       <div
-        className="absolute top-[3px] left-[3px] w-[24px] h-[24px] rounded-full
+        className="absolute top-[3px] left-[3px] w-[22px] h-[22px] rounded-full
                    transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]
                    flex items-center justify-center"
         style={{
-          transform: isDark ? 'translateX(22px)' : 'translateX(0)',
+          transform: isDark ? 'translateX(20px)' : 'translateX(0)',
           background: isDark
             ? 'linear-gradient(145deg, #3b82f6, #1d4ed8)'
             : 'linear-gradient(145deg, #fbbf24, #f59e0b)',
@@ -70,18 +67,15 @@ const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' })
 
         {/* Icon */}
         {isDark ? (
-          <Moon className="w-3.5 h-3.5 text-white relative z-10" strokeWidth={2.5} />
+          <Moon className="w-3 h-3 text-white relative z-10" strokeWidth={2.5} />
         ) : (
-          <Sun className="w-3.5 h-3.5 text-white relative z-10" strokeWidth={2.5} />
+          <Sun className="w-3 h-3 text-white relative z-10" strokeWidth={2.5} />
         )}
       </div>
     </button>
   );
 };
 
-/* =========================================================
-   Header
-   ========================================================= */
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
 
@@ -219,7 +213,6 @@ const Header: React.FC = () => {
       className="sticky top-0 z-40 w-full transition-all duration-300
                  bg-[var(--background-primary)]/60 dark:bg-[var(--background-primary)]/50
                  backdrop-blur-2xl backdrop-saturate-150
-                 border-b border-[var(--border-primary)]/40
                  shadow-[0_4px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
     >
       <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2">
@@ -349,10 +342,10 @@ const Header: React.FC = () => {
                     {/* Appearance Toggle */}
                     <div className="border-t border-[var(--border-primary)] px-4 py-3 flex items-center justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-[var(--text-primary)]">
+                        <p className="text-sm text-[var(--text-secondary)]">
                           Appearance
                         </p>
-                        <p className="text-xs text-[var(--text-muted)] leading-tight mt-0.5">
+                        <p className="text-[10px] text-[var(--text-muted)] leading-tight mt-0.5">
                           Switch between light and dark mode
                         </p>
                       </div>
