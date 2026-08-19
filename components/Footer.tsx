@@ -244,7 +244,7 @@ const Footer: React.FC = () => {
           {/* DARK MODE IMAGE */}
 
           <img
-            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787124307/IMG_20260819_125451_rgzyc8.png"
+            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787124636/IMG_20260819_125947_wbmrqu.png"
             alt="Startives founders and builders"
             className="
               hidden
