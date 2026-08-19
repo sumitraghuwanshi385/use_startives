@@ -51,20 +51,28 @@ const Header: React.FC = () => {
   useEffect(() => {
   const main = document.querySelector('main');
 
-  if (!main) return;
-
   const handleScroll = () => {
-    setScrolled(main.scrollTop > 10);
+    const windowScrolled = window.scrollY > 8;
+    const mainScrolled = main
+      ? main.scrollTop > 8
+      : false;
+
+    setScrolled(windowScrolled || mainScrolled);
   };
 
-  main.addEventListener('scroll', handleScroll, {
+  window.addEventListener('scroll', handleScroll, {
+    passive: true,
+  });
+
+  main?.addEventListener('scroll', handleScroll, {
     passive: true,
   });
 
   handleScroll();
 
   return () => {
-    main.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('scroll', handleScroll);
+    main?.removeEventListener('scroll', handleScroll);
   };
 }, []);
 
