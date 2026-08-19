@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants';
 import { ProjectCard } from '../pages/ProjectsListPage';
+
 import {
   Users,
   Sparkles,
@@ -16,12 +22,15 @@ import {
   Rocket,
 } from 'lucide-react';
 
-function useInView<T extends HTMLElement>(threshold = 0.2) {
+function useInView<T extends HTMLElement>(
+  threshold = 0.2
+) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
+
     if (!node) return;
 
     const observer = new IntersectionObserver(
@@ -39,7 +48,10 @@ function useInView<T extends HTMLElement>(threshold = 0.2) {
     return () => observer.disconnect();
   }, [threshold]);
 
-  return { ref, inView };
+  return {
+    ref,
+    inView,
+  };
 }
 
 const Reveal: React.FC<{
@@ -47,15 +59,28 @@ const Reveal: React.FC<{
   delay?: number;
   className?: string;
   as?: 'div' | 'section';
-}> = ({ children, delay = 0, className = '', as = 'div' }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.15);
+}> = ({
+  children,
+  delay = 0,
+  className = '',
+  as = 'div',
+}) => {
+  const { ref, inView } =
+    useInView<HTMLDivElement>(0.15);
+
   const Tag = as as any;
 
   return (
     <Tag
       ref={ref}
-      className={`reveal-item ${inView ? 'is-visible' : ''} ${className}`}
-      style={{ transitionDelay: inView ? `${delay}ms` : '0ms' }}
+      className={`reveal-item ${
+        inView ? 'is-visible' : ''
+      } ${className}`}
+      style={{
+        transitionDelay: inView
+          ? `${delay}ms`
+          : '0ms',
+      }}
     >
       {children}
     </Tag>
@@ -81,17 +106,52 @@ const GradientButton: React.FC<{
 }) => {
   const btnRef = useRef<HTMLElement | null>(null);
 
-  const handleMove = useCallback((e: React.MouseEvent) => {
-    const el = btnRef.current;
-    if (!el) return;
+  const handleMove = useCallback(
+    (e: React.MouseEvent) => {
+      const el = btnRef.current;
 
-    const rect = el.getBoundingClientRect();
+      if (!el) return;
 
-    el.style.setProperty('--x', `${e.clientX - rect.left}px`);
-    el.style.setProperty('--y', `${e.clientY - rect.top}px`);
-  }, []);
+      const rect = el.getBoundingClientRect();
 
-  const commonClasses = `button-gradient magnetic-btn group relative inline-flex items-center justify-center overflow-hidden text-white font-semibold py-3 px-8 rounded-full text-base transition-transform duration-300 ease-out hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-red-500/40 ${className}`;
+      el.style.setProperty(
+        '--x',
+        `${e.clientX - rect.left}px`
+      );
+
+      el.style.setProperty(
+        '--y',
+        `${e.clientY - rect.top}px`
+      );
+    },
+    []
+  );
+
+  const commonClasses = `
+    button-gradient
+    magnetic-btn
+    group
+    relative
+    inline-flex
+    items-center
+    justify-center
+    overflow-hidden
+    text-white
+    font-semibold
+    py-3
+    px-8
+    rounded-full
+    text-base
+    transition-transform
+    duration-300
+    ease-out
+    hover:scale-[1.03]
+    active:scale-[0.98]
+    focus:outline-none
+    focus:ring-4
+    focus:ring-red-500/40
+    ${className}
+  `;
 
   const content = (
     <span className="relative z-10 flex items-center gap-2">
@@ -148,10 +208,6 @@ const GradientButton: React.FC<{
   );
 };
 
-/* =========================================================
-   SMOOTH COUNT-UP
-========================================================= */
-
 const useCountUp = (
   endValue: number,
   active: boolean,
@@ -166,36 +222,47 @@ const useCountUp = (
     }
 
     let animationFrame: number;
+
     const startTime = performance.now();
 
     const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+      const elapsed =
+        currentTime - startTime;
 
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const progress = Math.min(
+        elapsed / duration,
+        1
+      );
 
-      setCount(Math.round(endValue * eased));
+      const eased =
+        1 - Math.pow(1 - progress, 3);
+
+      setCount(
+        Math.round(endValue * eased)
+      );
 
       if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
+        animationFrame =
+          requestAnimationFrame(animate);
       } else {
         setCount(endValue);
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
+    animationFrame =
+      requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animationFrame);
     };
-  }, [endValue, active, duration]);
+  }, [
+    endValue,
+    active,
+    duration,
+  ]);
 
   return count;
 };
-
-/* =========================================================
-   ECOSYSTEM STAT
-========================================================= */
 
 const EcosystemStat: React.FC<{
   endValue: number;
@@ -208,8 +275,11 @@ const EcosystemStat: React.FC<{
   description,
   delay = 0,
 }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.15);
-  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const { ref, inView } =
+    useInView<HTMLDivElement>(0.15);
+
+  const [shouldAnimate, setShouldAnimate] =
+    useState(false);
 
   const count = useCountUp(
     endValue,
@@ -224,7 +294,8 @@ const EcosystemStat: React.FC<{
       setShouldAnimate(true);
     }, delay);
 
-    return () => window.clearTimeout(timer);
+    return () =>
+      window.clearTimeout(timer);
   }, [inView, delay]);
 
   return (
@@ -232,7 +303,6 @@ const EcosystemStat: React.FC<{
       ref={ref}
       className="ecosystem-stat text-center"
     >
-      {/* Number */}
       <div
         className={`
           ecosystem-stat-number
@@ -250,16 +320,16 @@ const EcosystemStat: React.FC<{
           [-webkit-text-fill-color:transparent]
           transition-all
           duration-500
-          ${shouldAnimate
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-2'
+          ${
+            shouldAnimate
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-2'
           }
         `}
       >
         {count}+
       </div>
 
-      {/* Label */}
       <div
         className={`
           mt-0.5
@@ -273,16 +343,16 @@ const EcosystemStat: React.FC<{
           font-poppins
           transition-all
           duration-500
-          ${shouldAnimate
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-1'
+          ${
+            shouldAnimate
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-1'
           }
         `}
       >
         {label}
       </div>
 
-      {/* Description */}
       <p
         className={`
           mt-1.5
@@ -297,9 +367,10 @@ const EcosystemStat: React.FC<{
           font-poppins
           transition-all
           duration-500
-          ${shouldAnimate
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-1'
+          ${
+            shouldAnimate
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-1'
           }
         `}
       >
@@ -310,21 +381,36 @@ const EcosystemStat: React.FC<{
 };
 
 const HomePage: React.FC = () => {
-  const pageRef = useRef<HTMLDivElement>(null);
+  const pageRef =
+    useRef<HTMLDivElement>(null);
+
   const navigate = useNavigate();
 
-  const { startupIdeas, currentUser } = useAppContext();
+  const {
+    startupIdeas,
+    currentUser,
+  } = useAppContext();
 
-  const recentProjects = [...startupIdeas]
-    .filter((idea) => !idea.askingPrice)
+  const recentProjects = [
+    ...startupIdeas,
+  ]
+    .filter(
+      (idea) => !idea.askingPrice
+    )
     .sort(
       (a, b) =>
-        new Date(b.createdAt || b.postedDate).getTime() -
-        new Date(a.createdAt || a.postedDate).getTime()
+        new Date(
+          b.createdAt || b.postedDate
+        ).getTime() -
+        new Date(
+          a.createdAt || a.postedDate
+        ).getTime()
     )
     .slice(0, 4);
 
-  const handleProtectedRoute = (path: string) => {
+  const handleProtectedRoute = (
+    path: string
+  ) => {
     if (!currentUser) {
       navigate('/login');
     } else {
@@ -383,63 +469,58 @@ const HomePage: React.FC = () => {
     },
   ];
 
-  const companyLogos = [
-    {
-      component: <Linkedin />,
-      alt: 'LinkedIn',
-    },
-    {
-      component: <Github />,
-      alt: 'GitHub',
-    },
-    {
-      component: <Twitter />,
-      alt: 'X',
-    },
-    {
-      component: <Facebook />,
-      alt: 'Facebook',
-    },
-  ];
-
   const whyChooseFeatures = [
     {
-      align: 'left',
       title: 'Forge global alliances.',
       description:
         'Break geographical barriers. Connect with a diverse pool of innovators, mentors, and investors from every corner of the globe.',
-      gradient: 'from-sky-400 to-cyan-300',
+      gradient:
+        'from-sky-400 to-cyan-300',
     },
     {
-      align: 'right',
       title: 'Assemble your dream team.',
       description:
         'Find the missing piece to your puzzle. Our platform is the crucible where visionary founders meet brilliant developers and designers.',
-      gradient: 'from-red-500 to-red-400',
+      gradient:
+        'from-red-500 to-red-400',
     },
     {
-      align: 'left',
       title: 'Launchpad for legends.',
       description:
         'Go from a spark of genius to a market-ready MVP. We provide the tools and community support to validate your vision.',
-      gradient: 'from-orange-400 to-yellow-300',
+      gradient:
+        'from-orange-400 to-yellow-300',
     },
   ];
 
   return (
     <div
       ref={pageRef}
-      className="bg-white !bg-white text-[var(--text-primary)] overflow-x-hidden font-poppins"
-      style={{ backgroundColor: '#ffffff' }}
+      className="
+        min-h-full
+        w-full
+        overflow-x-hidden
+        bg-white
+        text-black
+        font-poppins
+      "
+      style={{
+        backgroundColor: '#ffffff',
+        color: '#000000',
+        colorScheme: 'light',
+      }}
     >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
+            '@context':
+              'https://schema.org',
+            '@type':
+              'Organization',
             name: APP_NAME,
-            url: 'https://startives.com',
+            url:
+              'https://startives.com',
             sameAs: [
               'https://linkedin.com/company/startives',
               'https://github.com/startives',
@@ -449,13 +530,9 @@ const HomePage: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10">
+      <div className="relative z-10 bg-white">
 
-        {/* =====================================================
-            HERO
-        ===================================================== */}
-
-        <section className="hero-animated-bg relative pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
+        <section className="hero-animated-bg relative bg-white pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
 
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
 
@@ -463,16 +540,20 @@ const HomePage: React.FC = () => {
 
           <div
             className="absolute -top-10 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-[100px] pointer-events-none animate-float-slow"
-            style={{ animationDelay: '1.5s' }}
+            style={{
+              animationDelay: '1.5s',
+            }}
           />
 
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--background-primary)] to-transparent z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10" />
 
           <div className="relative z-20 max-w-4xl mx-auto">
 
             <div
               className="reveal-item is-visible"
-              style={{ transitionDelay: '0ms' }}
+              style={{
+                transitionDelay: '0ms',
+              }}
             >
               <img
                 src="https://i.postimg.cc/pLTtqf3Q/Picsart-25-09-19-20-29-01-019.png"
@@ -483,9 +564,11 @@ const HomePage: React.FC = () => {
 
             <div
               className="reveal-item is-visible"
-              style={{ transitionDelay: '80ms' }}
+              style={{
+                transitionDelay: '80ms',
+              }}
             >
-              <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-[var(--border-primary)] bg-[var(--component-background)] text-xs font-semibold text-[var(--text-secondary)] font-poppins">
+              <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-neutral-200 bg-white text-xs font-semibold text-neutral-700 font-poppins">
                 <Rocket className="w-3.5 h-3.5 text-red-500" />
                 Now onboarding builders worldwide
               </div>
@@ -493,9 +576,11 @@ const HomePage: React.FC = () => {
 
             <div
               className="reveal-item is-visible"
-              style={{ transitionDelay: '160ms' }}
+              style={{
+                transitionDelay: '160ms',
+              }}
             >
-              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins">
+              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-black font-poppins">
                 Where visionaries &
                 <br />
                 <span className="bg-gradient-to-r from-red-500 to-blue-500 gradient-text">
@@ -503,28 +588,36 @@ const HomePage: React.FC = () => {
                 </span>
               </h1>
 
-              <p className="mt-6 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto font-medium font-poppins">
-                {APP_NAME} is your launchpad for turning visionary ideas into
-                reality. Connect with co-founders, assemble your dream team,
-                and build the future, together.
+              <p className="mt-6 text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto font-medium font-poppins">
+                {APP_NAME} is your launchpad
+                for turning visionary ideas into
+                reality. Connect with co-founders,
+                assemble your dream team, and build
+                the future, together.
               </p>
             </div>
 
             <div
               className="mt-10 flex items-center justify-center gap-4 reveal-item is-visible"
-              style={{ transitionDelay: '240ms' }}
+              style={{
+                transitionDelay: '240ms',
+              }}
             >
               <GradientButton
                 to="/signup"
-                icon={<ArrowRight className="w-4 h-4" />}
+                icon={
+                  <ArrowRight className="w-4 h-4" />
+                }
               >
                 Join the future
               </GradientButton>
             </div>
 
             <div
-              className="mt-10 flex items-center justify-center gap-x-6 gap-y-2 flex-wrap text-sm text-[var(--text-secondary)] reveal-item is-visible"
-              style={{ transitionDelay: '320ms' }}
+              className="mt-10 flex items-center justify-center gap-x-6 gap-y-2 flex-wrap text-sm text-neutral-600 reveal-item is-visible"
+              style={{
+                transitionDelay: '320ms',
+              }}
             >
               <span className="flex items-center gap-1.5">
                 <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
@@ -533,7 +626,7 @@ const HomePage: React.FC = () => {
                 Find co-founders
               </span>
 
-              <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">
+              <span className="hidden sm:inline text-neutral-400">
                 •
               </span>
 
@@ -544,7 +637,7 @@ const HomePage: React.FC = () => {
                 Validate ideas
               </span>
 
-              <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">
+              <span className="hidden sm:inline text-neutral-400">
                 •
               </span>
 
@@ -559,11 +652,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* =====================================================
-            DISCOVER PROJECTS
-        ===================================================== */}
-
-        <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
+        <section className="py-12 sm:py-16 bg-white">
 
           <div className="container mx-auto px-4">
 
@@ -573,29 +662,37 @@ const HomePage: React.FC = () => {
                 Discover Projects
               </h2>
 
-              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
-                Explore live startup ideas, apply to join teams, or submit your
-                own and find co-founders.
+              <p className="text-neutral-600 mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
+                Explore live startup ideas, apply
+                to join teams, or submit your own
+                and find co-founders.
               </p>
 
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-              {recentProjects.map((idea, i) => (
-                <Reveal key={idea.id} delay={i * 80}>
-
-                  <div
-                    onClick={() =>
-                      handleProtectedRoute(`/idea/${idea.id}`)
-                    }
-                    className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
+              {recentProjects.map(
+                (idea, index) => (
+                  <Reveal
+                    key={idea.id}
+                    delay={index * 80}
                   >
-                    <ProjectCard idea={idea} />
-                  </div>
-
-                </Reveal>
-              ))}
+                    <div
+                      onClick={() =>
+                        handleProtectedRoute(
+                          `/idea/${idea.id}`
+                        )
+                      }
+                      className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
+                    >
+                      <ProjectCard
+                        idea={idea}
+                      />
+                    </div>
+                  </Reveal>
+                )
+              )}
 
             </div>
 
@@ -603,9 +700,12 @@ const HomePage: React.FC = () => {
               className="flex justify-center gap-4 mt-10"
               delay={160}
             >
-
               <button
-                onClick={() => handleProtectedRoute('/discover')}
+                onClick={() =>
+                  handleProtectedRoute(
+                    '/discover'
+                  )
+                }
                 className="
                   button-gradient
                   text-white
@@ -626,28 +726,44 @@ const HomePage: React.FC = () => {
               </button>
 
               <button
-                onClick={() => handleProtectedRoute('/submit-idea')}
-                className="bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 hover:bg-[var(--component-background-hover)]"
+                onClick={() =>
+                  handleProtectedRoute(
+                    '/submit-idea'
+                  )
+                }
+                className="
+                  bg-white
+                  border
+                  border-neutral-200
+                  text-black
+                  px-8
+                  py-2.5
+                  rounded-full
+                  text-[11px]
+                  font-black
+                  uppercase
+                  tracking-widest
+                  transition-all
+                  duration-300
+                  hover:scale-105
+                  active:scale-95
+                  hover:bg-neutral-50
+                "
               >
                 Submit Idea
               </button>
-
             </Reveal>
 
           </div>
         </section>
 
-        {/* =====================================================
-            AN ECOSYSTEM IN MOTION
-        ===================================================== */}
-
-        <section className="py-8 sm:py-10 bg-white !bg-white relative overflow-hidden">
+        <section className="py-8 sm:py-10 bg-white relative overflow-hidden">
 
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-2 sm:mb-3">
 
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-black tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
 
@@ -657,22 +773,19 @@ const HomePage: React.FC = () => {
               className="text-center mb-3 sm:mb-4"
               delay={50}
             >
-
-              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
-                Witness the pulse of innovation. Our platform is a dynamic
-                network where connections spark, ideas ignite, and ventures take
-                flight every day.
+              <p className="text-neutral-600 max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
+                Witness the pulse of innovation.
+                Our platform is a dynamic network
+                where connections spark, ideas ignite,
+                and ventures take flight every day.
               </p>
-
             </Reveal>
 
             <Reveal
               className="w-full"
               delay={90}
             >
-
               <div className="ecosystem-image-wrap w-full flex justify-center">
-
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
                   alt="Startives ecosystem"
@@ -685,16 +798,13 @@ const HomePage: React.FC = () => {
                     object-center
                   "
                 />
-
               </div>
-
             </Reveal>
 
             <Reveal
               className="w-full mt-4 sm:mt-5"
               delay={130}
             >
-
               <div className="w-full max-w-4xl mx-auto">
 
                 <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3">
@@ -723,29 +833,24 @@ const HomePage: React.FC = () => {
                 </div>
 
               </div>
-
             </Reveal>
 
           </div>
-
         </section>
 
-        {/* =====================================================
-            EVERYTHING YOU NEED TO START
-        ===================================================== */}
-
-        <section className="py-10 sm:py-12 bg-[var(--background-primary)]">
+        <section className="py-10 sm:py-12 bg-white">
 
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-8 sm:mb-9">
 
-              <h2 className="text-[21px] sm:text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] mb-2 tracking-tight font-poppins uppercase">
+              <h2 className="text-[21px] sm:text-2xl md:text-3xl font-extrabold text-black mb-2 tracking-tight font-poppins uppercase">
                 Everything you need to start
               </h2>
 
-              <p className="text-[var(--text-secondary)] max-w-2xl mx-auto text-[12.5px] sm:text-[13.5px] font-medium font-poppins">
-                From idea to launch, {APP_NAME} provides the tools and community
+              <p className="text-neutral-600 max-w-2xl mx-auto text-[12.5px] sm:text-[13.5px] font-medium font-poppins">
+                From idea to launch, {APP_NAME}
+                provides the tools and community
                 to support your journey.
               </p>
 
@@ -753,109 +858,99 @@ const HomePage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
-              {features.map((feature, index) => (
-                <Reveal key={index} delay={index * 90}>
-
-                  <div
-                    className="
-                      feature-liquid-card
-                      group
-                      relative
-                      overflow-hidden
-                      min-h-[315px]
-                      sm:min-h-[335px]
-                      p-5
-                      sm:p-5.5
-                      rounded-[1.7rem]
-                      border
-                      border-white/70
-                      flex
-                      flex-col
-                      transition-all
-                      duration-500
-                      hover:-translate-y-2
-                    "
+              {features.map(
+                (feature, index) => (
+                  <Reveal
+                    key={index}
+                    delay={index * 90}
                   >
+                    <div
+                      className="
+                        feature-liquid-card
+                        group
+                        relative
+                        overflow-hidden
+                        min-h-[315px]
+                        sm:min-h-[335px]
+                        p-5
+                        sm:p-5.5
+                        rounded-[1.7rem]
+                        border
+                        border-neutral-200
+                        flex
+                        flex-col
+                        transition-all
+                        duration-500
+                        hover:-translate-y-2
+                      "
+                    >
+                      <span className="feature-card-number">
+                        #{index + 1}
+                      </span>
 
-                    {/* =================================================
-                        CARD NUMBER — NEW
-                    ================================================= */}
+                      <div className="absolute inset-0 bg-white/70 backdrop-blur-2xl" />
 
-                    <span className="feature-card-number">
-                      #{index + 1}
-                    </span>
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
 
-                    <div className="absolute inset-0 bg-white/55 backdrop-blur-2xl" />
+                      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
 
-                    <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
+                      <div className="absolute -top-20 -right-16 w-36 h-36 rounded-full bg-red-500/[0.08] blur-[55px] pointer-events-none" />
 
-                    <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
+                      <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/70 pointer-events-none" />
 
-                    <div className="absolute -top-20 -right-16 w-36 h-36 rounded-full bg-red-500/[0.08] blur-[55px] pointer-events-none" />
+                      <div className="relative z-10 flex flex-col h-full">
 
-                    <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/60 pointer-events-none" />
+                        <div className="flex-1 flex items-center justify-center">
 
-                    <div className="relative z-10 flex flex-col h-full">
+                          <div className="relative w-full h-[165px] sm:h-[175px] flex items-center justify-center">
 
-                      <div className="flex-1 flex items-center justify-center">
+                            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
 
-                        <div className="relative w-full h-[165px] sm:h-[175px] flex items-center justify-center">
+                            <img
+                              src={feature.image}
+                              alt={feature.title}
+                              className="
+                                relative
+                                z-10
+                                w-[135px]
+                                h-[135px]
+                                sm:w-[153px]
+                                sm:h-[153px]
+                                object-contain
+                                transition-transform
+                                duration-500
+                                ease-out
+                                group-hover:scale-[1.06]
+                                group-hover:-translate-y-1
+                              "
+                            />
 
-                          <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
+                          </div>
+                        </div>
 
-                          <img
-                            src={feature.image}
-                            alt={feature.title}
-                            className="
-                              relative
-                              z-10
-                              w-[135px]
-                              h-[135px]
-                              sm:w-[153px]
-                              sm:h-[153px]
-                              object-contain
-                              transition-transform
-                              duration-500
-                              ease-out
-                              group-hover:scale-[1.06]
-                              group-hover:-translate-y-1
-                            "
-                          />
+                        <div className="text-center">
+
+                          <h3 className="text-[15px] sm:text-[16px] font-bold text-black mb-1.5 tracking-tight font-poppins">
+                            {feature.title}
+                          </h3>
+
+                          <p className="text-[10.5px] sm:text-[11px] font-medium leading-[1.5] font-poppins max-w-[245px] mx-auto text-neutral-600">
+                            {feature.description}
+                          </p>
 
                         </div>
 
                       </div>
-
-                      <div className="text-center">
-
-                        <h3 className="text-[15px] sm:text-[16px] font-bold text-[var(--text-primary)] mb-1.5 tracking-tight font-poppins">
-                          {feature.title}
-                        </h3>
-
-                        <p className="text-[10.5px] sm:text-[11px] font-medium leading-[1.5] font-poppins max-w-[245px] mx-auto text-[var(--text-secondary)]">
-                          {feature.description}
-                        </p>
-
-                      </div>
-
                     </div>
-
-                  </div>
-
-                </Reveal>
-              ))}
+                  </Reveal>
+                )
+              )}
 
             </div>
-
           </div>
-
         </section>
 
-        {/* =====================================================
-            THE PULSE OF INNOVATION
-        ===================================================== */}
-
-        <section className="py-12 bg-[var(--background-primary)] relative overflow-hidden">
+        <section className="py-12 bg-white relative overflow-hidden">
 
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
 
@@ -865,34 +960,64 @@ const HomePage: React.FC = () => {
 
               <Reveal className="lg:w-1/2 space-y-6 text-center lg:text-left">
 
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-[var(--text-primary)] font-poppins uppercase">
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-black font-poppins uppercase">
                   The pulse of innovation
                 </h2>
 
-                <p className="text-sm sm:text-base text-[var(--text-secondary)] font-medium leading-relaxed font-poppins">
-                  Explore real-time thoughts, wins, and pivots from founders
-                  building the next big things. Startalks is the social layer
-                  where the community breathes.
+                <p className="text-sm sm:text-base text-neutral-600 font-medium leading-relaxed font-poppins">
+                  Explore real-time thoughts, wins,
+                  and pivots from founders building
+                  the next big things. Startalks is
+                  the social layer where the community
+                  breathes.
                 </p>
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
 
                   <Link
                     to="/startalks"
-                    className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-transform duration-300 hover:scale-105 font-poppins"
+                    className="
+                      button-gradient
+                      text-white
+                      px-8
+                      py-2.5
+                      rounded-full
+                      text-[11px]
+                      font-black
+                      uppercase
+                      tracking-widest
+                      transition-transform
+                      duration-300
+                      hover:scale-105
+                      font-poppins
+                    "
                   >
                     Enter the feed
                   </Link>
 
                   <Link
                     to="/signup"
-                    className="bg-[var(--background-tertiary)] text-[var(--text-primary)] border border-[var(--border-primary)] px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[var(--component-background-hover)] transition-all font-poppins"
+                    className="
+                      bg-white
+                      text-black
+                      border
+                      border-neutral-200
+                      px-8
+                      py-2.5
+                      rounded-full
+                      text-[11px]
+                      font-black
+                      uppercase
+                      tracking-widest
+                      hover:bg-neutral-50
+                      transition-all
+                      font-poppins
+                    "
                   >
                     Join the talk
                   </Link>
 
                 </div>
-
               </Reveal>
 
               <Reveal
@@ -905,17 +1030,20 @@ const HomePage: React.FC = () => {
                   {[
                     {
                       name: 'Sarah J.',
-                      content: 'Just secured beta testers!',
+                      content:
+                        'Just secured beta testers!',
                       emoji: '🎉',
                     },
                     {
                       name: 'Mike R.',
-                      content: 'Pivot was the best decision.',
+                      content:
+                        'Pivot was the best decision.',
                       emoji: '💡',
                     },
                     {
                       name: 'Elena W.',
-                      content: 'Scaling to 10k MRR today.',
+                      content:
+                        'Scaling to 10k MRR today.',
                       emoji: '📈',
                     },
                     {
@@ -924,34 +1052,45 @@ const HomePage: React.FC = () => {
                         'Building in public is hard but worth it.',
                       emoji: '🔨',
                     },
-                  ].map((talk, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-white dark:bg-neutral-900 p-4 rounded-2xl border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg font-poppins"
-                    >
+                  ].map(
+                    (talk, index) => (
+                      <div
+                        key={index}
+                        className="
+                          bg-white
+                          p-4
+                          rounded-2xl
+                          border
+                          border-neutral-200
+                          transition-all
+                          duration-300
+                          hover:-translate-y-1
+                          hover:shadow-lg
+                          font-poppins
+                        "
+                      >
+                        <div className="flex items-center gap-2 mb-2">
 
-                      <div className="flex items-center gap-2 mb-2">
+                          <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-[10px] text-white font-bold">
+                            {talk.name[0]}
+                          </div>
 
-                        <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-[10px] text-white font-bold">
-                          {talk.name[0]}
+                          <span className="text-[10px] font-bold text-black">
+                            {talk.name}
+                          </span>
+
                         </div>
 
-                        <span className="text-[10px] font-bold text-[var(--text-primary)]">
-                          {talk.name}
-                        </span>
+                        <p className="text-[11px] text-neutral-600 font-medium italic">
+                          "{talk.content}"
+                        </p>
 
+                        <div className="mt-2 text-right text-xs">
+                          {talk.emoji}
+                        </div>
                       </div>
-
-                      <p className="text-[11px] text-[var(--text-secondary)] font-medium italic">
-                        "{talk.content}"
-                      </p>
-
-                      <div className="mt-2 text-right text-xs">
-                        {talk.emoji}
-                      </div>
-
-                    </div>
-                  ))}
+                    )
+                  )}
 
                 </div>
 
@@ -959,85 +1098,89 @@ const HomePage: React.FC = () => {
 
                 <div
                   className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl"
-                  style={{ animationDirection: 'reverse' }}
+                  style={{
+                    animationDirection:
+                      'reverse',
+                  }}
                 />
 
               </Reveal>
 
             </div>
-
           </div>
-
         </section>
 
-        {/* =====================================================
-            WHY STARTIVES EXISTS
-        ===================================================== */}
-
-        <section className="py-12 sm:py-16 bg-[var(--background-primary)]">
+        <section className="py-12 sm:py-16 bg-white">
 
           <div className="container mx-auto px-4">
 
             <Reveal className="text-center mb-10">
 
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-black tracking-tight font-poppins uppercase">
                 Why Startives exists?
               </h2>
 
-              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                We're more than a platform; we're your strategic partner in innovation.
+              <p className="text-neutral-600 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
+                We're more than a platform; we're
+                your strategic partner in innovation.
               </p>
 
             </Reveal>
 
             <div className="max-w-4xl mx-auto space-y-12">
 
-              {whyChooseFeatures.map((feature, index) => (
-                <Reveal
-                  key={index}
-                  delay={index * 100}
-                  className={`flex flex-col ${
-                    index % 2 === 0
-                      ? 'md:items-start text-center md:text-left'
-                      : 'md:items-end text-center md:text-right'
-                  }`}
-                >
-
-                  <h3
-                    className={`text-2xl font-bold bg-gradient-to-r ${feature.gradient} gradient-text mb-3 inline-block tracking-tight font-poppins`}
+              {whyChooseFeatures.map(
+                (feature, index) => (
+                  <Reveal
+                    key={index}
+                    delay={index * 100}
+                    className={`flex flex-col ${
+                      index % 2 === 0
+                        ? 'md:items-start text-center md:text-left'
+                        : 'md:items-end text-center md:text-right'
+                    }`}
                   >
-                    {feature.title}
-                  </h3>
+                    <h3
+                      className={`
+                        text-2xl
+                        font-bold
+                        bg-gradient-to-r
+                        ${feature.gradient}
+                        gradient-text
+                        mb-3
+                        inline-block
+                        tracking-tight
+                        font-poppins
+                      `}
+                    >
+                      {feature.title}
+                    </h3>
 
-                  <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
-                    {feature.description}
-                  </p>
-
-                </Reveal>
-              ))}
+                    <p className="text-neutral-600 text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
+                      {feature.description}
+                    </p>
+                  </Reveal>
+                )
+              )}
 
             </div>
-
           </div>
-
         </section>
 
-        {/* =====================================================
-            FROM OUR COMMUNITY
-        ===================================================== */}
-
-        <section className="py-12 sm:py-16 bg-[var(--background-secondary)]">
+        <section className="py-12 sm:py-16 bg-white">
 
           <div className="container mx-auto px-4 max-w-7xl">
 
             <Reveal className="text-center mb-10">
 
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight font-poppins uppercase">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-black tracking-tight font-poppins uppercase">
                 From our community
               </h2>
 
-              <p className="text-[var(--text-secondary)] mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                Innovators are building, connecting, and succeeding on {APP_NAME}.
+              <p className="text-neutral-600 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
+                Innovators are building,
+                connecting, and succeeding on{' '}
+                {APP_NAME}.
               </p>
 
             </Reveal>
@@ -1046,14 +1189,37 @@ const HomePage: React.FC = () => {
 
               <div className="flex animate-marquee gap-8">
 
-                {[...testimonials, ...testimonials].map(
-                  (testimonial, index) => (
+                {[
+                  ...testimonials,
+                  ...testimonials,
+                ].map(
+                  (
+                    testimonial,
+                    index
+                  ) => (
                     <div
                       key={index}
                       className="flex-shrink-0 w-[90vw] sm:w-[420px]"
                     >
-
-                      <div className="p-6 bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] flex flex-col space-y-4 h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-purple-500/20 relative overflow-hidden font-poppins">
+                      <div className="
+                        p-6
+                        bg-white
+                        rounded-2xl
+                        border
+                        border-neutral-200
+                        flex
+                        flex-col
+                        space-y-4
+                        h-full
+                        transition-all
+                        duration-300
+                        hover:-translate-y-1
+                        hover:shadow-lg
+                        hover:border-purple-500/20
+                        relative
+                        overflow-hidden
+                        font-poppins
+                      ">
 
                         <img
                           src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
@@ -1066,50 +1232,47 @@ const HomePage: React.FC = () => {
 
                           <div className="flex space-x-0.5 text-yellow-400">
 
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <Star
-                                key={i}
-                                className="w-4 h-4 fill-current"
-                              />
-                            ))}
+                            {Array.from({
+                              length: 5,
+                            }).map(
+                              (_, starIndex) => (
+                                <Star
+                                  key={
+                                    starIndex
+                                  }
+                                  className="w-4 h-4 fill-current"
+                                />
+                              )
+                            )}
 
                           </div>
-
                         </div>
 
-                        <p className="text-[var(--text-secondary)] text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">
+                        <p className="text-neutral-600 text-sm sm:text-base italic flex-grow z-10 leading-relaxed font-medium">
                           "{testimonial.quote}"
                         </p>
 
-                        <div className="pt-4 border-t border-[var(--border-primary)] z-10">
+                        <div className="pt-4 border-t border-neutral-200 z-10">
 
-                          <p className="font-bold text-[var(--text-primary)] text-sm">
+                          <p className="font-bold text-black text-sm">
                             {testimonial.name}
                           </p>
 
-                          <p className="text-xs text-[var(--text-muted)]">
+                          <p className="text-xs text-neutral-500">
                             {testimonial.role}
                           </p>
 
                         </div>
 
                       </div>
-
                     </div>
                   )
                 )}
 
               </div>
-
             </div>
-
           </div>
-
         </section>
-
-        {/* =====================================================
-            FINAL CTA
-        ===================================================== */}
 
         <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white">
 
@@ -1233,34 +1396,26 @@ const HomePage: React.FC = () => {
                 </span>
 
               </Link>
-
             </div>
-
           </Reveal>
-
         </section>
 
         <div
-          className="w-full bg-white !bg-white h-8 sm:h-10"
-          style={{ backgroundColor: '#ffffff' }}
+          className="w-full bg-white h-8 sm:h-10"
+          style={{
+            backgroundColor: '#ffffff',
+          }}
         />
 
       </div>
 
       <style>{`
-
-        /* =====================================================
-           REVEAL
-        ===================================================== */
-
         .reveal-item {
           opacity: 0;
           transform: translateY(24px);
-
           transition:
             opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
             transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-
           will-change: opacity, transform;
         }
 
@@ -1269,37 +1424,24 @@ const HomePage: React.FC = () => {
           transform: translateY(0);
         }
 
-        /* =====================================================
-           MAGNETIC BUTTON
-        ===================================================== */
-
         .magnetic-btn::before {
           content: '';
-
           position: absolute;
           inset: 0;
-
           background:
             radial-gradient(
               120px circle at var(--x, 50%) var(--y, 50%),
               rgba(255, 255, 255, 0.25),
               transparent 70%
             );
-
           opacity: 0;
-
           transition: opacity 0.3s ease;
-
           pointer-events: none;
         }
 
         .magnetic-btn:hover::before {
           opacity: 1;
         }
-
-        /* =====================================================
-           ECOSYSTEM
-        ===================================================== */
 
         .ecosystem-image-wrap {
           width: 100%;
@@ -1321,66 +1463,46 @@ const HomePage: React.FC = () => {
 
         .ecosystem-stat-number {
           line-height: 1;
-
           background-clip: text !important;
           -webkit-background-clip: text !important;
           color: transparent !important;
           -webkit-text-fill-color: transparent !important;
         }
 
-        /* =====================================================
-           FEATURE CARD NUMBER
-        ===================================================== */
-
         .feature-card-number {
           position: absolute;
           top: 13px;
           left: 18px;
           z-index: 30;
-
           font-family: Poppins, sans-serif;
           font-size: 19px;
           line-height: 1;
           font-weight: 800;
           letter-spacing: -0.04em;
-
           color: rgba(85, 92, 105, 0.30);
-
           text-shadow:
             0 2px 5px rgba(70, 75, 85, 0.16);
-
           pointer-events: none;
           user-select: none;
         }
 
-        /* =====================================================
-           FEATURE CARDS
-           
-           NO SHADOW
-        ===================================================== */
-
         .feature-liquid-card {
           -webkit-backdrop-filter: blur(26px) saturate(180%);
           backdrop-filter: blur(26px) saturate(180%);
-
           background:
             linear-gradient(
               135deg,
               rgba(255, 255, 255, 0.82),
               rgba(255, 255, 255, 0.55)
             );
-
           box-shadow: none !important;
         }
 
         .feature-liquid-card::before {
           content: '';
-
           position: absolute;
           inset: 0;
-
           border-radius: inherit;
-
           background:
             linear-gradient(
               115deg,
@@ -1389,22 +1511,17 @@ const HomePage: React.FC = () => {
               transparent 70%,
               rgba(255, 255, 255, 0.35)
             );
-
           opacity: 0.75;
-
           pointer-events: none;
         }
 
         .feature-liquid-card::after {
           content: '';
-
           position: absolute;
           left: 8%;
           right: 8%;
           top: 0;
-
           height: 1px;
-
           background:
             linear-gradient(
               90deg,
@@ -1412,7 +1529,6 @@ const HomePage: React.FC = () => {
               rgba(255, 255, 255, 0.95),
               transparent
             );
-
           pointer-events: none;
         }
 
@@ -1421,23 +1537,16 @@ const HomePage: React.FC = () => {
           box-shadow: none !important;
         }
 
-        /* =====================================================
-           FINAL CTA
-        ===================================================== */
-
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(24px) saturate(180%);
           backdrop-filter: blur(24px) saturate(180%);
-
           background:
             linear-gradient(
               135deg,
               rgba(255, 255, 255, 0.78),
               rgba(255, 255, 255, 0.48)
             );
-
           border: 1px solid rgba(255, 255, 255, 0.9);
-
           box-shadow:
             inset 0 1px 2px rgba(255, 255, 255, 0.95),
             inset 0 -1px 1px rgba(120, 130, 160, 0.08),
@@ -1446,12 +1555,9 @@ const HomePage: React.FC = () => {
 
         .liquid-glass-cta::after {
           content: '';
-
           position: absolute;
           inset: 0;
-
           border-radius: inherit;
-
           background:
             linear-gradient(
               115deg,
@@ -1460,9 +1566,7 @@ const HomePage: React.FC = () => {
               transparent 65%,
               rgba(255, 255, 255, 0.25)
             );
-
           opacity: 0.7;
-
           pointer-events: none;
         }
 
@@ -1472,10 +1576,6 @@ const HomePage: React.FC = () => {
             inset 0 -1px 1px rgba(100, 110, 150, 0.08),
             0 12px 34px rgba(30, 40, 80, 0.17);
         }
-
-        /* =====================================================
-           FLOAT
-        ===================================================== */
 
         @keyframes float-slow {
           0%,
@@ -1489,19 +1589,11 @@ const HomePage: React.FC = () => {
         }
 
         .animate-float-slow {
-          animation: float-slow 8s ease-in-out infinite;
+          animation:
+            float-slow 8s ease-in-out infinite;
         }
 
-        /* =====================================================
-           MOBILE
-           
-           IMPORTANT:
-           No separate mobile color override.
-           Desktop gradient is preserved exactly.
-        ===================================================== */
-
         @media (max-width: 639px) {
-
           .liquid-glass-cta {
             padding-top: 6.3px;
             padding-bottom: 6.3px;
@@ -1514,15 +1606,12 @@ const HomePage: React.FC = () => {
             -webkit-tap-highlight-color: transparent;
           }
 
-          /* Keep ecosystem number gradient identical to desktop */
           .ecosystem-stat-number.button-gradient {
             background-clip: text !important;
             -webkit-background-clip: text !important;
             color: transparent !important;
             -webkit-text-fill-color: transparent !important;
           }
-
-          /* Compact ecosystem mobile layout */
 
           .ecosystem-stats {
             display: flex;
@@ -1545,37 +1634,27 @@ const HomePage: React.FC = () => {
             margin-top: 0;
           }
 
-          /* Feature cards */
-
           .feature-liquid-card {
             min-height: 315px;
             padding: 20px;
             border-radius: 1.7rem;
           }
 
-          /* Card numbers stay subtle on mobile */
           .feature-card-number {
             top: 13px;
             left: 18px;
             font-size: 19px;
           }
-
         }
 
         @media (min-width: 640px) {
-
           .ecosystem-stats {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns:
+              repeat(3, minmax(0, 1fr));
           }
-
         }
 
-        /* =====================================================
-           REDUCED MOTION
-        ===================================================== */
-
         @media (prefers-reduced-motion: reduce) {
-
           .reveal-item {
             opacity: 1 !important;
             transform: none !important;
@@ -1593,9 +1672,7 @@ const HomePage: React.FC = () => {
           .feature-liquid-card {
             transition: none !important;
           }
-
         }
-
       `}</style>
     </div>
   );
