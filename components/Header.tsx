@@ -4,9 +4,11 @@ import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
-import { Bell, LogOut } from 'lucide-react';
+import { Bell, LogOut, Sun, Moon } from 'lucide-react';
 
-
+/* =========================================================
+   iOS 27 Pure Liquid Glass Toggle
+   ========================================================= */
 const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -58,20 +60,28 @@ const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' })
             : '0 2px 8px rgba(251,191,36,0.5), inset 0 1px 1px rgba(255,255,255,0.7)',
         }}
       >
-        {/* Subtle inner glass reflection on thumb */}
+        {/* Subtle inner glass reflection */}
         <div
           className="absolute inset-0 rounded-full opacity-40"
           style={{
-            background:
-              'linear-gradient(160deg, rgba(255,255,255,0.6) 0%, transparent 50%)',
+            background: 'linear-gradient(160deg, rgba(255,255,255,0.6) 0%, transparent 50%)',
           }}
         />
+
+        {/* Icon */}
+        {isDark ? (
+          <Moon className="w-3.5 h-3.5 text-white relative z-10" strokeWidth={2.5} />
+        ) : (
+          <Sun className="w-3.5 h-3.5 text-white relative z-10" strokeWidth={2.5} />
+        )}
       </div>
     </button>
   );
 };
 
-
+/* =========================================================
+   Header
+   ========================================================= */
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
 
@@ -88,21 +98,10 @@ const Header: React.FC = () => {
 
   const bellRef = useRef<HTMLDivElement>(null);
 
-  const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [shake, setShake] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const prevCountRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 8);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     if (prevCountRef.current === null) {
@@ -165,9 +164,6 @@ const Header: React.FC = () => {
   };
 
   const handleMenuClick = () => {
-    setIsMenuAnimating(true);
-    setTimeout(() => setIsMenuAnimating(false), 300);
-
     setShowNotifications(false);
     setProfileDropdownOpen(prev => !prev);
   };
@@ -220,11 +216,11 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-500 ease-out ${
-        scrolled
-          ? "bg-[var(--background-primary)]/65 dark:bg-[var(--background-primary)]/55 backdrop-blur-2xl backdrop-saturate-150 border-b border-[var(--border-primary)]/40 shadow-[0_4px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
-          : "bg-transparent border-b border-transparent"
-      }`}
+      className="sticky top-0 z-40 w-full transition-all duration-300
+                 bg-[var(--background-primary)]/60 dark:bg-[var(--background-primary)]/50
+                 backdrop-blur-2xl backdrop-saturate-150
+                 border-b border-[var(--border-primary)]/40
+                 shadow-[0_4px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
     >
       <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2">
         <div className="flex items-center space-x-8">
@@ -350,11 +346,16 @@ const Header: React.FC = () => {
                       </Link>
                     ))}
 
-                    {/* Dark Mode Toggle (iOS 27 Liquid Glass) */}
-                    <div className="border-t border-[var(--border-primary)] px-4 py-3 flex items-center justify-between">
-                      <span className="text-sm text-[var(--text-secondary)]">
-                        Dark Mode
-                      </span>
+                    {/* Appearance Toggle */}
+                    <div className="border-t border-[var(--border-primary)] px-4 py-3 flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-[var(--text-primary)]">
+                          Appearance
+                        </p>
+                        <p className="text-xs text-[var(--text-muted)] leading-tight mt-0.5">
+                          Switch between light and dark mode
+                        </p>
+                      </div>
                       <LiquidGlassToggle />
                     </div>
 
