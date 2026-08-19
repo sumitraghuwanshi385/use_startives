@@ -6,6 +6,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
 import { Bell, LogOut, Sun, Moon } from 'lucide-react';
 
+
 const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -75,6 +76,7 @@ const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' })
     </button>
   );
 };
+
 
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
@@ -211,7 +213,7 @@ const Header: React.FC = () => {
   return (
     <header
       className="sticky top-0 z-40 w-full transition-all duration-300
-                 bg-[var(--background-primary)]/60 dark:bg-[var(--background-primary)]/50
+                 bg-[var(--background-primary)]/50 dark:bg-[var(--background-primary)]/40
                  backdrop-blur-2xl backdrop-saturate-150
                  shadow-[0_4px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
     >
@@ -346,7 +348,8 @@ const Header: React.FC = () => {
                           Appearance
                         </p>
                         <p className="text-[10px] text-[var(--text-muted)] leading-tight mt-0.5">
-                          Switch between light and dark mode
+                          Switch between light<br />
+                          and dark mode
                         </p>
                       </div>
                       <LiquidGlassToggle />
