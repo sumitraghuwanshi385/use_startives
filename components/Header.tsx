@@ -4,26 +4,73 @@ import { useAppContext } from '../contexts/AppContext';
 import { APP_NAME } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 import { NotificationDropdown } from "./NotificationDropdown";
-import { Bell, Sun, Moon, LogOut } from 'lucide-react';
+import { Bell, LogOut } from 'lucide-react';
 
-const ThemeIconButton: React.FC = () => {
+
+const LiquidGlassToggle: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--component-background-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:ring-neutral-500/60"
+      className={`relative w-[52px] h-[30px] rounded-full overflow-hidden
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+        focus-visible:ring-offset-transparent focus-visible:ring-neutral-400/50
+        ${className}`}
       aria-label="Toggle theme"
+      style={{
+        background: isDark
+          ? 'linear-gradient(135deg, rgba(30,30,40,0.85) 0%, rgba(15,15,25,0.9) 100%)'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(240,245,255,0.85) 100%)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        border: isDark
+          ? '1px solid rgba(255,255,255,0.12)'
+          : '1px solid rgba(255,255,255,0.6)',
+        boxShadow: isDark
+          ? 'inset 0 1px 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.35)'
+          : 'inset 0 1px 1px rgba(255,255,255,0.9), 0 4px 14px rgba(0,0,0,0.08)',
+      }}
     >
-      {isDark ? (
-        <Moon className="w-5 h-5 text-sky-400" />
-      ) : (
-        <Sun className="w-5 h-5 text-yellow-500" />
-      )}
+      {/* Liquid shine layer */}
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: isDark
+            ? 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%)'
+            : 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%)',
+        }}
+      />
+
+      {/* Thumb */}
+      <div
+        className="absolute top-[3px] left-[3px] w-[24px] h-[24px] rounded-full
+                   transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+                   flex items-center justify-center"
+        style={{
+          transform: isDark ? 'translateX(22px)' : 'translateX(0)',
+          background: isDark
+            ? 'linear-gradient(145deg, #3b82f6, #1d4ed8)'
+            : 'linear-gradient(145deg, #fbbf24, #f59e0b)',
+          boxShadow: isDark
+            ? '0 2px 8px rgba(59,130,246,0.55), inset 0 1px 1px rgba(255,255,255,0.35)'
+            : '0 2px 8px rgba(251,191,36,0.5), inset 0 1px 1px rgba(255,255,255,0.7)',
+        }}
+      >
+        {/* Subtle inner glass reflection on thumb */}
+        <div
+          className="absolute inset-0 rounded-full opacity-40"
+          style={{
+            background:
+              'linear-gradient(160deg, rgba(255,255,255,0.6) 0%, transparent 50%)',
+          }}
+        />
+      </div>
     </button>
   );
 };
+
 
 const Header: React.FC = () => {
   const { currentUser, logout, appNotifications, markAllNotificationsAsRead } = useAppContext();
@@ -211,8 +258,6 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-1">
           {currentUser ? (
             <>
-              <ThemeIconButton />
-
               {/* 🔔 Notification Bell */}
               <div ref={bellRef} className="relative">
                 <button
@@ -233,6 +278,9 @@ const Header: React.FC = () => {
                   <NotificationDropdown onClose={() => setShowNotifications(false)} />
                 )}
               </div>
+
+              {/* Grey vertical divider */}
+              <div className="w-px h-5 bg-neutral-400/40 dark:bg-neutral-500/40 mx-0.5" />
 
               {/* ☰ Profile / Menu */}
               <div ref={profileDropdownRef} className="relative">
@@ -302,6 +350,14 @@ const Header: React.FC = () => {
                       </Link>
                     ))}
 
+                    {/* Dark Mode Toggle (iOS 27 Liquid Glass) */}
+                    <div className="border-t border-[var(--border-primary)] px-4 py-3 flex items-center justify-between">
+                      <span className="text-sm text-[var(--text-secondary)]">
+                        Dark Mode
+                      </span>
+                      <LiquidGlassToggle />
+                    </div>
+
                     {/* Logout */}
                     <div className="border-t border-[var(--border-primary)]">
                       <button
@@ -317,8 +373,9 @@ const Header: React.FC = () => {
               </div>
             </>
           ) : (
-            <div className="flex items-center space-x-2">
-              <ThemeIconButton />
+            /* Landing / Guest header */
+            <div className="flex items-center space-x-3">
+              <LiquidGlassToggle />
               <button
                 onClick={() => navigate('/signup')}
                 className="button-gradient text-white font-semibold rounded-full py-1.5 px-4 text-xs"
