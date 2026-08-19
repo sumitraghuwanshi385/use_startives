@@ -15,10 +15,6 @@ import {
   Box,
   ArrowRight,
   Star,
-  Github,
-  Linkedin,
-  Facebook,
-  Twitter,
   Rocket,
 } from 'lucide-react';
 
@@ -503,7 +499,7 @@ const HomePage: React.FC = () => {
         w-full
         overflow-x-hidden
         bg-white
-        dark:bg-neutral-950
+        dark:bg-black
         text-black
         dark:text-white
         font-poppins
@@ -529,9 +525,10 @@ const HomePage: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10 bg-white dark:bg-neutral-950">
+      <div className="relative z-10 bg-white dark:bg-black">
 
-        <section className="hero-animated-bg relative bg-white dark:bg-neutral-950 pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
+        {/* HERO */}
+        <section className="hero-animated-bg relative bg-white dark:bg-black pt-24 pb-24 sm:pt-28 sm:pb-32 text-center px-4">
 
           <div className="absolute inset-0 z-0 dot-pattern-bg" />
 
@@ -544,7 +541,7 @@ const HomePage: React.FC = () => {
             }}
           />
 
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-black to-transparent z-10" />
 
           <div className="relative z-20 max-w-4xl mx-auto">
 
@@ -567,7 +564,7 @@ const HomePage: React.FC = () => {
                 transitionDelay: '80ms',
               }}
             >
-              <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-xs font-semibold text-neutral-700 dark:text-neutral-300 font-poppins">
+              <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-neutral-200 dark:border-white/15 bg-white dark:bg-black text-xs font-semibold text-neutral-700 dark:text-neutral-300 font-poppins">
                 <Rocket className="w-3.5 h-3.5 text-red-500" />
                 Now onboarding builders worldwide
               </div>
@@ -651,7 +648,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-12 sm:py-16 bg-white dark:bg-neutral-950">
+        {/* DISCOVER PROJECTS */}
+        <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
           <div className="container mx-auto px-4">
 
@@ -732,10 +730,10 @@ const HomePage: React.FC = () => {
                 }
                 className="
                   bg-white
-                  dark:bg-neutral-900
+                  dark:bg-black
                   border
                   border-neutral-200
-                  dark:border-neutral-800
+                  dark:border-white/15
                   text-black
                   dark:text-white
                   px-8
@@ -750,7 +748,7 @@ const HomePage: React.FC = () => {
                   hover:scale-105
                   active:scale-95
                   hover:bg-neutral-50
-                  dark:hover:bg-neutral-800
+                  dark:hover:bg-white/[0.04]
                 "
               >
                 Submit Idea
@@ -760,7 +758,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-8 sm:py-10 bg-white dark:bg-neutral-950 relative overflow-hidden">
+        {/* ECOSYSTEM */}
+        <section className="py-8 sm:py-10 bg-white dark:bg-black relative overflow-hidden">
 
           <div className="container mx-auto px-4">
 
@@ -790,6 +789,7 @@ const HomePage: React.FC = () => {
             >
               <div className="ecosystem-image-wrap w-full flex justify-center">
 
+                {/* LIGHT MODE */}
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787040411/Picsart_26-08-18_13-36-04-252_uihctg.jpg"
                   alt="Startives ecosystem"
@@ -804,6 +804,7 @@ const HomePage: React.FC = () => {
                   "
                 />
 
+                {/* DARK MODE */}
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787122074/file_00000000b90081fab560a74114540bc4_vea15j.png"
                   alt="Startives ecosystem"
@@ -858,7 +859,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-10 sm:py-12 bg-white dark:bg-neutral-950">
+        {/* FEATURES */}
+        <section className="py-10 sm:py-12 bg-white dark:bg-black">
 
           <div className="container mx-auto px-4">
 
@@ -897,7 +899,7 @@ const HomePage: React.FC = () => {
                         rounded-[1.7rem]
                         border
                         border-neutral-200
-                        dark:border-neutral-800
+                        dark:border-white/15
                         flex
                         flex-col
                         transition-all
@@ -909,9 +911,9 @@ const HomePage: React.FC = () => {
                         #{index + 1}
                       </span>
 
-                      <div className="absolute inset-0 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-2xl" />
+                      <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
 
-                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
 
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
 
@@ -971,7 +973,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-12 bg-white dark:bg-neutral-950 relative overflow-hidden">
+        {/* STARTALKS */}
+        <section className="py-12 bg-white dark:bg-black relative overflow-hidden">
 
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl opacity-40" />
 
@@ -1020,12 +1023,12 @@ const HomePage: React.FC = () => {
                     to="/signup"
                     className="
                       bg-white
-                      dark:bg-neutral-900
+                      dark:bg-black
                       text-black
                       dark:text-white
                       border
                       border-neutral-200
-                      dark:border-neutral-800
+                      dark:border-white/15
                       px-8
                       py-2.5
                       rounded-full
@@ -1034,7 +1037,7 @@ const HomePage: React.FC = () => {
                       uppercase
                       tracking-widest
                       hover:bg-neutral-50
-                      dark:hover:bg-neutral-800
+                      dark:hover:bg-white/[0.04]
                       transition-all
                       font-poppins
                     "
@@ -1083,12 +1086,12 @@ const HomePage: React.FC = () => {
                         key={index}
                         className="
                           bg-white
-                          dark:bg-neutral-900
+                          dark:bg-black
                           p-4
                           rounded-2xl
                           border
                           border-neutral-200
-                          dark:border-neutral-800
+                          dark:border-white/15
                           transition-all
                           duration-300
                           hover:-translate-y-1
@@ -1137,7 +1140,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-12 sm:py-16 bg-white dark:bg-neutral-950">
+        {/* WHY STARTIVES */}
+        <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
           <div className="container mx-auto px-4">
 
@@ -1194,7 +1198,8 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="py-12 sm:py-16 bg-white dark:bg-neutral-950">
+        {/* TESTIMONIALS */}
+        <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
           <div className="container mx-auto px-4 max-w-7xl">
 
@@ -1228,27 +1233,29 @@ const HomePage: React.FC = () => {
                       key={index}
                       className="flex-shrink-0 w-[90vw] sm:w-[420px]"
                     >
-                      <div className="
-                        p-6
-                        bg-white
-                        dark:bg-neutral-900
-                        rounded-2xl
-                        border
-                        border-neutral-200
-                        dark:border-neutral-800
-                        flex
-                        flex-col
-                        space-y-4
-                        h-full
-                        transition-all
-                        duration-300
-                        hover:-translate-y-1
-                        hover:shadow-lg
-                        hover:border-purple-500/20
-                        relative
-                        overflow-hidden
-                        font-poppins
-                      ">
+                      <div
+                        className="
+                          p-6
+                          bg-white
+                          dark:bg-black
+                          rounded-2xl
+                          border
+                          border-neutral-200
+                          dark:border-white/15
+                          flex
+                          flex-col
+                          space-y-4
+                          h-full
+                          transition-all
+                          duration-300
+                          hover:-translate-y-1
+                          hover:shadow-lg
+                          hover:border-purple-500/20
+                          relative
+                          overflow-hidden
+                          font-poppins
+                        "
+                      >
 
                         <img
                           src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
@@ -1281,7 +1288,7 @@ const HomePage: React.FC = () => {
                           "{testimonial.quote}"
                         </p>
 
-                        <div className="pt-4 border-t border-neutral-200 dark:border-neutral-800 z-10">
+                        <div className="pt-4 border-t border-neutral-200 dark:border-white/15 z-10">
 
                           <p className="font-bold text-black dark:text-white text-sm">
                             {testimonial.name}
@@ -1303,10 +1310,12 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-neutral-950">
+        {/* LAUNCH YOUR VISION */}
+        <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-black">
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
+            {/* LIGHT MODE IMAGE */}
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1786972768/Picsart_26-08-17_18-49-01-966_munhwd.png"
               alt=""
@@ -1323,6 +1332,7 @@ const HomePage: React.FC = () => {
               "
             />
 
+            {/* DARK MODE IMAGE */}
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787122074/file_00000000286081fa9f0ed10b16945e55_oixjfi.png"
               alt=""
@@ -1374,11 +1384,11 @@ const HomePage: React.FC = () => {
                 "
               >
 
-                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 dark:from-neutral-800/90 dark:via-neutral-900/75 dark:to-neutral-950/70 pointer-events-none" />
+                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 dark:from-black dark:via-black dark:to-black pointer-events-none" />
 
                 <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/15 via-purple-400/10 to-blue-500/20 pointer-events-none" />
 
-                <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 dark:bg-white/20 rounded-full pointer-events-none" />
+                <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 dark:bg-white/15 rounded-full pointer-events-none" />
 
                 <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
@@ -1399,15 +1409,15 @@ const HomePage: React.FC = () => {
                     overflow-hidden
                     border
                     border-white/80
-                    dark:border-white/20
+                    dark:border-white/15
                     bg-white/35
-                    dark:bg-white/10
+                    dark:bg-black
                     backdrop-blur-xl
                     shadow-[inset_0_1px_2px_rgba(255,255,255,0.95),0_3px_12px_rgba(20,30,60,0.12)]
                     transition-all
                     duration-300
                     group-hover:bg-white/50
-                    dark:group-hover:bg-white/15
+                    dark:group-hover:bg-white/[0.04]
                     group-hover:shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_5px_16px_rgba(40,50,100,0.16)]
                   "
                 >
@@ -1426,7 +1436,7 @@ const HomePage: React.FC = () => {
                     "
                   />
 
-                  <span className="absolute inset-[1px] rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md" />
+                  <span className="absolute inset-[1px] rounded-full bg-white/20 dark:bg-black backdrop-blur-md" />
 
                   <ArrowRight
                     className="
@@ -1451,13 +1461,16 @@ const HomePage: React.FC = () => {
           </Reveal>
         </section>
 
-        <div
-          className="w-full bg-white dark:bg-neutral-950 h-8 sm:h-10"
-        />
+        <div className="w-full bg-white dark:bg-black h-8 sm:h-10" />
 
       </div>
 
       <style>{`
+
+        /* =========================================
+           REVEAL ANIMATION
+        ========================================= */
+
         .reveal-item {
           opacity: 0;
           transform: translateY(24px);
@@ -1471,6 +1484,11 @@ const HomePage: React.FC = () => {
           opacity: 1;
           transform: translateY(0);
         }
+
+
+        /* =========================================
+           MAGNETIC BUTTON
+        ========================================= */
 
         .magnetic-btn::before {
           content: '';
@@ -1490,6 +1508,11 @@ const HomePage: React.FC = () => {
         .magnetic-btn:hover::before {
           opacity: 1;
         }
+
+
+        /* =========================================
+           ECOSYSTEM
+        ========================================= */
 
         .ecosystem-image-wrap {
           width: 100%;
@@ -1521,6 +1544,13 @@ const HomePage: React.FC = () => {
           -webkit-text-fill-color: transparent !important;
         }
 
+
+        /* =========================================
+           FEATURE CARDS
+           LIGHT = ORIGINAL
+           DARK = PURE BLACK
+        ========================================= */
+
         .feature-card-number {
           position: absolute;
           top: 13px;
@@ -1547,22 +1577,21 @@ const HomePage: React.FC = () => {
         .feature-liquid-card {
           -webkit-backdrop-filter: blur(26px) saturate(180%);
           backdrop-filter: blur(26px) saturate(180%);
+
           background:
             linear-gradient(
               135deg,
               rgba(255, 255, 255, 0.82),
               rgba(255, 255, 255, 0.55)
             );
+
           box-shadow: none !important;
         }
 
+        /* PURE BLACK DARK MODE */
         .dark .feature-liquid-card {
-          background:
-            linear-gradient(
-              135deg,
-              rgba(38, 38, 38, 0.82),
-              rgba(23, 23, 23, 0.65)
-            );
+          background: #000000 !important;
+          box-shadow: none !important;
         }
 
         .feature-liquid-card::before {
@@ -1570,6 +1599,7 @@ const HomePage: React.FC = () => {
           position: absolute;
           inset: 0;
           border-radius: inherit;
+
           background:
             linear-gradient(
               115deg,
@@ -1578,19 +1608,15 @@ const HomePage: React.FC = () => {
               transparent 70%,
               rgba(255, 255, 255, 0.35)
             );
+
           opacity: 0.75;
           pointer-events: none;
         }
 
+        /* Keep dark card surface visually black */
         .dark .feature-liquid-card::before {
-          background:
-            linear-gradient(
-              115deg,
-              rgba(255, 255, 255, 0.10),
-              transparent 28%,
-              transparent 70%,
-              rgba(255, 255, 255, 0.04)
-            );
+          background: transparent;
+          opacity: 0;
         }
 
         .feature-liquid-card::after {
@@ -1600,6 +1626,7 @@ const HomePage: React.FC = () => {
           right: 8%;
           top: 0;
           height: 1px;
+
           background:
             linear-gradient(
               90deg,
@@ -1607,6 +1634,7 @@ const HomePage: React.FC = () => {
               rgba(255, 255, 255, 0.95),
               transparent
             );
+
           pointer-events: none;
         }
 
@@ -1615,7 +1643,7 @@ const HomePage: React.FC = () => {
             linear-gradient(
               90deg,
               transparent,
-              rgba(255, 255, 255, 0.20),
+              rgba(255, 255, 255, 0.12),
               transparent
             );
         }
@@ -1627,18 +1655,28 @@ const HomePage: React.FC = () => {
 
         .dark .feature-liquid-card:hover {
           border-color: rgba(255, 255, 255, 0.18);
+          box-shadow: none !important;
         }
+
+
+        /* =========================================
+           LIQUID CTA
+           DARK SURFACE = PURE BLACK
+        ========================================= */
 
         .liquid-glass-cta {
           -webkit-backdrop-filter: blur(24px) saturate(180%);
           backdrop-filter: blur(24px) saturate(180%);
+
           background:
             linear-gradient(
               135deg,
               rgba(255, 255, 255, 0.78),
               rgba(255, 255, 255, 0.48)
             );
+
           border: 1px solid rgba(255, 255, 255, 0.9);
+
           box-shadow:
             inset 0 1px 2px rgba(255, 255, 255, 0.95),
             inset 0 -1px 1px rgba(120, 130, 160, 0.08),
@@ -1646,13 +1684,9 @@ const HomePage: React.FC = () => {
         }
 
         .dark .liquid-glass-cta {
-          background:
-            linear-gradient(
-              135deg,
-              rgba(45, 45, 45, 0.82),
-              rgba(23, 23, 23, 0.68)
-            );
+          background: #000000 !important;
           border-color: rgba(255, 255, 255, 0.14);
+
           box-shadow:
             inset 0 1px 2px rgba(255, 255, 255, 0.10),
             inset 0 -1px 1px rgba(0, 0, 0, 0.25),
@@ -1664,6 +1698,7 @@ const HomePage: React.FC = () => {
           position: absolute;
           inset: 0;
           border-radius: inherit;
+
           background:
             linear-gradient(
               115deg,
@@ -1672,19 +1707,14 @@ const HomePage: React.FC = () => {
               transparent 65%,
               rgba(255, 255, 255, 0.25)
             );
+
           opacity: 0.7;
           pointer-events: none;
         }
 
         .dark .liquid-glass-cta::after {
-          background:
-            linear-gradient(
-              115deg,
-              rgba(255, 255, 255, 0.12),
-              transparent 35%,
-              transparent 65%,
-              rgba(255, 255, 255, 0.05)
-            );
+          background: transparent;
+          opacity: 0;
         }
 
         .liquid-glass-cta:hover {
@@ -1700,6 +1730,11 @@ const HomePage: React.FC = () => {
             inset 0 -1px 1px rgba(0, 0, 0, 0.20),
             0 12px 34px rgba(0, 0, 0, 0.35);
         }
+
+
+        /* =========================================
+           FLOAT
+        ========================================= */
 
         @keyframes float-slow {
           0%,
@@ -1717,7 +1752,13 @@ const HomePage: React.FC = () => {
             float-slow 8s ease-in-out infinite;
         }
 
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
         @media (max-width: 639px) {
+
           .liquid-glass-cta {
             padding-top: 6.3px;
             padding-bottom: 6.3px;
@@ -1775,14 +1816,27 @@ const HomePage: React.FC = () => {
           }
         }
 
+
+        /* =========================================
+           DESKTOP
+        ========================================= */
+
         @media (min-width: 640px) {
+
           .ecosystem-stats {
             grid-template-columns:
               repeat(3, minmax(0, 1fr));
           }
+
         }
 
+
+        /* =========================================
+           REDUCED MOTION
+        ========================================= */
+
         @media (prefers-reduced-motion: reduce) {
+
           .reveal-item {
             opacity: 1 !important;
             transform: none !important;
@@ -1800,7 +1854,9 @@ const HomePage: React.FC = () => {
           .feature-liquid-card {
             transition: none !important;
           }
+
         }
+
       `}</style>
     </div>
   );
