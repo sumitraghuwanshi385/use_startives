@@ -54,7 +54,7 @@ const Header: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // initial check
+    handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -175,13 +175,87 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-        scrolled
-          ? "bg-white/70 dark:bg-black/55 backdrop-blur-2xl backdrop-saturate-150 border-b border-black/10 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]"
-          : "bg-transparent border-b border-transparent shadow-none"
-      }`}
+      className={`
+        sticky
+        top-0
+        z-40
+        w-full
+        transition-all
+        duration-500
+        ease-[cubic-bezier(0.16,1,0.3,1)]
+        ${
+          scrolled
+            ? `
+              bg-white/[0.58]
+              dark:bg-black/[0.48]
+
+              backdrop-blur-[30px]
+              backdrop-saturate-[190%]
+              backdrop-contrast-[105%]
+
+              border-b
+              border-black/[0.06]
+              dark:border-white/[0.10]
+
+              shadow-[0_8px_30px_rgba(20,30,60,0.08)]
+              dark:shadow-[0_8px_30px_rgba(0,0,0,0.32)]
+
+              supports-[backdrop-filter]:bg-white/[0.45]
+              dark:supports-[backdrop-filter]:bg-black/[0.38]
+            `
+            : `
+              bg-transparent
+              border-b
+              border-transparent
+              shadow-none
+              backdrop-blur-0
+            `
+        }
+      `}
     >
-      <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2">
+      {/* iOS 27 Liquid Glass highlight layer */}
+      <div
+        className={`
+          pointer-events-none
+          absolute
+          inset-0
+          -z-10
+          transition-all
+          duration-500
+          ease-[cubic-bezier(0.16,1,0.3,1)]
+          ${
+            scrolled
+              ? `
+                opacity-100
+                bg-gradient-to-b
+                from-white/[0.18]
+                via-white/[0.08]
+                to-transparent
+                dark:from-white/[0.07]
+                dark:via-white/[0.025]
+                dark:to-transparent
+              `
+              : `
+                opacity-0
+              `
+          }
+        `}
+      >
+        <div
+          className="
+            absolute
+            left-[8%]
+            right-[8%]
+            top-0
+            h-px
+            bg-white/[0.85]
+            dark:bg-white/[0.18]
+            rounded-full
+          "
+        />
+      </div>
+
+      <div className="w-full flex items-center justify-between px-2 sm:px-4 py-2 relative">
         <div className="flex items-center space-x-8">
           <Link
             to={currentUser ? "/dashboard" : "/"}
