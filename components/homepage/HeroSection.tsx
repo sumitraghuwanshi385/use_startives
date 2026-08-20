@@ -61,10 +61,10 @@ const GradientButton: React.FC<{
     overflow-hidden
     text-white
     font-semibold
-    py-3
-    px-8
+    py-2.5
+    px-7
     rounded-full
-    text-base
+    text-sm
     transition-transform
     duration-300
     ease-out
@@ -141,16 +141,16 @@ const HeroSection: React.FC = () => {
         bg-white
         dark:bg-black
         pt-6
-        pb-24
+        pb-12
         sm:pt-8
-        sm:pb-32
+        sm:pb-16
         text-center
         px-4
       "
     >
       <div className="relative z-20 w-full">
 
-        {/* Onboarding pill – reduced bottom margin */}
+        {/* Onboarding pill – very tight bottom margin */}
         <div
           className="reveal-item is-visible"
           style={{
@@ -162,8 +162,8 @@ const HeroSection: React.FC = () => {
               inline-flex
               items-center
               gap-2
-              mb-2
-              sm:mb-3
+              mb-1
+              sm:mb-1.5
               px-4
               py-1.5
               rounded-full
@@ -186,7 +186,7 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Images – mobile +10%, desktop +20% scale + reduced vertical space */}
+        {/* Images – mobile 0.935, desktop \~0.99 (+10% from previous) + extremely close to pill */}
         <div
           className="
             relative
@@ -195,8 +195,7 @@ const HeroSection: React.FC = () => {
             justify-center
             items-center
             mt-0
-            mb-1
-            sm:mb-2
+            mb-0
             overflow-visible
             reveal-item
             is-visible
@@ -229,7 +228,7 @@ const HeroSection: React.FC = () => {
                 select-none
                 origin-center
                 scale-[0.935]
-                sm:scale-[0.90]
+                sm:scale-[0.99]
               "
             />
           </div>
@@ -258,15 +257,15 @@ const HeroSection: React.FC = () => {
                 select-none
                 origin-center
                 scale-[0.935]
-                sm:scale-[0.90]
+                sm:scale-[0.99]
               "
             />
           </div>
         </div>
 
-        {/* Heading – mobile size reduced \~10%, tighter top spacing */}
+        {/* Heading – very close to images */}
         <div
-          className="reveal-item is-visible"
+          className="reveal-item is-visible mt-0"
           style={{
             transitionDelay: '120ms',
           }}
@@ -291,12 +290,13 @@ const HeroSection: React.FC = () => {
             </span>
           </h1>
 
+          {/* Paragraph text size reduced \~10% */}
           <p
             className="
-              mt-5
-              sm:mt-6
-              text-lg
-              md:text-xl
+              mt-4
+              sm:mt-5
+              text-base
+              md:text-lg
               text-neutral-600
               dark:text-neutral-400
               max-w-2xl
@@ -313,9 +313,10 @@ const HeroSection: React.FC = () => {
           </p>
         </div>
 
+        {/* Button – reduced \~15% (py-2.5 px-7 text-sm) */}
         <div
           className="
-            mt-10
+            mt-8
             flex
             items-center
             justify-center
@@ -337,9 +338,10 @@ const HeroSection: React.FC = () => {
           </GradientButton>
         </div>
 
+        {/* Features row – no extra bottom padding */}
         <div
           className="
-            mt-10
+            mt-8
             flex
             items-center
             justify-center
