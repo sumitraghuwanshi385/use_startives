@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { StartalkCard } from './StartalkCard';
@@ -13,16 +13,19 @@ const StartalksSection: React.FC<{
 }> = ({ Reveal }) => {
   const { startalks } = useAppContext();
 
-  // Always show the 4 most recent real Startalks
-  const recentStartalks = useMemo(() => {
-    return [...(startalks || [])]
-      .sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() -
-          new Date(a.timestamp).getTime()
-      )
-      .slice(0, 4);
-  }, [startalks]);
+  const recentStartalks = [...(startalks || [])]
+    .sort((a, b) => {
+      const dateA = new Date(
+        String(a.timestamp || '')
+      ).getTime();
+
+      const dateB = new Date(
+        String(b.timestamp || '')
+      ).getTime();
+
+      return dateB - dateA;
+    })
+    .slice(0, 4);
 
   return (
     <section className="py-12 bg-white dark:bg-black relative overflow-hidden">
@@ -33,7 +36,7 @@ const StartalksSection: React.FC<{
 
         <div className="flex flex-col lg:flex-row items-center gap-10 max-w-6xl mx-auto">
 
-          {/* LEFT CONTENT */}
+          {/* LEFT */}
 
           <Reveal
             className="lg:w-[42%] space-y-6 text-center lg:text-left"
@@ -57,8 +60,7 @@ const StartalksSection: React.FC<{
                 className="
                   button-gradient
                   text-white
-                  px-8
-                  py-2.5
+                  px-8 py-2.5
                   rounded-full
                   text-[11px]
                   font-black
@@ -76,15 +78,11 @@ const StartalksSection: React.FC<{
               <Link
                 to="/signup"
                 className="
-                  bg-white
-                  dark:bg-black
-                  text-black
-                  dark:text-white
-                  border
-                  border-neutral-200
+                  bg-white dark:bg-black
+                  text-black dark:text-white
+                  border border-neutral-200
                   dark:border-white/15
-                  px-8
-                  py-2.5
+                  px-8 py-2.5
                   rounded-full
                   text-[11px]
                   font-black
@@ -109,38 +107,35 @@ const StartalksSection: React.FC<{
             delay={120}
           >
             {recentStartalks.length > 0 ? (
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {recentStartalks.map(talk => (
+
+                {recentStartalks.map((talk) => (
                   <StartalkCard
-                    key={talk.id}
+                    key={String(talk.id)}
                     talk={talk}
-                    className="
-                      !p-4
-                      !rounded-2xl
-                      h-full
-                    "
+                    className="!p-4 !rounded-2xl h-full"
                   />
                 ))}
+
               </div>
+
             ) : (
+
               <div
                 className="
-                  w-full
-                  min-h-[220px]
-                  flex
-                  items-center
-                  justify-center
+                  w-full min-h-[220px]
+                  flex items-center justify-center
                   rounded-2xl
-                  border
-                  border-neutral-200
+                  border border-neutral-200
                   dark:border-white/15
-                  bg-white
-                  dark:bg-black
+                  bg-white dark:bg-black
                   text-center
                   font-poppins
                 "
               >
                 <div>
+
                   <p className="text-sm font-bold text-black dark:text-white">
                     No Startalks yet
                   </p>
@@ -152,8 +147,7 @@ const StartalksSection: React.FC<{
                   <Link
                     to="/startalks"
                     className="
-                      inline-block
-                      mt-4
+                      inline-block mt-4
                       text-[10px]
                       font-black
                       uppercase
@@ -165,8 +159,10 @@ const StartalksSection: React.FC<{
                   >
                     Share a Startalk →
                   </Link>
+
                 </div>
               </div>
+
             )}
 
             <div className="absolute -top-6 -right-6 w-12 h-12 bg-purple-500/10 rounded-full animate-orbit blur-xl pointer-events-none" />
@@ -177,10 +173,12 @@ const StartalksSection: React.FC<{
                 animationDirection: 'reverse',
               }}
             />
+
           </Reveal>
 
         </div>
       </div>
+
     </section>
   );
 };
