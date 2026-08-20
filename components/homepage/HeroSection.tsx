@@ -150,6 +150,7 @@ const HeroSection: React.FC = () => {
     >
       <div className="relative z-20 w-full">
 
+        {/* Onboarding pill – reduced bottom margin */}
         <div
           className="reveal-item is-visible"
           style={{
@@ -161,7 +162,8 @@ const HeroSection: React.FC = () => {
               inline-flex
               items-center
               gap-2
-              mb-4
+              mb-2
+              sm:mb-3
               px-4
               py-1.5
               rounded-full
@@ -184,6 +186,7 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
 
+        {/* Images – mobile +10%, desktop +20% scale + reduced vertical space */}
         <div
           className="
             relative
@@ -192,7 +195,8 @@ const HeroSection: React.FC = () => {
             justify-center
             items-center
             mt-0
-            mb-2
+            mb-1
+            sm:mb-2
             overflow-visible
             reveal-item
             is-visible
@@ -224,8 +228,8 @@ const HeroSection: React.FC = () => {
                 object-center
                 select-none
                 origin-center
-                scale-[0.85]
-                sm:scale-[0.75]
+                scale-[0.935]
+                sm:scale-[0.90]
               "
             />
           </div>
@@ -253,13 +257,14 @@ const HeroSection: React.FC = () => {
                 object-center
                 select-none
                 origin-center
-                scale-[0.85]
-                sm:scale-[0.75]
+                scale-[0.935]
+                sm:scale-[0.90]
               "
             />
           </div>
         </div>
 
+        {/* Heading – mobile size reduced \~10%, tighter top spacing */}
         <div
           className="reveal-item is-visible"
           style={{
@@ -268,13 +273,14 @@ const HeroSection: React.FC = () => {
         >
           <h1
             className="
-              text-5xl
+              text-[2.7rem]
               md:text-7xl
               font-extrabold
               tracking-tighter
               text-black
               dark:text-white
               font-poppins
+              leading-tight
             "
           >
             Where visionaries &
@@ -287,7 +293,8 @@ const HeroSection: React.FC = () => {
 
           <p
             className="
-              mt-6
+              mt-5
+              sm:mt-6
               text-lg
               md:text-xl
               text-neutral-600
