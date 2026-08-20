@@ -1,66 +1,87 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { StartalkCard } from '../StartalkCard';
+import { Startalk } from '../../types';
 
-interface DemoStartalk {
-  id: string;
-  name: string;
-  username: string;
-  bio: string;
-  content: string;
-  time: string;
-  initials: string;
-  reactions: number;
-  comments: number;
-}
-
-const demoStartalks: DemoStartalk[] = [
+const DEMO_STARTALKS: Startalk[] = [
   {
-    id: 'demo-1',
-    name: 'Aarav Mehta',
-    username: '@aarav',
-    bio: 'Founder · Building in public',
+    id: 'homepage-demo-1',
+    authorId: 'homepage-user-1',
+    authorName: 'Aarav Mehta',
+    authorHeadline: 'Founder · Building in public',
+    authorAvatar: '',
     content:
       'Spent the whole week talking to users instead of writing code. Best product decision I made this month.',
-    time: '2h',
-    initials: 'AM',
-    reactions: 24,
-    comments: 6,
+    timestamp: new Date(
+      Date.now() - 2 * 60 * 60 * 1000
+    ).toISOString(),
+    reactions: {
+      '🚀': 18,
+      '❤️': 6,
+    },
+    userReactions: {},
+    currentUserReaction: undefined,
+    commentCount: 6,
   },
+
   {
-    id: 'demo-2',
-    name: 'Riya Sharma',
-    username: '@riyasharma',
-    bio: 'Builder · Product & Growth',
+    id: 'homepage-demo-2',
+    authorId: 'homepage-user-2',
+    authorName: 'Riya Sharma',
+    authorHeadline: 'Product · Growth · Builder',
+    authorAvatar: '',
     content:
       'Your first version does not need to be perfect. It needs to exist, reach people, and teach you something.',
-    time: '5h',
-    initials: 'RS',
-    reactions: 41,
-    comments: 9,
+    timestamp: new Date(
+      Date.now() - 5 * 60 * 60 * 1000
+    ).toISOString(),
+    reactions: {
+      '💡': 22,
+      '🔥': 9,
+    },
+    userReactions: {},
+    currentUserReaction: undefined,
+    commentCount: 9,
   },
+
   {
-    id: 'demo-3',
-    name: 'Kabir Verma',
-    username: '@kabir',
-    bio: 'Indie Hacker · Developer',
+    id: 'homepage-demo-3',
+    authorId: 'homepage-user-3',
+    authorName: 'Kabir Verma',
+    authorHeadline: 'Indie Hacker · Developer',
+    authorAvatar: '',
     content:
       'One small feature shipped today. One more reason for someone to come back tomorrow. Momentum compounds.',
-    time: '8h',
-    initials: 'KV',
-    reactions: 18,
-    comments: 4,
+    timestamp: new Date(
+      Date.now() - 8 * 60 * 60 * 1000
+    ).toISOString(),
+    reactions: {
+      '🚀': 11,
+      '💯': 7,
+    },
+    userReactions: {},
+    currentUserReaction: undefined,
+    commentCount: 4,
   },
+
   {
-    id: 'demo-4',
-    name: 'Ananya Kapoor',
-    username: '@ananya',
-    bio: 'Founder · Community Builder',
+    id: 'homepage-demo-4',
+    authorId: 'homepage-user-4',
+    authorName: 'Ananya Kapoor',
+    authorHeadline: 'Founder · Community Builder',
+    authorAvatar: '',
     content:
       'The best startup conversations usually start with a simple question: what are you building right now?',
-    time: '1d',
-    initials: 'AK',
-    reactions: 32,
-    comments: 7,
+    timestamp: new Date(
+      Date.now() - 24 * 60 * 60 * 1000
+    ).toISOString(),
+    reactions: {
+      '❤️': 19,
+      '🔥': 13,
+    },
+    userReactions: {},
+    currentUserReaction: undefined,
+    commentCount: 7,
   },
 ];
 
@@ -74,14 +95,40 @@ const StartalksSection: React.FC<{
 }> = ({ Reveal }) => {
   const navigate = useNavigate();
 
+  /*
+   * Homepage Startalks are preview-only.
+   *
+   * No API.
+   * No AppContext.
+   * No real Startalk fetching.
+   *
+   * Every interaction opens login.
+   */
   const goToLogin = () => {
+    navigate('/login');
+  };
+
+  /*
+   * StartalkCard itself contains real interaction handlers
+   * such as React / Comments / Share / Profile links.
+   *
+   * We don't want those actions on the homepage demo cards.
+   *
+   * So the whole card is wrapped with a login gate.
+   */
+  const handleCardClick = (
+    event: React.MouseEvent
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     navigate('/login');
   };
 
   return (
     <section
       className="
-        py-14
+        py-12
         sm:py-16
         bg-white
         dark:bg-black
@@ -89,19 +136,19 @@ const StartalksSection: React.FC<{
         overflow-hidden
       "
     >
-
-      {/* Background atmosphere */}
+      {/* Background decoration */}
 
       <div
         className="
           absolute
-          -top-32
-          -left-32
-          w-80
-          h-80
+          -top-24
+          -left-24
+          w-64
+          h-64
+          bg-blue-500/5
           rounded-full
-          bg-blue-500/[0.06]
-          blur-[90px]
+          blur-3xl
+          opacity-40
           pointer-events-none
         "
       />
@@ -109,18 +156,27 @@ const StartalksSection: React.FC<{
       <div
         className="
           absolute
-          -bottom-32
-          -right-32
-          w-80
-          h-80
+          -bottom-24
+          -right-24
+          w-64
+          h-64
+          bg-purple-500/5
           rounded-full
-          bg-purple-500/[0.06]
-          blur-[90px]
+          blur-3xl
+          opacity-40
           pointer-events-none
         "
       />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div
+        className="
+          container
+          mx-auto
+          px-4
+          relative
+          z-10
+        "
+      >
 
         <div
           className="
@@ -147,41 +203,6 @@ const StartalksSection: React.FC<{
             "
           >
 
-            <div
-              className="
-                inline-flex
-                items-center
-                gap-2
-                px-3
-                py-1.5
-                rounded-full
-                border
-                border-neutral-200
-                dark:border-white/10
-                bg-white/60
-                dark:bg-white/[0.03]
-                backdrop-blur-xl
-                text-[9px]
-                font-black
-                uppercase
-                tracking-[0.16em]
-                text-neutral-500
-                dark:text-neutral-400
-              "
-            >
-              <span
-                className="
-                  w-1.5
-                  h-1.5
-                  rounded-full
-                  bg-green-500
-                  animate-pulse
-                "
-              />
-
-              Founder conversations
-            </div>
-
             <h2
               className="
                 text-3xl
@@ -192,12 +213,9 @@ const StartalksSection: React.FC<{
                 dark:text-white
                 font-poppins
                 uppercase
-                leading-tight
               "
             >
-              The pulse of
-              <br />
-              innovation
+              The pulse of innovation
             </h2>
 
             <p
@@ -209,14 +227,13 @@ const StartalksSection: React.FC<{
                 font-medium
                 leading-relaxed
                 font-poppins
-                max-w-md
-                mx-auto
-                lg:mx-0
               "
             >
-              Real thoughts, honest lessons,
-              tiny wins and bold ideas from
-              people building what's next.
+              Explore real-time thoughts, wins,
+              and pivots from founders building
+              the next big things. Startalks is
+              the social layer where the community
+              breathes.
             </p>
 
             <div
@@ -287,7 +304,7 @@ const StartalksSection: React.FC<{
 
 
           {/* =================================================
-              FOUR IOS 27 GLASS STARTALK CARDS
+              STARTALK CARDS
           ================================================= */}
 
           <Reveal
@@ -308,330 +325,91 @@ const StartalksSection: React.FC<{
               "
             >
 
-              {demoStartalks.map(
+              {DEMO_STARTALKS.map(
                 (talk, index) => (
 
-                  <button
+                  <div
                     key={talk.id}
-                    type="button"
-                    onClick={goToLogin}
+                    onClick={handleCardClick}
+                    onMouseDown={handleCardClick}
                     className="
-                      group
+                      cursor-pointer
                       relative
-                      text-left
-                      w-full
-                      min-h-[225px]
-                      rounded-[1.65rem]
-                      overflow-hidden
-                      border
-                      border-black/[0.08]
-                      dark:border-white/[0.12]
-                      bg-white/[0.72]
-                      dark:bg-white/[0.035]
-                      backdrop-blur-[28px]
-                      backdrop-saturate-[180%]
-                      p-5
-                      transition-all
-                      duration-500
-                      hover:-translate-y-1.5
-                      hover:border-black/[0.14]
-                      dark:hover:border-white/[0.20]
-                      active:scale-[0.985]
-                      focus:outline-none
-                      focus-visible:ring-2
-                      focus-visible:ring-purple-500/40
-                      font-poppins
+                      transition-transform
+                      duration-300
+                      hover:-translate-y-1
                     "
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={event => {
+                      if (
+                        event.key === 'Enter' ||
+                        event.key === ' '
+                      ) {
+                        event.preventDefault();
+                        navigate('/login');
+                      }
+                    }}
+                    aria-label="Login to interact with this Startalk"
                   >
 
-                    {/* Glass highlight */}
+                    {/* 
+                     * Existing StartalkCard.
+                     *
+                     * This means:
+                     * SAME avatar
+                     * SAME typography
+                     * SAME reaction pills
+                     * SAME action bar
+                     * SAME comment button
+                     * SAME share button
+                     * SAME spacing
+                     * SAME borders
+                     * SAME dark mode
+                     * SAME responsive UI
+                     */}
+
+                    <div
+                      className="
+                        pointer-events-none
+                      "
+                    >
+                      <StartalkCard
+                        talk={talk}
+                        className="
+                          !p-4
+                          !rounded-2xl
+                          h-full
+                        "
+                      />
+                    </div>
+
+                    {/* 
+                     * Invisible interaction layer.
+                     *
+                     * It sits above the existing card so
+                     * React / comments / share / profile
+                     * cannot execute on homepage.
+                     */}
 
                     <div
                       className="
                         absolute
                         inset-0
-                        pointer-events-none
-                        bg-gradient-to-br
-                        from-white/[0.75]
-                        via-transparent
-                        to-blue-500/[0.035]
-                        dark:from-white/[0.07]
-                        dark:via-transparent
-                        dark:to-purple-500/[0.04]
+                        z-[50]
+                        rounded-2xl
                       "
+                      aria-hidden="true"
                     />
 
-                    {/* Top glass reflection */}
-
-                    <div
-                      className="
-                        absolute
-                        left-[8%]
-                        right-[8%]
-                        top-0
-                        h-px
-                        bg-gradient-to-r
-                        from-transparent
-                        via-white
-                        to-transparent
-                        dark:via-white/20
-                        pointer-events-none
-                      "
-                    />
-
-                    {/* Ambient glow */}
-
-                    <div
-                      className={`
-                        absolute
-                        -bottom-16
-                        -right-12
-                        w-32
-                        h-32
-                        rounded-full
-                        blur-[55px]
-                        pointer-events-none
-                        transition-all
-                        duration-500
-                        ${
-                          index % 2 === 0
-                            ? 'bg-blue-500/[0.12] group-hover:bg-blue-500/[0.18]'
-                            : 'bg-purple-500/[0.10] group-hover:bg-purple-500/[0.17]'
-                        }
-                      `}
-                    />
-
-                    <div
-                      className="
-                        relative
-                        z-10
-                        h-full
-                        flex
-                        flex-col
-                      "
-                    >
-
-                      {/* AUTHOR */}
-
-                      <div
-                        className="
-                          flex
-                          items-center
-                          justify-between
-                          gap-3
-                        "
-                      >
-
-                        <div
-                          className="
-                            flex
-                            items-center
-                            gap-2.5
-                          "
-                        >
-
-                          <div
-                            className="
-                              w-9
-                              h-9
-                              shrink-0
-                              rounded-full
-                              bg-gradient-to-br
-                              from-red-500
-                              via-purple-500
-                              to-blue-500
-                              flex
-                              items-center
-                              justify-center
-                              text-white
-                              text-[10px]
-                              font-black
-                              shadow-sm
-                            "
-                          >
-                            {talk.initials}
-                          </div>
-
-                          <div className="min-w-0">
-
-                            <div
-                              className="
-                                flex
-                                items-center
-                                gap-1.5
-                              "
-                            >
-
-                              <p
-                                className="
-                                  text-[12px]
-                                  font-bold
-                                  text-black
-                                  dark:text-white
-                                  truncate
-                                "
-                              >
-                                {talk.name}
-                              </p>
-
-                              <span
-                                className="
-                                  w-3.5
-                                  h-3.5
-                                  rounded-full
-                                  bg-blue-500
-                                  text-white
-                                  flex
-                                  items-center
-                                  justify-center
-                                  text-[7px]
-                                  font-black
-                                "
-                              >
-                                ✓
-                              </span>
-
-                            </div>
-
-                            <p
-                              className="
-                                text-[9px]
-                                text-neutral-500
-                                dark:text-neutral-400
-                                truncate
-                              "
-                            >
-                              {talk.bio}
-                            </p>
-
-                          </div>
-
-                        </div>
-
-                        <span
-                          className="
-                            text-[9px]
-                            font-medium
-                            text-neutral-400
-                            dark:text-neutral-500
-                            shrink-0
-                          "
-                        >
-                          {talk.time}
-                        </span>
-
-                      </div>
-
-
-                      {/* CONTENT */}
-
-                      <p
-                        className="
-                          mt-5
-                          text-[12px]
-                          sm:text-[12.5px]
-                          leading-[1.65]
-                          font-medium
-                          text-neutral-700
-                          dark:text-neutral-300
-                          line-clamp-4
-                        "
-                      >
-                        {talk.content}
-                      </p>
-
-
-                      {/* FOOTER */}
-
-                      <div
-                        className="
-                          mt-auto
-                          pt-4
-                          flex
-                          items-center
-                          justify-between
-                          border-t
-                          border-black/[0.06]
-                          dark:border-white/[0.08]
-                        "
-                      >
-
-                        <div
-                          className="
-                            flex
-                            items-center
-                            gap-4
-                          "
-                        >
-
-                          <span
-                            className="
-                              flex
-                              items-center
-                              gap-1.5
-                              text-[9px]
-                              font-bold
-                              text-neutral-500
-                              dark:text-neutral-400
-                            "
-                          >
-                            <span className="text-[13px]">
-                              ♡
-                            </span>
-                            {talk.reactions}
-                          </span>
-
-                          <span
-                            className="
-                              flex
-                              items-center
-                              gap-1.5
-                              text-[9px]
-                              font-bold
-                              text-neutral-500
-                              dark:text-neutral-400
-                            "
-                          >
-                            <span className="text-[11px]">
-                              ◌
-                            </span>
-                            {talk.comments}
-                          </span>
-
-                        </div>
-
-                        <span
-                          className="
-                            text-[8px]
-                            font-black
-                            uppercase
-                            tracking-[0.14em]
-                            text-neutral-400
-                            dark:text-neutral-500
-                            opacity-0
-                            translate-x-1
-                            group-hover:opacity-100
-                            group-hover:translate-x-0
-                            transition-all
-                            duration-300
-                          "
-                        >
-                          View talk →
-                        </span>
-
-                      </div>
-
-                    </div>
-
-                  </button>
+                  </div>
 
                 )
               )}
 
             </div>
 
-
-            {/* Floating decorations */}
+            {/* Decorative circles */}
 
             <div
               className="
@@ -640,8 +418,8 @@ const StartalksSection: React.FC<{
                 -right-6
                 w-12
                 h-12
+                bg-purple-500/10
                 rounded-full
-                bg-purple-500/[0.10]
                 blur-xl
                 pointer-events-none
               "
@@ -654,8 +432,8 @@ const StartalksSection: React.FC<{
                 -left-6
                 w-16
                 h-16
+                bg-blue-500/10
                 rounded-full
-                bg-blue-500/[0.10]
                 blur-xl
                 pointer-events-none
               "
@@ -666,7 +444,6 @@ const StartalksSection: React.FC<{
         </div>
 
       </div>
-
     </section>
   );
 };
