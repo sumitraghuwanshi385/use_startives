@@ -1,10 +1,30 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Smile,
+  MessageCircle,
+  Share2,
+} from 'lucide-react';
 
-const DEMO_STARTALKS = [
+interface DemoStartalk {
+  id: string;
+  authorName: string;
+  authorHeadline: string;
+  content: string;
+  time: string;
+  reactions: [string, number][];
+  comments: number;
+}
+
+/* =========================================================
+   HOMEPAGE DEMO STARTALKS
+   No API / No AppContext / No backend dependency
+========================================================= */
+
+const DEMO_STARTALKS: DemoStartalk[] = [
   {
     id: 'homepage-demo-1',
-    authorName: 'Aarav Mehta',
+    authorName: 'Prince Gupta',
     authorHeadline: 'Founder · Building in public',
     content:
       'Spent the whole week talking to users instead of writing code. Best product decision I made this month.',
@@ -15,9 +35,10 @@ const DEMO_STARTALKS = [
     ],
     comments: 6,
   },
+
   {
     id: 'homepage-demo-2',
-    authorName: 'Riya Sharma',
+    authorName: 'Sumit Raghuwanshi',
     authorHeadline: 'Product · Growth · Builder',
     content:
       'Your first version does not need to be perfect. It needs to exist, reach people, and teach you something.',
@@ -28,9 +49,10 @@ const DEMO_STARTALKS = [
     ],
     comments: 9,
   },
+
   {
     id: 'homepage-demo-3',
-    authorName: 'Kabir Verma',
+    authorName: 'Dushant Kumar',
     authorHeadline: 'Indie Hacker · Developer',
     content:
       'One small feature shipped today. One more reason for someone to come back tomorrow. Momentum compounds.',
@@ -41,9 +63,10 @@ const DEMO_STARTALKS = [
     ],
     comments: 4,
   },
+
   {
     id: 'homepage-demo-4',
-    authorName: 'Ananya Kapoor',
+    authorName: 'Jacob Jeilling',
     authorHeadline: 'Founder · Community Builder',
     content:
       'The best startup conversations usually start with a simple question: what are you building right now?',
@@ -56,7 +79,11 @@ const DEMO_STARTALKS = [
   },
 ];
 
-const getInitials = (name: string) =>
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const getInitials = (name: string): string =>
   name
     .split(' ')
     .map(word => word[0])
@@ -64,72 +91,40 @@ const getInitials = (name: string) =>
     .slice(0, 2)
     .toUpperCase();
 
-const SmileIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    className="w-4 h-4"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15.18 15.18a4.5 4.5 0 0 1-6.36 0M21 12a9 9 0 1 1-18 0ZM9.75 9.75h.01M14.25 9.75h.01"
-    />
-  </svg>
-);
-
-const CommentIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    className="w-4 h-4"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M8.625 9.75h6.75m-6.75 3h4.125M12 21a9 9 0 1 0-8.25-5.4L3 21l5.4-.75A8.96 8.96 0 0 0 12 21Z"
-    />
-  </svg>
-);
-
-const ShareIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.7"
-    className="w-4 h-4"
-  >
-    <circle cx="18" cy="5" r="2.2" />
-    <circle cx="6" cy="12" r="2.2" />
-    <circle cx="18" cy="19" r="2.2" />
-
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="m8 11 7.8-4.6M8 13l7.8 4.6"
-    />
-  </svg>
-);
+/* =========================================================
+   STARTALK DEMO CARD
+========================================================= */
 
 const StartalkDemoCard: React.FC<{
-  talk: (typeof DEMO_STARTALKS)[number];
+  talk: DemoStartalk;
   onClick: () => void;
 }> = ({ talk, onClick }) => {
-  const initials = getInitials(talk.authorName);
-
-  const totalReactions = talk.reactions.reduce(
-    (sum, [, count]) => sum + count,
-    0
+  const initials = getInitials(
+    talk.authorName
   );
+
+  const totalReactions =
+    talk.reactions.reduce(
+      (sum, [, count]) =>
+        sum + count,
+      0
+    );
 
   return (
     <article
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={event => {
+        if (
+          event.key === 'Enter' ||
+          event.key === ' '
+        ) {
+          event.preventDefault();
+          onClick();
+        }
+      }}
+      aria-label="Login to interact with this Startalk"
       className="
         w-full
         relative
@@ -150,12 +145,22 @@ const StartalkDemoCard: React.FC<{
         select-none
         font-poppins
         cursor-pointer
+        outline-none
+        focus-visible:ring-2
+        focus-visible:ring-purple-500/40
       "
     >
-      {/* HEADER */}
+
+      {/* =================================================
+          HEADER
+      ================================================= */}
 
       <div className="flex items-start justify-between gap-3">
+
         <div className="flex items-center gap-3 min-w-0">
+
+          {/* AVATAR */}
+
           <div
             className="
               w-10
@@ -171,12 +176,17 @@ const StartalkDemoCard: React.FC<{
               font-bold
               text-[11px]
               shrink-0
+              border
+              border-[var(--border-primary)]
             "
           >
             {initials}
           </div>
 
+          {/* USER INFO */}
+
           <div className="overflow-hidden min-w-0">
+
             <span
               className="
                 font-semibold
@@ -200,8 +210,11 @@ const StartalkDemoCard: React.FC<{
             >
               {talk.authorHeadline}
             </p>
+
           </div>
         </div>
+
+        {/* TOTAL REACTIONS */}
 
         <div
           className="
@@ -219,17 +232,28 @@ const StartalkDemoCard: React.FC<{
             shrink-0
           "
         >
-          <SmileIcon />
+          <Smile
+            className="
+              w-3.5
+              h-3.5
+              text-purple-500
+            "
+            strokeWidth={1.6}
+          />
 
           <span className="text-[var(--text-primary)]">
             {totalReactions}
           </span>
         </div>
+
       </div>
 
-      {/* CONTENT */}
+      {/* =================================================
+          CONTENT
+      ================================================= */}
 
       <div className="space-y-3 text-left">
+
         <p
           className="
             text-sm
@@ -240,44 +264,60 @@ const StartalkDemoCard: React.FC<{
         >
           {talk.content}
         </p>
+
       </div>
 
-      {/* REACTIONS */}
+      {/* =================================================
+          REACTIONS
+      ================================================= */}
 
       <div className="flex items-center gap-2 flex-wrap">
-        {talk.reactions.map(([emoji, count]) => (
-          <div
-            key={emoji}
-            className="
-              flex
-              items-center
-              gap-1
-              px-2.5
-              py-1
-              rounded-full
-              bg-[var(--background-tertiary)]
-              border
-              border-[var(--border-primary)]
-            "
-          >
-            <span className="text-[0.8rem] leading-none">
-              {emoji}
-            </span>
 
-            <span
+        {talk.reactions.map(
+          ([emoji, count]) => (
+            <div
+              key={emoji}
               className="
-                text-[11px]
-                font-bold
-                text-[var(--text-primary)]
+                flex
+                items-center
+                gap-1
+                px-2.5
+                py-1
+                rounded-full
+                bg-[var(--background-tertiary)]
+                border
+                border-[var(--border-primary)]
               "
             >
-              {count}
-            </span>
-          </div>
-        ))}
+
+              <span
+                className="
+                  text-[0.8rem]
+                  leading-none
+                "
+              >
+                {emoji}
+              </span>
+
+              <span
+                className="
+                  text-[11px]
+                  font-bold
+                  text-[var(--text-primary)]
+                "
+              >
+                {count}
+              </span>
+
+            </div>
+          )
+        )}
+
       </div>
 
-      {/* ACTION BAR */}
+      {/* =================================================
+          ACTION BAR
+      ================================================= */}
 
       <div
         className="
@@ -286,8 +326,27 @@ const StartalkDemoCard: React.FC<{
           border-[var(--border-primary)]
         "
       >
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
+
+        <div
+          className="
+            flex
+            items-center
+            justify-between
+            gap-2
+          "
+        >
+
+          <div
+            className="
+              flex
+              items-center
+              gap-2
+              min-w-0
+            "
+          >
+
+            {/* ================= REACT ================= */}
+
             <div
               className="
                 inline-flex
@@ -305,11 +364,22 @@ const StartalkDemoCard: React.FC<{
                 text-[9px]
                 font-black
                 uppercase
+                shrink-0
               "
             >
-              <SmileIcon />
-              React
+
+              <Smile
+                className="w-4 h-4"
+                strokeWidth={1.6}
+              />
+
+              <span>
+                React
+              </span>
+
             </div>
+
+            {/* ================= COMMENTS ================= */}
 
             <div
               className="
@@ -327,11 +397,22 @@ const StartalkDemoCard: React.FC<{
                 text-[var(--text-muted)]
                 text-[9px]
                 font-black
+                shrink-0
               "
             >
-              <CommentIcon />
-              {talk.comments}
+
+              <MessageCircle
+                className="w-4 h-4"
+                strokeWidth={1.6}
+              />
+
+              <span>
+                {talk.comments}
+              </span>
+
             </div>
+
+            {/* ================= SHARE ================= */}
 
             <div
               className="
@@ -345,11 +426,20 @@ const StartalkDemoCard: React.FC<{
                 border-[var(--border-primary)]
                 bg-[var(--background-tertiary)]
                 text-[var(--text-muted)]
+                shrink-0
               "
             >
-              <ShareIcon />
+
+              <Share2
+                className="w-4 h-4"
+                strokeWidth={1.7}
+              />
+
             </div>
+
           </div>
+
+          {/* TIME */}
 
           <span
             className="
@@ -363,11 +453,18 @@ const StartalkDemoCard: React.FC<{
           >
             {talk.time}
           </span>
+
         </div>
+
       </div>
+
     </article>
   );
 };
+
+/* =========================================================
+   STARTALKS SECTION
+========================================================= */
 
 const StartalksSection: React.FC<{
   Reveal: React.FC<{
@@ -377,7 +474,13 @@ const StartalksSection: React.FC<{
     as?: 'div' | 'section';
   }>;
 }> = ({ Reveal }) => {
-  const navigate = useNavigate();
+
+  const navigate =
+    useNavigate();
+
+  /* =======================================================
+     LOGIN GATE
+  ======================================================= */
 
   const goToLogin = () => {
     navigate('/login');
@@ -394,7 +497,10 @@ const StartalksSection: React.FC<{
         overflow-hidden
       "
     >
-      {/* Background decoration */}
+
+      {/* =================================================
+          BACKGROUND DECORATION
+      ================================================= */}
 
       <div
         className="
@@ -426,6 +532,10 @@ const StartalksSection: React.FC<{
         "
       />
 
+      {/* =================================================
+          CONTAINER
+      ================================================= */}
+
       <div
         className="
           container
@@ -435,6 +545,7 @@ const StartalksSection: React.FC<{
           z-10
         "
       >
+
         <div
           className="
             flex
@@ -446,7 +557,10 @@ const StartalksSection: React.FC<{
             mx-auto
           "
         >
-          {/* LEFT */}
+
+          {/* =================================================
+              LEFT CONTENT
+          ================================================= */}
 
           <Reveal
             className="
@@ -456,6 +570,7 @@ const StartalksSection: React.FC<{
               lg:text-left
             "
           >
+
             <h2
               className="
                 text-3xl
@@ -482,11 +597,11 @@ const StartalksSection: React.FC<{
                 font-poppins
               "
             >
-              Explore real-time thoughts, wins,
-              and pivots from founders building
-              the next big things. Startalks is
-              the social layer where the community
-              breathes.
+              Explore real-time thoughts,
+              wins, and pivots from founders
+              building the next big things.
+              Startalks is the social layer
+              where the community breathes.
             </p>
 
             <div
@@ -499,6 +614,9 @@ const StartalksSection: React.FC<{
                 pt-2
               "
             >
+
+              {/* ENTER FEED */}
+
               <button
                 type="button"
                 onClick={goToLogin}
@@ -521,6 +639,8 @@ const StartalksSection: React.FC<{
               >
                 Enter the feed
               </button>
+
+              {/* JOIN TALK */}
 
               <button
                 type="button"
@@ -549,10 +669,14 @@ const StartalksSection: React.FC<{
               >
                 Join the talk
               </button>
+
             </div>
+
           </Reveal>
 
-          {/* 4 STARTALK CARDS */}
+          {/* =================================================
+              4 STARTALK CARDS
+          ================================================= */}
 
           <Reveal
             className="
@@ -562,6 +686,7 @@ const StartalksSection: React.FC<{
             "
             delay={120}
           >
+
             <div
               className="
                 grid
@@ -570,22 +695,28 @@ const StartalksSection: React.FC<{
                 gap-4
               "
             >
+
               {DEMO_STARTALKS.map(
                 (talk, index) => (
                   <Reveal
                     key={talk.id}
                     delay={index * 70}
                   >
+
                     <StartalkDemoCard
                       talk={talk}
                       onClick={goToLogin}
                     />
+
                   </Reveal>
                 )
               )}
+
             </div>
 
-            {/* Decorative circles */}
+            {/* =================================================
+                DECORATIVE CIRCLES
+            ================================================= */}
 
             <div
               className="
@@ -614,9 +745,13 @@ const StartalksSection: React.FC<{
                 pointer-events-none
               "
             />
+
           </Reveal>
+
         </div>
+
       </div>
+
     </section>
   );
 };
