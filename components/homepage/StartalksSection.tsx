@@ -1,10 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Smile,
-  MessageCircle,
-  Share2,
-} from 'lucide-react';
 
 interface DemoStartalk {
   id: string;
@@ -15,11 +10,6 @@ interface DemoStartalk {
   reactions: [string, number][];
   comments: number;
 }
-
-/* =========================================================
-   HOMEPAGE DEMO STARTALKS
-   No API / No AppContext / No backend dependency
-========================================================= */
 
 const DEMO_STARTALKS: DemoStartalk[] = [
   {
@@ -35,7 +25,6 @@ const DEMO_STARTALKS: DemoStartalk[] = [
     ],
     comments: 6,
   },
-
   {
     id: 'homepage-demo-2',
     authorName: 'Sumit Raghuwanshi',
@@ -49,7 +38,6 @@ const DEMO_STARTALKS: DemoStartalk[] = [
     ],
     comments: 9,
   },
-
   {
     id: 'homepage-demo-3',
     authorName: 'Dushant Kumar',
@@ -63,7 +51,6 @@ const DEMO_STARTALKS: DemoStartalk[] = [
     ],
     comments: 4,
   },
-
   {
     id: 'homepage-demo-4',
     authorName: 'Jacob Jeilling',
@@ -79,10 +66,6 @@ const DEMO_STARTALKS: DemoStartalk[] = [
   },
 ];
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
 const getInitials = (name: string): string =>
   name
     .split(' ')
@@ -91,14 +74,79 @@ const getInitials = (name: string): string =>
     .slice(0, 2)
     .toUpperCase();
 
-/* =========================================================
-   STARTALK DEMO CARD
-========================================================= */
+const SmileIcon: React.FC<{
+  className?: string;
+}> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    className={className}
+    aria-hidden="true"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15.18 15.18a4.5 4.5 0 0 1-6.36 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75h.01M14.25 9.75h.01"
+    />
+  </svg>
+);
+
+const CommentIcon: React.FC<{
+  className?: string;
+}> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    className={className}
+    aria-hidden="true"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8.625 9.75h6.75m-6.75 3h4.125M12 21a9 9 0 1 0-8.25-5.4L3 21l5.4-.75A8.96 8.96 0 0 0 12 21Z"
+    />
+  </svg>
+);
+
+const ShareIcon: React.FC<{
+  className?: string;
+}> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    className={className}
+    aria-hidden="true"
+  >
+    <circle cx="18" cy="5" r="2.2" />
+    <circle cx="6" cy="12" r="2.2" />
+    <circle cx="18" cy="19" r="2.2" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m8 11 7.8-4.6M8 13l7.8 4.6"
+    />
+  </svg>
+);
 
 const StartalkDemoCard: React.FC<{
   talk: DemoStartalk;
   onClick: () => void;
-}> = ({ talk, onClick }) => {
+}> = ({
+  talk,
+  onClick,
+}) => {
   const initials = getInitials(
     talk.authorName
   );
@@ -150,17 +198,8 @@ const StartalkDemoCard: React.FC<{
         focus-visible:ring-purple-500/40
       "
     >
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
       <div className="flex items-start justify-between gap-3">
-
         <div className="flex items-center gap-3 min-w-0">
-
-          {/* AVATAR */}
-
           <div
             className="
               w-10
@@ -176,17 +215,12 @@ const StartalkDemoCard: React.FC<{
               font-bold
               text-[11px]
               shrink-0
-              border
-              border-[var(--border-primary)]
             "
           >
             {initials}
           </div>
 
-          {/* USER INFO */}
-
           <div className="overflow-hidden min-w-0">
-
             <span
               className="
                 font-semibold
@@ -210,11 +244,8 @@ const StartalkDemoCard: React.FC<{
             >
               {talk.authorHeadline}
             </p>
-
           </div>
         </div>
-
-        {/* TOTAL REACTIONS */}
 
         <div
           className="
@@ -232,28 +263,21 @@ const StartalkDemoCard: React.FC<{
             shrink-0
           "
         >
-          <Smile
+          <SmileIcon
             className="
               w-3.5
               h-3.5
               text-purple-500
             "
-            strokeWidth={1.6}
           />
 
           <span className="text-[var(--text-primary)]">
             {totalReactions}
           </span>
         </div>
-
       </div>
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
-
       <div className="space-y-3 text-left">
-
         <p
           className="
             text-sm
@@ -264,15 +288,9 @@ const StartalkDemoCard: React.FC<{
         >
           {talk.content}
         </p>
-
       </div>
 
-      {/* =================================================
-          REACTIONS
-      ================================================= */}
-
       <div className="flex items-center gap-2 flex-wrap">
-
         {talk.reactions.map(
           ([emoji, count]) => (
             <div
@@ -289,13 +307,7 @@ const StartalkDemoCard: React.FC<{
                 border-[var(--border-primary)]
               "
             >
-
-              <span
-                className="
-                  text-[0.8rem]
-                  leading-none
-                "
-              >
+              <span className="text-[0.8rem] leading-none">
                 {emoji}
               </span>
 
@@ -308,16 +320,10 @@ const StartalkDemoCard: React.FC<{
               >
                 {count}
               </span>
-
             </div>
           )
         )}
-
       </div>
-
-      {/* =================================================
-          ACTION BAR
-      ================================================= */}
 
       <div
         className="
@@ -326,27 +332,8 @@ const StartalkDemoCard: React.FC<{
           border-[var(--border-primary)]
         "
       >
-
-        <div
-          className="
-            flex
-            items-center
-            justify-between
-            gap-2
-          "
-        >
-
-          <div
-            className="
-              flex
-              items-center
-              gap-2
-              min-w-0
-            "
-          >
-
-            {/* ================= REACT ================= */}
-
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
             <div
               className="
                 inline-flex
@@ -364,22 +351,14 @@ const StartalkDemoCard: React.FC<{
                 text-[9px]
                 font-black
                 uppercase
-                shrink-0
               "
             >
-
-              <Smile
-                className="w-4 h-4"
-                strokeWidth={1.6}
-              />
+              <SmileIcon />
 
               <span>
                 React
               </span>
-
             </div>
-
-            {/* ================= COMMENTS ================= */}
 
             <div
               className="
@@ -397,22 +376,14 @@ const StartalkDemoCard: React.FC<{
                 text-[var(--text-muted)]
                 text-[9px]
                 font-black
-                shrink-0
               "
             >
-
-              <MessageCircle
-                className="w-4 h-4"
-                strokeWidth={1.6}
-              />
+              <CommentIcon />
 
               <span>
                 {talk.comments}
               </span>
-
             </div>
-
-            {/* ================= SHARE ================= */}
 
             <div
               className="
@@ -426,20 +397,11 @@ const StartalkDemoCard: React.FC<{
                 border-[var(--border-primary)]
                 bg-[var(--background-tertiary)]
                 text-[var(--text-muted)]
-                shrink-0
               "
             >
-
-              <Share2
-                className="w-4 h-4"
-                strokeWidth={1.7}
-              />
-
+              <ShareIcon />
             </div>
-
           </div>
-
-          {/* TIME */}
 
           <span
             className="
@@ -453,18 +415,11 @@ const StartalkDemoCard: React.FC<{
           >
             {talk.time}
           </span>
-
         </div>
-
       </div>
-
     </article>
   );
 };
-
-/* =========================================================
-   STARTALKS SECTION
-========================================================= */
 
 const StartalksSection: React.FC<{
   Reveal: React.FC<{
@@ -473,14 +428,11 @@ const StartalksSection: React.FC<{
     className?: string;
     as?: 'div' | 'section';
   }>;
-}> = ({ Reveal }) => {
-
+}> = ({
+  Reveal,
+}) => {
   const navigate =
     useNavigate();
-
-  /* =======================================================
-     LOGIN GATE
-  ======================================================= */
 
   const goToLogin = () => {
     navigate('/login');
@@ -497,11 +449,6 @@ const StartalksSection: React.FC<{
         overflow-hidden
       "
     >
-
-      {/* =================================================
-          BACKGROUND DECORATION
-      ================================================= */}
-
       <div
         className="
           absolute
@@ -532,10 +479,6 @@ const StartalksSection: React.FC<{
         "
       />
 
-      {/* =================================================
-          CONTAINER
-      ================================================= */}
-
       <div
         className="
           container
@@ -545,7 +488,6 @@ const StartalksSection: React.FC<{
           z-10
         "
       >
-
         <div
           className="
             flex
@@ -557,11 +499,6 @@ const StartalksSection: React.FC<{
             mx-auto
           "
         >
-
-          {/* =================================================
-              LEFT CONTENT
-          ================================================= */}
-
           <Reveal
             className="
               lg:w-[42%]
@@ -570,7 +507,6 @@ const StartalksSection: React.FC<{
               lg:text-left
             "
           >
-
             <h2
               className="
                 text-3xl
@@ -614,9 +550,6 @@ const StartalksSection: React.FC<{
                 pt-2
               "
             >
-
-              {/* ENTER FEED */}
-
               <button
                 type="button"
                 onClick={goToLogin}
@@ -639,8 +572,6 @@ const StartalksSection: React.FC<{
               >
                 Enter the feed
               </button>
-
-              {/* JOIN TALK */}
 
               <button
                 type="button"
@@ -669,14 +600,8 @@ const StartalksSection: React.FC<{
               >
                 Join the talk
               </button>
-
             </div>
-
           </Reveal>
-
-          {/* =================================================
-              4 STARTALK CARDS
-          ================================================= */}
 
           <Reveal
             className="
@@ -686,7 +611,6 @@ const StartalksSection: React.FC<{
             "
             delay={120}
           >
-
             <div
               className="
                 grid
@@ -695,28 +619,20 @@ const StartalksSection: React.FC<{
                 gap-4
               "
             >
-
               {DEMO_STARTALKS.map(
                 (talk, index) => (
                   <Reveal
                     key={talk.id}
                     delay={index * 70}
                   >
-
                     <StartalkDemoCard
                       talk={talk}
                       onClick={goToLogin}
                     />
-
                   </Reveal>
                 )
               )}
-
             </div>
-
-            {/* =================================================
-                DECORATIVE CIRCLES
-            ================================================= */}
 
             <div
               className="
@@ -745,13 +661,9 @@ const StartalksSection: React.FC<{
                 pointer-events-none
               "
             />
-
           </Reveal>
-
         </div>
-
       </div>
-
     </section>
   );
 };
