@@ -148,13 +148,7 @@ const HeroSection: React.FC = () => {
         px-4
       "
     >
-
       <div className="relative z-20 w-full">
-
-        {/* =========================================
-            ONBOARDING PILL
-            Kept close to the header
-        ========================================= */}
 
         <div
           className="reveal-item is-visible"
@@ -167,7 +161,7 @@ const HeroSection: React.FC = () => {
               inline-flex
               items-center
               gap-2
-              mb-7
+              mb-4
               px-4
               py-1.5
               rounded-full
@@ -190,14 +184,86 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
 
-        {/* =========================================
-            HEADING + DESCRIPTION
-        ========================================= */}
+        <div
+          className="
+            relative
+            w-full
+            flex
+            justify-center
+            items-center
+            mt-0
+            mb-2
+            overflow-visible
+            reveal-item
+            is-visible
+          "
+          style={{
+            transitionDelay: '60ms',
+          }}
+        >
+          <div
+            className="
+              block
+              dark:hidden
+              w-full
+              max-w-[1200px]
+              overflow-visible
+            "
+          >
+            <img
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
+              alt={`${APP_NAME} builders community`}
+              className="
+                block
+                w-full
+                h-auto
+                max-h-[306px]
+                sm:max-h-[315px]
+                md:max-h-[375px]
+                object-contain
+                object-center
+                select-none
+                origin-center
+                scale-[0.85]
+                sm:scale-[0.75]
+              "
+            />
+          </div>
+
+          <div
+            className="
+              hidden
+              dark:block
+              w-full
+              max-w-[1200px]
+              overflow-visible
+            "
+          >
+            <img
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
+              alt={`${APP_NAME} builders community`}
+              className="
+                block
+                w-full
+                h-auto
+                max-h-[306px]
+                sm:max-h-[315px]
+                md:max-h-[375px]
+                object-contain
+                object-center
+                select-none
+                origin-center
+                scale-[0.85]
+                sm:scale-[0.75]
+              "
+            />
+          </div>
+        </div>
 
         <div
           className="reveal-item is-visible"
           style={{
-            transitionDelay: '80ms',
+            transitionDelay: '120ms',
           }}
         >
           <h1
@@ -240,10 +306,6 @@ const HeroSection: React.FC = () => {
           </p>
         </div>
 
-        {/* =========================================
-            CTA
-        ========================================= */}
-
         <div
           className="
             mt-10
@@ -255,7 +317,7 @@ const HeroSection: React.FC = () => {
             is-visible
           "
           style={{
-            transitionDelay: '160ms',
+            transitionDelay: '200ms',
           }}
         >
           <GradientButton
@@ -267,10 +329,6 @@ const HeroSection: React.FC = () => {
             Join the future
           </GradientButton>
         </div>
-
-        {/* =========================================
-            BENEFITS
-        ========================================= */}
 
         <div
           className="
@@ -288,12 +346,9 @@ const HeroSection: React.FC = () => {
             is-visible
           "
           style={{
-            transitionDelay: '240ms',
+            transitionDelay: '280ms',
           }}
         >
-
-          {/* FIND CO-FOUNDERS */}
-
           <span className="flex items-center gap-1.5">
             <div
               className="
@@ -322,8 +377,6 @@ const HeroSection: React.FC = () => {
           >
             •
           </span>
-
-          {/* VALIDATE IDEAS */}
 
           <span className="flex items-center gap-1.5">
             <div
@@ -354,8 +407,6 @@ const HeroSection: React.FC = () => {
             •
           </span>
 
-          {/* ASSEMBLE TEAMS */}
-
           <span className="flex items-center gap-1.5">
             <div
               className="
@@ -373,104 +424,6 @@ const HeroSection: React.FC = () => {
 
             Assemble teams
           </span>
-
-        </div>
-
-        {/* =========================================
-            HERO IMAGES
-            Positioned directly below benefits
-
-            Desktop  -> 3% visual zoom
-            Mobile   -> 5% visual zoom
-
-            object-contain ensures the complete
-            image remains visible.
-        ========================================= */}
-
-        <div
-          className="
-            relative
-            w-full
-            flex
-            justify-center
-            items-center
-            mt-8
-            sm:mt-10
-            overflow-hidden
-            reveal-item
-            is-visible
-          "
-          style={{
-            transitionDelay: '320ms',
-          }}
-        >
-
-          {/* =====================================
-              LIGHT MODE IMAGE
-          ===================================== */}
-
-          <div
-            className="
-              block
-              dark:hidden
-              w-full
-              max-w-[1200px]
-              overflow-visible
-            "
-          >
-            <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
-              alt={`${APP_NAME} builders community`}
-              className="
-                block
-                w-full
-                h-auto
-                max-h-[360px]
-                sm:max-h-[420px]
-                md:max-h-[500px]
-                object-contain
-                object-center
-                select-none
-                origin-center
-                scale-[1.05]
-                sm:scale-[1.03]
-              "
-            />
-          </div>
-
-          {/* =====================================
-              DARK MODE IMAGE
-          ===================================== */}
-
-          <div
-            className="
-              hidden
-              dark:block
-              w-full
-              max-w-[1200px]
-              overflow-visible
-            "
-          >
-            <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
-              alt={`${APP_NAME} builders community`}
-              className="
-                block
-                w-full
-                h-auto
-                max-h-[360px]
-                sm:max-h-[420px]
-                md:max-h-[500px]
-                object-contain
-                object-center
-                select-none
-                origin-center
-                scale-[1.05]
-                sm:scale-[1.03]
-              "
-            />
-          </div>
-
         </div>
 
       </div>
