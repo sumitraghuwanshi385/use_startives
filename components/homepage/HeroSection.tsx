@@ -140,9 +140,9 @@ const HeroSection: React.FC = () => {
         overflow-hidden
         bg-white
         dark:bg-black
-        pt-24
+        pt-10
         pb-24
-        sm:pt-28
+        sm:pt-12
         sm:pb-32
         text-center
         px-4
@@ -150,79 +150,86 @@ const HeroSection: React.FC = () => {
     >
 
       {/* =========================================
-          LIGHT MODE BACKGROUND
-      ========================================= */}
-
-      <img
-        src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
-        alt=""
-        aria-hidden="true"
-        className="
-          absolute
-          inset-0
-          z-0
-          block
-          dark:hidden
-          w-full
-          h-full
-          object-cover
-          object-center
-          pointer-events-none
-          select-none
-        "
-      />
-
-      {/* =========================================
-          DARK MODE BACKGROUND
-      ========================================= */}
-
-      <img
-        src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
-        alt=""
-        aria-hidden="true"
-        className="
-          absolute
-          inset-0
-          z-0
-          hidden
-          dark:block
-          w-full
-          h-full
-          object-cover
-          object-center
-          pointer-events-none
-          select-none
-        "
-      />
-
-      {/* =========================================
-          SUBTLE READABILITY OVERLAY
-          
-          No gradients / blobs / dot effects.
-          Just a very light overlay so text
-          remains readable over the image.
-      ========================================= */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          z-10
-          pointer-events-none
-          bg-white/20
-          dark:bg-black/20
-        "
-      />
-
-      {/* =========================================
           HERO CONTENT
       ========================================= */}
 
-      <div className="relative z-20 max-w-4xl mx-auto">
+      <div className="relative z-20 w-full">
+
+        {/* =========================================
+            HERO IMAGE SHOWCASE
+
+            Light + Dark images are displayed as
+            normal responsive images.
+
+            IMPORTANT:
+            object-contain keeps the complete image
+            visible on mobile without cropping.
+        ========================================= */}
+
+        <div
+          className="
+            w-full
+            flex
+            justify-center
+            items-center
+            mb-8
+            sm:mb-10
+            reveal-item
+            is-visible
+          "
+          style={{
+            transitionDelay: '0ms',
+          }}
+        >
+          {/* LIGHT MODE IMAGE */}
+
+          <img
+            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
+            alt={`${APP_NAME} community`}
+            className="
+              block
+              dark:hidden
+              w-full
+              max-w-[1200px]
+              h-auto
+              max-h-[300px]
+              sm:max-h-[380px]
+              md:max-h-[460px]
+              object-contain
+              object-center
+              rounded-none
+              sm:rounded-2xl
+              select-none
+            "
+          />
+
+          {/* DARK MODE IMAGE */}
+
+          <img
+            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
+            alt={`${APP_NAME} community`}
+            className="
+              hidden
+              dark:block
+              w-full
+              max-w-[1200px]
+              h-auto
+              max-h-[300px]
+              sm:max-h-[380px]
+              md:max-h-[460px]
+              object-contain
+              object-center
+              rounded-none
+              sm:rounded-2xl
+              select-none
+            "
+          />
+        </div>
 
         {/* =========================================
             ONBOARDING PILL
-            Moved ~10% lower
+
+            Kept directly below the image.
         ========================================= */}
 
         <div
@@ -237,7 +244,7 @@ const HeroSection: React.FC = () => {
               items-center
               gap-2
               mb-8
-              mt-[10%]
+              mt-0
               px-4
               py-1.5
               rounded-full
