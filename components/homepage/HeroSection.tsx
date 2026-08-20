@@ -140,102 +140,26 @@ const HeroSection: React.FC = () => {
         overflow-hidden
         bg-white
         dark:bg-black
-        pt-10
+        pt-6
         pb-24
-        sm:pt-12
+        sm:pt-8
         sm:pb-32
         text-center
         px-4
       "
     >
 
-      {/* =========================================
-          HERO CONTENT
-      ========================================= */}
-
       <div className="relative z-20 w-full">
 
         {/* =========================================
-            HERO IMAGE SHOWCASE
-
-            Light + Dark images are displayed as
-            normal responsive images.
-
-            IMPORTANT:
-            object-contain keeps the complete image
-            visible on mobile without cropping.
-        ========================================= */}
-
-        <div
-          className="
-            w-full
-            flex
-            justify-center
-            items-center
-            mb-8
-            sm:mb-10
-            reveal-item
-            is-visible
-          "
-          style={{
-            transitionDelay: '0ms',
-          }}
-        >
-          {/* LIGHT MODE IMAGE */}
-
-          <img
-            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
-            alt={`${APP_NAME} community`}
-            className="
-              block
-              dark:hidden
-              w-full
-              max-w-[1200px]
-              h-auto
-              max-h-[300px]
-              sm:max-h-[380px]
-              md:max-h-[460px]
-              object-contain
-              object-center
-              rounded-none
-              sm:rounded-2xl
-              select-none
-            "
-          />
-
-          {/* DARK MODE IMAGE */}
-
-          <img
-            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
-            alt={`${APP_NAME} community`}
-            className="
-              hidden
-              dark:block
-              w-full
-              max-w-[1200px]
-              h-auto
-              max-h-[300px]
-              sm:max-h-[380px]
-              md:max-h-[460px]
-              object-contain
-              object-center
-              rounded-none
-              sm:rounded-2xl
-              select-none
-            "
-          />
-        </div>
-
-        {/* =========================================
             ONBOARDING PILL
-
-            Kept directly below the image.
+            Kept close to the header
         ========================================= */}
 
         <div
           className="reveal-item is-visible"
           style={{
-            transitionDelay: '80ms',
+            transitionDelay: '0ms',
           }}
         >
           <div
@@ -243,8 +167,7 @@ const HeroSection: React.FC = () => {
               inline-flex
               items-center
               gap-2
-              mb-8
-              mt-0
+              mb-7
               px-4
               py-1.5
               rounded-full
@@ -274,7 +197,7 @@ const HeroSection: React.FC = () => {
         <div
           className="reveal-item is-visible"
           style={{
-            transitionDelay: '160ms',
+            transitionDelay: '80ms',
           }}
         >
           <h1
@@ -332,7 +255,7 @@ const HeroSection: React.FC = () => {
             is-visible
           "
           style={{
-            transitionDelay: '240ms',
+            transitionDelay: '160ms',
           }}
         >
           <GradientButton
@@ -365,9 +288,11 @@ const HeroSection: React.FC = () => {
             is-visible
           "
           style={{
-            transitionDelay: '320ms',
+            transitionDelay: '240ms',
           }}
         >
+
+          {/* FIND CO-FOUNDERS */}
 
           <span className="flex items-center gap-1.5">
             <div
@@ -398,6 +323,8 @@ const HeroSection: React.FC = () => {
             •
           </span>
 
+          {/* VALIDATE IDEAS */}
+
           <span className="flex items-center gap-1.5">
             <div
               className="
@@ -427,6 +354,8 @@ const HeroSection: React.FC = () => {
             •
           </span>
 
+          {/* ASSEMBLE TEAMS */}
+
           <span className="flex items-center gap-1.5">
             <div
               className="
@@ -444,6 +373,103 @@ const HeroSection: React.FC = () => {
 
             Assemble teams
           </span>
+
+        </div>
+
+        {/* =========================================
+            HERO IMAGES
+            Positioned directly below benefits
+
+            Desktop  -> 3% visual zoom
+            Mobile   -> 5% visual zoom
+
+            object-contain ensures the complete
+            image remains visible.
+        ========================================= */}
+
+        <div
+          className="
+            relative
+            w-full
+            flex
+            justify-center
+            items-center
+            mt-8
+            sm:mt-10
+            overflow-hidden
+            reveal-item
+            is-visible
+          "
+          style={{
+            transitionDelay: '320ms',
+          }}
+        >
+
+          {/* =====================================
+              LIGHT MODE IMAGE
+          ===================================== */}
+
+          <div
+            className="
+              block
+              dark:hidden
+              w-full
+              max-w-[1200px]
+              overflow-visible
+            "
+          >
+            <img
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
+              alt={`${APP_NAME} builders community`}
+              className="
+                block
+                w-full
+                h-auto
+                max-h-[360px]
+                sm:max-h-[420px]
+                md:max-h-[500px]
+                object-contain
+                object-center
+                select-none
+                origin-center
+                scale-[1.05]
+                sm:scale-[1.03]
+              "
+            />
+          </div>
+
+          {/* =====================================
+              DARK MODE IMAGE
+          ===================================== */}
+
+          <div
+            className="
+              hidden
+              dark:block
+              w-full
+              max-w-[1200px]
+              overflow-visible
+            "
+          >
+            <img
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
+              alt={`${APP_NAME} builders community`}
+              className="
+                block
+                w-full
+                h-auto
+                max-h-[360px]
+                sm:max-h-[420px]
+                md:max-h-[500px]
+                object-contain
+                object-center
+                select-none
+                origin-center
+                scale-[1.05]
+                sm:scale-[1.03]
+              "
+            />
+          </div>
 
         </div>
 
