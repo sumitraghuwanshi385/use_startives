@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
+import { StartalkCard } from './StartalkCard';
 
 const StartalksSection: React.FC<{
   Reveal: React.FC<{
@@ -9,6 +11,19 @@ const StartalksSection: React.FC<{
     as?: 'div' | 'section';
   }>;
 }> = ({ Reveal }) => {
+  const { startalks } = useAppContext();
+
+  // Always show the 4 most recent real Startalks
+  const recentStartalks = useMemo(() => {
+    return [...(startalks || [])]
+      .sort(
+        (a, b) =>
+          new Date(b.timestamp).getTime() -
+          new Date(a.timestamp).getTime()
+      )
+      .slice(0, 4);
+  }, [startalks]);
+
   return (
     <section className="py-12 bg-white dark:bg-black relative overflow-hidden">
 
@@ -16,10 +31,13 @@ const StartalksSection: React.FC<{
 
       <div className="container mx-auto px-4 relative z-10">
 
-        <div className="flex flex-col lg:flex-row items-center gap-10 max-w-5xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-center gap-10 max-w-6xl mx-auto">
 
-          <Reveal className="lg:w-1/2 space-y-6 text-center lg:text-left">
+          {/* LEFT CONTENT */}
 
+          <Reveal
+            className="lg:w-[42%] space-y-6 text-center lg:text-left"
+          >
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-black dark:text-white font-poppins uppercase">
               The pulse of innovation
             </h2>
@@ -84,94 +102,81 @@ const StartalksSection: React.FC<{
             </div>
           </Reveal>
 
+          {/* REAL RECENT STARTALKS */}
+
           <Reveal
-            className="lg:w-1/2 relative"
+            className="lg:w-[58%] w-full relative"
             delay={120}
           >
-
-            <div className="grid grid-cols-2 gap-4">
-
-              {[
-                {
-                  name: 'Sarah J.',
-                  content:
-                    'Just secured beta testers!',
-                  emoji: '🎉',
-                },
-                {
-                  name: 'Mike R.',
-                  content:
-                    'Pivot was the best decision.',
-                  emoji: '💡',
-                },
-                {
-                  name: 'Elena W.',
-                  content:
-                    'Scaling to 10k MRR today.',
-                  emoji: '📈',
-                },
-                {
-                  name: 'Liam P.',
-                  content:
-                    'Building in public is hard but worth it.',
-                  emoji: '🔨',
-                },
-              ].map(
-                (talk, index) => (
-                  <div
-                    key={index}
+            {recentStartalks.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {recentStartalks.map(talk => (
+                  <StartalkCard
+                    key={talk.id}
+                    talk={talk}
                     className="
-                      bg-white
-                      dark:bg-black
-                      p-4
-                      rounded-2xl
-                      border
-                      border-neutral-200
-                      dark:border-white/15
-                      transition-all
-                      duration-300
-                      hover:-translate-y-1
-                      hover:shadow-lg
-                      font-poppins
+                      !p-4
+                      !rounded-2xl
+                      h-full
+                    "
+                  />
+                ))}
+              </div>
+            ) : (
+              <div
+                className="
+                  w-full
+                  min-h-[220px]
+                  flex
+                  items-center
+                  justify-center
+                  rounded-2xl
+                  border
+                  border-neutral-200
+                  dark:border-white/15
+                  bg-white
+                  dark:bg-black
+                  text-center
+                  font-poppins
+                "
+              >
+                <div>
+                  <p className="text-sm font-bold text-black dark:text-white">
+                    No Startalks yet
+                  </p>
+
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                    Be the first to start the conversation.
+                  </p>
+
+                  <Link
+                    to="/startalks"
+                    className="
+                      inline-block
+                      mt-4
+                      text-[10px]
+                      font-black
+                      uppercase
+                      tracking-widest
+                      text-purple-600
+                      dark:text-purple-400
+                      hover:underline
                     "
                   >
+                    Share a Startalk →
+                  </Link>
+                </div>
+              </div>
+            )}
 
-                    <div className="flex items-center gap-2 mb-2">
-
-                      <div className="w-6 h-6 rounded-full icon-bg-gradient flex items-center justify-center text-[10px] text-white font-bold">
-                        {talk.name[0]}
-                      </div>
-
-                      <span className="text-[10px] font-bold text-black dark:text-white">
-                        {talk.name}
-                      </span>
-
-                    </div>
-
-                    <p className="text-[11px] text-neutral-600 dark:text-neutral-400 font-medium italic">
-                      "{talk.content}"
-                    </p>
-
-                    <div className="mt-2 text-right text-xs">
-                      {talk.emoji}
-                    </div>
-
-                  </div>
-                )
-              )}
-
-            </div>
-
-            <div className="absolute -top-6 -right-6 w-12 h-12 bg-purple-500/10 rounded-full animate-orbit blur-xl" />
+            <div className="absolute -top-6 -right-6 w-12 h-12 bg-purple-500/10 rounded-full animate-orbit blur-xl pointer-events-none" />
 
             <div
-              className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl"
+              className="absolute -bottom-6 -left-6 w-16 h-16 bg-blue-500/10 rounded-full animate-orbit blur-xl pointer-events-none"
               style={{
-                animationDirection:
-                  'reverse',
+                animationDirection: 'reverse',
               }}
             />
-
           </Reveal>
 
         </div>
