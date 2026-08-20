@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { StartalkCard } from '../StartalkCard';
 import { Startalk } from '../../types';
 
-const DEMO_STARTALKS: Startalk[] = [
+const DEMO_STARTALKS = [
   {
     id: 'homepage-demo-1',
     authorId: 'homepage-user-1',
@@ -19,10 +19,9 @@ const DEMO_STARTALKS: Startalk[] = [
       '🚀': 18,
       '❤️': 6,
     },
-    userReactions: {},
     currentUserReaction: undefined,
     commentCount: 6,
-  },
+  } as Startalk,
 
   {
     id: 'homepage-demo-2',
@@ -39,10 +38,9 @@ const DEMO_STARTALKS: Startalk[] = [
       '💡': 22,
       '🔥': 9,
     },
-    userReactions: {},
     currentUserReaction: undefined,
     commentCount: 9,
-  },
+  } as Startalk,
 
   {
     id: 'homepage-demo-3',
@@ -59,10 +57,9 @@ const DEMO_STARTALKS: Startalk[] = [
       '🚀': 11,
       '💯': 7,
     },
-    userReactions: {},
     currentUserReaction: undefined,
     commentCount: 4,
-  },
+  } as Startalk,
 
   {
     id: 'homepage-demo-4',
@@ -79,10 +76,9 @@ const DEMO_STARTALKS: Startalk[] = [
       '❤️': 19,
       '🔥': 13,
     },
-    userReactions: {},
     currentUserReaction: undefined,
     commentCount: 7,
-  },
+  } as Startalk,
 ];
 
 const StartalksSection: React.FC<{
@@ -95,33 +91,7 @@ const StartalksSection: React.FC<{
 }> = ({ Reveal }) => {
   const navigate = useNavigate();
 
-  /*
-   * Homepage Startalks are preview-only.
-   *
-   * No API.
-   * No AppContext.
-   * No real Startalk fetching.
-   *
-   * Every interaction opens login.
-   */
   const goToLogin = () => {
-    navigate('/login');
-  };
-
-  /*
-   * StartalkCard itself contains real interaction handlers
-   * such as React / Comments / Share / Profile links.
-   *
-   * We don't want those actions on the homepage demo cards.
-   *
-   * So the whole card is wrapped with a login gate.
-   */
-  const handleCardClick = (
-    event: React.MouseEvent
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-
     navigate('/login');
   };
 
@@ -136,8 +106,6 @@ const StartalksSection: React.FC<{
         overflow-hidden
       "
     >
-      {/* Background decoration */}
-
       <div
         className="
           absolute
@@ -177,7 +145,6 @@ const StartalksSection: React.FC<{
           z-10
         "
       >
-
         <div
           className="
             flex
@@ -189,10 +156,7 @@ const StartalksSection: React.FC<{
             mx-auto
           "
         >
-
-          {/* =================================================
-              LEFT CONTENT
-          ================================================= */}
+          {/* LEFT */}
 
           <Reveal
             className="
@@ -202,7 +166,6 @@ const StartalksSection: React.FC<{
               lg:text-left
             "
           >
-
             <h2
               className="
                 text-3xl
@@ -246,7 +209,6 @@ const StartalksSection: React.FC<{
                 pt-2
               "
             >
-
               <button
                 type="button"
                 onClick={goToLogin}
@@ -297,15 +259,10 @@ const StartalksSection: React.FC<{
               >
                 Join the talk
               </button>
-
             </div>
-
           </Reveal>
 
-
-          {/* =================================================
-              STARTALK CARDS
-          ================================================= */}
+          {/* STARTALKS */}
 
           <Reveal
             className="
@@ -315,7 +272,6 @@ const StartalksSection: React.FC<{
             "
             delay={120}
           >
-
             <div
               className="
                 grid
@@ -324,50 +280,22 @@ const StartalksSection: React.FC<{
                 gap-4
               "
             >
-
               {DEMO_STARTALKS.map(
-                (talk, index) => (
-
+                (talk) => (
                   <div
                     key={talk.id}
-                    onClick={handleCardClick}
-                    onMouseDown={handleCardClick}
                     className="
-                      cursor-pointer
                       relative
+                      cursor-pointer
                       transition-transform
                       duration-300
                       hover:-translate-y-1
                     "
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={event => {
-                      if (
-                        event.key === 'Enter' ||
-                        event.key === ' '
-                      ) {
-                        event.preventDefault();
-                        navigate('/login');
-                      }
-                    }}
-                    aria-label="Login to interact with this Startalk"
+                    onClick={() =>
+                      navigate('/login')
+                    }
                   >
-
-                    {/* 
-                     * Existing StartalkCard.
-                     *
-                     * This means:
-                     * SAME avatar
-                     * SAME typography
-                     * SAME reaction pills
-                     * SAME action bar
-                     * SAME comment button
-                     * SAME share button
-                     * SAME spacing
-                     * SAME borders
-                     * SAME dark mode
-                     * SAME responsive UI
-                     */}
+                    {/* Existing exact Startalk UI */}
 
                     <div
                       className="
@@ -384,32 +312,20 @@ const StartalksSection: React.FC<{
                       />
                     </div>
 
-                    {/* 
-                     * Invisible interaction layer.
-                     *
-                     * It sits above the existing card so
-                     * React / comments / share / profile
-                     * cannot execute on homepage.
-                     */}
+                    {/* Login overlay */}
 
                     <div
                       className="
                         absolute
                         inset-0
-                        z-[50]
+                        z-50
                         rounded-2xl
                       "
-                      aria-hidden="true"
                     />
-
                   </div>
-
                 )
               )}
-
             </div>
-
-            {/* Decorative circles */}
 
             <div
               className="
@@ -438,11 +354,8 @@ const StartalksSection: React.FC<{
                 pointer-events-none
               "
             />
-
           </Reveal>
-
         </div>
-
       </div>
     </section>
   );
