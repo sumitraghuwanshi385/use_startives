@@ -1,17 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { APP_NAME } from '../constants';
-import {
-  Instagram,
-  Twitter,
-  Bot,
-  Sparkles,
-  Search,
-  Brain,
-  Code2,
-  MessageSquare,
-  Zap,
-} from 'lucide-react';
+import { Instagram, Twitter } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const helpCenterLinks: { name: string; path: string }[] = [
@@ -50,37 +40,32 @@ const Footer: React.FC = () => {
     {
       name: 'ChatGPT',
       href: `https://chatgpt.com/?q=${prompt}`,
-      icon: <MessageSquare className="w-5 h-5" />,
+      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/images_klknrm.png',
     },
     {
       name: 'Gemini',
-      href: `https://gemini.google.com/app?q=${prompt}`,
-      icon: <Sparkles className="w-5 h-5" />,
+      href: `https://gemini.google.com/app?prompt=${prompt}`,
+      icon: 'https://brandlogos.sgp1.digitaloceanspaces.com/svg/logos/google-gemini.svg',
     },
     {
       name: 'Perplexity',
       href: `https://www.perplexity.ai/search?q=${prompt}`,
-      icon: <Search className="w-5 h-5" />,
+      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331507/images_1_gt0vzc.png',
     },
     {
       name: 'Claude',
       href: `https://claude.ai/new?q=${prompt}`,
-      icon: <Brain className="w-5 h-5" />,
-    },
-    {
-      name: 'DeepSeek',
-      href: `https://chat.deepseek.com/`,
-      icon: <Code2 className="w-5 h-5" />,
-    },
-    {
-      name: 'Copilot',
-      href: `https://copilot.microsoft.com/?q=${prompt}`,
-      icon: <Bot className="w-5 h-5" />,
+      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/IMG_20260821_222046_cmhky6.png',
     },
     {
       name: 'Grok',
       href: `https://grok.com/?q=${prompt}`,
-      icon: <Zap className="w-5 h-5" />,
+      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/Grok-icon.svg_jkoe19.png',
+    },
+    {
+      name: 'Mistral',
+      href: `https://chat.mistral.ai/chat?q=${prompt}`,
+      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331507/images_2_gtoucg.png',
     },
   ];
 
@@ -245,50 +230,51 @@ const Footer: React.FC = () => {
               font-semibold
               text-neutral-900
               dark:text-white
-              mb-4
+              mb-3
               text-base
               lg:text-[17px]
             "
           >
             Ask AI About Startives
           </h5>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4 max-w-2xl">
-            Click any AI below — it will open with a ready prompt so you can instantly learn about Startives.
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-5 max-w-2xl">
+            Click any AI — opens with a ready prompt about Startives.
           </p>
-          <div className="flex flex-wrap gap-3">
+
+          <div className="flex flex-wrap gap-4">
             {aiLinks.map(ai => (
               <a
                 key={ai.name}
                 href={ai.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                title={`Ask ${ai.name} about Startives`}
                 aria-label={`Ask ${ai.name} about Startives`}
                 className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  px-4
-                  py-2
+                  w-11
+                  h-11
                   rounded-full
+                  overflow-hidden
                   border
                   border-neutral-200
                   dark:border-white/15
-                  bg-neutral-50
-                  dark:bg-white/5
-                  text-sm
-                  font-medium
-                  text-neutral-700
-                  dark:text-neutral-300
+                  bg-white
+                  dark:bg-neutral-900
+                  hover:scale-110
                   hover:border-blue-500
-                  hover:text-blue-500
-                  hover:bg-blue-50
-                  dark:hover:bg-blue-500/10
                   transition-all
                   duration-300
+                  flex
+                  items-center
+                  justify-center
+                  shadow-sm
                 "
               >
-                {ai.icon}
-                <span>{ai.name}</span>
+                <img
+                  src={ai.icon}
+                  alt={ai.name}
+                  className="w-full h-full object-cover"
+                />
               </a>
             ))}
           </div>
