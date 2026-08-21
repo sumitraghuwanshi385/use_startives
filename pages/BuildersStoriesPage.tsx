@@ -372,7 +372,7 @@ export default function BuildersStoriesPage() {
               active:scale-[0.99]
               cursor-pointer
               no-underline
-              ${showHero ? "mt-7" : "mt-2"}
+              ${showHero ? "mt-7" : "mt-0"}
             `}
           >
             <div
@@ -591,20 +591,6 @@ export default function BuildersStoriesPage() {
                     <Eye className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]" strokeWidth={2} />
                   )}
                 </button>
-
-                <span
-                  className="
-                    hidden
-                    sm:block
-                    text-[9px]
-                    md:text-[10px]
-                    font-black
-                    uppercase
-                    tracking-[0.16em]
-                  "
-                >
-                  Explore
-                </span>
 
                 <span
                   className="
