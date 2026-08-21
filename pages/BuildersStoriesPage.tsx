@@ -1,9 +1,13 @@
-import StoryCard from "../components/StoryCard";
-import { stories } from "../data/stories";
+import {
+  ArrowUpRight,
+  ExternalLink,
+  Handshake,
+  Sparkles,
+} from "lucide-react";
 
 export default function BuildersStoriesPage() {
-  const fakeMayooUrl =
-    "https://fakemayoo.com/?utm_source=startives&utm_medium=partnership&utm_campaign=builders_stories";
+  const fakeMayoUrl =
+    "https://fakemayo.com/?utm_source=startives&utm_medium=partnership&utm_campaign=builders_stories";
 
   return (
     <div
@@ -26,7 +30,9 @@ export default function BuildersStoriesPage() {
           border-[var(--border-primary)]
         "
       >
-        {/* BACKGROUND DECORATION */}
+        {/* =====================================================
+            BACKGROUND
+        ====================================================== */}
 
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* MAIN GLOW */}
@@ -34,16 +40,17 @@ export default function BuildersStoriesPage() {
           <div
             className="
               absolute
-              top-[-260px]
+              top-[-280px]
               left-1/2
               -translate-x-1/2
-              w-[850px]
-              h-[850px]
+              w-[900px]
+              h-[900px]
               rounded-full
               blur-3xl
-              opacity-[0.12]
+              opacity-[0.11]
               bg-gradient-to-br
               from-red-500
+              via-purple-500
               to-blue-500
             "
           />
@@ -53,13 +60,13 @@ export default function BuildersStoriesPage() {
           <div
             className="
               absolute
-              bottom-[-80px]
-              left-[-80px]
-              w-[220px]
-              h-[220px]
+              bottom-[-100px]
+              left-[-100px]
+              w-[260px]
+              h-[260px]
               rounded-full
               blur-3xl
-              opacity-15
+              opacity-[0.13]
               bg-red-500
             "
           />
@@ -69,14 +76,30 @@ export default function BuildersStoriesPage() {
           <div
             className="
               absolute
-              top-20
-              right-[-90px]
-              w-[220px]
-              h-[220px]
+              top-24
+              right-[-100px]
+              w-[260px]
+              h-[260px]
               rounded-full
               blur-3xl
-              opacity-15
+              opacity-[0.13]
               bg-blue-500
+            "
+          />
+
+          {/* SMALL CENTER GLOW */}
+
+          <div
+            className="
+              absolute
+              top-[420px]
+              left-[42%]
+              w-[180px]
+              h-[180px]
+              rounded-full
+              blur-3xl
+              opacity-[0.06]
+              bg-purple-500
             "
           />
         </div>
@@ -91,7 +114,9 @@ export default function BuildersStoriesPage() {
             z-10
           "
         >
-          {/* HERO CONTENT */}
+          {/* =====================================================
+              HERO
+          ====================================================== */}
 
           <div className="max-w-4xl">
             {/* PILL */}
@@ -108,19 +133,45 @@ export default function BuildersStoriesPage() {
                 border-[var(--border-primary)]
                 bg-[var(--component-background)]
                 backdrop-blur-xl
+                shadow-sm
                 mb-4
               "
             >
-              <div
+              <span
                 className="
+                  relative
+                  flex
+                  items-center
+                  justify-center
                   w-2
                   h-2
-                  rounded-full
-                  bg-gradient-to-r
-                  from-red-500
-                  to-blue-500
                 "
-              />
+              >
+                <span
+                  className="
+                    absolute
+                    w-2
+                    h-2
+                    rounded-full
+                    bg-gradient-to-r
+                    from-red-500
+                    to-blue-500
+                    animate-pulse
+                  "
+                />
+
+                <span
+                  className="
+                    relative
+                    w-1.5
+                    h-1.5
+                    rounded-full
+                    bg-gradient-to-r
+                    from-red-500
+                    to-blue-500
+                  "
+                />
+              </span>
 
               <p
                 className="
@@ -159,6 +210,7 @@ export default function BuildersStoriesPage() {
                 className="
                   bg-gradient-to-r
                   from-red-500
+                  via-purple-500
                   to-blue-500
                   bg-clip-text
                   text-transparent
@@ -186,25 +238,40 @@ export default function BuildersStoriesPage() {
               distribution, and how internet startups scaled.
             </p>
 
-            {/* MINI STATS */}
+            {/* =====================================================
+                STATS
+            ====================================================== */}
 
-            <div className="flex flex-wrap gap-2 mt-5">
-              {/* STORIES */}
+            <div
+              className="
+                flex
+                flex-wrap
+                gap-2
+                mt-5
+              "
+            >
+              {/* 30+ */}
 
               <div
                 className="
-                  px-3.5
+                  px-3
                   py-2.5
                   rounded-xl
                   bg-[var(--component-background)]
                   border
                   border-[var(--border-primary)]
-                  min-w-[110px]
+                  min-w-[99px]
+                  shadow-sm
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:border-purple-500/30
                 "
               >
                 <p
                   className="
-                    text-lg
+                    text-base
+                    md:text-lg
                     font-black
                     bg-gradient-to-r
                     from-red-500
@@ -213,12 +280,12 @@ export default function BuildersStoriesPage() {
                     text-transparent
                   "
                 >
-                  10+
+                  30+
                 </p>
 
                 <p
                   className="
-                    text-[10px]
+                    text-[9px]
                     text-[var(--text-secondary)]
                     mt-0.5
                     font-medium
@@ -228,22 +295,28 @@ export default function BuildersStoriesPage() {
                 </p>
               </div>
 
-              {/* REVENUE */}
+              {/* 10M+ */}
 
               <div
                 className="
-                  px-3.5
+                  px-3
                   py-2.5
                   rounded-xl
                   bg-[var(--component-background)]
                   border
                   border-[var(--border-primary)]
-                  min-w-[115px]
+                  min-w-[103px]
+                  shadow-sm
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:border-purple-500/30
                 "
               >
                 <p
                   className="
-                    text-lg
+                    text-base
+                    md:text-lg
                     font-black
                     bg-gradient-to-r
                     from-red-500
@@ -252,12 +325,12 @@ export default function BuildersStoriesPage() {
                     text-transparent
                   "
                 >
-                  $1M+
+                  $10M+
                 </p>
 
                 <p
                   className="
-                    text-[10px]
+                    text-[9px]
                     text-[var(--text-secondary)]
                     mt-0.5
                     font-medium
@@ -267,22 +340,28 @@ export default function BuildersStoriesPage() {
                 </p>
               </div>
 
-              {/* MODEL */}
+              {/* BOOTSTRAPPED */}
 
               <div
                 className="
-                  px-3.5
+                  px-3
                   py-2.5
                   rounded-xl
                   bg-[var(--component-background)]
                   border
                   border-[var(--border-primary)]
-                  min-w-[135px]
+                  min-w-[122px]
+                  shadow-sm
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:border-purple-500/30
                 "
               >
                 <p
                   className="
-                    text-lg
+                    text-base
+                    md:text-lg
                     font-black
                     bg-gradient-to-r
                     from-red-500
@@ -296,7 +375,7 @@ export default function BuildersStoriesPage() {
 
                 <p
                   className="
-                    text-[10px]
+                    text-[9px]
                     text-[var(--text-secondary)]
                     mt-0.5
                     font-medium
@@ -308,224 +387,377 @@ export default function BuildersStoriesPage() {
             </div>
 
             {/* =====================================================
-                FAKEMAYOO PARTNERSHIP
-            ===================================================== */}
+                FAKEMAYO PARTNERSHIP CARD
+            ====================================================== */}
 
             <a
-              href={fakeMayooUrl}
+              href={fakeMayoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Visit FakeMayoo"
+              aria-label="Visit FakeMayo.com"
               className="
                 group
                 relative
                 mt-7
                 w-full
                 max-w-2xl
-                flex
-                items-center
-                justify-between
-                gap-4
+                block
                 overflow-hidden
-                rounded-2xl
+                rounded-[22px]
                 border
                 border-[var(--border-primary)]
                 bg-[var(--component-background)]
-                px-5
-                py-4
-                md:px-6
-                md:py-5
-                shadow-sm
+                shadow-[0_10px_40px_rgba(0,0,0,0.04)]
+                dark:shadow-[0_15px_50px_rgba(0,0,0,0.18)]
                 transition-all
-                duration-300
-                hover:-translate-y-0.5
+                duration-500
+                hover:-translate-y-1
                 hover:border-purple-500/40
-                hover:shadow-[0_15px_50px_rgba(124,58,237,0.10)]
+                hover:shadow-[0_20px_70px_rgba(124,58,237,0.12)]
                 active:scale-[0.99]
                 cursor-pointer
-                no-underline
               "
             >
-              {/* CARD GLOW */}
+              {/* TOP GRADIENT LINE */}
 
               <div
                 className="
                   absolute
-                  -top-16
-                  -right-16
-                  w-40
-                  h-40
+                  top-0
+                  left-0
+                  right-0
+                  h-[2px]
+                  bg-gradient-to-r
+                  from-red-500
+                  via-purple-500
+                  to-blue-500
+                  opacity-70
+                  group-hover:opacity-100
+                  transition-opacity
+                  duration-300
+                "
+              />
+
+              {/* BACKGROUND GLOW */}
+
+              <div
+                className="
+                  absolute
+                  -top-24
+                  -right-20
+                  w-64
+                  h-64
                   rounded-full
-                  bg-purple-500/10
+                  bg-purple-500/[0.07]
                   blur-3xl
                   pointer-events-none
                   transition-transform
-                  duration-500
+                  duration-700
                   group-hover:scale-125
                 "
               />
 
-              {/* LEFT */}
+              <div
+                className="
+                  absolute
+                  -bottom-24
+                  -left-20
+                  w-48
+                  h-48
+                  rounded-full
+                  bg-blue-500/[0.05]
+                  blur-3xl
+                  pointer-events-none
+                "
+              />
+
+              {/* CONTENT */}
 
               <div
                 className="
-                  flex
-                  items-center
-                  gap-3
-                  min-w-0
                   relative
                   z-10
+                  flex
+                  items-center
+                  justify-between
+                  gap-4
+                  px-4
+                  py-4
+                  md:px-5
+                  md:py-5
                 "
               >
-                {/* LOGO */}
+                {/* LEFT SIDE */}
 
                 <div
                   className="
-                    w-10
-                    h-10
-                    md:w-11
-                    md:h-11
-                    rounded-xl
-                    shrink-0
                     flex
                     items-center
-                    justify-center
-                    bg-gradient-to-br
-                    from-red-500
-                    to-blue-500
-                    text-white
-                    font-black
-                    text-sm
-                    shadow-lg
-                    shadow-purple-500/10
+                    gap-3
+                    md:gap-4
+                    min-w-0
                   "
                 >
-                  F
-                </div>
+                  {/* FAKEMAYO DP */}
 
-                {/* TEXT */}
-
-                <div className="min-w-0">
                   <div
                     className="
-                      flex
-                      items-center
-                      gap-2
-                      flex-wrap
+                      relative
+                      shrink-0
                     "
                   >
-                    <p
-                      className="
-                        text-[9px]
-                        md:text-[10px]
-                        uppercase
-                        tracking-[0.18em]
-                        font-bold
-                        text-[var(--text-muted)]
-                      "
-                    >
-                      In partnership with
-                    </p>
+                    {/* Glow */}
 
-                    <span
+                    <div
                       className="
-                        w-1
-                        h-1
-                        rounded-full
-                        bg-purple-500
+                        absolute
+                        inset-[-4px]
+                        rounded-2xl
+                        bg-gradient-to-br
+                        from-red-500/20
+                        via-purple-500/20
+                        to-blue-500/20
+                        blur-md
+                        opacity-0
+                        group-hover:opacity-100
+                        transition-opacity
+                        duration-500
                       "
                     />
 
+                    <img
+                      src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787287617/IMG_20260821_101542_vkuyku.jpg"
+                      alt="FakeMayo"
+                      className="
+                        relative
+                        w-11
+                        h-11
+                        md:w-14
+                        md:h-14
+                        rounded-2xl
+                        object-cover
+                        border
+                        border-[var(--border-primary)]
+                        shadow-sm
+                        transition-transform
+                        duration-500
+                        group-hover:scale-105
+                      "
+                    />
+
+                    {/* VERIFIED DOT */}
+
                     <span
                       className="
-                        text-[9px]
-                        md:text-[10px]
-                        uppercase
-                        tracking-[0.18em]
-                        font-bold
-                        text-purple-500
+                        absolute
+                        -right-1
+                        -bottom-1
+                        w-4
+                        h-4
+                        rounded-full
+                        bg-[var(--component-background)]
+                        border
+                        border-[var(--border-primary)]
+                        flex
+                        items-center
+                        justify-center
                       "
                     >
-                      Builders Network
+                      <span
+                        className="
+                          w-2
+                          h-2
+                          rounded-full
+                          bg-gradient-to-r
+                          from-red-500
+                          to-blue-500
+                        "
+                      />
                     </span>
                   </div>
 
-                  <h2
-                    className="
-                      mt-0.5
-                      text-sm
-                      md:text-base
-                      font-black
-                      text-[var(--text-primary)]
-                      tracking-tight
-                    "
-                  >
-                    FakeMayoo
-                  </h2>
+                  {/* PARTNERSHIP TEXT */}
 
-                  <p
+                  <div className="min-w-0">
+                    <div
+                      className="
+                        flex
+                        items-center
+                        gap-1.5
+                        mb-1
+                      "
+                    >
+                      <Handshake
+                        className="
+                          w-3.5
+                          h-3.5
+                          text-purple-500
+                          shrink-0
+                        "
+                        strokeWidth={2}
+                      />
+
+                      <span
+                        className="
+                          text-[9px]
+                          md:text-[10px]
+                          uppercase
+                          tracking-[0.16em]
+                          font-bold
+                          text-[var(--text-muted)]
+                        "
+                      >
+                        In partnership with
+                      </span>
+                    </div>
+
+                    <div
+                      className="
+                        flex
+                        items-center
+                        gap-2
+                      "
+                    >
+                      <h2
+                        className="
+                          text-sm
+                          md:text-base
+                          font-black
+                          tracking-tight
+                          text-[var(--text-primary)]
+                          truncate
+                        "
+                      >
+                        FakeMayo.com
+                      </h2>
+
+                      <Sparkles
+                        className="
+                          w-3.5
+                          h-3.5
+                          text-purple-500
+                          shrink-0
+                          opacity-70
+                          group-hover:opacity-100
+                          transition-opacity
+                        "
+                        strokeWidth={2}
+                      />
+                    </div>
+
+                    <p
+                      className="
+                        mt-0.5
+                        text-[9px]
+                        md:text-[11px]
+                        text-[var(--text-secondary)]
+                        font-medium
+                        truncate
+                        max-w-[240px]
+                        md:max-w-[400px]
+                      "
+                    >
+                      Discover what builders are creating next.
+                    </p>
+                  </div>
+                </div>
+
+                {/* RIGHT CTA */}
+
+                <div
+                  className="
+                    shrink-0
+                    flex
+                    items-center
+                    gap-2
+                    text-purple-500
+                    transition-all
+                    duration-300
+                    group-hover:text-purple-600
+                  "
+                >
+                  <span
                     className="
-                      mt-0.5
-                      text-[10px]
-                      md:text-xs
-                      text-[var(--text-secondary)]
-                      font-medium
+                      hidden
+                      sm:block
+                      text-[9px]
+                      md:text-[10px]
+                      font-black
+                      uppercase
+                      tracking-[0.16em]
                     "
                   >
-                    Discover what builders are creating next.
-                  </p>
+                    Explore
+                  </span>
+
+                  <span
+                    className="
+                      w-8
+                      h-8
+                      md:w-9
+                      md:h-9
+                      rounded-full
+                      border
+                      border-purple-500/20
+                      bg-purple-500/[0.06]
+                      flex
+                      items-center
+                      justify-center
+                      transition-all
+                      duration-300
+                      group-hover:bg-purple-500
+                      group-hover:text-white
+                      group-hover:border-purple-500
+                    "
+                  >
+                    <ArrowUpRight
+                      className="
+                        w-4
+                        h-4
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-0.5
+                        group-hover:-translate-y-0.5
+                      "
+                      strokeWidth={2}
+                    />
+                  </span>
                 </div>
               </div>
 
-              {/* RIGHT CTA */}
+              {/* BOTTOM MICRO TEXT */}
 
               <div
                 className="
                   relative
                   z-10
-                  shrink-0
+                  px-4
+                  md:px-5
+                  pb-3
                   flex
                   items-center
-                  gap-2
-                  text-[10px]
-                  md:text-xs
-                  font-black
-                  uppercase
-                  tracking-widest
-                  text-purple-500
-                  transition-all
-                  duration-300
-                  group-hover:gap-3
+                  gap-1.5
+                  text-[8px]
+                  text-[var(--text-muted)]
+                  font-medium
+                  opacity-70
                 "
               >
-                <span className="hidden sm:inline">
-                  Explore
-                </span>
+                <ExternalLink
+                  className="w-2.5 h-2.5"
+                  strokeWidth={2}
+                />
 
-                <span
-                  className="
-                    w-8
-                    h-8
-                    rounded-full
-                    border
-                    border-purple-500/20
-                    bg-purple-500/[0.06]
-                    flex
-                    items-center
-                    justify-center
-                    transition-all
-                    duration-300
-                    group-hover:bg-purple-500
-                    group-hover:text-white
-                  "
-                >
-                  →
+                <span>
+                  Opens FakeMayo.com
                 </span>
               </div>
             </a>
           </div>
 
-          {/* STORIES */}
+          {/* =====================================================
+              STORIES GRID
+          ====================================================== */}
 
           <div
             className="
