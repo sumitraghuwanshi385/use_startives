@@ -26,7 +26,11 @@ export default function BuildersStoriesPage() {
           border-[var(--border-primary)]
         "
       >
+        {/* BACKGROUND DECORATION */}
+
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* MAIN GLOW */}
+
           <div
             className="
               absolute
@@ -44,6 +48,8 @@ export default function BuildersStoriesPage() {
             "
           />
 
+          {/* RED GLOW */}
+
           <div
             className="
               absolute
@@ -57,6 +63,8 @@ export default function BuildersStoriesPage() {
               bg-red-500
             "
           />
+
+          {/* BLUE GLOW */}
 
           <div
             className="
@@ -73,8 +81,21 @@ export default function BuildersStoriesPage() {
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-5 md:px-8 relative z-10">
+        <div
+          className="
+            max-w-7xl
+            mx-auto
+            px-5
+            md:px-8
+            relative
+            z-10
+          "
+        >
+          {/* HERO CONTENT */}
+
           <div className="max-w-4xl">
+            {/* PILL */}
+
             <div
               className="
                 inline-flex
@@ -119,6 +140,8 @@ export default function BuildersStoriesPage() {
               </p>
             </div>
 
+            {/* HEADING */}
+
             <h1
               className="
                 text-4xl
@@ -145,6 +168,8 @@ export default function BuildersStoriesPage() {
               </span>
             </h1>
 
+            {/* DESCRIPTION */}
+
             <p
               className="
                 mt-4
@@ -161,7 +186,11 @@ export default function BuildersStoriesPage() {
               distribution, and how internet startups scaled.
             </p>
 
+            {/* MINI STATS */}
+
             <div className="flex flex-wrap gap-2 mt-5">
+              {/* STORIES */}
+
               <div
                 className="
                   px-3.5
@@ -199,6 +228,8 @@ export default function BuildersStoriesPage() {
                 </p>
               </div>
 
+              {/* REVENUE */}
+
               <div
                 className="
                   px-3.5
@@ -235,6 +266,8 @@ export default function BuildersStoriesPage() {
                   Revenue Tracked
                 </p>
               </div>
+
+              {/* MODEL */}
 
               <div
                 className="
@@ -274,10 +307,15 @@ export default function BuildersStoriesPage() {
               </div>
             </div>
 
+            {/* =====================================================
+                FAKEMAYOO PARTNERSHIP
+            ===================================================== */}
+
             <a
               href={fakeMayooUrl}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
+              aria-label="Visit FakeMayoo"
               className="
                 group
                 relative
@@ -304,9 +342,12 @@ export default function BuildersStoriesPage() {
                 hover:border-purple-500/40
                 hover:shadow-[0_15px_50px_rgba(124,58,237,0.10)]
                 active:scale-[0.99]
+                cursor-pointer
+                no-underline
               "
-              aria-label="Visit FakeMayoo"
             >
+              {/* CARD GLOW */}
+
               <div
                 className="
                   absolute
@@ -324,7 +365,20 @@ export default function BuildersStoriesPage() {
                 "
               />
 
-              <div className="flex items-center gap-3 min-w-0 relative z-10">
+              {/* LEFT */}
+
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-3
+                  min-w-0
+                  relative
+                  z-10
+                "
+              >
+                {/* LOGO */}
+
                 <div
                   className="
                     w-10
@@ -349,8 +403,17 @@ export default function BuildersStoriesPage() {
                   F
                 </div>
 
+                {/* TEXT */}
+
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      flex-wrap
+                    "
+                  >
                     <p
                       className="
                         text-[9px]
@@ -414,6 +477,8 @@ export default function BuildersStoriesPage() {
                 </div>
               </div>
 
+              {/* RIGHT CTA */}
+
               <div
                 className="
                   relative
@@ -460,7 +525,17 @@ export default function BuildersStoriesPage() {
             </a>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-7 mt-10 md:mt-12">
+          {/* STORIES */}
+
+          <div
+            className="
+              grid
+              lg:grid-cols-3
+              gap-7
+              mt-10
+              md:mt-12
+            "
+          >
             {stories.map(story => (
               <StoryCard
                 key={story.id}
