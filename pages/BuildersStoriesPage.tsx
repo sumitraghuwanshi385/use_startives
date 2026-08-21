@@ -1,12 +1,22 @@
 import {
   ArrowUpRight,
-  ExternalLink,
   Handshake,
 } from "lucide-react";
+import { useRef } from "react";
 
 export default function BuildersStoriesPage() {
   const fakeMayoUrl =
     "https://fakemayo.com/?utm_source=startives&utm_medium=partnership&utm_campaign=builders_stories";
+
+  const fakeMayoSectionRef =
+    useRef<HTMLDivElement>(null);
+
+  const scrollToFakeMayo = () => {
+    fakeMayoSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <div
@@ -29,7 +39,9 @@ export default function BuildersStoriesPage() {
           border-[var(--border-primary)]
         "
       >
-        {/* BACKGROUND */}
+        {/* =====================================================
+            BACKGROUND
+        ====================================================== */}
 
         <div
           className="
@@ -101,7 +113,9 @@ export default function BuildersStoriesPage() {
             z-10
           "
         >
-          {/* HERO */}
+          {/* =====================================================
+              HERO
+          ====================================================== */}
 
           <div className="max-w-4xl">
             {/* PILL */}
@@ -118,7 +132,6 @@ export default function BuildersStoriesPage() {
                 border-[var(--border-primary)]
                 bg-[var(--component-background)]
                 backdrop-blur-xl
-                shadow-sm
                 mb-4
               "
             >
@@ -222,7 +235,9 @@ export default function BuildersStoriesPage() {
               distribution, and how internet startups scaled.
             </p>
 
-            {/* STATS */}
+            {/* =====================================================
+                STATS
+            ====================================================== */}
 
             <div
               className="
@@ -243,7 +258,6 @@ export default function BuildersStoriesPage() {
                   border
                   border-[var(--border-primary)]
                   min-w-[99px]
-                  shadow-sm
                   transition-all
                   duration-300
                   hover:border-purple-500/30
@@ -287,7 +301,6 @@ export default function BuildersStoriesPage() {
                   border
                   border-[var(--border-primary)]
                   min-w-[103px]
-                  shadow-sm
                   transition-all
                   duration-300
                   hover:border-purple-500/30
@@ -331,7 +344,6 @@ export default function BuildersStoriesPage() {
                   border
                   border-[var(--border-primary)]
                   min-w-[122px]
-                  shadow-sm
                   transition-all
                   duration-300
                   hover:border-purple-500/30
@@ -366,14 +378,13 @@ export default function BuildersStoriesPage() {
             </div>
 
             {/* =====================================================
-                FAKEMAYO PARTNERSHIP
+                FAKEMAYO PARTNERSHIP CARD
             ====================================================== */}
 
-            <a
-              href={fakeMayoUrl}
-              target="_self"
-              rel="noopener noreferrer"
-              aria-label="Open FakeMayo.com"
+            <button
+              type="button"
+              onClick={scrollToFakeMayo}
+              aria-label="Explore FakeMayo"
               className="
                 group
                 relative
@@ -386,16 +397,13 @@ export default function BuildersStoriesPage() {
                 border
                 border-[var(--border-primary)]
                 bg-[var(--component-background)]
-                shadow-[0_10px_40px_rgba(0,0,0,0.04)]
-                dark:shadow-[0_15px_50px_rgba(0,0,0,0.18)]
                 transition-all
                 duration-300
                 hover:-translate-y-0.5
                 hover:border-purple-500/40
-                hover:shadow-[0_20px_60px_rgba(124,58,237,0.10)]
                 active:scale-[0.99]
                 cursor-pointer
-                no-underline
+                text-left
               "
             >
               {/* TOP RED → BLUE LINE */}
@@ -471,14 +479,13 @@ export default function BuildersStoriesPage() {
                     min-w-0
                   "
                 >
-                  {/* FAKEMAYO IMAGE */}
+                  {/* FAKEMAYO DP */}
 
                   <div className="relative shrink-0">
                     <img
                       src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787287617/IMG_20260821_101542_vkuyku.jpg"
                       alt="FakeMayo"
                       className="
-                        relative
                         w-11
                         h-11
                         md:w-14
@@ -487,7 +494,6 @@ export default function BuildersStoriesPage() {
                         object-cover
                         border
                         border-[var(--border-primary)]
-                        shadow-sm
                       "
                     />
 
@@ -520,7 +526,7 @@ export default function BuildersStoriesPage() {
                     </span>
                   </div>
 
-                  {/* TEXT */}
+                  {/* PARTNERSHIP TEXT */}
 
                   <div className="min-w-0">
                     <div
@@ -565,7 +571,7 @@ export default function BuildersStoriesPage() {
                         truncate
                       "
                     >
-                      FakeMayo.com
+                      FakeMayo
                     </h2>
 
                     <p
@@ -585,7 +591,7 @@ export default function BuildersStoriesPage() {
                   </div>
                 </div>
 
-                {/* RIGHT — STATIC ARROW */}
+                {/* RIGHT ARROW */}
 
                 <div
                   className="
@@ -623,6 +629,10 @@ export default function BuildersStoriesPage() {
                       flex
                       items-center
                       justify-center
+                      transition-colors
+                      duration-300
+                      group-hover:bg-purple-500
+                      group-hover:text-white
                     "
                   >
                     <ArrowUpRight
@@ -632,43 +642,18 @@ export default function BuildersStoriesPage() {
                   </span>
                 </div>
               </div>
-
-              {/* FOOTER */}
-
-              <div
-                className="
-                  relative
-                  z-10
-                  px-4
-                  md:px-5
-                  pb-3
-                  flex
-                  items-center
-                  gap-1.5
-                  text-[8px]
-                  text-[var(--text-muted)]
-                  font-medium
-                  opacity-70
-                "
-              >
-                <ExternalLink
-                  className="w-2.5 h-2.5"
-                  strokeWidth={2}
-                />
-
-                <span>
-                  Open FakeMayo.com inside Startives
-                </span>
-              </div>
-            </a>
+            </button>
           </div>
 
           {/* =====================================================
-              FAKE MAYO EMBED
+              FAKEMAYO EMBED
           ====================================================== */}
 
           <div
+            ref={fakeMayoSectionRef}
+            id="fakemayo"
             className="
+              scroll-mt-24
               mt-8
               w-full
               overflow-hidden
@@ -676,24 +661,35 @@ export default function BuildersStoriesPage() {
               border
               border-[var(--border-primary)]
               bg-[var(--component-background)]
-              shadow-sm
             "
           >
-            <iframe
-              src={fakeMayoUrl}
-              title="FakeMayo.com"
+            <div
               className="
-                block
                 w-full
-                h-[calc(100vh-150px)]
-                min-h-[600px]
-                border-0
-                bg-white
+                aspect-[9/16]
+                sm:aspect-[4/3]
+                lg:aspect-[16/9]
+                max-h-[calc(100dvh-120px)]
+                min-h-[520px]
+                sm:min-h-[560px]
+                lg:min-h-[650px]
               "
-              loading="lazy"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allow="clipboard-write"
-            />
+            >
+              <iframe
+                src={fakeMayoUrl}
+                title="FakeMayo"
+                className="
+                  block
+                  w-full
+                  h-full
+                  border-0
+                  bg-white
+                "
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="clipboard-write"
+              />
+            </div>
           </div>
         </div>
       </section>
