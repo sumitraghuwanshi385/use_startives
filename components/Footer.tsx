@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
     {
       name: 'ChatGPT',
       href: `https://chatgpt.com/?q=${prompt}`,
-      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/images_klknrm.png',
+      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787332883/IMG_20260821_225105_bis9fw.png',
     },
     {
       name: 'Perplexity',
