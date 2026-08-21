@@ -4,6 +4,8 @@ import {
   Handshake,
   Sparkles,
 } from "lucide-react";
+import StoryCard from "../components/StoryCard";
+import { stories } from "../data/stories";
 
 export default function BuildersStoriesPage() {
   const fakeMayoUrl =
