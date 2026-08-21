@@ -43,24 +43,9 @@ const Footer: React.FC = () => {
       icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/images_klknrm.png',
     },
     {
-      name: 'Gemini',
-      href: `https://gemini.google.com/app?prompt=${prompt}`,
-      icon: 'https://brandlogos.sgp1.digitaloceanspaces.com/svg/logos/google-gemini.svg',
-    },
-    {
       name: 'Perplexity',
       href: `https://www.perplexity.ai/search?q=${prompt}`,
       icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331507/images_1_gt0vzc.png',
-    },
-    {
-      name: 'Claude',
-      href: `https://claude.ai/new?q=${prompt}`,
-      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/IMG_20260821_222046_cmhky6.png',
-    },
-    {
-      name: 'Grok',
-      href: `https://grok.com/?q=${prompt}`,
-      icon: 'https://res.cloudinary.com/dp7avkarg/image/upload/v1787331508/Grok-icon.svg_jkoe19.png',
     },
     {
       name: 'Mistral',
@@ -251,8 +236,8 @@ const Footer: React.FC = () => {
                 title={`Ask ${ai.name} about Startives`}
                 aria-label={`Ask ${ai.name} about Startives`}
                 className="
-                  w-11
-                  h-11
+                  w-10
+                  h-10
                   rounded-full
                   overflow-hidden
                   border
