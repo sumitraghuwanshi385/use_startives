@@ -2,10 +2,7 @@ import {
   ArrowUpRight,
   ExternalLink,
   Handshake,
-  Sparkles,
 } from "lucide-react";
-import StoryCard from "../components/StoryCard";
-import { stories } from "../data/stories";
 
 export default function BuildersStoriesPage() {
   const fakeMayoUrl =
@@ -32,27 +29,31 @@ export default function BuildersStoriesPage() {
           border-[var(--border-primary)]
         "
       >
-        {/* =====================================================
-            BACKGROUND
-        ====================================================== */}
+        {/* BACKGROUND */}
 
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* MAIN GLOW */}
+        <div
+          className="
+            absolute
+            inset-0
+            overflow-hidden
+            pointer-events-none
+          "
+        >
+          {/* MAIN RED → BLUE GLOW */}
 
           <div
             className="
               absolute
-              top-[-280px]
+              top-[-260px]
               left-1/2
               -translate-x-1/2
-              w-[900px]
-              h-[900px]
+              w-[850px]
+              h-[850px]
               rounded-full
               blur-3xl
-              opacity-[0.11]
+              opacity-[0.12]
               bg-gradient-to-br
               from-red-500
-              via-purple-500
               to-blue-500
             "
           />
@@ -62,13 +63,13 @@ export default function BuildersStoriesPage() {
           <div
             className="
               absolute
-              bottom-[-100px]
-              left-[-100px]
-              w-[260px]
-              h-[260px]
+              bottom-[-80px]
+              left-[-80px]
+              w-[220px]
+              h-[220px]
               rounded-full
               blur-3xl
-              opacity-[0.13]
+              opacity-15
               bg-red-500
             "
           />
@@ -78,30 +79,14 @@ export default function BuildersStoriesPage() {
           <div
             className="
               absolute
-              top-24
-              right-[-100px]
-              w-[260px]
-              h-[260px]
+              top-20
+              right-[-90px]
+              w-[220px]
+              h-[220px]
               rounded-full
               blur-3xl
-              opacity-[0.13]
+              opacity-15
               bg-blue-500
-            "
-          />
-
-          {/* SMALL CENTER GLOW */}
-
-          <div
-            className="
-              absolute
-              top-[420px]
-              left-[42%]
-              w-[180px]
-              h-[180px]
-              rounded-full
-              blur-3xl
-              opacity-[0.06]
-              bg-purple-500
             "
           />
         </div>
@@ -116,9 +101,7 @@ export default function BuildersStoriesPage() {
             z-10
           "
         >
-          {/* =====================================================
-              HERO
-          ====================================================== */}
+          {/* HERO */}
 
           <div className="max-w-4xl">
             {/* PILL */}
@@ -212,7 +195,6 @@ export default function BuildersStoriesPage() {
                 className="
                   bg-gradient-to-r
                   from-red-500
-                  via-purple-500
                   to-blue-500
                   bg-clip-text
                   text-transparent
@@ -240,9 +222,7 @@ export default function BuildersStoriesPage() {
               distribution, and how internet startups scaled.
             </p>
 
-            {/* =====================================================
-                STATS
-            ====================================================== */}
+            {/* STATS */}
 
             <div
               className="
@@ -266,7 +246,6 @@ export default function BuildersStoriesPage() {
                   shadow-sm
                   transition-all
                   duration-300
-                  hover:-translate-y-0.5
                   hover:border-purple-500/30
                 "
               >
@@ -297,7 +276,7 @@ export default function BuildersStoriesPage() {
                 </p>
               </div>
 
-              {/* 10M+ */}
+              {/* $10M+ */}
 
               <div
                 className="
@@ -311,7 +290,6 @@ export default function BuildersStoriesPage() {
                   shadow-sm
                   transition-all
                   duration-300
-                  hover:-translate-y-0.5
                   hover:border-purple-500/30
                 "
               >
@@ -356,7 +334,6 @@ export default function BuildersStoriesPage() {
                   shadow-sm
                   transition-all
                   duration-300
-                  hover:-translate-y-0.5
                   hover:border-purple-500/30
                 "
               >
@@ -389,14 +366,14 @@ export default function BuildersStoriesPage() {
             </div>
 
             {/* =====================================================
-                FAKEMAYO PARTNERSHIP CARD
+                FAKEMAYO PARTNERSHIP
             ====================================================== */}
 
             <a
               href={fakeMayoUrl}
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
-              aria-label="Visit FakeMayo.com"
+              aria-label="Open FakeMayo.com"
               className="
                 group
                 relative
@@ -412,15 +389,16 @@ export default function BuildersStoriesPage() {
                 shadow-[0_10px_40px_rgba(0,0,0,0.04)]
                 dark:shadow-[0_15px_50px_rgba(0,0,0,0.18)]
                 transition-all
-                duration-500
-                hover:-translate-y-1
+                duration-300
+                hover:-translate-y-0.5
                 hover:border-purple-500/40
-                hover:shadow-[0_20px_70px_rgba(124,58,237,0.12)]
+                hover:shadow-[0_20px_60px_rgba(124,58,237,0.10)]
                 active:scale-[0.99]
                 cursor-pointer
+                no-underline
               "
             >
-              {/* TOP GRADIENT LINE */}
+              {/* TOP RED → BLUE LINE */}
 
               <div
                 className="
@@ -431,43 +409,36 @@ export default function BuildersStoriesPage() {
                   h-[2px]
                   bg-gradient-to-r
                   from-red-500
-                  via-purple-500
                   to-blue-500
-                  opacity-70
-                  group-hover:opacity-100
-                  transition-opacity
-                  duration-300
+                  opacity-80
                 "
               />
 
-              {/* BACKGROUND GLOW */}
+              {/* SUBTLE GLOW */}
 
               <div
                 className="
                   absolute
-                  -top-24
+                  -top-20
                   -right-20
-                  w-64
-                  h-64
+                  w-56
+                  h-56
                   rounded-full
-                  bg-purple-500/[0.07]
+                  bg-blue-500/[0.06]
                   blur-3xl
                   pointer-events-none
-                  transition-transform
-                  duration-700
-                  group-hover:scale-125
                 "
               />
 
               <div
                 className="
                   absolute
-                  -bottom-24
+                  -bottom-20
                   -left-20
                   w-48
                   h-48
                   rounded-full
-                  bg-blue-500/[0.05]
+                  bg-red-500/[0.05]
                   blur-3xl
                   pointer-events-none
                 "
@@ -489,7 +460,7 @@ export default function BuildersStoriesPage() {
                   md:py-5
                 "
               >
-                {/* LEFT SIDE */}
+                {/* LEFT */}
 
                 <div
                   className="
@@ -500,33 +471,9 @@ export default function BuildersStoriesPage() {
                     min-w-0
                   "
                 >
-                  {/* FAKEMAYO DP */}
+                  {/* FAKEMAYO IMAGE */}
 
-                  <div
-                    className="
-                      relative
-                      shrink-0
-                    "
-                  >
-                    {/* Glow */}
-
-                    <div
-                      className="
-                        absolute
-                        inset-[-4px]
-                        rounded-2xl
-                        bg-gradient-to-br
-                        from-red-500/20
-                        via-purple-500/20
-                        to-blue-500/20
-                        blur-md
-                        opacity-0
-                        group-hover:opacity-100
-                        transition-opacity
-                        duration-500
-                      "
-                    />
-
+                  <div className="relative shrink-0">
                     <img
                       src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787287617/IMG_20260821_101542_vkuyku.jpg"
                       alt="FakeMayo"
@@ -541,13 +488,8 @@ export default function BuildersStoriesPage() {
                         border
                         border-[var(--border-primary)]
                         shadow-sm
-                        transition-transform
-                        duration-500
-                        group-hover:scale-105
                       "
                     />
-
-                    {/* VERIFIED DOT */}
 
                     <span
                       className="
@@ -578,7 +520,7 @@ export default function BuildersStoriesPage() {
                     </span>
                   </div>
 
-                  {/* PARTNERSHIP TEXT */}
+                  {/* TEXT */}
 
                   <div className="min-w-0">
                     <div
@@ -613,39 +555,18 @@ export default function BuildersStoriesPage() {
                       </span>
                     </div>
 
-                    <div
+                    <h2
                       className="
-                        flex
-                        items-center
-                        gap-2
+                        text-sm
+                        md:text-base
+                        font-black
+                        tracking-tight
+                        text-[var(--text-primary)]
+                        truncate
                       "
                     >
-                      <h2
-                        className="
-                          text-sm
-                          md:text-base
-                          font-black
-                          tracking-tight
-                          text-[var(--text-primary)]
-                          truncate
-                        "
-                      >
-                        FakeMayo.com
-                      </h2>
-
-                      <Sparkles
-                        className="
-                          w-3.5
-                          h-3.5
-                          text-purple-500
-                          shrink-0
-                          opacity-70
-                          group-hover:opacity-100
-                          transition-opacity
-                        "
-                        strokeWidth={2}
-                      />
-                    </div>
+                      FakeMayo.com
+                    </h2>
 
                     <p
                       className="
@@ -664,7 +585,7 @@ export default function BuildersStoriesPage() {
                   </div>
                 </div>
 
-                {/* RIGHT CTA */}
+                {/* RIGHT — STATIC ARROW */}
 
                 <div
                   className="
@@ -673,9 +594,6 @@ export default function BuildersStoriesPage() {
                     items-center
                     gap-2
                     text-purple-500
-                    transition-all
-                    duration-300
-                    group-hover:text-purple-600
                   "
                 >
                   <span
@@ -705,29 +623,17 @@ export default function BuildersStoriesPage() {
                       flex
                       items-center
                       justify-center
-                      transition-all
-                      duration-300
-                      group-hover:bg-purple-500
-                      group-hover:text-white
-                      group-hover:border-purple-500
                     "
                   >
                     <ArrowUpRight
-                      className="
-                        w-4
-                        h-4
-                        transition-transform
-                        duration-300
-                        group-hover:translate-x-0.5
-                        group-hover:-translate-y-0.5
-                      "
+                      className="w-4 h-4"
                       strokeWidth={2}
                     />
                   </span>
                 </div>
               </div>
 
-              {/* BOTTOM MICRO TEXT */}
+              {/* FOOTER */}
 
               <div
                 className="
@@ -751,31 +657,43 @@ export default function BuildersStoriesPage() {
                 />
 
                 <span>
-                  Opens FakeMayo.com
+                  Open FakeMayo.com inside Startives
                 </span>
               </div>
             </a>
           </div>
 
           {/* =====================================================
-              STORIES GRID
+              FAKE MAYO EMBED
           ====================================================== */}
 
           <div
             className="
-              grid
-              lg:grid-cols-3
-              gap-7
-              mt-10
-              md:mt-12
+              mt-8
+              w-full
+              overflow-hidden
+              rounded-2xl
+              border
+              border-[var(--border-primary)]
+              bg-[var(--component-background)]
+              shadow-sm
             "
           >
-            {stories.map(story => (
-              <StoryCard
-                key={story.id}
-                story={story}
-              />
-            ))}
+            <iframe
+              src={fakeMayoUrl}
+              title="FakeMayo.com"
+              className="
+                block
+                w-full
+                h-[calc(100vh-150px)]
+                min-h-[600px]
+                border-0
+                bg-white
+              "
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="clipboard-write"
+            />
           </div>
         </div>
       </section>
