@@ -1,7 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import {
   ArrowUpRight,
-  ExternalLink,
   Handshake,
   Eye,
   EyeOff,
@@ -354,12 +355,10 @@ export default function BuildersStoriesPage() {
             target="_self"
             rel="noopener noreferrer"
             aria-label="Open FakeMayo.com"
-            className="
+            className={`
               group
               relative
-              mt-7
               w-full
-              max-w-2xl
               block
               overflow-hidden
               rounded-[22px]
@@ -373,7 +372,8 @@ export default function BuildersStoriesPage() {
               active:scale-[0.99]
               cursor-pointer
               no-underline
-            "
+              ${showHero ? "mt-7" : "mt-2"}
+            `}
           >
             <div
               className="
@@ -559,6 +559,39 @@ export default function BuildersStoriesPage() {
                   text-purple-500
                 "
               >
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowHero((prev) => !prev);
+                  }}
+                  aria-label={showHero ? "Hide hero section" : "Show hero section"}
+                  className="
+                    w-9
+                    h-9
+                    md:w-10
+                    md:h-10
+                    rounded-full
+                    border
+                    border-purple-500/20
+                    bg-purple-500/[0.06]
+                    flex
+                    items-center
+                    justify-center
+                    transition-all
+                    duration-200
+                    hover:bg-purple-500/10
+                    active:scale-95
+                  "
+                >
+                  {showHero ? (
+                    <EyeOff className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]" strokeWidth={2} />
+                  ) : (
+                    <Eye className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]" strokeWidth={2} />
+                  )}
+                </button>
+
                 <span
                   className="
                     hidden
@@ -575,10 +608,10 @@ export default function BuildersStoriesPage() {
 
                 <span
                   className="
-                    w-8
-                    h-8
-                    md:w-9
-                    md:h-9
+                    w-9
+                    h-9
+                    md:w-10
+                    md:h-10
                     rounded-full
                     border
                     border-purple-500/20
@@ -589,50 +622,17 @@ export default function BuildersStoriesPage() {
                   "
                 >
                   <ArrowUpRight
-                    className="w-4 h-4"
+                    className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]"
                     strokeWidth={2}
                   />
                 </span>
-
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowHero((prev) => !prev);
-                  }}
-                  aria-label={showHero ? "Hide hero section" : "Show hero section"}
-                  className="
-                    w-8
-                    h-8
-                    md:w-9
-                    md:h-9
-                    rounded-full
-                    border
-                    border-purple-500/20
-                    bg-purple-500/[0.06]
-                    flex
-                    items-center
-                    justify-center
-                    transition-all
-                    duration-200
-                    hover:bg-purple-500/10
-                    active:scale-95
-                  "
-                >
-                  {showHero ? (
-                    <EyeOff className="w-4 h-4" strokeWidth={2} />
-                  ) : (
-                    <Eye className="w-4 h-4" strokeWidth={2} />
-                  )}
-                </button>
               </div>
             </div>
           </a>
 
           <div
             className="
-              mt-8
+              mt-4
               w-full
               overflow-hidden
               rounded-2xl
