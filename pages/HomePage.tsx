@@ -1136,7 +1136,7 @@ const HomePage: React.FC = () => {
                   ) => (
 
                     <div
-                      key={`${testimonial.name}-${index}`}
+                      key={`\( {testimonial.name}- \){index}`}
                       className="
                         testimonial-card-item
                         flex-shrink-0
@@ -1156,7 +1156,7 @@ const HomePage: React.FC = () => {
                           p-[18px]
                           sm:p-[20px]
                           rounded-[1.4rem]
-                          min-h-[198.45px]
+                          min-h-[212.34px]
                           flex
                           flex-col
                           cursor-pointer
@@ -1371,17 +1371,17 @@ const HomePage: React.FC = () => {
                   inline-flex
                   items-center
                   justify-center
-                  gap-2.8
+                  gap-2.6
                   rounded-full
-                  px-[7.44px]
-                  py-[6.51px]
-                  pl-[20.09px]
-                  sm:pl-[23.44px]
+                  px-[6.92px]
+                  py-[6.05px]
+                  pl-[18.68px]
+                  sm:pl-[21.80px]
                   text-neutral-900
                   dark:text-white
                   font-bold
-                  text-[11.72px]
-                  sm:text-[12.56px]
+                  text-[10.90px]
+                  sm:text-[11.68px]
                   tracking-tight
                   select-none
                   overflow-hidden
@@ -1436,10 +1436,10 @@ const HomePage: React.FC = () => {
                     flex
                     items-center
                     justify-center
-                    w-[30.13px]
-                    h-[30.13px]
-                    sm:w-[33.48px]
-                    sm:h-[33.48px]
+                    w-[28.02px]
+                    h-[28.02px]
+                    sm:w-[31.14px]
+                    sm:h-[31.14px]
                     rounded-full
                     overflow-hidden
                     border
@@ -1483,10 +1483,10 @@ const HomePage: React.FC = () => {
                     className="
                       relative
                       z-10
-                      w-[13.39px]
-                      h-[13.39px]
-                      sm:w-[15.07px]
-                      sm:h-[15.07px]
+                      w-[12.45px]
+                      h-[12.45px]
+                      sm:w-[14.02px]
+                      sm:h-[14.02px]
                       text-neutral-900
                       dark:text-white
                       transition-transform
@@ -1832,7 +1832,7 @@ const HomePage: React.FC = () => {
 
 
         /* =========================================
-           LIQUID CTA
+           LIQUID CTA — same family as testimonial cards
         ========================================= */
 
         .liquid-glass-cta {
@@ -1847,9 +1847,9 @@ const HomePage: React.FC = () => {
           background:
             linear-gradient(
               135deg,
-              rgba(255, 68, 80, 0.18),
-              rgba(190, 65, 175, 0.14),
-              rgba(50, 125, 255, 0.19)
+              rgba(255, 68, 80, 0.18) 0%,
+              rgba(190, 65, 175, 0.14) 48%,
+              rgba(50, 125, 255, 0.19) 100%
             );
 
           border:
@@ -1868,9 +1868,9 @@ const HomePage: React.FC = () => {
           background:
             linear-gradient(
               135deg,
-              rgba(120, 25, 40, 0.34),
-              rgba(70, 30, 72, 0.30),
-              rgba(20, 65, 125, 0.36)
+              rgba(120, 25, 40, 0.34) 0%,
+              rgba(70, 30, 72, 0.30) 48%,
+              rgba(20, 65, 125, 0.36) 100%
             ) !important;
 
           border-color:
@@ -1924,7 +1924,7 @@ const HomePage: React.FC = () => {
         /* =================================================
            TESTIMONIALS
            7 CARD SEAMLESS MARQUEE
-           SPEED = 23.5s
+           SPEED = 28.2s (20% slower than 23.5s)
         ================================================= */
 
         .testimonials-marquee-track {
@@ -1937,7 +1937,7 @@ const HomePage: React.FC = () => {
 
           animation:
             testimonial-marquee
-            23.5s
+            28.2s
             linear
             infinite;
 
@@ -1961,25 +1961,25 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            TESTIMONIAL CARD WIDTH
-           310.5px → +15% = 357.075px
+           357.075px → +17% = 417.78px
         ================================================= */
 
         .testimonial-card-item {
 
           width:
-            357.075px;
+            417.78px;
 
           margin-right:
             32px;
 
           flex:
-            0 0 357.075px;
+            0 0 417.78px;
         }
 
 
         /* =================================================
            TESTIMONIAL GRADIENT CARD
-           189px → +5% = 198.45px
+           198.45px → +7% = 212.34px
         ================================================= */
 
         .testimonial-gradient-card {
@@ -1994,7 +1994,7 @@ const HomePage: React.FC = () => {
             100%;
 
           min-height:
-            198.45px;
+            212.34px;
 
           background:
             linear-gradient(
@@ -2117,7 +2117,7 @@ const HomePage: React.FC = () => {
               translate3d(
                 calc(
                   -7 *
-                  (357.075px + 32px)
+                  (417.78px + 32px)
                 ),
                 0,
                 0
@@ -2137,13 +2137,13 @@ const HomePage: React.FC = () => {
           .testimonial-card-item {
 
             width:
-              64.4vw;
+              75.35vw;
 
             max-width:
-              357.075px;
+              417.78px;
 
             flex:
-              0 0 64.4vw;
+              0 0 75.35vw;
 
             margin-right:
               24px;
@@ -2153,7 +2153,7 @@ const HomePage: React.FC = () => {
           .testimonial-gradient-card {
 
             min-height:
-              198.45px;
+              212.34px;
 
             padding:
               18px;
@@ -2189,7 +2189,7 @@ const HomePage: React.FC = () => {
                 translate3d(
                   calc(
                     -7 *
-                    (64.4vw + 24px)
+                    (75.35vw + 24px)
                   ),
                   0,
                   0
@@ -2240,19 +2240,19 @@ const HomePage: React.FC = () => {
           .liquid-glass-cta {
 
             padding-top:
-              6.51px;
+              6.05px;
 
             padding-bottom:
-              6.51px;
+              6.05px;
 
             padding-left:
-              20.09px;
+              18.68px;
 
             padding-right:
-              6.51px;
+              6.05px;
 
             font-size:
-              11.72px;
+              10.90px;
           }
 
 
