@@ -10,6 +10,7 @@ import { APP_NAME } from '../constants';
 import { ProjectCard } from '../pages/ProjectsListPage';
 import HeroSection from '../components/homepage/HeroSection';
 import StartalksSection from '../components/homepage/StartalksSection';
+import StartivesEcosystemSection from '../components/homepage/StartivesEcosystemSection';
 
 import {
   Users,
@@ -860,6 +861,8 @@ const HomePage: React.FC = () => {
         </section>
 
         <StartalksSection Reveal={Reveal} />
+
+<StartivesEcosystemSection />
 
         {/* ================= WHY STARTIVES ================= */}
 
