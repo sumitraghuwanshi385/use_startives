@@ -1365,7 +1365,7 @@ const HomePage: React.FC = () => {
               <Link
                 to="/signup"
                 className="
-                  liquid-glass-cta
+                  button-gradient
                   group
                   relative
                   inline-flex
@@ -1377,8 +1377,7 @@ const HomePage: React.FC = () => {
                   py-[6.05px]
                   pl-[18.68px]
                   sm:pl-[21.80px]
-                  text-neutral-900
-                  dark:text-white
+                  text-white
                   font-bold
                   text-[10.90px]
                   sm:text-[11.68px]
@@ -1391,38 +1390,9 @@ const HomePage: React.FC = () => {
                   active:scale-[0.97]
                   focus:outline-none
                   focus-visible:ring-4
-                  focus-visible:ring-blue-400/20
+                  focus-visible:ring-red-500/40
                 "
               >
-
-                {/* GLASS BACKGROUND — same red → purple → blue family as testimonial cards */}
-
-                <span
-                  className="
-                    absolute
-                    inset-0
-                    rounded-full
-                    bg-gradient-to-br
-                    from-red-500/[0.18]
-                    via-purple-500/[0.14]
-                    to-blue-500/[0.19]
-                    pointer-events-none
-                  "
-                />
-
-                <span
-                  className="
-                    absolute
-                    inset-0
-                    rounded-full
-                    bg-white/[0.12]
-                    dark:bg-white/[0.04]
-                    backdrop-blur-2xl
-                    pointer-events-none
-                  "
-                />
-
-                {/* NO TOP DIVIDER */}
 
                 <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
@@ -1487,8 +1457,7 @@ const HomePage: React.FC = () => {
                       h-[12.45px]
                       sm:w-[14.02px]
                       sm:h-[14.02px]
-                      text-neutral-900
-                      dark:text-white
+                      text-white
                       transition-transform
                       duration-300
                       group-hover:translate-x-0.5
@@ -1831,117 +1800,10 @@ const HomePage: React.FC = () => {
         }
 
 
-        /* =========================================
-           LIQUID CTA — more glassy (iOS-style)
-           red → purple → blue (same as testimonial cards)
-        ========================================= */
-
-        .liquid-glass-cta {
-          -webkit-backdrop-filter:
-            blur(28px)
-            saturate(190%);
-
-          backdrop-filter:
-            blur(28px)
-            saturate(190%);
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 68, 80, 0.18) 0%,
-              rgba(190, 65, 175, 0.14) 48%,
-              rgba(50, 125, 255, 0.19) 100%
-            );
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.72);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.55),
-            inset 0 -1px 1px
-              rgba(255, 255, 255, 0.12),
-            0 4px 24px
-              rgba(0, 0, 0, 0.04);
-
-          position:
-            relative;
-        }
-
-        .dark .liquid-glass-cta {
-          background:
-            linear-gradient(
-              135deg,
-              rgba(120, 25, 40, 0.34) 0%,
-              rgba(70, 30, 72, 0.30) 48%,
-              rgba(20, 65, 125, 0.36) 100%
-            ) !important;
-
-          border-color:
-            rgba(255, 255, 255, 0.14);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.10),
-            inset 0 -1px 1px
-              rgba(255, 255, 255, 0.04),
-            0 4px 24px
-              rgba(0, 0, 0, 0.25);
-
-          -webkit-backdrop-filter:
-            blur(22px)
-            saturate(160%);
-
-          backdrop-filter:
-            blur(22px)
-            saturate(160%);
-        }
-
-        /*
-          IMPORTANT:
-          No ::after top divider.
-          Launch CTA intentionally has
-          no white horizontal line.
-        */
-
-        .liquid-glass-cta::after {
-          display:
-            none !important;
-        }
-
-        .liquid-glass-cta:hover {
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.55),
-            inset 0 -1px 1px
-              rgba(255, 255, 255, 0.12),
-            0 6px 28px
-              rgba(0, 0, 0, 0.06);
-
-          transform:
-            scale(1.035);
-        }
-
-        .dark
-        .liquid-glass-cta:hover {
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.10),
-            inset 0 -1px 1px
-              rgba(255, 255, 255, 0.04),
-            0 6px 28px
-              rgba(0, 0, 0, 0.30);
-
-          transform:
-            scale(1.035);
-        }
-
-
         /* =================================================
            TESTIMONIALS
            7 CARD SEAMLESS MARQUEE
-           SPEED = 33.3s
+           SPEED = 38.8s
         ================================================= */
 
         .testimonials-marquee-track {
@@ -1954,7 +1816,7 @@ const HomePage: React.FC = () => {
 
           animation:
             testimonial-marquee
-            33.3s
+            38.8s
             linear
             infinite;
 
@@ -1996,7 +1858,7 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            TESTIMONIAL GRADIENT CARD
-           height 212.34px (kept from previous +7%)
+           height 212.34px
         ================================================= */
 
         .testimonial-gradient-card {
@@ -2036,7 +1898,6 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            DARK MODE GRADIENT
-           CLEAN — NO BLUR PATCHES
         ================================================= */
 
         .dark .testimonial-gradient-card {
@@ -2254,32 +2115,6 @@ const HomePage: React.FC = () => {
 
         @media (max-width: 639px) {
 
-          .liquid-glass-cta {
-
-            padding-top:
-              6.05px;
-
-            padding-bottom:
-              6.05px;
-
-            padding-left:
-              18.68px;
-
-            padding-right:
-              6.05px;
-
-            font-size:
-              10.90px;
-          }
-
-
-          .liquid-glass-cta span {
-
-            -webkit-tap-highlight-color:
-              transparent;
-          }
-
-
           .ecosystem-stat-number.button-gradient {
 
             background-clip:
@@ -2444,13 +2279,6 @@ const HomePage: React.FC = () => {
           .animate-float-slow {
 
             animation:
-              none !important;
-          }
-
-
-          .liquid-glass-cta {
-
-            transition:
               none !important;
           }
 
