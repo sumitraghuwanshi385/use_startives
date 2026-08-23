@@ -22,11 +22,16 @@ interface EcosystemItem {
   icon: React.ReactNode;
   gradient: string;
   glow: string;
-  image?: string;
+
+  // Light / dark mode images
+  lightImage?: string;
+  darkImage?: string;
+
   stats: {
     value: string;
     label: string;
   }[];
+
   tags: string[];
   to: string;
 }
@@ -34,13 +39,26 @@ interface EcosystemItem {
 const ecosystemItems: EcosystemItem[] = [
   {
     id: 'startverse',
+
     title: 'Startverse',
+
     description:
       'A living space for founders, builders, ideas, conversations and opportunities — all connected in one universe.',
+
     icon: <Globe2 />,
-    gradient: 'from-red-500 to-blue-500',
-    glow: 'rgba(239,68,68,0.18)',
-    image: '',
+
+    gradient:
+      'from-red-500 to-blue-500',
+
+    glow:
+      'rgba(239,68,68,0.18)',
+
+    lightImage:
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787333300/Picsart_26-08-21_22-57-17-986_omjkxk.jpg',
+
+    darkImage:
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787333331/Picsart_26-08-21_22-56-52-517_fm3zcs.jpg',
+
     stats: [
       {
         value: '∞',
@@ -51,23 +69,32 @@ const ecosystemItems: EcosystemItem[] = [
         label: 'Building',
       },
     ],
+
     tags: [
       'Builders',
       'Founders',
       'Communities',
     ],
+
     to: '/startverse',
   },
 
   {
     id: 'marketplace',
+
     title: 'Marketplace',
+
     description:
       'Discover products, services, talent and opportunities created by the Startives community.',
+
     icon: <ShoppingBag />,
-    gradient: 'from-red-500 to-blue-500',
-    glow: 'rgba(59,130,246,0.18)',
-    image: '',
+
+    gradient:
+      'from-red-500 to-blue-500',
+
+    glow:
+      'rgba(59,130,246,0.18)',
+
     stats: [
       {
         value: '100+',
@@ -78,23 +105,32 @@ const ecosystemItems: EcosystemItem[] = [
         label: 'Reach',
       },
     ],
+
     tags: [
       'Products',
       'Services',
       'Talent',
     ],
+
     to: '/marketplace',
   },
 
   {
     id: 'success-stories',
+
     title: 'Success Stories',
+
     description:
       'Real stories from people who started with an idea, found their people and turned momentum into progress.',
+
     icon: <Trophy />,
-    gradient: 'from-red-500 to-blue-500',
-    glow: 'rgba(239,68,68,0.18)',
-    image: '',
+
+    gradient:
+      'from-red-500 to-blue-500',
+
+    glow:
+      'rgba(239,68,68,0.18)',
+
     stats: [
       {
         value: '50+',
@@ -105,11 +141,13 @@ const ecosystemItems: EcosystemItem[] = [
         label: 'Possibility',
       },
     ],
+
     tags: [
       'Founders',
       'Milestones',
       'Wins',
     ],
+
     to: '/success-stories',
   },
 ];
@@ -338,7 +376,7 @@ const StartivesEcosystemSection: React.FC =
           </div>
 
           {/* =========================================
-              THREE ECOSYSTEM CARDS
+              THREE CARDS
           ========================================= */}
 
           <div
@@ -389,7 +427,7 @@ const StartivesEcosystemSection: React.FC =
                   >
 
                     {/* =================================
-                        CARD OUTER GLOW
+                        OUTER GLOW
                     ================================= */}
 
                     <div
@@ -436,7 +474,7 @@ const StartivesEcosystemSection: React.FC =
                       "
                     >
 
-                      {/* Soft card gradient */}
+                      {/* Soft gradient */}
 
                       <div
                         className={`
@@ -482,45 +520,143 @@ const StartivesEcosystemSection: React.FC =
                       >
 
                         {/* =================================
-                            IMAGE AREA
+                            RECTANGULAR IMAGE
                         ================================= */}
 
-                        <div
-                          className="
-                            relative
-                            w-full
-                            h-[170px]
-                            sm:h-[185px]
-                            rounded-[1.25rem]
-                            overflow-hidden
-                            border
-                            border-neutral-200
-                            dark:border-white/10
-                            bg-neutral-50
-                            dark:bg-white/[0.025]
-                            group/image
-                          "
-                        >
+                        {item.id ===
+                          'startverse' &&
+                        item.lightImage &&
+                        item.darkImage ? (
+                          <div
+                            className="
+                              relative
+                              w-full
+                              h-[170px]
+                              sm:h-[185px]
+                              rounded-[1.25rem]
+                              overflow-hidden
+                              border
+                              border-neutral-200
+                              dark:border-white/10
+                              bg-neutral-50
+                              dark:bg-white/[0.025]
+                            "
+                          >
 
-                          {/* Image */}
+                            {/* LIGHT IMAGE */}
 
-                          {item.image ? (
                             <img
-                              src={item.image}
-                              alt={item.title}
+                              src={
+                                item.lightImage
+                              }
+                              alt={
+                                item.title
+                              }
                               className="
                                 absolute
                                 inset-0
                                 w-full
                                 h-full
                                 object-cover
+                                object-center
+                                block
+                                dark:hidden
                                 transition-transform
                                 duration-700
                                 ease-out
-                                group-hover:scale-[1.04]
+                                group-hover:scale-[1.035]
                               "
                             />
-                          ) : (
+
+                            {/* DARK IMAGE */}
+
+                            <img
+                              src={
+                                item.darkImage
+                              }
+                              alt={
+                                item.title
+                              }
+                              className="
+                                absolute
+                                inset-0
+                                w-full
+                                h-full
+                                object-cover
+                                object-center
+                                hidden
+                                dark:block
+                                transition-transform
+                                duration-700
+                                ease-out
+                                group-hover:scale-[1.035]
+                              "
+                            />
+
+                            {/* Subtle overlay */}
+
+                            <div
+                              className="
+                                absolute
+                                inset-0
+                                bg-gradient-to-t
+                                from-black/20
+                                via-transparent
+                                to-white/10
+                                pointer-events-none
+                              "
+                            />
+
+                            {/* SQUARE GRADIENT ICON
+                                KEPT ON IMAGE */}
+
+                            <div
+                              className={`
+                                absolute
+                                bottom-3
+                                left-3
+                                w-10
+                                h-10
+                                rounded-xl
+                                bg-gradient-to-br
+                                ${item.gradient}
+                                flex
+                                items-center
+                                justify-center
+                                shadow-[0_6px_20px_rgba(0,0,0,0.18)]
+                                transition-all
+                                duration-500
+                                group-hover:scale-110
+                                group-hover:rotate-2
+                              `}
+                            >
+                              {React.cloneElement(
+                                item.icon as React.ReactElement,
+                                {
+                                  className:
+                                    'w-5 h-5 text-white',
+                                }
+                              )}
+                            </div>
+
+                          </div>
+                        ) : (
+                          <div
+                            className="
+                              relative
+                              w-full
+                              h-[170px]
+                              sm:h-[185px]
+                              rounded-[1.25rem]
+                              overflow-hidden
+                              border
+                              border-neutral-200
+                              dark:border-white/10
+                              bg-neutral-50
+                              dark:bg-white/[0.025]
+                            "
+                          >
+
                             <div
                               className={`
                                 absolute
@@ -529,108 +665,86 @@ const StartivesEcosystemSection: React.FC =
                                 ${item.gradient}
                                 opacity-[0.08]
                               `}
+                            />
+
+                            <div
+                              className="
+                                absolute
+                                inset-0
+                                flex
+                                items-center
+                                justify-center
+                              "
                             >
+
                               <div
                                 className="
-                                  absolute
-                                  inset-0
+                                  w-16
+                                  h-16
+                                  rounded-2xl
+                                  bg-white
+                                  dark:bg-black
+                                  border
+                                  border-neutral-200
+                                  dark:border-white/10
                                   flex
                                   items-center
                                   justify-center
+                                  shadow-sm
                                 "
                               >
 
-                                <div
-                                  className="
-                                    w-16
-                                    h-16
-                                    rounded-2xl
-                                    bg-white
-                                    dark:bg-black
-                                    border
-                                    border-neutral-200
-                                    dark:border-white/10
-                                    flex
-                                    items-center
-                                    justify-center
-                                    shadow-sm
-                                  "
+                                <span
+                                  className={`
+                                    bg-gradient-to-br
+                                    ${item.gradient}
+                                    bg-clip-text
+                                    text-transparent
+                                  `}
                                 >
-
-                                  <span
-                                    className={`
-                                      bg-gradient-to-br
-                                      ${item.gradient}
-                                      bg-clip-text
-                                      text-transparent
-                                    `}
-                                  >
-                                    {React.cloneElement(
-                                      item.icon as React.ReactElement,
-                                      {
-                                        className:
-                                          'w-7 h-7',
-                                      }
-                                    )}
-                                  </span>
-
-                                </div>
+                                  {React.cloneElement(
+                                    item.icon as React.ReactElement,
+                                    {
+                                      className:
+                                        'w-7 h-7',
+                                    }
+                                  )}
+                                </span>
 
                               </div>
+
                             </div>
-                          )}
 
-                          {/* Image overlay */}
-
-                          <div
-                            className="
-                              absolute
-                              inset-0
-                              bg-gradient-to-t
-                              from-black/20
-                              via-transparent
-                              to-white/10
-                              pointer-events-none
-                            "
-                          />
-
-                          {/* Small image accent */}
-
-                          <div
-                            className={`
-                              absolute
-                              bottom-3
-                              left-3
-                              w-8
-                              h-8
-                              rounded-xl
-                              bg-gradient-to-br
-                              ${item.gradient}
-                              flex
-                              items-center
-                              justify-center
-                              shadow-lg
-                              transition-transform
-                              duration-500
-                              group-hover:scale-110
-                              group-hover:rotate-3
-                            `}
-                          >
-
-                            {React.cloneElement(
-                              item.icon as React.ReactElement,
-                              {
-                                className:
-                                  'w-4 h-4 text-white',
-                              }
-                            )}
+                            <div
+                              className={`
+                                absolute
+                                bottom-3
+                                left-3
+                                w-10
+                                h-10
+                                rounded-xl
+                                bg-gradient-to-br
+                                ${item.gradient}
+                                flex
+                                items-center
+                                justify-center
+                                shadow-lg
+                              `}
+                            >
+                              {React.cloneElement(
+                                item.icon as React.ReactElement,
+                                {
+                                  className:
+                                    'w-5 h-5 text-white',
+                                }
+                              )}
+                            </div>
 
                           </div>
-
-                        </div>
+                        )}
 
                         {/* =================================
-                            TITLE AREA
+                            TITLE
                         ================================= */}
 
                         <div className="mt-6">
@@ -665,7 +779,7 @@ const StartivesEcosystemSection: React.FC =
                         </div>
 
                         {/* =================================
-                            TAGS
+                            TAG PILLS
                         ================================= */}
 
                         <div
@@ -704,31 +818,33 @@ const StartivesEcosystemSection: React.FC =
                         </div>
 
                         {/* =================================
-                            BOTTOM
+                            STATS — CLOSE TO TAGS
                         ================================= */}
 
                         <div
                           className="
-                            mt-auto
-                            pt-6
+                            mt-3
+                            pt-3
+                            border-t
+                            border-neutral-200
+                            dark:border-white/[0.08]
                           "
                         >
 
                           <div
                             className="
                               flex
-                              items-end
+                              items-center
                               justify-between
-                              border-t
-                              border-neutral-200
-                              dark:border-white/[0.08]
-                              pt-5
                             "
                           >
 
-                            {/* Stats */}
-
-                            <div className="flex gap-5">
+                            <div
+                              className="
+                                flex
+                                gap-5
+                              "
+                            >
 
                               {item.stats.map(
                                 (stat) => (
@@ -772,7 +888,7 @@ const StartivesEcosystemSection: React.FC =
 
                             </div>
 
-                            {/* Red → Blue Link */}
+                            {/* RED → BLUE BUTTON */}
 
                             <a
                               href={item.to}
@@ -834,10 +950,10 @@ const StartivesEcosystemSection: React.FC =
 
                       </div>
 
-                      {/* Bottom animated glow */}
+                      {/* Bottom glow */}
 
                       <div
-                        className={`
+                        className="
                           absolute
                           bottom-[-55px]
                           left-1/2
@@ -854,7 +970,7 @@ const StartivesEcosystemSection: React.FC =
                           transition-opacity
                           duration-500
                           pointer-events-none
-                        `}
+                        "
                       />
 
                     </div>
