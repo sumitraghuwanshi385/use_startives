@@ -28,6 +28,8 @@ interface EcosystemItem {
   lightImage?: string;
   darkImage?: string;
 
+  partnership?: string;
+
   stats: {
     value: string;
     label: string;
@@ -55,15 +57,9 @@ const ecosystemItems: EcosystemItem[] = [
     glow:
       'rgba(239,68,68,0.18)',
 
-    /*
-     * STARTVERSE LIGHT MODE
-     */
     lightImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787500179/Picsart_26-08-23_21-17-30-836_puu54w.jpg',
 
-    /*
-     * STARTVERSE DARK MODE
-     */
     darkImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787500238/Picsart_26-08-23_21-20-17-714_wgejty.jpg',
 
@@ -84,9 +80,6 @@ const ecosystemItems: EcosystemItem[] = [
       'Communities',
     ],
 
-    /*
-     * STARTVERSE CTA
-     */
     to: '/signup',
   },
 
@@ -96,7 +89,7 @@ const ecosystemItems: EcosystemItem[] = [
     title: 'Marketplace',
 
     description:
-      'Discover products, services, talent and opportunities created by the Startives community.',
+      'Buy, sell, and explore SaaS products, digital products, services, talent, and opportunities built by the Startives community.',
 
     icon: <ShoppingBag />,
 
@@ -118,9 +111,9 @@ const ecosystemItems: EcosystemItem[] = [
     ],
 
     tags: [
-      'Products',
-      'Services',
-      'Talent',
+      'Buy',
+      'Sell',
+      'Explore',
     ],
 
     to: '/marketplace',
@@ -131,8 +124,11 @@ const ecosystemItems: EcosystemItem[] = [
 
     title: 'Success Stories',
 
+    partnership:
+      'In partnership with FakeMayo',
+
     description:
-      'Real stories from people who started with an idea, found their people and turned momentum into progress.',
+      'Real stories from people who started with an idea, found their people, and turned momentum into something real.',
 
     icon: <Trophy />,
 
@@ -141,6 +137,12 @@ const ecosystemItems: EcosystemItem[] = [
 
     glow:
       'rgba(239,68,68,0.18)',
+
+    lightImage:
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787502383/Picsart_26-08-23_21-53-03-245_dwkjqj.jpg',
+
+    darkImage:
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787502384/Picsart_26-08-23_21-55-14-929_qwkksq.jpg',
 
     stats: [
       {
@@ -164,7 +166,7 @@ const ecosystemItems: EcosystemItem[] = [
 ];
 
 /* =========================================
-   FLOATING ORB
+   FLOATING BACKGROUND ORB
 ========================================= */
 
 const FloatingOrb: React.FC<{
@@ -199,14 +201,11 @@ const StartivesEcosystemSection: React.FC =
     const sectionRef =
       useRef<HTMLElement | null>(null);
 
-    const [activeCard, setActiveCard] =
-      useState<string | null>(null);
-
     const [visible, setVisible] =
       useState(false);
 
     /* =========================================
-       INTERSECTION OBSERVER
+       SECTION REVEAL ONLY
     ========================================= */
 
     useEffect(() => {
@@ -255,7 +254,13 @@ const StartivesEcosystemSection: React.FC =
             BACKGROUND
         ========================================= */}
 
-        <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="
+            absolute
+            inset-0
+            pointer-events-none
+          "
+        >
 
           <div
             className="
@@ -322,7 +327,7 @@ const StartivesEcosystemSection: React.FC =
         </div>
 
         {/* =========================================
-            CONTENT CONTAINER
+            CONTAINER
         ========================================= */}
 
         <div
@@ -349,13 +354,12 @@ const StartivesEcosystemSection: React.FC =
               mx-auto
               mb-14
               sm:mb-16
-              transition-all
-              duration-1000
-              ease-[cubic-bezier(0.16,1,0.3,1)]
+              transition-opacity
+              duration-700
               ${
                 visible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
+                  ? 'opacity-100'
+                  : 'opacity-0'
               }
             `}
           >
@@ -404,6 +408,7 @@ const StartivesEcosystemSection: React.FC =
 
           {/* =========================================
               THREE CARDS
+              STATIC — NO HOVER / TILT / SCALE
           ========================================= */}
 
           <div
@@ -417,625 +422,523 @@ const StartivesEcosystemSection: React.FC =
           >
 
             {ecosystemItems.map(
-              (item, index) => {
+              (item) => (
+                <div
+                  key={item.id}
+                  className="
+                    relative
+                  "
+                >
 
-                const isActive =
-                  activeCard === item.id;
+                  {/* =================================
+                      CARD
+                  ================================= */}
 
-                return (
                   <div
-                    key={item.id}
-                    className={`
-                      group
+                    className="
                       relative
-                      transition-all
-                      duration-1000
-                      ease-[cubic-bezier(0.16,1,0.3,1)]
-                      ${
-                        visible
-                          ? 'opacity-100 translate-y-0'
-                          : 'opacity-0 translate-y-12'
-                      }
-                    `}
-                    style={{
-                      transitionDelay:
-                        visible
-                          ? `${180 + index * 120}ms`
-                          : '0ms',
-                    }}
-                    onMouseEnter={() =>
-                      setActiveCard(
-                        item.id
-                      )
-                    }
-                    onMouseLeave={() =>
-                      setActiveCard(null)
-                    }
+                      h-full
+                      min-h-0
+                      rounded-[1.8rem]
+                      overflow-hidden
+                      border
+                      border-neutral-200
+                      dark:border-white/[0.12]
+                      bg-white
+                      dark:bg-black
+                      shadow-[0_10px_40px_rgba(0,0,0,0.045)]
+                      dark:shadow-none
+                    "
                   >
 
-                    {/* =================================
-                        OUTER GLOW
-                    ================================= */}
+                    {/* Soft static gradient */}
+
+                    <div
+                      className={`
+                        absolute
+                        inset-0
+                        bg-gradient-to-br
+                        ${item.gradient}
+                        opacity-[0.025]
+                        pointer-events-none
+                      `}
+                    />
+
+                    {/* Top highlight */}
 
                     <div
                       className="
                         absolute
-                        -inset-1
-                        rounded-[2rem]
-                        opacity-0
-                        blur-2xl
-                        transition-opacity
-                        duration-500
-                        group-hover:opacity-100
+                        top-0
+                        left-[8%]
+                        right-[8%]
+                        h-px
+                        bg-gradient-to-r
+                        from-transparent
+                        via-neutral-300
+                        to-transparent
+                        dark:via-white/20
                       "
-                      style={{
-                        background:
-                          item.glow,
-                      }}
                     />
 
                     {/* =================================
-                        CARD
-                        IMPORTANT:
-                        Removed huge min-height
-                        to eliminate bottom whitespace.
+                        CONTENT
                     ================================= */}
 
                     <div
                       className="
                         relative
-                        h-full
-                        min-h-0
-                        rounded-[1.8rem]
-                        overflow-hidden
-                        border
-                        border-neutral-200
-                        dark:border-white/[0.12]
-                        bg-white
-                        dark:bg-black
-                        transition-all
-                        duration-500
-                        group-hover:-translate-y-2
-                        group-hover:border-neutral-300
-                        dark:group-hover:border-white/20
-                        shadow-[0_10px_40px_rgba(0,0,0,0.045)]
-                        dark:shadow-none
+                        z-10
+                        p-5
+                        sm:p-6
+                        flex
+                        flex-col
                       "
                     >
 
-                      {/* Soft gradient */}
-
-                      <div
-                        className={`
-                          absolute
-                          inset-0
-                          bg-gradient-to-br
-                          ${item.gradient}
-                          opacity-[0.025]
-                          group-hover:opacity-[0.055]
-                          transition-opacity
-                          duration-500
-                          pointer-events-none
-                        `}
-                      />
-
-                      {/* Top highlight */}
-
-                      <div
-                        className="
-                          absolute
-                          top-0
-                          left-[8%]
-                          right-[8%]
-                          h-px
-                          bg-gradient-to-r
-                          from-transparent
-                          via-neutral-300
-                          to-transparent
-                          dark:via-white/20
-                        "
-                      />
-
                       {/* =================================
-                          CARD CONTENT
+                          IMAGE PLACEHOLDER
                       ================================= */}
 
-                      <div
-                        className="
-                          relative
-                          z-10
-                          p-5
-                          sm:p-6
-                          flex
-                          flex-col
-                        "
-                      >
+                      {item.lightImage &&
+                      item.darkImage ? (
 
-                        {/* =================================
-                            STARTVERSE RECTANGULAR IMAGE
-                        ================================= */}
+                        <div
+                          className="
+                            relative
+                            w-full
+                            h-[170px]
+                            sm:h-[185px]
+                            rounded-[1.25rem]
+                            overflow-hidden
+                            border
+                            border-neutral-200
+                            dark:border-white/10
+                            bg-neutral-50
+                            dark:bg-white/[0.025]
+                          "
+                        >
 
-                        {item.id ===
-                          'startverse' &&
-                        item.lightImage &&
-                        item.darkImage ? (
+                          {/* LIGHT IMAGE */}
+
+                          <img
+                            src={
+                              item.lightImage
+                            }
+                            alt={
+                              item.title
+                            }
+                            className="
+                              absolute
+                              inset-0
+                              w-full
+                              h-full
+                              object-cover
+                              object-center
+                              block
+                              dark:hidden
+                            "
+                          />
+
+                          {/* DARK IMAGE */}
+
+                          <img
+                            src={
+                              item.darkImage
+                            }
+                            alt={
+                              item.title
+                            }
+                            className="
+                              absolute
+                              inset-0
+                              w-full
+                              h-full
+                              object-cover
+                              object-center
+                              hidden
+                              dark:block
+                            "
+                          />
+
+                          {/* Static image overlay */}
 
                           <div
                             className="
-                              relative
-                              w-full
-                              h-[170px]
-                              sm:h-[185px]
-                              rounded-[1.25rem]
-                              overflow-hidden
-                              border
-                              border-neutral-200
-                              dark:border-white/10
-                              bg-neutral-50
-                              dark:bg-white/[0.025]
+                              absolute
+                              inset-0
+                              bg-gradient-to-t
+                              from-black/20
+                              via-transparent
+                              to-white/5
+                              pointer-events-none
+                            "
+                          />
+
+                          {/* =================================
+                              STATIC GRADIENT ICON
+                              NO HOVER / NO ANIMATION
+                          ================================= */}
+
+                          <div
+                            className="
+                              absolute
+                              bottom-3
+                              left-3
+                              w-11
+                              h-11
+                              rounded-xl
+                              bg-gradient-to-br
+                              from-red-500
+                              to-blue-500
+                              flex
+                              items-center
+                              justify-center
+                              shadow-[0_6px_20px_rgba(0,0,0,0.20)]
                             "
                           >
 
-                            {/* LIGHT */}
-
-                            <img
-                              src={
-                                item.lightImage
+                            {React.cloneElement(
+                              item.icon as React.ReactElement,
+                              {
+                                className:
+                                  'w-5 h-5 text-white',
                               }
-                              alt={
-                                item.title
-                              }
-                              className="
-                                absolute
-                                inset-0
-                                w-full
-                                h-full
-                                object-cover
-                                object-center
-                                block
-                                dark:hidden
-                                transition-transform
-                                duration-700
-                                ease-out
-                                group-hover:scale-[1.035]
-                              "
-                            />
+                            )}
 
-                            {/* DARK */}
+                          </div>
 
-                            <img
-                              src={
-                                item.darkImage
-                              }
-                              alt={
-                                item.title
-                              }
-                              className="
-                                absolute
-                                inset-0
-                                w-full
-                                h-full
-                                object-cover
-                                object-center
-                                hidden
-                                dark:block
-                                transition-transform
-                                duration-700
-                                ease-out
-                                group-hover:scale-[1.035]
-                              "
-                            />
+                        </div>
 
-                            {/* Image overlay */}
+                      ) : (
+
+                        /* =================================
+                           STATIC PLACEHOLDER
+                        ================================= */
+
+                        <div
+                          className="
+                            relative
+                            w-full
+                            h-[170px]
+                            sm:h-[185px]
+                            rounded-[1.25rem]
+                            overflow-hidden
+                            border
+                            border-neutral-200
+                            dark:border-white/10
+                            bg-neutral-50
+                            dark:bg-white/[0.025]
+                          "
+                        >
+
+                          <div
+                            className={`
+                              absolute
+                              inset-0
+                              bg-gradient-to-br
+                              ${item.gradient}
+                              opacity-[0.07]
+                            `}
+                          />
+
+                          <div
+                            className="
+                              absolute
+                              inset-0
+                              flex
+                              items-center
+                              justify-center
+                            "
+                          >
 
                             <div
                               className="
-                                absolute
-                                inset-0
-                                bg-gradient-to-t
-                                from-black/20
-                                via-transparent
-                                to-white/10
-                                pointer-events-none
-                              "
-                            />
-
-                            {/* =================================
-                                GRADIENT ICON
-                            ================================= */}
-
-                            <div
-                              className="
-                                absolute
-                                bottom-3
-                                left-3
-                                w-11
-                                h-11
-                                rounded-xl
-                                bg-gradient-to-br
-                                from-red-500
-                                to-blue-500
+                                w-16
+                                h-16
+                                rounded-2xl
+                                bg-white
+                                dark:bg-black
+                                border
+                                border-neutral-200
+                                dark:border-white/10
                                 flex
                                 items-center
                                 justify-center
-                                shadow-[0_6px_20px_rgba(0,0,0,0.20)]
-                                transition-all
-                                duration-500
-                                group-hover:scale-110
-                                group-hover:rotate-2
                               "
                             >
 
-                              <Globe2
-                                className="
-                                  w-5
-                                  h-5
-                                  text-white
-                                "
-                              />
+                              <span
+                                className={`
+                                  bg-gradient-to-br
+                                  ${item.gradient}
+                                  bg-clip-text
+                                  text-transparent
+                                `}
+                              >
+
+                                {React.cloneElement(
+                                  item.icon as React.ReactElement,
+                                  {
+                                    className:
+                                      'w-7 h-7',
+                                  }
+                                )}
+
+                              </span>
 
                             </div>
 
                           </div>
 
-                        ) : (
-
-                          /* =================================
-                             FALLBACK IMAGE AREA
-                          ================================= */
+                          {/* Static bottom icon */}
 
                           <div
                             className="
-                              relative
-                              w-full
-                              h-[170px]
-                              sm:h-[185px]
-                              rounded-[1.25rem]
-                              overflow-hidden
-                              border
-                              border-neutral-200
-                              dark:border-white/10
-                              bg-neutral-50
-                              dark:bg-white/[0.025]
+                              absolute
+                              bottom-3
+                              left-3
+                              w-11
+                              h-11
+                              rounded-xl
+                              bg-gradient-to-br
+                              from-red-500
+                              to-blue-500
+                              flex
+                              items-center
+                              justify-center
+                              shadow-lg
                             "
                           >
 
-                            <div
-                              className={`
-                                absolute
-                                inset-0
-                                bg-gradient-to-br
-                                ${item.gradient}
-                                opacity-[0.08]
-                              `}
-                            />
+                            {React.cloneElement(
+                              item.icon as React.ReactElement,
+                              {
+                                className:
+                                  'w-5 h-5 text-white',
+                              }
+                            )}
 
-                            <div
-                              className="
-                                absolute
-                                inset-0
-                                flex
-                                items-center
-                                justify-center
-                              "
-                            >
+                          </div>
 
-                              <div
-                                className="
-                                  w-16
-                                  h-16
-                                  rounded-2xl
-                                  bg-white
-                                  dark:bg-black
-                                  border
-                                  border-neutral-200
-                                  dark:border-white/10
-                                  flex
-                                  items-center
-                                  justify-center
-                                "
-                              >
+                        </div>
+                      )}
 
-                                <span
-                                  className={`
-                                    bg-gradient-to-br
-                                    ${item.gradient}
-                                    bg-clip-text
-                                    text-transparent
-                                  `}
-                                >
+                      {/* =================================
+                          TITLE
+                      ================================= */}
 
-                                  {React.cloneElement(
-                                    item.icon as React.ReactElement,
-                                    {
-                                      className:
-                                        'w-7 h-7',
-                                    }
-                                  )}
+                      <div className="mt-6">
 
-                                </span>
+                        <h3
+                          className="
+                            text-2xl
+                            sm:text-[27px]
+                            font-black
+                            tracking-tight
+                            text-black
+                            dark:text-white
+                          "
+                        >
+                          {item.title}
+                        </h3>
 
-                              </div>
+                        {/* =================================
+                            PARTNERSHIP LINE
+                        ================================= */}
 
-                            </div>
-
-                            <div
-                              className="
-                                absolute
-                                bottom-3
-                                left-3
-                                w-11
-                                h-11
-                                rounded-xl
-                                bg-gradient-to-br
-                                from-red-500
-                                to-blue-500
-                                flex
-                                items-center
-                                justify-center
-                                shadow-lg
-                              "
-                            >
-
-                              {React.cloneElement(
-                                item.icon as React.ReactElement,
-                                {
-                                  className:
-                                    'w-5 h-5 text-white',
-                                }
-                              )}
-
-                            </div>
-
+                        {item.partnership && (
+                          <div
+                            className="
+                              mt-2
+                              text-[9px]
+                              sm:text-[10px]
+                              font-bold
+                              uppercase
+                              tracking-[0.12em]
+                              text-neutral-400
+                              dark:text-neutral-500
+                            "
+                          >
+                            {item.partnership}
                           </div>
                         )}
 
                         {/* =================================
-                            TITLE + DESCRIPTION
+                            DESCRIPTION
                         ================================= */}
 
-                        <div className="mt-6">
+                        <p
+                          className="
+                            mt-3
+                            text-[12px]
+                            sm:text-[13px]
+                            leading-[1.65]
+                            font-medium
+                            text-neutral-600
+                            dark:text-neutral-400
+                          "
+                        >
+                          {item.description}
+                        </p>
 
-                          <h3
-                            className="
-                              text-2xl
-                              sm:text-[27px]
-                              font-black
-                              tracking-tight
-                              text-black
-                              dark:text-white
-                            "
-                          >
-                            {item.title}
-                          </h3>
+                      </div>
 
-                          <p
-                            className="
-                              mt-3
-                              text-[12px]
-                              sm:text-[13px]
-                              leading-[1.65]
-                              font-medium
-                              text-neutral-600
-                              dark:text-neutral-400
-                            "
-                          >
-                            {item.description}
-                          </p>
+                      {/* =================================
+                          TAG PILLS
+                      ================================= */}
 
-                        </div>
+                      <div
+                        className="
+                          flex
+                          flex-wrap
+                          gap-2
+                          mt-5
+                        "
+                      >
 
-                        {/* =================================
-                            TAG PILLS
-                        ================================= */}
+                        {item.tags.map(
+                          (tag) => (
+                            <span
+                              key={tag}
+                              className="
+                                px-2.5
+                                py-1
+                                rounded-full
+                                border
+                                border-neutral-200
+                                dark:border-white/10
+                                bg-neutral-50
+                                dark:bg-white/[0.035]
+                                text-[9px]
+                                font-bold
+                                text-neutral-600
+                                dark:text-neutral-400
+                              "
+                            >
+                              {tag}
+                            </span>
+                          )
+                        )}
+
+                      </div>
+
+                      {/* =================================
+                          STATS + BUTTON
+                          TIGHT SPACING
+                      ================================= */}
+
+                      <div
+                        className="
+                          mt-3
+                          pt-3
+                          border-t
+                          border-neutral-200
+                          dark:border-white/[0.08]
+                        "
+                      >
 
                         <div
                           className="
                             flex
-                            flex-wrap
-                            gap-2
-                            mt-5
+                            items-center
+                            justify-between
                           "
                         >
 
-                          {item.tags.map(
-                            (tag) => (
-                              <span
-                                key={tag}
-                                className="
-                                  px-2.5
-                                  py-1
-                                  rounded-full
-                                  border
-                                  border-neutral-200
-                                  dark:border-white/10
-                                  bg-neutral-50
-                                  dark:bg-white/[0.035]
-                                  text-[9px]
-                                  font-bold
-                                  text-neutral-600
-                                  dark:text-neutral-400
-                                "
-                              >
-                                {tag}
-                              </span>
-                            )
-                          )}
-
-                        </div>
-
-                        {/* =================================
-                            STATS
-                            VERY CLOSE TO TAGS
-                        ================================= */}
-
-                        <div
-                          className="
-                            mt-3
-                            pt-3
-                            border-t
-                            border-neutral-200
-                            dark:border-white/[0.08]
-                          "
-                        >
+                          {/* STATS */}
 
                           <div
                             className="
                               flex
-                              items-center
-                              justify-between
+                              gap-5
                             "
                           >
 
-                            {/* STATS */}
+                            {item.stats.map(
+                              (stat) => (
+                                <div
+                                  key={
+                                    stat.label
+                                  }
+                                >
 
-                            <div
-                              className="
-                                flex
-                                gap-5
-                              "
-                            >
-
-                              {item.stats.map(
-                                (stat) => (
                                   <div
-                                    key={
+                                    className="
+                                      text-sm
+                                      font-black
+                                      leading-none
+                                      text-black
+                                      dark:text-white
+                                    "
+                                  >
+                                    {
+                                      stat.value
+                                    }
+                                  </div>
+
+                                  <div
+                                    className="
+                                      mt-1
+                                      text-[8px]
+                                      font-bold
+                                      uppercase
+                                      tracking-wider
+                                      leading-none
+                                      text-neutral-400
+                                    "
+                                  >
+                                    {
                                       stat.label
                                     }
-                                  >
-
-                                    <div
-                                      className="
-                                        text-sm
-                                        font-black
-                                        leading-none
-                                        text-black
-                                        dark:text-white
-                                      "
-                                    >
-                                      {
-                                        stat.value
-                                      }
-                                    </div>
-
-                                    <div
-                                      className="
-                                        mt-1
-                                        text-[8px]
-                                        font-bold
-                                        uppercase
-                                        tracking-wider
-                                        leading-none
-                                        text-neutral-400
-                                      "
-                                    >
-                                      {
-                                        stat.label
-                                      }
-                                    </div>
-
                                   </div>
-                                )
-                              )}
 
-                            </div>
-
-                            {/* =================================
-                                CTA
-                            ================================= */}
-
-                            <Link
-                              to={item.to}
-                              className={`
-                                relative
-                                flex
-                                items-center
-                                justify-center
-                                w-10
-                                h-10
-                                rounded-full
-                                bg-gradient-to-r
-                                from-red-500
-                                to-blue-500
-                                text-white
-                                overflow-hidden
-                                transition-all
-                                duration-300
-                                hover:scale-110
-                                shadow-[0_6px_20px_rgba(239,68,68,0.18)]
-                                ${
-                                  isActive
-                                    ? 'scale-110'
-                                    : ''
-                                }
-                              `}
-                              aria-label={`Explore ${item.title}`}
-                            >
-
-                              {/* Shine animation */}
-
-                              <span
-                                className="
-                                  absolute
-                                  inset-0
-                                  bg-gradient-to-r
-                                  from-transparent
-                                  via-white/30
-                                  to-transparent
-                                  -translate-x-full
-                                  group-hover:translate-x-full
-                                  transition-transform
-                                  duration-700
-                                "
-                              />
-
-                              <ArrowUpRight
-                                className="
-                                  relative
-                                  z-10
-                                  w-4
-                                  h-4
-                                "
-                              />
-
-                            </Link>
+                                </div>
+                              )
+                            )}
 
                           </div>
+
+                          {/* =================================
+                              STATIC CTA
+                          ================================= */}
+
+                          <Link
+                            to={item.to}
+                            className="
+                              flex
+                              items-center
+                              justify-center
+                              w-10
+                              h-10
+                              rounded-full
+                              bg-gradient-to-r
+                              from-red-500
+                              to-blue-500
+                              text-white
+                            "
+                            aria-label={`Explore ${item.title}`}
+                          >
+
+                            <ArrowUpRight
+                              className="
+                                w-4
+                                h-4
+                              "
+                            />
+
+                          </Link>
 
                         </div>
 
                       </div>
 
-                      {/* =================================
-                          BOTTOM SOFT GLOW
-                      ================================= */}
-
-                      <div
-                        className="
-                          absolute
-                          bottom-[-55px]
-                          left-1/2
-                          -translate-x-1/2
-                          w-52
-                          h-24
-                          rounded-full
-                          bg-gradient-to-r
-                          from-red-500
-                          to-blue-500
-                          blur-[55px]
-                          opacity-[0.07]
-                          group-hover:opacity-20
-                          transition-opacity
-                          duration-500
-                          pointer-events-none
-                        "
-                      />
-
                     </div>
 
                   </div>
-                );
-              }
+
+                </div>
+              )
             )}
 
           </div>
@@ -1045,19 +948,11 @@ const StartivesEcosystemSection: React.FC =
           ========================================= */}
 
           <div
-            className={`
+            className="
               mt-12
               sm:mt-14
               text-center
-              transition-all
-              duration-1000
-              delay-[600ms]
-              ${
-                visible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-6'
-              }
-            `}
+            "
           >
 
             <div
@@ -1077,7 +972,12 @@ const StartivesEcosystemSection: React.FC =
               "
             >
 
-              <div className="flex -space-x-1.5">
+              <div
+                className="
+                  flex
+                  -space-x-1.5
+                "
+              >
 
                 <div
                   className="
@@ -1095,7 +995,13 @@ const StartivesEcosystemSection: React.FC =
                     justify-center
                   "
                 >
-                  <Users className="w-3 h-3 text-white" />
+                  <Users
+                    className="
+                      w-3
+                      h-3
+                      text-white
+                    "
+                  />
                 </div>
 
                 <div
@@ -1114,7 +1020,13 @@ const StartivesEcosystemSection: React.FC =
                     justify-center
                   "
                 >
-                  <Rocket className="w-3 h-3 text-white" />
+                  <Rocket
+                    className="
+                      w-3
+                      h-3
+                      text-white
+                    "
+                  />
                 </div>
 
                 <div
@@ -1133,7 +1045,13 @@ const StartivesEcosystemSection: React.FC =
                     justify-center
                   "
                 >
-                  <TrendingUp className="w-3 h-3 text-white" />
+                  <TrendingUp
+                    className="
+                      w-3
+                      h-3
+                      text-white
+                    "
+                  />
                 </div>
 
               </div>
@@ -1149,7 +1067,12 @@ const StartivesEcosystemSection: React.FC =
               >
                 One ecosystem.
 
-                <span className="text-black dark:text-white">
+                <span
+                  className="
+                    text-black
+                    dark:text-white
+                  "
+                >
                   {' '}
                   Infinite possibilities.
                 </span>
@@ -1171,7 +1094,7 @@ const StartivesEcosystemSection: React.FC =
         </div>
 
         {/* =========================================
-            ANIMATIONS
+            ONLY BACKGROUND ORB ANIMATION
         ========================================= */}
 
         <style>{`
