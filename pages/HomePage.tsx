@@ -21,11 +21,6 @@ import {
   Rocket,
 } from 'lucide-react';
 
-
-/* =========================================================
-   IN VIEW
-========================================================= */
-
 function useInView<T extends HTMLElement>(
   threshold = 0.2
 ) {
@@ -57,11 +52,6 @@ function useInView<T extends HTMLElement>(
     inView,
   };
 }
-
-
-/* =========================================================
-   REVEAL
-========================================================= */
 
 const Reveal: React.FC<{
   children: React.ReactNode;
@@ -95,11 +85,6 @@ const Reveal: React.FC<{
     </Tag>
   );
 };
-
-
-/* =========================================================
-   GRADIENT BUTTON
-========================================================= */
 
 const GradientButton: React.FC<{
   to?: string;
@@ -222,11 +207,6 @@ const GradientButton: React.FC<{
   );
 };
 
-
-/* =========================================================
-   COUNT UP
-========================================================= */
-
 const useCountUp = (
   endValue: number,
   active: boolean,
@@ -282,11 +262,6 @@ const useCountUp = (
 
   return count;
 };
-
-
-/* =========================================================
-   ECOSYSTEM STAT
-========================================================= */
 
 const EcosystemStat: React.FC<{
   endValue: number;
@@ -406,11 +381,6 @@ const EcosystemStat: React.FC<{
   );
 };
 
-
-/* =========================================================
-   HOME PAGE
-========================================================= */
-
 const HomePage: React.FC = () => {
   const pageRef =
     useRef<HTMLDivElement>(null);
@@ -422,19 +392,13 @@ const HomePage: React.FC = () => {
     currentUser,
   } = useAppContext();
 
-  /* =======================================================
-     TESTIMONIAL PAUSE STATE
-  ======================================================= */
-
+  /*
+   * TESTIMONIAL MARQUEE CONTROL
+   */
   const [
     testimonialPaused,
     setTestimonialPaused,
   ] = useState(false);
-
-
-  /* =======================================================
-     RECENT PROJECTS
-  ======================================================= */
 
   const recentProjects = [
     ...startupIdeas,
@@ -453,11 +417,6 @@ const HomePage: React.FC = () => {
     )
     .slice(0, 4);
 
-
-  /* =======================================================
-     PROTECTED ROUTE
-  ======================================================= */
-
   const handleProtectedRoute = (
     path: string
   ) => {
@@ -467,11 +426,6 @@ const HomePage: React.FC = () => {
       navigate(path);
     }
   };
-
-
-  /* =======================================================
-     FEATURES
-  ======================================================= */
 
   const features = [
     {
@@ -504,17 +458,17 @@ const HomePage: React.FC = () => {
     },
   ];
 
-
-  /* =======================================================
-     TESTIMONIALS — 7 CARDS
-  ======================================================= */
+  /*
+   * =====================================================
+   * 7 TESTIMONIALS
+   * =====================================================
+   */
 
   const testimonials = [
     {
       name: 'Prince',
       role: 'Founder, Apives',
-      quote:
-        `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.`,
+      quote: `Within a week, I connected with two incredible developers on ${APP_NAME}. It's a game-changer for early-stage founders.`,
     },
     {
       name: 'Sumit',
@@ -530,34 +484,29 @@ const HomePage: React.FC = () => {
     },
     {
       name: 'Jacob Jeilling',
-      role: 'Founder & Builder',
+      role: 'Product Builder',
       quote:
-        'Startives made it easier to find people who actually want to build. The community feels genuinely driven.',
+        'Startives made it easier to meet people who actually want to build. The conversations quickly turned into real collaboration.',
     },
     {
       name: 'Ankit Sharma',
-      role: 'Product Builder',
+      role: 'Founder & Builder',
       quote:
-        'I discovered great ideas, met talented builders, and found conversations that actually turned into action.',
+        'The community feels genuinely focused on execution. I found talented people who understood the vision and wanted to move fast.',
     },
     {
       name: 'Joe Hamilton',
-      role: 'Startup Founder',
+      role: 'Indie Hacker',
       quote:
-        'The best part is the people. Everyone here seems focused on creating something real instead of just talking about it.',
+        'Finding the right people is usually the hardest part of building. Startives makes that process feel natural and productive.',
     },
     {
       name: 'Mark Jobs',
-      role: 'Entrepreneur',
+      role: 'Startup Founder',
       quote:
-        'Startives brings founders and builders into one place. It is exactly the kind of ecosystem early teams need.',
+        'It is refreshing to see a platform where founders and builders can connect around ideas and actually turn them into something real.',
     },
   ];
-
-
-  /* =======================================================
-     WHY STARTIVES
-  ======================================================= */
 
   const whyChooseFeatures = [
     {
@@ -583,7 +532,6 @@ const HomePage: React.FC = () => {
     },
   ];
 
-
   return (
     <div
       ref={pageRef}
@@ -598,11 +546,6 @@ const HomePage: React.FC = () => {
         font-poppins
       "
     >
-
-      {/* ===================================================
-          SEO
-      =================================================== */}
-
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -623,79 +566,23 @@ const HomePage: React.FC = () => {
         }}
       />
 
-
-      <div
-        className="
-          relative
-          z-10
-          bg-white
-          dark:bg-black
-        "
-      >
-
-        {/* =================================================
-            HERO
-        ================================================= */}
+      <div className="relative z-10 bg-white dark:bg-black">
 
         <HeroSection />
 
+        {/* ================= DISCOVER PROJECTS ================= */}
 
-        {/* =================================================
-            DISCOVER PROJECTS
-        ================================================= */}
+        <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
-        <section
-          className="
-            py-12
-            sm:py-16
-            bg-white
-            dark:bg-black
-          "
-        >
+          <div className="container mx-auto px-4">
 
-          <div
-            className="
-              container
-              mx-auto
-              px-4
-            "
-          >
+            <Reveal className="text-center mb-10">
 
-            <Reveal
-              className="
-                text-center
-                mb-10
-              "
-            >
-
-              <h2
-                className="
-                  text-2xl
-                  md:text-3xl
-                  font-extrabold
-                  tracking-tight
-                  font-poppins
-                  uppercase
-                  text-black
-                  dark:text-white
-                "
-              >
+              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase text-black dark:text-white">
                 Discover Projects
               </h2>
 
-              <p
-                className="
-                  text-neutral-600
-                  dark:text-neutral-400
-                  mt-2
-                  max-w-2xl
-                  mx-auto
-                  text-sm
-                  sm:text-base
-                  font-medium
-                  font-poppins
-                "
-              >
+              <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
                 Explore live startup ideas, apply
                 to join teams, or submit your own
                 and find co-founders.
@@ -703,15 +590,7 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-
-            <div
-              className="
-                grid
-                grid-cols-1
-                md:grid-cols-2
-                gap-8
-              "
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
               {recentProjects.map(
                 (idea, index) => (
@@ -719,41 +598,26 @@ const HomePage: React.FC = () => {
                     key={idea.id}
                     delay={index * 80}
                   >
-
                     <div
                       onClick={() =>
                         handleProtectedRoute(
                           `/idea/${idea.id}`
                         )
                       }
-                      className="
-                        cursor-pointer
-                        transition-transform
-                        duration-300
-                        hover:-translate-y-1
-                      "
+                      className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
                     >
-
                       <ProjectCard
                         idea={idea}
                       />
-
                     </div>
-
                   </Reveal>
                 )
               )}
 
             </div>
 
-
             <Reveal
-              className="
-                flex
-                justify-center
-                gap-4
-                mt-10
-              "
+              className="flex justify-center gap-4 mt-10"
               delay={160}
             >
 
@@ -781,7 +645,6 @@ const HomePage: React.FC = () => {
               >
                 Explore Projects
               </button>
-
 
               <button
                 onClick={() =>
@@ -822,77 +685,26 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* =================================================
-            ECOSYSTEM
-        ================================================= */}
+        {/* ================= ECOSYSTEM ================= */}
 
-        <section
-          className="
-            py-8
-            sm:py-10
-            bg-white
-            dark:bg-black
-            relative
-            overflow-hidden
-          "
-        >
+        <section className="py-8 sm:py-10 bg-white dark:bg-black relative overflow-hidden">
 
-          <div
-            className="
-              container
-              mx-auto
-              px-4
-            "
-          >
+          <div className="container mx-auto px-4">
 
-            <Reveal
-              className="
-                text-center
-                mb-2
-                sm:mb-3
-              "
-            >
+            <Reveal className="text-center mb-2 sm:mb-3">
 
-              <h2
-                className="
-                  text-2xl
-                  md:text-3xl
-                  font-extrabold
-                  text-black
-                  dark:text-white
-                  tracking-tight
-                  font-poppins
-                  uppercase
-                "
-              >
+              <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
 
             </Reveal>
 
-
             <Reveal
-              className="
-                text-center
-                mb-3
-                sm:mb-4
-              "
+              className="text-center mb-3 sm:mb-4"
               delay={50}
             >
 
-              <p
-                className="
-                  text-neutral-600
-                  dark:text-neutral-400
-                  max-w-2xl
-                  mx-auto
-                  text-sm
-                  sm:text-base
-                  font-medium
-                  leading-relaxed
-                  font-poppins
-                "
-              >
+              <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
                 Witness the pulse of innovation.
                 Our platform is a dynamic network
                 where connections spark, ideas ignite,
@@ -901,20 +713,12 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-
             <Reveal
               className="w-full"
               delay={90}
             >
 
-              <div
-                className="
-                  ecosystem-image-wrap
-                  w-full
-                  flex
-                  justify-center
-                "
-              >
+              <div className="ecosystem-image-wrap w-full flex justify-center">
 
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787123288/file_000000005e3881fab327925e0e8d2e28_kbpxgq.png"
@@ -948,32 +752,14 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-
             <Reveal
-              className="
-                w-full
-                mt-4
-                sm:mt-5
-              "
+              className="w-full mt-4 sm:mt-5"
               delay={130}
             >
 
-              <div
-                className="
-                  w-full
-                  max-w-4xl
-                  mx-auto
-                "
-              >
+              <div className="w-full max-w-4xl mx-auto">
 
-                <div
-                  className="
-                    ecosystem-stats
-                    grid
-                    grid-cols-1
-                    md:grid-cols-3
-                  "
-                >
+                <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3">
 
                   <EcosystemStat
                     endValue={50}
@@ -1007,64 +793,19 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* =================================================
-            FEATURES
-        ================================================= */}
+        {/* ================= FEATURES ================= */}
 
-        <section
-          className="
-            py-10
-            sm:py-12
-            bg-white
-            dark:bg-black
-          "
-        >
+        <section className="py-10 sm:py-12 bg-white dark:bg-black">
 
-          <div
-            className="
-              container
-              mx-auto
-              px-4
-            "
-          >
+          <div className="container mx-auto px-4">
 
-            <Reveal
-              className="
-                text-center
-                mb-8
-                sm:mb-9
-              "
-            >
+            <Reveal className="text-center mb-8 sm:mb-9">
 
-              <h2
-                className="
-                  text-[21px]
-                  sm:text-2xl
-                  md:text-3xl
-                  font-extrabold
-                  text-black
-                  dark:text-white
-                  mb-2
-                  tracking-tight
-                  font-poppins
-                  uppercase
-                "
-              >
+              <h2 className="text-[21px] sm:text-2xl md:text-3xl font-extrabold text-black dark:text-white mb-2 tracking-tight font-poppins uppercase">
                 Everything you need to start
               </h2>
 
-              <p
-                className="
-                  text-neutral-600
-                  dark:text-neutral-400
-                  max-w-2xl
-                  mx-auto
-                  text-[12.5px]
-                  sm:text-[13.5px]
-                  font-medium
-                  font-poppins
-                "
-              >
+              <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-[12.5px] sm:text-[13.5px] font-medium font-poppins">
                 From idea to launch, {APP_NAME}
                 provides the tools and community
                 to support your journey.
@@ -1072,16 +813,7 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
-
-            <div
-              className="
-                grid
-                grid-cols-1
-                md:grid-cols-2
-                lg:grid-cols-4
-                gap-5
-              "
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
               {features.map(
                 (feature, index) => (
@@ -1112,134 +844,27 @@ const HomePage: React.FC = () => {
                       "
                     >
 
-                      <div
-                        className="
-                          feature-card-number
-                        "
-                      >
+                      <div className="feature-card-number">
                         #{index + 1}
                       </div>
 
+                      <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
 
-                      <div
-                        className="
-                          absolute
-                          inset-0
-                          bg-white/70
-                          dark:bg-black/70
-                          backdrop-blur-2xl
-                        "
-                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
 
+                      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
 
-                      <div
-                        className="
-                          absolute
-                          inset-0
-                          bg-gradient-to-br
-                          from-red-500/[0.08]
-                          via-purple-500/[0.06]
-                          to-blue-500/[0.13]
-                          pointer-events-none
-                          dark:opacity-40
-                        "
-                      />
+                      <div className="absolute -top-20 -right-16 w-36 h-36 rounded-full bg-red-500/[0.08] blur-[55px] pointer-events-none" />
 
+                      <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/70 dark:border-white/10 pointer-events-none" />
 
-                      <div
-                        className="
-                          absolute
-                          -bottom-20
-                          left-1/2
-                          -translate-x-1/2
-                          w-60
-                          h-36
-                          rounded-full
-                          bg-blue-500/[0.15]
-                          blur-[60px]
-                          pointer-events-none
-                          transition-all
-                          duration-500
-                          group-hover:bg-blue-500/[0.22]
-                        "
-                      />
+                      <div className="relative z-10 flex flex-col h-full">
 
+                        <div className="flex-1 flex items-center justify-center">
 
-                      <div
-                        className="
-                          absolute
-                          -top-20
-                          -right-16
-                          w-36
-                          h-36
-                          rounded-full
-                          bg-red-500/[0.08]
-                          blur-[55px]
-                          pointer-events-none
-                        "
-                      />
+                          <div className="relative w-full h-[165px] sm:h-[175px] flex items-center justify-center">
 
-
-                      <div
-                        className="
-                          absolute
-                          inset-[1px]
-                          rounded-[calc(1.7rem-1px)]
-                          border
-                          border-white/70
-                          dark:border-white/10
-                          pointer-events-none
-                        "
-                      />
-
-
-                      <div
-                        className="
-                          relative
-                          z-10
-                          flex
-                          flex-col
-                          h-full
-                        "
-                      >
-
-                        <div
-                          className="
-                            flex-1
-                            flex
-                            items-center
-                            justify-center
-                          "
-                        >
-
-                          <div
-                            className="
-                              relative
-                              w-full
-                              h-[165px]
-                              sm:h-[175px]
-                              flex
-                              items-center
-                              justify-center
-                            "
-                          >
-
-                            <div
-                              className="
-                                absolute
-                                w-36
-                                h-36
-                                sm:w-40
-                                sm:h-40
-                                rounded-full
-                                bg-gradient-to-br
-                                from-red-500/10
-                                via-purple-500/10
-                                to-blue-500/20
-                                blur-3xl
-                              "
-                            />
-
+                            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
 
                             <img
                               src={feature.image}
@@ -1264,42 +889,13 @@ const HomePage: React.FC = () => {
 
                         </div>
 
+                        <div className="text-center">
 
-                        <div
-                          className="
-                            text-center
-                          "
-                        >
-
-                          <h3
-                            className="
-                              text-[15px]
-                              sm:text-[16px]
-                              font-bold
-                              text-black
-                              dark:text-white
-                              mb-1.5
-                              tracking-tight
-                              font-poppins
-                            "
-                          >
+                          <h3 className="text-[15px] sm:text-[16px] font-bold text-black dark:text-white mb-1.5 tracking-tight font-poppins">
                             {feature.title}
                           </h3>
 
-
-                          <p
-                            className="
-                              text-[10.5px]
-                              sm:text-[11px]
-                              font-medium
-                              leading-[1.5]
-                              font-poppins
-                              max-w-[245px]
-                              mx-auto
-                              text-neutral-600
-                              dark:text-neutral-400
-                            "
-                          >
+                          <p className="text-[10.5px] sm:text-[11px] font-medium leading-[1.5] font-poppins max-w-[245px] mx-auto text-neutral-600 dark:text-neutral-400">
                             {feature.description}
                           </p>
 
@@ -1320,92 +916,31 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* =================================================
-            STARTALKS
-        ================================================= */}
-
         <StartalksSection Reveal={Reveal} />
-
-
-        {/* =================================================
-            STARTIVES ECOSYSTEM
-        ================================================= */}
 
         <StartivesEcosystemSection />
 
 
-        {/* =================================================
-            WHY STARTIVES
-        ================================================= */}
+        {/* ================= WHY STARTIVES ================= */}
 
-        <section
-          className="
-            py-12
-            sm:py-16
-            bg-white
-            dark:bg-black
-          "
-        >
+        <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
-          <div
-            className="
-              container
-              mx-auto
-              px-4
-            "
-          >
+          <div className="container mx-auto px-4">
 
-            <Reveal
-              className="
-                text-center
-                mb-10
-              "
-            >
+            <Reveal className="text-center mb-10">
 
-              <h2
-                className="
-                  text-2xl
-                  md:text-3xl
-                  font-extrabold
-                  text-black
-                  dark:text-white
-                  tracking-tight
-                  font-poppins
-                  uppercase
-                "
-              >
+              <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight font-poppins uppercase">
                 Why Startives exists?
               </h2>
 
-
-              <p
-                className="
-                  text-neutral-600
-                  dark:text-neutral-400
-                  mt-2
-                  max-w-2xl
-                  mx-auto
-                  text-sm
-                  sm:text-base
-                  leading-relaxed
-                  font-medium
-                  font-poppins
-                "
-              >
+              <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 We're more than a platform; we're
                 your strategic partner in innovation.
               </p>
 
             </Reveal>
 
-
-            <div
-              className="
-                max-w-4xl
-                mx-auto
-                space-y-12
-              "
-            >
+            <div className="max-w-4xl mx-auto space-y-12">
 
               {whyChooseFeatures.map(
                 (feature, index) => (
@@ -1435,19 +970,7 @@ const HomePage: React.FC = () => {
                       {feature.title}
                     </h3>
 
-
-                    <p
-                      className="
-                        text-neutral-600
-                        dark:text-neutral-400
-                        text-sm
-                        sm:text-base
-                        leading-relaxed
-                        max-w-3xl
-                        font-medium
-                        font-poppins
-                      "
-                    >
+                    <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
                       {feature.description}
                     </p>
 
@@ -1466,61 +989,17 @@ const HomePage: React.FC = () => {
             TESTIMONIALS
         ================================================= */}
 
-        <section
-          className="
-            py-12
-            sm:py-16
-            bg-white
-            dark:bg-black
-          "
-        >
+        <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
-          <div
-            className="
-              container
-              mx-auto
-              px-4
-              max-w-7xl
-            "
-          >
+          <div className="container mx-auto px-4 max-w-7xl">
 
-            <Reveal
-              className="
-                text-center
-                mb-10
-              "
-            >
+            <Reveal className="text-center mb-10">
 
-              <h2
-                className="
-                  text-2xl
-                  md:text-3xl
-                  font-extrabold
-                  text-black
-                  dark:text-white
-                  tracking-tight
-                  font-poppins
-                  uppercase
-                "
-              >
+              <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight font-poppins uppercase">
                 From our community
               </h2>
 
-
-              <p
-                className="
-                  text-neutral-600
-                  dark:text-neutral-400
-                  mt-2
-                  max-w-2xl
-                  mx-auto
-                  text-sm
-                  sm:text-base
-                  leading-relaxed
-                  font-medium
-                  font-poppins
-                "
-              >
+              <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
                 Innovators are building,
                 connecting, and succeeding on{' '}
                 {APP_NAME}.
@@ -1564,30 +1043,27 @@ const HomePage: React.FC = () => {
                       key={index}
                       className="
                         flex-shrink-0
-                        w-[94vw]
-                        sm:w-[450px]
+                        w-[56vw]
+                        max-w-[270px]
+                        sm:w-[270px]
                       "
                     >
-
-                      {/* =================================================
-                          TESTIMONIAL CARD
-                          CLICK = PAUSE / RESUME
-                      ================================================= */}
 
                       <div
                         onClick={() =>
                           setTestimonialPaused(
                             (prev) => !prev
-                          )}
+                          )
+                        }
                         className="
                           testimonial-gradient-card
                           relative
                           overflow-hidden
-                          p-7
-                          sm:p-8
-                          rounded-[2rem]
-                          min-h-[285px]
-                          sm:min-h-[300px]
+                          p-[17px]
+                          sm:p-[19px]
+                          rounded-[1.4rem]
+                          min-h-[171px]
+                          sm:min-h-[180px]
                           flex
                           flex-col
                           cursor-pointer
@@ -1596,10 +1072,7 @@ const HomePage: React.FC = () => {
                         "
                       >
 
-                        {/* =============================================
-                            STARTIVES LOGO
-                            ONLY ONE LOGO INSIDE CARD
-                        ============================================= */}
+                        {/* STARTIVES LOGO */}
 
                         <img
                           src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
@@ -1607,10 +1080,10 @@ const HomePage: React.FC = () => {
                           aria-hidden="true"
                           className="
                             absolute
-                            -top-7
-                            -right-7
-                            w-[145px]
-                            h-[145px]
+                            -top-4
+                            -right-4
+                            w-[87px]
+                            h-[87px]
                             object-contain
                             opacity-[0.15]
                             dark:opacity-[0.17]
@@ -1620,9 +1093,7 @@ const HomePage: React.FC = () => {
                         />
 
 
-                        {/* =============================================
-                            SUBTLE GRADIENT HIGHLIGHT
-                        ============================================= */}
+                        {/* SUBTLE GLASS GRADIENT */}
 
                         <div
                           className="
@@ -1630,37 +1101,16 @@ const HomePage: React.FC = () => {
                             inset-0
                             rounded-[inherit]
                             bg-gradient-to-br
-                            from-white/[0.12]
+                            from-white/[0.10]
                             via-transparent
-                            to-white/[0.04]
+                            to-white/[0.035]
                             pointer-events-none
                             z-[2]
                           "
                         />
 
 
-                        {/* =============================================
-                            TOP SPECULAR LINE
-                        ============================================= */}
-
-                        <div
-                          className="
-                            absolute
-                            top-0
-                            left-[8%]
-                            right-[8%]
-                            h-px
-                            bg-white/40
-                            dark:bg-white/20
-                            pointer-events-none
-                            z-[3]
-                          "
-                        />
-
-
-                        {/* =============================================
-                            STARS
-                        ============================================= */}
+                        {/* STARS */}
 
                         <div
                           className="
@@ -1668,7 +1118,7 @@ const HomePage: React.FC = () => {
                             z-10
                             flex
                             items-center
-                            mb-7
+                            mb-3.5
                           "
                         >
 
@@ -1689,8 +1139,8 @@ const HomePage: React.FC = () => {
                                     starIndex
                                   }
                                   className="
-                                    w-[18px]
-                                    h-[18px]
+                                    w-[13px]
+                                    h-[13px]
                                     fill-current
                                   "
                                 />
@@ -1702,9 +1152,7 @@ const HomePage: React.FC = () => {
                         </div>
 
 
-                        {/* =============================================
-                            QUOTE
-                        ============================================= */}
+                        {/* QUOTE */}
 
                         <p
                           className="
@@ -1712,29 +1160,25 @@ const HomePage: React.FC = () => {
                             z-10
                             text-neutral-800
                             dark:text-neutral-200
-                            text-[15px]
-                            sm:text-[16px]
+                            text-[10px]
+                            sm:text-[10.5px]
                             italic
                             flex-grow
-                            leading-[1.7]
+                            leading-[1.55]
                             font-medium
-                            max-w-[390px]
                           "
                         >
                           "{testimonial.quote}"
                         </p>
 
 
-                        {/* =============================================
-                            AUTHOR
-                            NO DIVIDER
-                        ============================================= */}
+                        {/* AUTHOR — NO DIVIDER */}
 
                         <div
                           className="
                             relative
                             z-10
-                            mt-7
+                            mt-3.5
                           "
                         >
 
@@ -1743,17 +1187,16 @@ const HomePage: React.FC = () => {
                               font-bold
                               text-black
                               dark:text-white
-                              text-[15px]
+                              text-[10.5px]
                             "
                           >
                             {testimonial.name}
                           </p>
 
-
                           <p
                             className="
                               mt-0.5
-                              text-[12px]
+                              text-[8.5px]
                               text-neutral-600
                               dark:text-neutral-400
                             "
@@ -1779,31 +1222,11 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* =================================================
-            LAUNCH YOUR VISION
-        ================================================= */}
+        {/* ================= LAUNCH YOUR VISION ================= */}
 
-        <section
-          className="
-            text-center
-            pt-2
-            pb-0
-            sm:pt-3
-            sm:pb-0
-            px-4
-            bg-white
-            dark:bg-black
-          "
-        >
+        <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-black">
 
-          <Reveal
-            className="
-              container
-              mx-auto
-              max-w-5xl
-              font-poppins
-            "
-          >
+          <Reveal className="container mx-auto max-w-5xl font-poppins">
 
             {/* LIGHT MODE */}
 
@@ -1823,7 +1246,6 @@ const HomePage: React.FC = () => {
               "
             />
 
-
             {/* DARK MODE */}
 
             <img
@@ -1842,15 +1264,7 @@ const HomePage: React.FC = () => {
               "
             />
 
-
-            <div
-              className="
-                mt-4
-                sm:mt-5
-                flex
-                justify-center
-              "
-            >
+            <div className="mt-4 sm:mt-5 flex justify-center">
 
               <Link
                 to="/signup"
@@ -1885,62 +1299,15 @@ const HomePage: React.FC = () => {
                 "
               >
 
-                <span
-                  className="
-                    absolute
-                    inset-0
-                    rounded-full
-                    bg-gradient-to-b
-                    from-white/90
-                    via-white/55
-                    to-white/35
-                    dark:from-black
-                    dark:via-black
-                    dark:to-black
-                    pointer-events-none
-                  "
-                />
+                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 dark:from-black dark:via-black dark:to-black pointer-events-none" />
 
+                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/15 via-purple-400/10 to-blue-500/20 pointer-events-none" />
 
-                <span
-                  className="
-                    absolute
-                    inset-0
-                    rounded-full
-                    bg-gradient-to-r
-                    from-red-400/15
-                    via-purple-400/10
-                    to-blue-500/20
-                    pointer-events-none
-                  "
-                />
+                <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 dark:bg-white/15 rounded-full pointer-events-none" />
 
-
-                <span
-                  className="
-                    absolute
-                    left-[10%]
-                    right-[10%]
-                    top-0
-                    h-px
-                    bg-white/95
-                    dark:bg-white/15
-                    rounded-full
-                    pointer-events-none
-                  "
-                />
-
-
-                <span
-                  className="
-                    relative
-                    z-10
-                    whitespace-nowrap
-                  "
-                >
+                <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
                 </span>
-
 
                 <span
                   className="
@@ -1984,18 +1351,7 @@ const HomePage: React.FC = () => {
                     "
                   />
 
-
-                  <span
-                    className="
-                      absolute
-                      inset-[1px]
-                      rounded-full
-                      bg-white/20
-                      dark:bg-black
-                      backdrop-blur-md
-                    "
-                  />
-
+                  <span className="absolute inset-[1px] rounded-full bg-white/20 dark:bg-black backdrop-blur-md" />
 
                   <ArrowRight
                     className="
@@ -2024,22 +1380,10 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        <div
-          className="
-            w-full
-            bg-white
-            dark:bg-black
-            h-8
-            sm:h-10
-          "
-        />
+        <div className="w-full bg-white dark:bg-black h-8 sm:h-10" />
 
       </div>
 
-
-      {/* =====================================================
-          STYLES
-      ===================================================== */}
 
       <style>{`
 
@@ -2049,9 +1393,7 @@ const HomePage: React.FC = () => {
 
         .reveal-item {
           opacity: 0;
-
-          transform:
-            translateY(24px);
+          transform: translateY(24px);
 
           transition:
             opacity 0.7s
@@ -2066,9 +1408,7 @@ const HomePage: React.FC = () => {
 
         .reveal-item.is-visible {
           opacity: 1;
-
-          transform:
-            translateY(0);
+          transform: translateY(0);
         }
 
 
@@ -2080,7 +1420,6 @@ const HomePage: React.FC = () => {
           content: '';
 
           position: absolute;
-
           inset: 0;
 
           background:
@@ -2111,7 +1450,6 @@ const HomePage: React.FC = () => {
 
         .ecosystem-image-wrap {
           width: 100%;
-
           margin-top: 0;
         }
 
@@ -2121,9 +1459,7 @@ const HomePage: React.FC = () => {
 
         .ecosystem-stat {
           min-width: 0;
-
-          padding:
-            0 18px;
+          padding: 0 18px;
         }
 
         .ecosystem-stat
@@ -2173,8 +1509,7 @@ const HomePage: React.FC = () => {
             Poppins,
             sans-serif;
 
-          font-size:
-            32.4px;
+          font-size: 32.4px;
 
           line-height: 1;
 
@@ -2194,11 +1529,9 @@ const HomePage: React.FC = () => {
             0 10px 22px
               rgba(80, 85, 95, 0.12);
 
-          pointer-events:
-            none;
+          pointer-events: none;
 
-          user-select:
-            none;
+          user-select: none;
 
           transition:
             transform 0.4s
@@ -2290,7 +1623,6 @@ const HomePage: React.FC = () => {
           content: '';
 
           position: absolute;
-
           inset: 0;
 
           border-radius:
@@ -2305,11 +1637,9 @@ const HomePage: React.FC = () => {
               rgba(255, 255, 255, 0.35)
             );
 
-          opacity:
-            0.75;
+          opacity: 0.75;
 
-          pointer-events:
-            none;
+          pointer-events: none;
         }
 
         .dark
@@ -2317,8 +1647,7 @@ const HomePage: React.FC = () => {
           background:
             transparent;
 
-          opacity:
-            0;
+          opacity: 0;
         }
 
         .feature-liquid-card::after {
@@ -2340,8 +1669,7 @@ const HomePage: React.FC = () => {
               transparent
             );
 
-          pointer-events:
-            none;
+          pointer-events: none;
         }
 
         .dark
@@ -2374,158 +1702,10 @@ const HomePage: React.FC = () => {
 
 
         /* =========================================
-           TESTIMONIAL MARQUEE
-           SLIGHTLY FASTER
-        ========================================= */
-
-        .testimonials-marquee-track {
-          animation:
-            testimonial-marquee
-            25s
-            linear
-            infinite;
-
-          will-change:
-            transform;
-        }
-
-        .testimonials-marquee-track.testimonial-marquee-paused {
-          animation-play-state:
-            paused;
-        }
-
-
-        /* =========================================
-           TESTIMONIAL GRADIENT CARD
-           
-           CLEAN
-           NO GLASS BLUR
-           NO GREY DIVIDER
-           NO HOVER MOVEMENT
-           NO HOVER SHADOW
-        ========================================= */
-
-        .testimonial-gradient-card {
-
-          position:
-            relative;
-
-          isolation:
-            isolate;
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 68, 80, 0.18) 0%,
-              rgba(190, 65, 175, 0.14) 48%,
-              rgba(50, 125, 255, 0.19) 100%
-            );
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.68);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.55);
-
-          /*
-            Deliberately no backdrop-filter.
-            Keeps the gradient sharp and clean.
-          */
-
-          transition:
-            none !important;
-        }
-
-
-        /* =========================================
-           DARK TESTIMONIAL CARD
-           SHARP — NO MUDDY BLUR
-        ========================================= */
-
-        .dark .testimonial-gradient-card {
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(100, 20, 32, 0.38),
-              rgba(48, 25, 55, 0.38) 48%,
-              rgba(18, 55, 105, 0.42)
-            );
-
-          border-color:
-            rgba(255, 255, 255, 0.13);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.08);
-
-        }
-
-
-        /* =========================================
-           TESTIMONIAL HOVER
-           NOTHING CHANGES
-        ========================================= */
-
-        .testimonial-gradient-card:hover {
-
-          transform:
-            none !important;
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.55) !important;
-
-          border-color:
-            rgba(255, 255, 255, 0.68) !important;
-
-        }
-
-        .dark
-        .testimonial-gradient-card:hover {
-
-          transform:
-            none !important;
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.08) !important;
-
-          border-color:
-            rgba(255, 255, 255, 0.13) !important;
-
-        }
-
-
-        /* =========================================
-           TESTIMONIAL MARQUEE ANIMATION
-        ========================================= */
-
-        @keyframes testimonial-marquee {
-
-          0% {
-            transform:
-              translateX(0);
-          }
-
-          100% {
-            transform:
-              translateX(
-                calc(-50% - 1rem)
-              );
-          }
-
-        }
-
-
-        /* =========================================
            LIQUID CTA
         ========================================= */
 
         .liquid-glass-cta {
-
           -webkit-backdrop-filter:
             blur(24px)
             saturate(180%);
@@ -2555,7 +1735,6 @@ const HomePage: React.FC = () => {
         }
 
         .dark .liquid-glass-cta {
-
           background:
             #000000 !important;
 
@@ -2572,12 +1751,9 @@ const HomePage: React.FC = () => {
         }
 
         .liquid-glass-cta::after {
-
           content: '';
 
-          position:
-            absolute;
-
+          position: absolute;
           inset: 0;
 
           border-radius:
@@ -2592,25 +1768,20 @@ const HomePage: React.FC = () => {
               rgba(255, 255, 255, 0.25)
             );
 
-          opacity:
-            0.7;
+          opacity: 0.7;
 
-          pointer-events:
-            none;
+          pointer-events: none;
         }
 
         .dark
         .liquid-glass-cta::after {
-
           background:
             transparent;
 
-          opacity:
-            0;
+          opacity: 0;
         }
 
         .liquid-glass-cta:hover {
-
           box-shadow:
             inset 0 1px 2px
               rgba(255, 255, 255, 1),
@@ -2622,7 +1793,6 @@ const HomePage: React.FC = () => {
 
         .dark
         .liquid-glass-cta:hover {
-
           box-shadow:
             inset 0 1px 2px
               rgba(255, 255, 255, 0.14),
@@ -2630,6 +1800,144 @@ const HomePage: React.FC = () => {
               rgba(0, 0, 0, 0.20),
             0 12px 34px
               rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =================================================
+           TESTIMONIALS
+           40% SMALLER
+        ================================================= */
+
+        .testimonials-marquee-track {
+          animation:
+            testimonial-marquee
+            25s
+            linear
+            infinite;
+
+          will-change:
+            transform;
+        }
+
+        .testimonials-marquee-track.testimonial-marquee-paused {
+          animation-play-state:
+            paused;
+        }
+
+
+        /* =================================================
+           TESTIMONIAL GRADIENT CARD
+
+           - 40% SMALLER
+           - NO TOP DIVIDER
+           - NO INTERNAL DIVIDER
+           - NO HOVER MOVEMENT
+           - NO HOVER SHADOW
+        ================================================= */
+
+        .testimonial-gradient-card {
+
+          position:
+            relative;
+
+          isolation:
+            isolate;
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 68, 80, 0.18) 0%,
+              rgba(190, 65, 175, 0.14) 48%,
+              rgba(50, 125, 255, 0.19) 100%
+            );
+
+          border:
+            1px solid
+            rgba(255, 255, 255, 0.68);
+
+          box-shadow:
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.55);
+
+          transition:
+            none !important;
+        }
+
+
+        /* =================================================
+           DARK TESTIMONIAL CARDS
+        ================================================= */
+
+        .dark .testimonial-gradient-card {
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(100, 20, 32, 0.38),
+              rgba(48, 25, 55, 0.38) 48%,
+              rgba(18, 55, 105, 0.42)
+            );
+
+          border-color:
+            rgba(255, 255, 255, 0.13);
+
+          box-shadow:
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.08);
+        }
+
+
+        /* =================================================
+           TESTIMONIAL HOVER
+           COMPLETELY STATIC
+        ================================================= */
+
+        .testimonial-gradient-card:hover {
+
+          transform:
+            none !important;
+
+          box-shadow:
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.55) !important;
+
+          border-color:
+            rgba(255, 255, 255, 0.68) !important;
+        }
+
+        .dark
+        .testimonial-gradient-card:hover {
+
+          transform:
+            none !important;
+
+          box-shadow:
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.08) !important;
+
+          border-color:
+            rgba(255, 255, 255, 0.13) !important;
+        }
+
+
+        /* =================================================
+           TESTIMONIAL MARQUEE
+        ================================================= */
+
+        @keyframes testimonial-marquee {
+
+          0% {
+            transform:
+              translateX(0);
+          }
+
+          100% {
+            transform:
+              translateX(
+                calc(-50% - 1rem)
+              );
+          }
+
         }
 
 
@@ -2668,7 +1976,6 @@ const HomePage: React.FC = () => {
         @media (max-width: 639px) {
 
           .liquid-glass-cta {
-
             padding-top:
               6.3px;
 
@@ -2686,14 +1993,11 @@ const HomePage: React.FC = () => {
           }
 
           .liquid-glass-cta span {
-
             -webkit-tap-highlight-color:
               transparent;
           }
 
-
           .ecosystem-stat-number.button-gradient {
-
             background-clip:
               text !important;
 
@@ -2707,11 +2011,8 @@ const HomePage: React.FC = () => {
               transparent !important;
           }
 
-
           .ecosystem-stats {
-
-            display:
-              flex;
+            display: flex;
 
             flex-direction:
               column;
@@ -2719,51 +2020,37 @@ const HomePage: React.FC = () => {
             align-items:
               center;
 
-            gap:
-              0;
+            gap: 0;
           }
 
-
           .ecosystem-stat {
-
-            width:
-              100%;
+            width: 100%;
 
             padding:
               9px 0;
           }
 
-
           .ecosystem-stat
           + .ecosystem-stat {
-
-            border-left:
-              0;
+            border-left: 0;
 
             border-top:
               1px solid
               rgba(0, 0, 0, 0.08);
           }
 
-
           .dark
           .ecosystem-stat
           + .ecosystem-stat {
-
             border-top-color:
               rgba(255, 255, 255, 0.10);
           }
 
-
           .ecosystem-image-wrap {
-
-            margin-top:
-              0;
+            margin-top: 0;
           }
 
-
           .feature-liquid-card {
-
             min-height:
               315px;
 
@@ -2774,9 +2061,7 @@ const HomePage: React.FC = () => {
               1.7rem;
           }
 
-
           .feature-card-number {
-
             top:
               14px;
 
@@ -2790,9 +2075,7 @@ const HomePage: React.FC = () => {
               -0.055em;
           }
 
-
           .feature-liquid-card img {
-
             width:
               162px;
 
@@ -2801,20 +2084,21 @@ const HomePage: React.FC = () => {
           }
 
 
-          /* TESTIMONIAL MOBILE */
+          /* =========================================
+             TESTIMONIAL MOBILE
+             ========================================= */
 
           .testimonial-gradient-card {
 
             min-height:
-              285px;
+              171px;
 
             padding:
-              26px;
+              17px;
 
             border-radius:
-              1.8rem;
+              1.4rem;
           }
-
 
           .testimonial-gradient-card:hover {
 
@@ -2832,7 +2116,6 @@ const HomePage: React.FC = () => {
         @media (min-width: 640px) {
 
           .ecosystem-stats {
-
             grid-template-columns:
               repeat(
                 3,
@@ -2840,9 +2123,7 @@ const HomePage: React.FC = () => {
               );
           }
 
-
           .feature-card-number {
-
             top:
               14px;
 
@@ -2863,7 +2144,6 @@ const HomePage: React.FC = () => {
         @media (prefers-reduced-motion: reduce) {
 
           .reveal-item {
-
             opacity:
               1 !important;
 
@@ -2874,45 +2154,28 @@ const HomePage: React.FC = () => {
               none !important;
           }
 
-
           .animate-float-slow {
-
             animation:
               none !important;
           }
-
-
-          .testimonials-marquee-track {
-
-            animation:
-              none !important;
-          }
-
 
           .liquid-glass-cta {
-
             transition:
               none !important;
           }
-
 
           .feature-liquid-card {
-
             transition:
               none !important;
           }
-
 
           .feature-card-number {
-
             transition:
               none !important;
           }
 
-
-          .testimonial-gradient-card {
-
-            transition:
+          .testimonials-marquee-track {
+            animation:
               none !important;
           }
 
