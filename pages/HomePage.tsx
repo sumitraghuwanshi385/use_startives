@@ -1371,7 +1371,7 @@ const HomePage: React.FC = () => {
                   inline-flex
                   items-center
                   justify-center
-                  gap-2.6
+                  gap-3.5
                   rounded-full
                   px-[6.92px]
                   py-[6.05px]
@@ -1395,7 +1395,7 @@ const HomePage: React.FC = () => {
                 "
               >
 
-                {/* GLASS BACKGROUND — SAME FAMILY AS TESTIMONIAL CARDS */}
+                {/* GLASS BACKGROUND — same red → purple → blue family as testimonial cards */}
 
                 <span
                   className="
@@ -1415,9 +1415,9 @@ const HomePage: React.FC = () => {
                     absolute
                     inset-0
                     rounded-full
-                    bg-white/[0.10]
-                    dark:bg-white/[0.035]
-                    backdrop-blur-xl
+                    bg-white/[0.12]
+                    dark:bg-white/[0.04]
+                    backdrop-blur-2xl
                     pointer-events-none
                   "
                 />
@@ -1445,8 +1445,8 @@ const HomePage: React.FC = () => {
                     border
                     border-white/60
                     dark:border-white/12
-                    bg-white/20
-                    dark:bg-black/25
+                    bg-white/25
+                    dark:bg-black/30
                     backdrop-blur-xl
                     shadow-[inset_0_1px_2px_rgba(255,255,255,0.65)]
                     transition-all
@@ -1473,8 +1473,8 @@ const HomePage: React.FC = () => {
                       absolute
                       inset-[1px]
                       rounded-full
-                      bg-white/15
-                      dark:bg-black/30
+                      bg-white/20
+                      dark:bg-black/35
                       backdrop-blur-md
                     "
                   />
@@ -1832,17 +1832,18 @@ const HomePage: React.FC = () => {
 
 
         /* =========================================
-           LIQUID CTA — same family as testimonial cards
+           LIQUID CTA — more glassy (iOS-style)
+           red → purple → blue (same as testimonial cards)
         ========================================= */
 
         .liquid-glass-cta {
           -webkit-backdrop-filter:
-            blur(24px)
-            saturate(180%);
+            blur(28px)
+            saturate(190%);
 
           backdrop-filter:
-            blur(24px)
-            saturate(180%);
+            blur(28px)
+            saturate(190%);
 
           background:
             linear-gradient(
@@ -1854,11 +1855,15 @@ const HomePage: React.FC = () => {
 
           border:
             1px solid
-            rgba(255, 255, 255, 0.68);
+            rgba(255, 255, 255, 0.72);
 
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.42);
+              rgba(255, 255, 255, 0.55),
+            inset 0 -1px 1px
+              rgba(255, 255, 255, 0.12),
+            0 4px 24px
+              rgba(0, 0, 0, 0.04);
 
           position:
             relative;
@@ -1874,19 +1879,23 @@ const HomePage: React.FC = () => {
             ) !important;
 
           border-color:
-            rgba(255, 255, 255, 0.12);
+            rgba(255, 255, 255, 0.14);
 
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.07);
+              rgba(255, 255, 255, 0.10),
+            inset 0 -1px 1px
+              rgba(255, 255, 255, 0.04),
+            0 4px 24px
+              rgba(0, 0, 0, 0.25);
 
           -webkit-backdrop-filter:
-            blur(18px)
-            saturate(145%);
+            blur(22px)
+            saturate(160%);
 
           backdrop-filter:
-            blur(18px)
-            saturate(145%);
+            blur(22px)
+            saturate(160%);
         }
 
         /*
@@ -1904,7 +1913,11 @@ const HomePage: React.FC = () => {
         .liquid-glass-cta:hover {
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.42);
+              rgba(255, 255, 255, 0.55),
+            inset 0 -1px 1px
+              rgba(255, 255, 255, 0.12),
+            0 6px 28px
+              rgba(0, 0, 0, 0.06);
 
           transform:
             scale(1.035);
@@ -1914,7 +1927,11 @@ const HomePage: React.FC = () => {
         .liquid-glass-cta:hover {
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.07);
+              rgba(255, 255, 255, 0.10),
+            inset 0 -1px 1px
+              rgba(255, 255, 255, 0.04),
+            0 6px 28px
+              rgba(0, 0, 0, 0.30);
 
           transform:
             scale(1.035);
@@ -1924,7 +1941,7 @@ const HomePage: React.FC = () => {
         /* =================================================
            TESTIMONIALS
            7 CARD SEAMLESS MARQUEE
-           SPEED = 28.2s (20% slower than 23.5s)
+           SPEED = 33.3s
         ================================================= */
 
         .testimonials-marquee-track {
@@ -1937,7 +1954,7 @@ const HomePage: React.FC = () => {
 
           animation:
             testimonial-marquee
-            28.2s
+            33.3s
             linear
             infinite;
 
@@ -1961,25 +1978,25 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            TESTIMONIAL CARD WIDTH
-           357.075px → +17% = 417.78px
+           433.33px
         ================================================= */
 
         .testimonial-card-item {
 
           width:
-            417.78px;
+            433.33px;
 
           margin-right:
             32px;
 
           flex:
-            0 0 417.78px;
+            0 0 433.33px;
         }
 
 
         /* =================================================
            TESTIMONIAL GRADIENT CARD
-           198.45px → +7% = 212.34px
+           height 212.34px (kept from previous +7%)
         ================================================= */
 
         .testimonial-gradient-card {
@@ -2117,7 +2134,7 @@ const HomePage: React.FC = () => {
               translate3d(
                 calc(
                   -7 *
-                  (417.78px + 32px)
+                  (433.33px + 32px)
                 ),
                 0,
                 0
@@ -2137,13 +2154,13 @@ const HomePage: React.FC = () => {
           .testimonial-card-item {
 
             width:
-              75.35vw;
+              78.78vw;
 
             max-width:
-              417.78px;
+              433.33px;
 
             flex:
-              0 0 75.35vw;
+              0 0 78.78vw;
 
             margin-right:
               24px;
@@ -2189,7 +2206,7 @@ const HomePage: React.FC = () => {
                 translate3d(
                   calc(
                     -7 *
-                    (75.35vw + 24px)
+                    (78.78vw + 24px)
                   ),
                   0,
                   0
