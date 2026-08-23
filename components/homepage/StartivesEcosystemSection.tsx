@@ -55,7 +55,7 @@ const ecosystemItems: EcosystemItem[] = [
       'from-red-500 to-blue-500',
 
     glow:
-      'rgba(239,68,68,0.18)',
+      'rgba(239,68,68,0.16)',
 
     lightImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787500179/Picsart_26-08-23_21-17-30-836_puu54w.jpg',
@@ -97,7 +97,13 @@ const ecosystemItems: EcosystemItem[] = [
       'from-red-500 to-blue-500',
 
     glow:
-      'rgba(59,130,246,0.18)',
+      'rgba(59,130,246,0.16)',
+
+    lightImage:
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787505669/Picsart_26-08-23_22-43-41-657_loqlxz.jpg',
+
+    darkImage:
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787505852/Picsart_26-08-23_22-53-53-209_kaiqk0.jpg',
 
     stats: [
       {
@@ -136,7 +142,7 @@ const ecosystemItems: EcosystemItem[] = [
       'from-red-500 to-blue-500',
 
     glow:
-      'rgba(239,68,68,0.18)',
+      'rgba(239,68,68,0.16)',
 
     lightImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787502383/Picsart_26-08-23_21-53-03-245_dwkjqj.jpg',
@@ -166,7 +172,7 @@ const ecosystemItems: EcosystemItem[] = [
 ];
 
 /* =========================================
-   FLOATING BACKGROUND ORB
+   BACKGROUND ORB
 ========================================= */
 
 const FloatingOrb: React.FC<{
@@ -203,10 +209,6 @@ const StartivesEcosystemSection: React.FC =
 
     const [visible, setVisible] =
       useState(false);
-
-    /* =========================================
-       SECTION REVEAL ONLY
-    ========================================= */
 
     useEffect(() => {
       const node = sectionRef.current;
@@ -272,9 +274,9 @@ const StartivesEcosystemSection: React.FC =
               h-[320px]
               rounded-full
               bg-gradient-to-r
-              from-red-500/[0.055]
+              from-red-500/[0.05]
               via-transparent
-              to-blue-500/[0.065]
+              to-blue-500/[0.06]
               blur-[120px]
             "
           />
@@ -408,7 +410,6 @@ const StartivesEcosystemSection: React.FC =
 
           {/* =========================================
               THREE CARDS
-              STATIC — NO HOVER / TILT / SCALE
           ========================================= */}
 
           <div
@@ -426,9 +427,33 @@ const StartivesEcosystemSection: React.FC =
                 <div
                   key={item.id}
                   className="
+                    ecosystem-card-wrap
+                    group
                     relative
                   "
                 >
+
+                  {/* =================================
+                      VERY SUBTLE RED → BLUE SHADOW
+                  ================================= */}
+
+                  <div
+                    className="
+                      ecosystem-card-glow
+                      absolute
+                      -inset-[5px]
+                      rounded-[2rem]
+                      bg-gradient-to-r
+                      from-red-500
+                      to-blue-500
+                      opacity-0
+                      blur-[18px]
+                      transition-opacity
+                      duration-500
+                      group-hover:opacity-[0.13]
+                      pointer-events-none
+                    "
+                  />
 
                   {/* =================================
                       CARD
@@ -436,6 +461,7 @@ const StartivesEcosystemSection: React.FC =
 
                   <div
                     className="
+                      ecosystem-main-card
                       relative
                       h-full
                       min-h-0
@@ -448,20 +474,25 @@ const StartivesEcosystemSection: React.FC =
                       dark:bg-black
                       shadow-[0_10px_40px_rgba(0,0,0,0.045)]
                       dark:shadow-none
+                      transition-all
+                      duration-500
+                      ease-out
+                      group-hover:-translate-y-[3px]
                     "
                   >
 
-                    {/* Soft static gradient */}
+                    {/* Static gradient wash */}
 
                     <div
-                      className={`
+                      className="
                         absolute
                         inset-0
                         bg-gradient-to-br
-                        ${item.gradient}
-                        opacity-[0.025]
+                        from-red-500/[0.025]
+                        via-transparent
+                        to-blue-500/[0.03]
                         pointer-events-none
-                      `}
+                      "
                     />
 
                     {/* Top highlight */}
@@ -481,10 +512,6 @@ const StartivesEcosystemSection: React.FC =
                       "
                     />
 
-                    {/* =================================
-                        CONTENT
-                    ================================= */}
-
                     <div
                       className="
                         relative
@@ -500,27 +527,30 @@ const StartivesEcosystemSection: React.FC =
                           IMAGE PLACEHOLDER
                       ================================= */}
 
-                      {item.lightImage &&
-                      item.darkImage ? (
+                      <div
+                        className="
+                          ecosystem-image
+                          relative
+                          w-full
+                          h-[170px]
+                          sm:h-[185px]
+                          rounded-[1.25rem]
+                          overflow-hidden
+                          border
+                          border-neutral-200
+                          dark:border-white/10
+                          bg-neutral-50
+                          dark:bg-white/[0.025]
+                          transition-transform
+                          duration-500
+                          ease-out
+                          group-hover:scale-[1.012]
+                        "
+                      >
 
-                        <div
-                          className="
-                            relative
-                            w-full
-                            h-[170px]
-                            sm:h-[185px]
-                            rounded-[1.25rem]
-                            overflow-hidden
-                            border
-                            border-neutral-200
-                            dark:border-white/10
-                            bg-neutral-50
-                            dark:bg-white/[0.025]
-                          "
-                        >
+                        {/* LIGHT IMAGE */}
 
-                          {/* LIGHT IMAGE */}
-
+                        {item.lightImage && (
                           <img
                             src={
                               item.lightImage
@@ -539,9 +569,11 @@ const StartivesEcosystemSection: React.FC =
                               dark:hidden
                             "
                           />
+                        )}
 
-                          {/* DARK IMAGE */}
+                        {/* DARK IMAGE */}
 
+                        {item.darkImage && (
                           <img
                             src={
                               item.darkImage
@@ -560,154 +592,61 @@ const StartivesEcosystemSection: React.FC =
                               dark:block
                             "
                           />
+                        )}
 
-                          {/* Static image overlay */}
-
-                          <div
-                            className="
-                              absolute
-                              inset-0
-                              bg-gradient-to-t
-                              from-black/20
-                              via-transparent
-                              to-white/5
-                              pointer-events-none
-                            "
-                          />
-
-                          {/* =================================
-                              STATIC GRADIENT ICON
-                              NO HOVER / NO ANIMATION
-                          ================================= */}
-
-                          <div
-                            className="
-                              absolute
-                              bottom-3
-                              left-3
-                              w-11
-                              h-11
-                              rounded-xl
-                              bg-gradient-to-br
-                              from-red-500
-                              to-blue-500
-                              flex
-                              items-center
-                              justify-center
-                              shadow-[0_6px_20px_rgba(0,0,0,0.20)]
-                            "
-                          >
-
-                            {React.cloneElement(
-                              item.icon as React.ReactElement,
-                              {
-                                className:
-                                  'w-5 h-5 text-white',
-                              }
-                            )}
-
-                          </div>
-
-                        </div>
-
-                      ) : (
-
-                        /* =================================
-                           STATIC PLACEHOLDER
-                        ================================= */
+                        {/* Image overlay */}
 
                         <div
                           className="
-                            relative
-                            w-full
-                            h-[170px]
-                            sm:h-[185px]
-                            rounded-[1.25rem]
-                            overflow-hidden
+                            absolute
+                            inset-0
+                            bg-gradient-to-t
+                            from-black/20
+                            via-transparent
+                            to-white/5
+                            pointer-events-none
+                          "
+                        />
+
+                        {/* =================================
+                            IOS 27 GLASS ICON
+                            STATIC — NO HOVER
+                        ================================= */}
+
+                        <div
+                          className="
+                            absolute
+                            bottom-3
+                            left-3
+                            w-11
+                            h-11
+                            rounded-full
                             border
-                            border-neutral-200
-                            dark:border-white/10
-                            bg-neutral-50
-                            dark:bg-white/[0.025]
+                            border-white/70
+                            dark:border-white/20
+                            bg-white/45
+                            dark:bg-black/35
+                            backdrop-blur-2xl
+                            backdrop-saturate-150
+                            shadow-[inset_0_1px_1px_rgba(255,255,255,0.85),0_5px_18px_rgba(20,30,60,0.12)]
+                            dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.14),0_5px_18px_rgba(0,0,0,0.28)]
+                            flex
+                            items-center
+                            justify-center
+                            z-20
                           "
                         >
 
-                          <div
-                            className={`
-                              absolute
-                              inset-0
-                              bg-gradient-to-br
-                              ${item.gradient}
-                              opacity-[0.07]
-                            `}
-                          />
-
-                          <div
+                          <span
                             className="
-                              absolute
-                              inset-0
-                              flex
-                              items-center
-                              justify-center
-                            "
-                          >
-
-                            <div
-                              className="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                bg-white
-                                dark:bg-black
-                                border
-                                border-neutral-200
-                                dark:border-white/10
-                                flex
-                                items-center
-                                justify-center
-                              "
-                            >
-
-                              <span
-                                className={`
-                                  bg-gradient-to-br
-                                  ${item.gradient}
-                                  bg-clip-text
-                                  text-transparent
-                                `}
-                              >
-
-                                {React.cloneElement(
-                                  item.icon as React.ReactElement,
-                                  {
-                                    className:
-                                      'w-7 h-7',
-                                  }
-                                )}
-
-                              </span>
-
-                            </div>
-
-                          </div>
-
-                          {/* Static bottom icon */}
-
-                          <div
-                            className="
-                              absolute
-                              bottom-3
-                              left-3
-                              w-11
-                              h-11
-                              rounded-xl
-                              bg-gradient-to-br
+                              bg-gradient-to-r
                               from-red-500
                               to-blue-500
+                              bg-clip-text
+                              text-transparent
                               flex
                               items-center
                               justify-center
-                              shadow-lg
                             "
                           >
 
@@ -715,14 +654,15 @@ const StartivesEcosystemSection: React.FC =
                               item.icon as React.ReactElement,
                               {
                                 className:
-                                  'w-5 h-5 text-white',
+                                  'w-[19px] h-[19px]',
                               }
                             )}
 
-                          </div>
+                          </span>
 
                         </div>
-                      )}
+
+                      </div>
 
                       {/* =================================
                           TITLE
@@ -743,9 +683,7 @@ const StartivesEcosystemSection: React.FC =
                           {item.title}
                         </h3>
 
-                        {/* =================================
-                            PARTNERSHIP LINE
-                        ================================= */}
+                        {/* Partnership */}
 
                         {item.partnership && (
                           <div
@@ -763,10 +701,6 @@ const StartivesEcosystemSection: React.FC =
                             {item.partnership}
                           </div>
                         )}
-
-                        {/* =================================
-                            DESCRIPTION
-                        ================================= */}
 
                         <p
                           className="
@@ -824,8 +758,7 @@ const StartivesEcosystemSection: React.FC =
                       </div>
 
                       {/* =================================
-                          STATS + BUTTON
-                          TIGHT SPACING
+                          STATS
                       ================================= */}
 
                       <div
@@ -845,8 +778,6 @@ const StartivesEcosystemSection: React.FC =
                             justify-between
                           "
                         >
-
-                          {/* STATS */}
 
                           <div
                             className="
@@ -900,7 +831,7 @@ const StartivesEcosystemSection: React.FC =
                           </div>
 
                           {/* =================================
-                              STATIC CTA
+                              CTA
                           ================================= */}
 
                           <Link
@@ -916,6 +847,9 @@ const StartivesEcosystemSection: React.FC =
                               from-red-500
                               to-blue-500
                               text-white
+                              transition-transform
+                              duration-300
+                              hover:scale-[1.03]
                             "
                             aria-label={`Explore ${item.title}`}
                           >
@@ -1094,7 +1028,7 @@ const StartivesEcosystemSection: React.FC =
         </div>
 
         {/* =========================================
-            ONLY BACKGROUND ORB ANIMATION
+            BACKGROUND MOTION ONLY
         ========================================= */}
 
         <style>{`
@@ -1128,6 +1062,12 @@ const StartivesEcosystemSection: React.FC =
 
             .animate-ecosystem-float {
               animation:
+                none !important;
+            }
+
+            .ecosystem-main-card,
+            .ecosystem-image {
+              transition:
                 none !important;
             }
 
