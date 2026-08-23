@@ -21,6 +21,11 @@ import {
   Rocket,
 } from 'lucide-react';
 
+
+/* =========================================================
+   IN VIEW
+========================================================= */
+
 function useInView<T extends HTMLElement>(
   threshold = 0.2
 ) {
@@ -52,6 +57,11 @@ function useInView<T extends HTMLElement>(
     inView,
   };
 }
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
 
 const Reveal: React.FC<{
   children: React.ReactNode;
@@ -85,6 +95,11 @@ const Reveal: React.FC<{
     </Tag>
   );
 };
+
+
+/* =========================================================
+   GRADIENT BUTTON
+========================================================= */
 
 const GradientButton: React.FC<{
   to?: string;
@@ -207,6 +222,11 @@ const GradientButton: React.FC<{
   );
 };
 
+
+/* =========================================================
+   COUNT UP
+========================================================= */
+
 const useCountUp = (
   endValue: number,
   active: boolean,
@@ -262,6 +282,11 @@ const useCountUp = (
 
   return count;
 };
+
+
+/* =========================================================
+   ECOSYSTEM STAT
+========================================================= */
 
 const EcosystemStat: React.FC<{
   endValue: number;
@@ -381,7 +406,13 @@ const EcosystemStat: React.FC<{
   );
 };
 
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
 const HomePage: React.FC = () => {
+
   const pageRef =
     useRef<HTMLDivElement>(null);
 
@@ -392,13 +423,10 @@ const HomePage: React.FC = () => {
     currentUser,
   } = useAppContext();
 
-  /*
-   * TESTIMONIAL MARQUEE CONTROL
-   */
-  const [
-    testimonialPaused,
-    setTestimonialPaused,
-  ] = useState(false);
+
+  /* =======================================================
+     PROJECTS
+  ======================================================= */
 
   const recentProjects = [
     ...startupIdeas,
@@ -417,6 +445,7 @@ const HomePage: React.FC = () => {
     )
     .slice(0, 4);
 
+
   const handleProtectedRoute = (
     path: string
   ) => {
@@ -426,6 +455,11 @@ const HomePage: React.FC = () => {
       navigate(path);
     }
   };
+
+
+  /* =======================================================
+     FEATURES
+  ======================================================= */
 
   const features = [
     {
@@ -458,11 +492,10 @@ const HomePage: React.FC = () => {
     },
   ];
 
-  /*
-   * =====================================================
-   * 7 TESTIMONIALS
-   * =====================================================
-   */
+
+  /* =======================================================
+     TESTIMONIALS — 7 CARDS
+  ======================================================= */
 
   const testimonials = [
     {
@@ -484,29 +517,44 @@ const HomePage: React.FC = () => {
     },
     {
       name: 'Jacob Jeilling',
-      role: 'Product Builder',
+      role: 'Founder & Builder',
       quote:
-        'Startives made it easier to meet people who actually want to build. The conversations quickly turned into real collaboration.',
+        'Startives makes it easier to find ambitious people who actually want to build instead of just talking about ideas.',
     },
     {
       name: 'Ankit Sharma',
-      role: 'Founder & Builder',
+      role: 'Product Builder',
       quote:
-        'The community feels genuinely focused on execution. I found talented people who understood the vision and wanted to move fast.',
+        'The community has a great mix of founders and builders. Finding people with complementary skills feels much easier here.',
     },
     {
       name: 'Joe Hamilton',
-      role: 'Indie Hacker',
+      role: 'Founder',
       quote:
-        'Finding the right people is usually the hardest part of building. Startives makes that process feel natural and productive.',
+        'I came looking for collaborators and ended up discovering an entire ecosystem of people building interesting things.',
     },
     {
       name: 'Mark Jobs',
-      role: 'Startup Founder',
+      role: 'Entrepreneur',
       quote:
-        'It is refreshing to see a platform where founders and builders can connect around ideas and actually turn them into something real.',
+        'What stands out is the builder-first mindset. There is always someone working on something worth exploring.',
     },
   ];
+
+
+  /* =======================================================
+     TESTIMONIAL PAUSE
+  ======================================================= */
+
+  const [
+    testimonialPaused,
+    setTestimonialPaused,
+  ] = useState(false);
+
+
+  /* =======================================================
+     WHY STARTIVES
+  ======================================================= */
 
   const whyChooseFeatures = [
     {
@@ -532,7 +580,9 @@ const HomePage: React.FC = () => {
     },
   ];
 
+
   return (
+
     <div
       ref={pageRef}
       className="
@@ -546,6 +596,7 @@ const HomePage: React.FC = () => {
         font-poppins
       "
     >
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -566,11 +617,20 @@ const HomePage: React.FC = () => {
         }}
       />
 
+
       <div className="relative z-10 bg-white dark:bg-black">
+
+
+        {/* =================================================
+            HERO
+        ================================================= */}
 
         <HeroSection />
 
-        {/* ================= DISCOVER PROJECTS ================= */}
+
+        {/* =================================================
+            DISCOVER PROJECTS
+        ================================================= */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -590,14 +650,17 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
               {recentProjects.map(
                 (idea, index) => (
+
                   <Reveal
                     key={idea.id}
                     delay={index * 80}
                   >
+
                     <div
                       onClick={() =>
                         handleProtectedRoute(
@@ -606,15 +669,20 @@ const HomePage: React.FC = () => {
                       }
                       className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
                     >
+
                       <ProjectCard
                         idea={idea}
                       />
+
                     </div>
+
                   </Reveal>
+
                 )
               )}
 
             </div>
+
 
             <Reveal
               className="flex justify-center gap-4 mt-10"
@@ -645,6 +713,7 @@ const HomePage: React.FC = () => {
               >
                 Explore Projects
               </button>
+
 
               <button
                 onClick={() =>
@@ -685,7 +754,9 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* ================= ECOSYSTEM ================= */}
+        {/* =================================================
+            ECOSYSTEM
+        ================================================= */}
 
         <section className="py-8 sm:py-10 bg-white dark:bg-black relative overflow-hidden">
 
@@ -698,6 +769,7 @@ const HomePage: React.FC = () => {
               </h2>
 
             </Reveal>
+
 
             <Reveal
               className="text-center mb-3 sm:mb-4"
@@ -712,6 +784,7 @@ const HomePage: React.FC = () => {
               </p>
 
             </Reveal>
+
 
             <Reveal
               className="w-full"
@@ -751,6 +824,7 @@ const HomePage: React.FC = () => {
               </div>
 
             </Reveal>
+
 
             <Reveal
               className="w-full mt-4 sm:mt-5"
@@ -793,7 +867,9 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* ================= FEATURES ================= */}
+        {/* =================================================
+            FEATURES
+        ================================================= */}
 
         <section className="py-10 sm:py-12 bg-white dark:bg-black">
 
@@ -813,10 +889,12 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
               {features.map(
                 (feature, index) => (
+
                   <Reveal
                     key={index}
                     delay={index * 90}
@@ -848,6 +926,7 @@ const HomePage: React.FC = () => {
                         #{index + 1}
                       </div>
 
+
                       <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
 
                       <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
@@ -857,6 +936,7 @@ const HomePage: React.FC = () => {
                       <div className="absolute -top-20 -right-16 w-36 h-36 rounded-full bg-red-500/[0.08] blur-[55px] pointer-events-none" />
 
                       <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/70 dark:border-white/10 pointer-events-none" />
+
 
                       <div className="relative z-10 flex flex-col h-full">
 
@@ -889,6 +969,7 @@ const HomePage: React.FC = () => {
 
                         </div>
 
+
                         <div className="text-center">
 
                           <h3 className="text-[15px] sm:text-[16px] font-bold text-black dark:text-white mb-1.5 tracking-tight font-poppins">
@@ -906,6 +987,7 @@ const HomePage: React.FC = () => {
                     </div>
 
                   </Reveal>
+
                 )
               )}
 
@@ -916,12 +998,23 @@ const HomePage: React.FC = () => {
         </section>
 
 
+        {/* =================================================
+            STARTALKS
+        ================================================= */}
+
         <StartalksSection Reveal={Reveal} />
+
+
+        {/* =================================================
+            STARTIVES ECOSYSTEM
+        ================================================= */}
 
         <StartivesEcosystemSection />
 
 
-        {/* ================= WHY STARTIVES ================= */}
+        {/* =================================================
+            WHY STARTIVES
+        ================================================= */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -940,10 +1033,12 @@ const HomePage: React.FC = () => {
 
             </Reveal>
 
+
             <div className="max-w-4xl mx-auto space-y-12">
 
               {whyChooseFeatures.map(
                 (feature, index) => (
+
                   <Reveal
                     key={index}
                     delay={index * 100}
@@ -975,6 +1070,7 @@ const HomePage: React.FC = () => {
                     </p>
 
                   </Reveal>
+
                 )
               )}
 
@@ -1021,7 +1117,6 @@ const HomePage: React.FC = () => {
                 className={`
                   testimonials-marquee-track
                   flex
-                  gap-8
                   ${
                     testimonialPaused
                       ? 'testimonial-marquee-paused'
@@ -1033,6 +1128,7 @@ const HomePage: React.FC = () => {
                 {[
                   ...testimonials,
                   ...testimonials,
+                  ...testimonials,
                 ].map(
                   (
                     testimonial,
@@ -1040,12 +1136,10 @@ const HomePage: React.FC = () => {
                   ) => (
 
                     <div
-                      key={index}
+                      key={`${testimonial.name}-${index}`}
                       className="
+                        testimonial-card-item
                         flex-shrink-0
-                        w-[56vw]
-                        max-w-[270px]
-                        sm:w-[270px]
                       "
                     >
 
@@ -1059,11 +1153,11 @@ const HomePage: React.FC = () => {
                           testimonial-gradient-card
                           relative
                           overflow-hidden
-                          p-[17px]
-                          sm:p-[19px]
+                          p-[18px]
+                          sm:p-[20px]
                           rounded-[1.4rem]
-                          min-h-[171px]
-                          sm:min-h-[180px]
+                          min-h-[180px]
+                          sm:min-h-[189px]
                           flex
                           flex-col
                           cursor-pointer
@@ -1072,7 +1166,7 @@ const HomePage: React.FC = () => {
                         "
                       >
 
-                        {/* STARTIVES LOGO */}
+                        {/* SINGLE STARTIVES LOGO */}
 
                         <img
                           src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
@@ -1093,7 +1187,7 @@ const HomePage: React.FC = () => {
                         />
 
 
-                        {/* SUBTLE GLASS GRADIENT */}
+                        {/* SUBTLE INNER GLASS */}
 
                         <div
                           className="
@@ -1134,16 +1228,16 @@ const HomePage: React.FC = () => {
                               length: 5,
                             }).map(
                               (_, starIndex) => (
+
                                 <Star
-                                  key={
-                                    starIndex
-                                  }
+                                  key={starIndex}
                                   className="
                                     w-[13px]
                                     h-[13px]
                                     fill-current
                                   "
                                 />
+
                               )
                             )}
 
@@ -1172,7 +1266,7 @@ const HomePage: React.FC = () => {
                         </p>
 
 
-                        {/* AUTHOR — NO DIVIDER */}
+                        {/* AUTHOR */}
 
                         <div
                           className="
@@ -1222,13 +1316,13 @@ const HomePage: React.FC = () => {
         </section>
 
 
-        {/* ================= LAUNCH YOUR VISION ================= */}
+        {/* =================================================
+            LAUNCH YOUR VISION
+        ================================================= */}
 
         <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-black">
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
-
-            {/* LIGHT MODE */}
 
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157268/IMG_20260819_215632_awnsfq.png"
@@ -1246,8 +1340,6 @@ const HomePage: React.FC = () => {
               "
             />
 
-            {/* DARK MODE */}
-
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157287/IMG_20260819_215700_hjgsna.png"
               alt=""
@@ -1263,6 +1355,7 @@ const HomePage: React.FC = () => {
                 dark:block
               "
             />
+
 
             <div className="mt-4 sm:mt-5 flex justify-center">
 
@@ -1308,6 +1401,7 @@ const HomePage: React.FC = () => {
                 <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
                 </span>
+
 
                 <span
                   className="
@@ -1384,6 +1478,10 @@ const HomePage: React.FC = () => {
 
       </div>
 
+
+      {/* =====================================================
+          GLOBAL PAGE STYLES
+      ===================================================== */}
 
       <style>{`
 
@@ -1805,34 +1903,73 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            TESTIMONIALS
-           40% SMALLER
+           7 CARD SEAMLESS MARQUEE
+           SPEED = 10% FASTER
         ================================================= */
 
         .testimonials-marquee-track {
+
+          display:
+            flex;
+
+          width:
+            max-content;
+
+          /*
+            Previous speed:
+            25s
+
+            New speed:
+            22.5s
+
+            Exactly 10% faster.
+          */
+
           animation:
             testimonial-marquee
-            25s
+            22.5s
             linear
             infinite;
 
           will-change:
             transform;
+
+          transform:
+            translate3d(0, 0, 0);
+
+          backface-visibility:
+            hidden;
         }
 
+
         .testimonials-marquee-track.testimonial-marquee-paused {
+
           animation-play-state:
             paused;
         }
 
 
         /* =================================================
-           TESTIMONIAL GRADIENT CARD
+           TESTIMONIAL CARD WIDTH
+           ORIGINAL → +15%
+        ================================================= */
 
-           - 40% SMALLER
-           - NO TOP DIVIDER
-           - NO INTERNAL DIVIDER
-           - NO HOVER MOVEMENT
-           - NO HOVER SHADOW
+        .testimonial-card-item {
+
+          width:
+            310.5px;
+
+          margin-right:
+            32px;
+
+          flex:
+            0 0 310.5px;
+        }
+
+
+        /* =================================================
+           TESTIMONIAL GRADIENT CARD
+           HEIGHT +5%
         ================================================= */
 
         .testimonial-gradient-card {
@@ -1842,6 +1979,12 @@ const HomePage: React.FC = () => {
 
           isolation:
             isolate;
+
+          width:
+            100%;
+
+          min-height:
+            189px;
 
           background:
             linear-gradient(
@@ -1855,9 +1998,14 @@ const HomePage: React.FC = () => {
             1px solid
             rgba(255, 255, 255, 0.68);
 
+          /*
+            No outer shadow.
+            Only a very subtle inner glass highlight.
+          */
+
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.55);
+              rgba(255, 255, 255, 0.42);
 
           transition:
             none !important;
@@ -1865,7 +2013,8 @@ const HomePage: React.FC = () => {
 
 
         /* =================================================
-           DARK TESTIMONIAL CARDS
+           DARK MODE GRADIENT
+           FIXED — NO BLURRY PATCHES
         ================================================= */
 
         .dark .testimonial-gradient-card {
@@ -1873,23 +2022,35 @@ const HomePage: React.FC = () => {
           background:
             linear-gradient(
               135deg,
-              rgba(100, 20, 32, 0.38),
-              rgba(48, 25, 55, 0.38) 48%,
-              rgba(18, 55, 105, 0.42)
+              rgba(120, 25, 40, 0.34) 0%,
+              rgba(70, 30, 72, 0.30) 48%,
+              rgba(20, 65, 125, 0.36) 100%
             );
 
           border-color:
-            rgba(255, 255, 255, 0.13);
+            rgba(255, 255, 255, 0.12);
 
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.08);
+              rgba(255, 255, 255, 0.07);
+
+          /*
+            Prevents dark-mode gradient from
+            becoming visually blurry.
+          */
+
+          -webkit-backdrop-filter:
+            blur(18px)
+            saturate(145%);
+
+          backdrop-filter:
+            blur(18px)
+            saturate(145%);
         }
 
 
         /* =================================================
-           TESTIMONIAL HOVER
-           COMPLETELY STATIC
+           NO HOVER MOVEMENT
         ================================================= */
 
         .testimonial-gradient-card:hover {
@@ -1899,11 +2060,12 @@ const HomePage: React.FC = () => {
 
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.55) !important;
+              rgba(255, 255, 255, 0.42) !important;
 
           border-color:
             rgba(255, 255, 255, 0.68) !important;
         }
+
 
         .dark
         .testimonial-gradient-card:hover {
@@ -1913,37 +2075,137 @@ const HomePage: React.FC = () => {
 
           box-shadow:
             inset 0 1px 1px
-              rgba(255, 255, 255, 0.08) !important;
+              rgba(255, 255, 255, 0.07) !important;
 
           border-color:
-            rgba(255, 255, 255, 0.13) !important;
+            rgba(255, 255, 255, 0.12) !important;
         }
 
 
         /* =================================================
-           TESTIMONIAL MARQUEE
+           IMPORTANT:
+           NO DIVIDER INSIDE TESTIMONIAL CARD
+        ================================================= */
+
+        .testimonial-gradient-card
+        .border-t {
+
+          border-top:
+            0 !important;
+        }
+
+
+        /* =================================================
+           SEAMLESS 7-CARD LOOP
         ================================================= */
 
         @keyframes testimonial-marquee {
 
-          0% {
+          from {
+
             transform:
-              translateX(0);
+              translate3d(
+                0,
+                0,
+                0
+              );
+
           }
 
-          100% {
+          to {
+
             transform:
-              translateX(
-                calc(-50% - 1rem)
+              translate3d(
+                calc(
+                  -7 *
+                  (310.5px + 32px)
+                ),
+                0,
+                0
               );
+
           }
 
         }
 
 
-        /* =========================================
+        /* =================================================
+           MOBILE TESTIMONIALS
+        ================================================= */
+
+        @media (max-width: 639px) {
+
+          .testimonial-card-item {
+
+            width:
+              64.4vw;
+
+            max-width:
+              310.5px;
+
+            flex:
+              0 0 64.4vw;
+
+            margin-right:
+              24px;
+          }
+
+
+          .testimonial-gradient-card {
+
+            min-height:
+              180px;
+
+            padding:
+              18px;
+
+            border-radius:
+              1.4rem;
+          }
+
+
+          .testimonial-gradient-card:hover {
+
+            transform:
+              none !important;
+          }
+
+
+          @keyframes testimonial-marquee {
+
+            from {
+
+              transform:
+                translate3d(
+                  0,
+                  0,
+                  0
+                );
+
+            }
+
+            to {
+
+              transform:
+                translate3d(
+                  calc(
+                    -7 *
+                    (64.4vw + 24px)
+                  ),
+                  0,
+                  0
+                );
+
+            }
+
+          }
+
+        }
+
+
+        /* =================================================
            FLOAT
-        ========================================= */
+        ================================================= */
 
         @keyframes float-slow {
 
@@ -1961,6 +2223,7 @@ const HomePage: React.FC = () => {
         }
 
         .animate-float-slow {
+
           animation:
             float-slow
             8s
@@ -1969,13 +2232,14 @@ const HomePage: React.FC = () => {
         }
 
 
-        /* =========================================
+        /* =================================================
            MOBILE
-        ========================================= */
+        ================================================= */
 
         @media (max-width: 639px) {
 
           .liquid-glass-cta {
+
             padding-top:
               6.3px;
 
@@ -1992,12 +2256,16 @@ const HomePage: React.FC = () => {
               12.6px;
           }
 
+
           .liquid-glass-cta span {
+
             -webkit-tap-highlight-color:
               transparent;
           }
 
+
           .ecosystem-stat-number.button-gradient {
+
             background-clip:
               text !important;
 
@@ -2011,8 +2279,11 @@ const HomePage: React.FC = () => {
               transparent !important;
           }
 
+
           .ecosystem-stats {
-            display: flex;
+
+            display:
+              flex;
 
             flex-direction:
               column;
@@ -2020,37 +2291,51 @@ const HomePage: React.FC = () => {
             align-items:
               center;
 
-            gap: 0;
+            gap:
+              0;
           }
 
+
           .ecosystem-stat {
-            width: 100%;
+
+            width:
+              100%;
 
             padding:
               9px 0;
           }
 
+
           .ecosystem-stat
           + .ecosystem-stat {
-            border-left: 0;
+
+            border-left:
+              0;
 
             border-top:
               1px solid
               rgba(0, 0, 0, 0.08);
           }
 
+
           .dark
           .ecosystem-stat
           + .ecosystem-stat {
+
             border-top-color:
               rgba(255, 255, 255, 0.10);
           }
 
+
           .ecosystem-image-wrap {
-            margin-top: 0;
+
+            margin-top:
+              0;
           }
 
+
           .feature-liquid-card {
+
             min-height:
               315px;
 
@@ -2061,7 +2346,9 @@ const HomePage: React.FC = () => {
               1.7rem;
           }
 
+
           .feature-card-number {
+
             top:
               14px;
 
@@ -2075,7 +2362,9 @@ const HomePage: React.FC = () => {
               -0.055em;
           }
 
+
           .feature-liquid-card img {
+
             width:
               162px;
 
@@ -2083,39 +2372,17 @@ const HomePage: React.FC = () => {
               162px;
           }
 
-
-          /* =========================================
-             TESTIMONIAL MOBILE
-             ========================================= */
-
-          .testimonial-gradient-card {
-
-            min-height:
-              171px;
-
-            padding:
-              17px;
-
-            border-radius:
-              1.4rem;
-          }
-
-          .testimonial-gradient-card:hover {
-
-            transform:
-              none !important;
-          }
-
         }
 
 
-        /* =========================================
+        /* =================================================
            DESKTOP
-        ========================================= */
+        ================================================= */
 
         @media (min-width: 640px) {
 
           .ecosystem-stats {
+
             grid-template-columns:
               repeat(
                 3,
@@ -2123,7 +2390,9 @@ const HomePage: React.FC = () => {
               );
           }
 
+
           .feature-card-number {
+
             top:
               14px;
 
@@ -2137,13 +2406,14 @@ const HomePage: React.FC = () => {
         }
 
 
-        /* =========================================
+        /* =================================================
            REDUCED MOTION
-        ========================================= */
+        ================================================= */
 
         @media (prefers-reduced-motion: reduce) {
 
           .reveal-item {
+
             opacity:
               1 !important;
 
@@ -2154,27 +2424,37 @@ const HomePage: React.FC = () => {
               none !important;
           }
 
+
           .animate-float-slow {
+
             animation:
               none !important;
           }
 
+
           .liquid-glass-cta {
+
             transition:
               none !important;
           }
+
 
           .feature-liquid-card {
+
             transition:
               none !important;
           }
+
 
           .feature-card-number {
+
             transition:
               none !important;
           }
 
+
           .testimonials-marquee-track {
+
             animation:
               none !important;
           }
@@ -2186,5 +2466,6 @@ const HomePage: React.FC = () => {
     </div>
   );
 };
+
 
 export default HomePage;
