@@ -20,15 +20,13 @@ import {
 interface EcosystemItem {
   id: string;
   title: string;
+  eyebrow: string;
   description: string;
+
   icon: React.ReactNode;
-  gradient: string;
-  glow: string;
 
   lightImage?: string;
   darkImage?: string;
-
-  partnership?: string;
 
   stats: {
     value: string;
@@ -46,16 +44,12 @@ const ecosystemItems: EcosystemItem[] = [
 
     title: 'Startverse',
 
+    eyebrow: 'THE BUILDER NETWORK',
+
     description:
       'A living space for founders, builders, ideas, conversations and opportunities — all connected in one universe.',
 
     icon: <Globe2 />,
-
-    gradient:
-      'from-red-500 to-blue-500',
-
-    glow:
-      'rgba(239,68,68,0.16)',
 
     lightImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787500179/Picsart_26-08-23_21-17-30-836_puu54w.jpg',
@@ -88,16 +82,12 @@ const ecosystemItems: EcosystemItem[] = [
 
     title: 'Marketplace',
 
+    eyebrow: 'BUY • SELL • EXPLORE',
+
     description:
       'Buy, sell, and explore SaaS products, digital products, services, talent, and opportunities built by the Startives community.',
 
     icon: <ShoppingBag />,
-
-    gradient:
-      'from-red-500 to-blue-500',
-
-    glow:
-      'rgba(59,130,246,0.16)',
 
     lightImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787505669/Picsart_26-08-23_22-43-41-657_loqlxz.jpg',
@@ -107,7 +97,7 @@ const ecosystemItems: EcosystemItem[] = [
 
     stats: [
       {
-        value: '100+',
+        value: '5+',
         label: 'Listings',
       },
       {
@@ -130,19 +120,12 @@ const ecosystemItems: EcosystemItem[] = [
 
     title: 'Success Stories',
 
-    partnership:
-      'In partnership with FakeMayo',
+    eyebrow: 'IN PARTNERSHIP WITH FAKEMAYO',
 
     description:
       'Real stories from people who started with an idea, found their people, and turned momentum into something real.',
 
     icon: <Trophy />,
-
-    gradient:
-      'from-red-500 to-blue-500',
-
-    glow:
-      'rgba(239,68,68,0.16)',
 
     lightImage:
       'https://res.cloudinary.com/dp7avkarg/image/upload/v1787502383/Picsart_26-08-23_21-53-03-245_dwkjqj.jpg',
@@ -172,7 +155,7 @@ const ecosystemItems: EcosystemItem[] = [
 ];
 
 /* =========================================
-   BACKGROUND ORB
+   FLOATING BACKGROUND ORB
 ========================================= */
 
 const FloatingOrb: React.FC<{
@@ -251,6 +234,37 @@ const StartivesEcosystemSection: React.FC =
           font-poppins
         "
       >
+
+        {/* =========================================
+            SVG GRADIENT FOR LUCIDE ICONS
+        ========================================= */}
+
+        <svg
+          width="0"
+          height="0"
+          className="absolute pointer-events-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient
+              id="ecosystem-icon-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop
+                offset="0%"
+                stopColor="#ef4444"
+              />
+
+              <stop
+                offset="100%"
+                stopColor="#3b82f6"
+              />
+            </linearGradient>
+          </defs>
+        </svg>
 
         {/* =========================================
             BACKGROUND
@@ -356,12 +370,13 @@ const StartivesEcosystemSection: React.FC =
               mx-auto
               mb-14
               sm:mb-16
-              transition-opacity
-              duration-700
+              transition-all
+              duration-1000
+              ease-[cubic-bezier(0.16,1,0.3,1)]
               ${
                 visible
-                  ? 'opacity-100'
-                  : 'opacity-0'
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-8'
               }
             `}
           >
@@ -381,7 +396,12 @@ const StartivesEcosystemSection: React.FC =
               More than a platform.
               <br />
 
-              <span className="text-black dark:text-white">
+              <span
+                className="
+                  text-black
+                  dark:text-white
+                "
+              >
                 A universe for builders.
               </span>
             </h2>
@@ -423,23 +443,36 @@ const StartivesEcosystemSection: React.FC =
           >
 
             {ecosystemItems.map(
-              (item) => (
+              (item, index) => (
                 <div
                   key={item.id}
-                  className="
+                  className={`
                     ecosystem-card-wrap
                     group
                     relative
-                  "
+                    transition-all
+                    duration-1000
+                    ease-[cubic-bezier(0.16,1,0.3,1)]
+                    ${
+                      visible
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-12'
+                    }
+                  `}
+                  style={{
+                    transitionDelay:
+                      visible
+                        ? `${180 + index * 120}ms`
+                        : '0ms',
+                  }}
                 >
 
                   {/* =================================
-                      VERY SUBTLE RED → BLUE SHADOW
+                      SUBTLE RED → BLUE CARD SHADOW
                   ================================= */}
 
                   <div
                     className="
-                      ecosystem-card-glow
                       absolute
                       -inset-[5px]
                       rounded-[2rem]
@@ -481,7 +514,7 @@ const StartivesEcosystemSection: React.FC =
                     "
                   >
 
-                    {/* Static gradient wash */}
+                    {/* Soft background */}
 
                     <div
                       className="
@@ -548,7 +581,7 @@ const StartivesEcosystemSection: React.FC =
                         "
                       >
 
-                        {/* LIGHT IMAGE */}
+                        {/* LIGHT MODE IMAGE */}
 
                         {item.lightImage && (
                           <img
@@ -571,7 +604,7 @@ const StartivesEcosystemSection: React.FC =
                           />
                         )}
 
-                        {/* DARK IMAGE */}
+                        {/* DARK MODE IMAGE */}
 
                         {item.darkImage && (
                           <img
@@ -609,7 +642,7 @@ const StartivesEcosystemSection: React.FC =
                         />
 
                         {/* =================================
-                            IOS 27 GLASS ICON
+                            GLASS CIRCLE ICON
                             STATIC — NO HOVER
                         ================================= */}
 
@@ -639,11 +672,6 @@ const StartivesEcosystemSection: React.FC =
 
                           <span
                             className="
-                              bg-gradient-to-r
-                              from-red-500
-                              to-blue-500
-                              bg-clip-text
-                              text-transparent
                               flex
                               items-center
                               justify-center
@@ -655,6 +683,10 @@ const StartivesEcosystemSection: React.FC =
                               {
                                 className:
                                   'w-[19px] h-[19px]',
+                                stroke:
+                                  'url(#ecosystem-icon-gradient)',
+                                fill:
+                                  'none',
                               }
                             )}
 
@@ -665,13 +697,27 @@ const StartivesEcosystemSection: React.FC =
                       </div>
 
                       {/* =================================
-                          TITLE
+                          TITLE + EYEBROW
                       ================================= */}
 
                       <div className="mt-6">
 
+                        <div
+                          className="
+                            text-[9px]
+                            sm:text-[10px]
+                            font-black
+                            tracking-[0.16em]
+                            text-neutral-400
+                            dark:text-neutral-500
+                          "
+                        >
+                          {item.eyebrow}
+                        </div>
+
                         <h3
                           className="
+                            mt-2
                             text-2xl
                             sm:text-[27px]
                             font-black
@@ -682,25 +728,6 @@ const StartivesEcosystemSection: React.FC =
                         >
                           {item.title}
                         </h3>
-
-                        {/* Partnership */}
-
-                        {item.partnership && (
-                          <div
-                            className="
-                              mt-2
-                              text-[9px]
-                              sm:text-[10px]
-                              font-bold
-                              uppercase
-                              tracking-[0.12em]
-                              text-neutral-400
-                              dark:text-neutral-500
-                            "
-                          >
-                            {item.partnership}
-                          </div>
-                        )}
 
                         <p
                           className="
@@ -830,9 +857,7 @@ const StartivesEcosystemSection: React.FC =
 
                           </div>
 
-                          {/* =================================
-                              CTA
-                          ================================= */}
+                          {/* CTA */}
 
                           <Link
                             to={item.to}
@@ -1028,7 +1053,7 @@ const StartivesEcosystemSection: React.FC =
         </div>
 
         {/* =========================================
-            BACKGROUND MOTION ONLY
+            ANIMATION
         ========================================= */}
 
         <style>{`
