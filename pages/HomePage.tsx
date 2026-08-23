@@ -1156,8 +1156,7 @@ const HomePage: React.FC = () => {
                           p-[18px]
                           sm:p-[20px]
                           rounded-[1.4rem]
-                          min-h-[180px]
-                          sm:min-h-[189px]
+                          min-h-[198.45px]
                           flex
                           flex-col
                           cursor-pointer
@@ -1324,8 +1323,10 @@ const HomePage: React.FC = () => {
 
           <Reveal className="container mx-auto max-w-5xl font-poppins">
 
+            {/* LIGHT MODE */}
+
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157268/IMG_20260819_215632_awnsfq.png"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787509112/Picsart_26-08-23_23-45-37-694_dwftvg.jpg"
               alt=""
               aria-hidden="true"
               className="
@@ -1340,8 +1341,10 @@ const HomePage: React.FC = () => {
               "
             />
 
+            {/* DARK MODE */}
+
             <img
-              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787157287/IMG_20260819_215700_hjgsna.png"
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787509110/IMG_20260823_234748_rfqpc9.jpg"
               alt=""
               aria-hidden="true"
               className="
@@ -1368,17 +1371,17 @@ const HomePage: React.FC = () => {
                   inline-flex
                   items-center
                   justify-center
-                  gap-3
+                  gap-2.8
                   rounded-full
-                  px-2
-                  py-[7px]
-                  pl-[21.6px]
-                  sm:pl-[25.2px]
+                  px-[7.44px]
+                  py-[6.51px]
+                  pl-[20.09px]
+                  sm:pl-[23.44px]
                   text-neutral-900
                   dark:text-white
                   font-bold
-                  text-[12.6px]
-                  sm:text-[13.5px]
+                  text-[11.72px]
+                  sm:text-[12.56px]
                   tracking-tight
                   select-none
                   overflow-hidden
@@ -1392,11 +1395,34 @@ const HomePage: React.FC = () => {
                 "
               >
 
-                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/90 via-white/55 to-white/35 dark:from-black dark:via-black dark:to-black pointer-events-none" />
+                {/* GLASS BACKGROUND — SAME FAMILY AS TESTIMONIAL CARDS */}
 
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/15 via-purple-400/10 to-blue-500/20 pointer-events-none" />
+                <span
+                  className="
+                    absolute
+                    inset-0
+                    rounded-full
+                    bg-gradient-to-br
+                    from-red-500/[0.18]
+                    via-purple-500/[0.14]
+                    to-blue-500/[0.19]
+                    pointer-events-none
+                  "
+                />
 
-                <span className="absolute left-[10%] right-[10%] top-0 h-px bg-white/95 dark:bg-white/15 rounded-full pointer-events-none" />
+                <span
+                  className="
+                    absolute
+                    inset-0
+                    rounded-full
+                    bg-white/[0.10]
+                    dark:bg-white/[0.035]
+                    backdrop-blur-xl
+                    pointer-events-none
+                  "
+                />
+
+                {/* NO TOP DIVIDER */}
 
                 <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
@@ -1410,24 +1436,21 @@ const HomePage: React.FC = () => {
                     flex
                     items-center
                     justify-center
-                    w-[32.4px]
-                    h-[32.4px]
-                    sm:w-9
-                    sm:h-9
+                    w-[30.13px]
+                    h-[30.13px]
+                    sm:w-[33.48px]
+                    sm:h-[33.48px]
                     rounded-full
                     overflow-hidden
                     border
-                    border-white/80
-                    dark:border-white/15
-                    bg-white/35
-                    dark:bg-black
+                    border-white/60
+                    dark:border-white/12
+                    bg-white/20
+                    dark:bg-black/25
                     backdrop-blur-xl
-                    shadow-[inset_0_1px_2px_rgba(255,255,255,0.95),0_3px_12px_rgba(20,30,60,0.12)]
+                    shadow-[inset_0_1px_2px_rgba(255,255,255,0.65)]
                     transition-all
                     duration-300
-                    group-hover:bg-white/50
-                    dark:group-hover:bg-white/[0.04]
-                    group-hover:shadow-[inset_0_1px_2px_rgba(255,255,255,1),0_5px_16px_rgba(40,50,100,0.16)]
                   "
                 >
 
@@ -1437,24 +1460,33 @@ const HomePage: React.FC = () => {
                       inset-0
                       rounded-full
                       bg-gradient-to-br
-                      from-red-500/55
-                      via-purple-400/30
-                      to-blue-500/60
-                      opacity-80
-                      blur-[0.5px]
+                      from-red-500/35
+                      via-purple-400/20
+                      to-blue-500/40
+                      opacity-70
+                      pointer-events-none
                     "
                   />
 
-                  <span className="absolute inset-[1px] rounded-full bg-white/20 dark:bg-black backdrop-blur-md" />
+                  <span
+                    className="
+                      absolute
+                      inset-[1px]
+                      rounded-full
+                      bg-white/15
+                      dark:bg-black/30
+                      backdrop-blur-md
+                    "
+                  />
 
                   <ArrowRight
                     className="
                       relative
                       z-10
-                      w-[14.4px]
-                      h-[14.4px]
-                      sm:w-[16.2px]
-                      sm:h-[16.2px]
+                      w-[13.39px]
+                      h-[13.39px]
+                      sm:w-[15.07px]
+                      sm:h-[15.07px]
                       text-neutral-900
                       dark:text-white
                       transition-transform
@@ -1815,96 +1847,84 @@ const HomePage: React.FC = () => {
           background:
             linear-gradient(
               135deg,
-              rgba(255, 255, 255, 0.78),
-              rgba(255, 255, 255, 0.48)
+              rgba(255, 68, 80, 0.18),
+              rgba(190, 65, 175, 0.14),
+              rgba(50, 125, 255, 0.19)
             );
 
           border:
             1px solid
-            rgba(255, 255, 255, 0.9);
+            rgba(255, 255, 255, 0.68);
 
           box-shadow:
-            inset 0 1px 2px
-              rgba(255, 255, 255, 0.95),
-            inset 0 -1px 1px
-              rgba(120, 130, 160, 0.08),
-            0 8px 28px
-              rgba(30, 40, 80, 0.13);
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.42);
+
+          position:
+            relative;
         }
 
         .dark .liquid-glass-cta {
           background:
-            #000000 !important;
+            linear-gradient(
+              135deg,
+              rgba(120, 25, 40, 0.34),
+              rgba(70, 30, 72, 0.30),
+              rgba(20, 65, 125, 0.36)
+            ) !important;
 
           border-color:
-            rgba(255, 255, 255, 0.14);
+            rgba(255, 255, 255, 0.12);
 
           box-shadow:
-            inset 0 1px 2px
-              rgba(255, 255, 255, 0.10),
-            inset 0 -1px 1px
-              rgba(0, 0, 0, 0.25),
-            0 8px 28px
-              rgba(0, 0, 0, 0.30);
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.07);
+
+          -webkit-backdrop-filter:
+            blur(18px)
+            saturate(145%);
+
+          backdrop-filter:
+            blur(18px)
+            saturate(145%);
         }
 
+        /*
+          IMPORTANT:
+          No ::after top divider.
+          Launch CTA intentionally has
+          no white horizontal line.
+        */
+
         .liquid-glass-cta::after {
-          content: '';
-
-          position: absolute;
-          inset: 0;
-
-          border-radius:
-            inherit;
-
-          background:
-            linear-gradient(
-              115deg,
-              rgba(255, 255, 255, 0.5),
-              transparent 35%,
-              transparent 65%,
-              rgba(255, 255, 255, 0.25)
-            );
-
-          opacity: 0.7;
-
-          pointer-events: none;
-        }
-
-        .dark
-        .liquid-glass-cta::after {
-          background:
-            transparent;
-
-          opacity: 0;
+          display:
+            none !important;
         }
 
         .liquid-glass-cta:hover {
           box-shadow:
-            inset 0 1px 2px
-              rgba(255, 255, 255, 1),
-            inset 0 -1px 1px
-              rgba(100, 110, 150, 0.08),
-            0 12px 34px
-              rgba(30, 40, 80, 0.17);
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.42);
+
+          transform:
+            scale(1.035);
         }
 
         .dark
         .liquid-glass-cta:hover {
           box-shadow:
-            inset 0 1px 2px
-              rgba(255, 255, 255, 0.14),
-            inset 0 -1px 1px
-              rgba(0, 0, 0, 0.20),
-            0 12px 34px
-              rgba(0, 0, 0, 0.35);
+            inset 0 1px 1px
+              rgba(255, 255, 255, 0.07);
+
+          transform:
+            scale(1.035);
         }
 
 
         /* =================================================
            TESTIMONIALS
            7 CARD SEAMLESS MARQUEE
-           SPEED = 10% FASTER
+           SPEED = 23.5s
         ================================================= */
 
         .testimonials-marquee-track {
@@ -1915,19 +1935,9 @@ const HomePage: React.FC = () => {
           width:
             max-content;
 
-          /*
-            Previous speed:
-            25s
-
-            New speed:
-            22.5s
-
-            Exactly 10% faster.
-          */
-
           animation:
             testimonial-marquee
-            22.5s
+            23.5s
             linear
             infinite;
 
@@ -1951,25 +1961,25 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            TESTIMONIAL CARD WIDTH
-           ORIGINAL → +15%
+           310.5px → +15% = 357.075px
         ================================================= */
 
         .testimonial-card-item {
 
           width:
-            310.5px;
+            357.075px;
 
           margin-right:
             32px;
 
           flex:
-            0 0 310.5px;
+            0 0 357.075px;
         }
 
 
         /* =================================================
            TESTIMONIAL GRADIENT CARD
-           HEIGHT +5%
+           189px → +5% = 198.45px
         ================================================= */
 
         .testimonial-gradient-card {
@@ -1984,7 +1994,7 @@ const HomePage: React.FC = () => {
             100%;
 
           min-height:
-            189px;
+            198.45px;
 
           background:
             linear-gradient(
@@ -1998,11 +2008,6 @@ const HomePage: React.FC = () => {
             1px solid
             rgba(255, 255, 255, 0.68);
 
-          /*
-            No outer shadow.
-            Only a very subtle inner glass highlight.
-          */
-
           box-shadow:
             inset 0 1px 1px
               rgba(255, 255, 255, 0.42);
@@ -2014,7 +2019,7 @@ const HomePage: React.FC = () => {
 
         /* =================================================
            DARK MODE GRADIENT
-           FIXED — NO BLURRY PATCHES
+           CLEAN — NO BLUR PATCHES
         ================================================= */
 
         .dark .testimonial-gradient-card {
@@ -2034,11 +2039,6 @@ const HomePage: React.FC = () => {
             inset 0 1px 1px
               rgba(255, 255, 255, 0.07);
 
-          /*
-            Prevents dark-mode gradient from
-            becoming visually blurry.
-          */
-
           -webkit-backdrop-filter:
             blur(18px)
             saturate(145%);
@@ -2050,7 +2050,7 @@ const HomePage: React.FC = () => {
 
 
         /* =================================================
-           NO HOVER MOVEMENT
+           NO HOVER MOVEMENT / SHADOW
         ================================================= */
 
         .testimonial-gradient-card:hover {
@@ -2083,8 +2083,7 @@ const HomePage: React.FC = () => {
 
 
         /* =================================================
-           IMPORTANT:
-           NO DIVIDER INSIDE TESTIMONIAL CARD
+           NO DIVIDER INSIDE TESTIMONIAL
         ================================================= */
 
         .testimonial-gradient-card
@@ -2118,7 +2117,7 @@ const HomePage: React.FC = () => {
               translate3d(
                 calc(
                   -7 *
-                  (310.5px + 32px)
+                  (357.075px + 32px)
                 ),
                 0,
                 0
@@ -2141,7 +2140,7 @@ const HomePage: React.FC = () => {
               64.4vw;
 
             max-width:
-              310.5px;
+              357.075px;
 
             flex:
               0 0 64.4vw;
@@ -2154,7 +2153,7 @@ const HomePage: React.FC = () => {
           .testimonial-gradient-card {
 
             min-height:
-              180px;
+              198.45px;
 
             padding:
               18px;
@@ -2241,19 +2240,19 @@ const HomePage: React.FC = () => {
           .liquid-glass-cta {
 
             padding-top:
-              6.3px;
+              6.51px;
 
             padding-bottom:
-              6.3px;
+              6.51px;
 
             padding-left:
-              19.8px;
+              20.09px;
 
             padding-right:
-              6.3px;
+              6.51px;
 
             font-size:
-              12.6px;
+              11.72px;
           }
 
 
