@@ -419,6 +419,7 @@ const HomePage: React.FC = () => {
     }
   };
 
+  
   const features = [
     {
       image:
@@ -450,10 +451,6 @@ const HomePage: React.FC = () => {
     },
   ];
 
-  /* =====================================================
-     UPDATED TESTIMONIALS — 7 CARDS
-  ===================================================== */
-
   const testimonials = [
     {
       name: 'Prince',
@@ -474,27 +471,25 @@ const HomePage: React.FC = () => {
     },
     {
       name: 'Jacob Jeilling',
-      role: 'Founder & Builder',
-      quote:
-        'Startives makes it easier to discover ambitious people who are actually building. The community feels genuinely focused on execution.',
+      role: 'Product Founder',
+      quote: `I found my technical co-founder within days on ${APP_NAME}. The quality of people here is unmatched.`,
     },
     {
       name: 'Ankit Sharma',
-      role: 'Product Builder',
+      role: 'Backend Engineer',
       quote:
-        'What stood out to me was how easy it was to find people with complementary skills and shared ambition.',
+        'Finally a place where serious builders meet real opportunities. I’ve already joined two solid projects.',
     },
     {
       name: 'Joe Hamilton',
-      role: 'Startup Founder',
-      quote:
-        'The platform brings founders and builders together in a way that feels natural. It is a great place to turn conversations into action.',
+      role: 'Startup Advisor',
+      quote: `The energy and ambition on ${APP_NAME} is contagious. It’s become my go-to platform for discovering talent.`,
     },
     {
       name: 'Mark Jobs',
-      role: 'Entrepreneur',
+      role: 'Serial Entrepreneur',
       quote:
-        'Startives feels like a place where ideas can actually move forward. You meet people, collaborate, and keep building.',
+        'From idea validation to finding the right team — this platform removes all the usual friction of starting up.',
     },
   ];
 
@@ -558,7 +553,7 @@ const HomePage: React.FC = () => {
 
       <div className="relative z-10 bg-white dark:bg-black">
 
-        <HeroSection />
+<HeroSection />
 
         {/* ================= DISCOVER PROJECTS ================= */}
 
@@ -889,7 +884,7 @@ const HomePage: React.FC = () => {
 
         <StartalksSection Reveal={Reveal} />
 
-        <StartivesEcosystemSection />
+<StartivesEcosystemSection />
 
         {/* ================= WHY STARTIVES ================= */}
 
@@ -952,9 +947,7 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* =====================================================
-            ================= TESTIMONIALS =====================
-        ===================================================== */}
+        {/* ================= TESTIMONIALS ================= */}
 
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
 
@@ -988,16 +981,8 @@ const HomePage: React.FC = () => {
                   ) => (
                     <div
                       key={index}
-                      className="
-                        flex-shrink-0
-                        w-[90vw]
-                        sm:w-[420px]
-                      "
+                      className="flex-shrink-0 w-[90vw] sm:w-[420px]"
                     >
-
-                      {/* =========================================
-                          iOS 27 LIQUID GLASS TESTIMONIAL CARD
-                      ========================================= */}
 
                       <div
                         className="
@@ -1006,253 +991,80 @@ const HomePage: React.FC = () => {
                           relative
                           overflow-hidden
                           p-6
-                          rounded-[1.7rem]
+                          rounded-2xl
                           flex
                           flex-col
                           space-y-4
                           h-full
                           transition-all
-                          duration-500
+                          duration-300
                           hover:-translate-y-1
                           font-poppins
                         "
                       >
 
-                        {/* =====================================
-                            LIQUID GLASS BASE
-                        ===================================== */}
+                        {/* Liquid glass base */}
+                        <div className="absolute inset-0 rounded-2xl bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
 
-                        <div
-                          className="
-                            absolute
-                            inset-0
-                            rounded-[inherit]
-                            bg-white/70
-                            dark:bg-white/[0.045]
-                            backdrop-blur-[30px]
-                            backdrop-saturate-[180%]
-                            pointer-events-none
-                          "
+                        {/* Subtle red → blue Startives theme gradient (medium intensity) */}
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-red-500/[0.10] via-purple-500/[0.07] to-blue-500/[0.14] pointer-events-none dark:opacity-50" />
+
+                        {/* Soft ambient glows */}
+                        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-48 h-28 rounded-full bg-blue-500/[0.12] blur-[50px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.18]" />
+                        <div className="absolute -top-14 -right-12 w-28 h-28 rounded-full bg-red-500/[0.08] blur-[45px] pointer-events-none" />
+
+                        {/* Inner border highlight */}
+                        <div className="absolute inset-[1px] rounded-[calc(1rem-1px)] border border-white/70 dark:border-white/12 pointer-events-none" />
+
+                        {/* Startives logo - increased intensity */}
+                        <img
+                          src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
+                          alt=""
+                          aria-hidden="true"
+                          className="absolute -top-4 -right-4 w-24 h-24 opacity-[0.14] dark:opacity-[0.16]"
                         />
 
-                        {/* =====================================
-                            MEDIUM STARTIVES GRADIENT TINT
-                        ===================================== */}
+                        <div className="relative z-10 flex flex-col h-full space-y-4">
 
-                        <div
-                          className="
-                            absolute
-                            inset-0
-                            rounded-[inherit]
-                            bg-gradient-to-br
-                            from-red-500/[0.11]
-                            via-purple-500/[0.055]
-                            to-blue-500/[0.13]
-                            dark:from-red-500/[0.13]
-                            dark:via-purple-500/[0.07]
-                            dark:to-blue-500/[0.15]
-                            pointer-events-none
-                          "
-                        />
+                          <div className="flex justify-between items-center">
 
-                        {/* =====================================
-                            SUBTLE LIQUID LIGHT
-                        ===================================== */}
+                            <div className="flex space-x-0.5 text-yellow-400">
 
-                        <div
-                          className="
-                            absolute
-                            -top-20
-                            -left-16
-                            w-44
-                            h-32
-                            rounded-full
-                            bg-red-400/[0.09]
-                            dark:bg-red-500/[0.10]
-                            blur-[55px]
-                            pointer-events-none
-                          "
-                        />
+                              {Array.from({
+                                length: 5,
+                              }).map(
+                                (_, starIndex) => (
+                                  <Star
+                                    key={
+                                      starIndex
+                                    }
+                                    className="w-4 h-4 fill-current"
+                                  />
+                                )
+                              )}
 
-                        <div
-                          className="
-                            absolute
-                            -bottom-20
-                            -right-12
-                            w-48
-                            h-36
-                            rounded-full
-                            bg-blue-400/[0.10]
-                            dark:bg-blue-500/[0.11]
-                            blur-[60px]
-                            pointer-events-none
-                          "
-                        />
+                            </div>
+                          </div>
 
-                        {/* =====================================
-                            IOS GLASS EDGE
-                        ===================================== */}
+                          <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base italic flex-grow leading-relaxed font-medium">
+                            "{testimonial.quote}"
+                          </p>
 
-                        <div
-                          className="
-                            absolute
-                            inset-[1px]
-                            rounded-[calc(1.7rem-1px)]
-                            border
-                            border-white/70
-                            dark:border-white/[0.11]
-                            pointer-events-none
-                          "
-                        />
+                          <div className="pt-4 border-t border-neutral-200/80 dark:border-white/12">
 
-                        {/* =====================================
-                            TOP GLASS REFLECTION
-                        ===================================== */}
+                            <p className="font-bold text-black dark:text-white text-sm">
+                              {testimonial.name}
+                            </p>
 
-                        <div
-                          className="
-                            absolute
-                            top-0
-                            left-[8%]
-                            right-[8%]
-                            h-px
-                            bg-gradient-to-r
-                            from-transparent
-                            via-white
-                            to-transparent
-                            opacity-90
-                            dark:opacity-25
-                            pointer-events-none
-                          "
-                        />
-
-                        {/* =====================================
-                            STARTIVES LOGO
-                            INTENSITY INCREASED
-                        ===================================== */}
-
-                        <div
-                          className="
-                            absolute
-                            -top-5
-                            -right-5
-                            w-28
-                            h-28
-                            pointer-events-none
-                          "
-                        >
-
-                          <div
-                            className="
-                              absolute
-                              inset-0
-                              rounded-full
-                              bg-gradient-to-br
-                              from-red-500/10
-                              via-purple-500/8
-                              to-blue-500/12
-                              blur-2xl
-                            "
-                          />
-
-                          <img
-                            src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
-                            alt=""
-                            aria-hidden="true"
-                            className="
-                              relative
-                              w-full
-                              h-full
-                              object-contain
-                              opacity-[0.12]
-                              dark:opacity-[0.13]
-                            "
-                          />
-
-                        </div>
-
-                        {/* =====================================
-                            CARD CONTENT
-                        ===================================== */}
-
-                        <div className="relative z-10 flex justify-between items-center">
-
-                          <div className="flex space-x-0.5 text-yellow-400">
-
-                            {Array.from({
-                              length: 5,
-                            }).map(
-                              (_, starIndex) => (
-                                <Star
-                                  key={
-                                    starIndex
-                                  }
-                                  className="
-                                    w-4
-                                    h-4
-                                    fill-current
-                                  "
-                                />
-                              )
-                            )}
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                              {testimonial.role}
+                            </p>
 
                           </div>
 
                         </div>
 
-                        <p
-                          className="
-                            relative
-                            z-10
-                            text-neutral-600
-                            dark:text-neutral-300
-                            text-sm
-                            sm:text-base
-                            italic
-                            flex-grow
-                            leading-relaxed
-                            font-medium
-                          "
-                        >
-                          "{testimonial.quote}"
-                        </p>
-
-                        <div
-                          className="
-                            relative
-                            z-10
-                            pt-4
-                            border-t
-                            border-neutral-200/70
-                            dark:border-white/10
-                          "
-                        >
-
-                          <p
-                            className="
-                              font-bold
-                              text-black
-                              dark:text-white
-                              text-sm
-                            "
-                          >
-                            {testimonial.name}
-                          </p>
-
-                          <p
-                            className="
-                              text-xs
-                              text-neutral-500
-                              dark:text-neutral-400
-                            "
-                          >
-                            {testimonial.role}
-                          </p>
-
-                        </div>
-
                       </div>
-
                     </div>
                   )
                 )}
@@ -1530,6 +1342,11 @@ const HomePage: React.FC = () => {
 
         /* =========================================
            FEATURE NUMBERS
+           
+           LIGHT + DARK MODE USE THE SAME UI
+           CLEAN TEXT
+           NO PILL
+           NO DARK-MODE WHITE GLOW
         ========================================= */
 
         .feature-card-number {
@@ -1575,6 +1392,12 @@ const HomePage: React.FC = () => {
             text-shadow 0.4s ease;
         }
 
+        /*
+          IMPORTANT:
+          Dark mode intentionally keeps the
+          exact same number styling as light mode.
+        */
+
         .dark .feature-card-number {
           color:
             rgba(72, 78, 88, 0.48);
@@ -1605,6 +1428,10 @@ const HomePage: React.FC = () => {
             0 12px 28px
               rgba(70, 75, 85, 0.15);
         }
+
+        /*
+          DARK HOVER = SAME AS LIGHT HOVER
+        */
 
         .dark
         .feature-liquid-card:hover
@@ -1736,67 +1563,44 @@ const HomePage: React.FC = () => {
         }
 
 
-        /* =================================================
-           TESTIMONIAL — iOS 27 LIQUID GLASS
-        ================================================= */
+        /* =========================================
+           TESTIMONIAL LIQUID GLASS (iOS 27 style)
+        ========================================= */
 
         .testimonial-liquid-card {
           -webkit-backdrop-filter:
-            blur(30px)
+            blur(26px)
             saturate(180%);
 
           backdrop-filter:
-            blur(30px)
+            blur(26px)
             saturate(180%);
 
           background:
             linear-gradient(
               135deg,
-              rgba(255, 255, 255, 0.72),
-              rgba(255, 255, 255, 0.48)
+              rgba(255, 255, 255, 0.82),
+              rgba(255, 255, 255, 0.55)
             );
 
           border:
             1px solid
-            rgba(255, 255, 255, 0.78);
+            rgba(0, 0, 0, 0.08);
 
           box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.92),
-            inset 0 -1px 1px
-              rgba(80, 90, 120, 0.06),
-            0 12px 38px
-              rgba(30, 40, 80, 0.07);
+            none !important;
         }
 
-        /*
-          DARK MODE LIQUID GLASS
-        */
-
-        .dark
-        .testimonial-liquid-card {
+        .dark .testimonial-liquid-card {
           background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.055),
-              rgba(255, 255, 255, 0.025)
-            );
+            #000000 !important;
 
           border-color:
-            rgba(255, 255, 255, 0.12);
+            rgba(255, 255, 255, 0.14);
 
           box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.09),
-            inset 0 -1px 1px
-              rgba(0, 0, 0, 0.35),
-            0 14px 42px
-              rgba(0, 0, 0, 0.24);
+            none !important;
         }
-
-        /*
-          iOS GLASS SPECULAR EDGE
-        */
 
         .testimonial-liquid-card::before {
           content: '';
@@ -1809,14 +1613,14 @@ const HomePage: React.FC = () => {
 
           background:
             linear-gradient(
-              120deg,
-              rgba(255, 255, 255, 0.52),
-              transparent 27%,
-              transparent 67%,
-              rgba(255, 255, 255, 0.22)
+              115deg,
+              rgba(255, 255, 255, 0.72),
+              transparent 28%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.35)
             );
 
-          opacity: 0.65;
+          opacity: 0.75;
 
           pointer-events: none;
         }
@@ -1824,34 +1628,21 @@ const HomePage: React.FC = () => {
         .dark
         .testimonial-liquid-card::before {
           background:
-            linear-gradient(
-              120deg,
-              rgba(255, 255, 255, 0.12),
-              transparent 27%,
-              transparent 67%,
-              rgba(255, 255, 255, 0.045)
-            );
+            transparent;
 
-          opacity: 0.8;
+          opacity: 0;
         }
-
-        /*
-          TOP GLASS REFLECTION
-        */
 
         .testimonial-liquid-card::after {
           content: '';
 
           position: absolute;
 
-          top: 0;
           left: 8%;
           right: 8%;
+          top: 0;
 
           height: 1px;
-
-          border-radius:
-            999px;
 
           background:
             linear-gradient(
@@ -1870,48 +1661,20 @@ const HomePage: React.FC = () => {
             linear-gradient(
               90deg,
               transparent,
-              rgba(255, 255, 255, 0.18),
+              rgba(255, 255, 255, 0.12),
               transparent
             );
         }
 
-        /*
-          MEDIUM RED → BLUE GLASS HOVER DEPTH
-        */
-
         .testimonial-liquid-card:hover {
           border-color:
-            rgba(255, 255, 255, 0.9);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.95),
-            inset 0 -1px 1px
-              rgba(80, 90, 120, 0.06),
-            0 16px 42px
-              rgba(40, 50, 100, 0.10),
-            0 8px 28px
-              rgba(239, 68, 68, 0.035),
-            0 10px 32px
-              rgba(59, 130, 246, 0.045);
+            rgba(255, 255, 255, 0.95);
         }
 
         .dark
         .testimonial-liquid-card:hover {
           border-color:
-            rgba(255, 255, 255, 0.16);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.13),
-            inset 0 -1px 1px
-              rgba(0, 0, 0, 0.35),
-            0 18px 48px
-              rgba(0, 0, 0, 0.32),
-            0 8px 30px
-              rgba(239, 68, 68, 0.035),
-            0 10px 34px
-              rgba(59, 130, 246, 0.05);
+            rgba(255, 255, 255, 0.18);
         }
 
 
@@ -2137,6 +1900,11 @@ const HomePage: React.FC = () => {
               1.7rem;
           }
 
+          /*
+            Mobile number stays visually identical
+            in both themes.
+          */
+
           .feature-card-number {
             top:
               14px;
@@ -2157,26 +1925,6 @@ const HomePage: React.FC = () => {
 
             height:
               162px;
-          }
-
-          /*
-            TESTIMONIAL MOBILE LIQUID GLASS
-          */
-
-          .testimonial-liquid-card {
-            border-radius:
-              1.55rem;
-
-            padding:
-              21px;
-
-            -webkit-backdrop-filter:
-              blur(26px)
-              saturate(180%);
-
-            backdrop-filter:
-              blur(26px)
-              saturate(180%);
           }
 
         }
