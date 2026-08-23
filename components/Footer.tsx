@@ -16,6 +16,7 @@ const Footer: React.FC = () => {
     { name: 'Projects', path: '/projects' },
     { name: 'Marketplace', path: '/blueprint' },
     { name: 'Starverse', path: '/globe' },
+{ name: 'Startalks', path: '/startalks' },
     { name: 'Builder Stories', path: '/builders' },
   ];
 
