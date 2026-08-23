@@ -4,6 +4,8 @@ import React, {
   useState,
 } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import {
   ArrowUpRight,
   Globe2,
@@ -23,7 +25,6 @@ interface EcosystemItem {
   gradient: string;
   glow: string;
 
-  // Light / dark mode images
   lightImage?: string;
   darkImage?: string;
 
@@ -33,6 +34,7 @@ interface EcosystemItem {
   }[];
 
   tags: string[];
+
   to: string;
 }
 
@@ -53,11 +55,17 @@ const ecosystemItems: EcosystemItem[] = [
     glow:
       'rgba(239,68,68,0.18)',
 
+    /*
+     * STARTVERSE LIGHT MODE
+     */
     lightImage:
-      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787333300/Picsart_26-08-21_22-57-17-986_omjkxk.jpg',
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787500179/Picsart_26-08-23_21-17-30-836_puu54w.jpg',
 
+    /*
+     * STARTVERSE DARK MODE
+     */
     darkImage:
-      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787333331/Picsart_26-08-21_22-56-52-517_fm3zcs.jpg',
+      'https://res.cloudinary.com/dp7avkarg/image/upload/v1787500238/Picsart_26-08-23_21-20-17-714_wgejty.jpg',
 
     stats: [
       {
@@ -76,7 +84,10 @@ const ecosystemItems: EcosystemItem[] = [
       'Communities',
     ],
 
-    to: '/startverse',
+    /*
+     * STARTVERSE CTA
+     */
+    to: '/signup',
   },
 
   {
@@ -152,6 +163,10 @@ const ecosystemItems: EcosystemItem[] = [
   },
 ];
 
+/* =========================================
+   FLOATING ORB
+========================================= */
+
 const FloatingOrb: React.FC<{
   className?: string;
   delay?: number;
@@ -175,6 +190,10 @@ const FloatingOrb: React.FC<{
   );
 };
 
+/* =========================================
+   MAIN COMPONENT
+========================================= */
+
 const StartivesEcosystemSection: React.FC =
   () => {
     const sectionRef =
@@ -185,6 +204,10 @@ const StartivesEcosystemSection: React.FC =
 
     const [visible, setVisible] =
       useState(false);
+
+    /* =========================================
+       INTERSECTION OBSERVER
+    ========================================= */
 
     useEffect(() => {
       const node = sectionRef.current;
@@ -297,6 +320,10 @@ const StartivesEcosystemSection: React.FC =
           />
 
         </div>
+
+        {/* =========================================
+            CONTENT CONTAINER
+        ========================================= */}
 
         <div
           className="
@@ -449,14 +476,16 @@ const StartivesEcosystemSection: React.FC =
 
                     {/* =================================
                         CARD
+                        IMPORTANT:
+                        Removed huge min-height
+                        to eliminate bottom whitespace.
                     ================================= */}
 
                     <div
                       className="
                         relative
                         h-full
-                        min-h-[520px]
-                        sm:min-h-[535px]
+                        min-h-0
                         rounded-[1.8rem]
                         overflow-hidden
                         border
@@ -507,26 +536,30 @@ const StartivesEcosystemSection: React.FC =
                         "
                       />
 
+                      {/* =================================
+                          CARD CONTENT
+                      ================================= */}
+
                       <div
                         className="
                           relative
                           z-10
                           p-5
                           sm:p-6
-                          h-full
                           flex
                           flex-col
                         "
                       >
 
                         {/* =================================
-                            RECTANGULAR IMAGE
+                            STARTVERSE RECTANGULAR IMAGE
                         ================================= */}
 
                         {item.id ===
                           'startverse' &&
                         item.lightImage &&
                         item.darkImage ? (
+
                           <div
                             className="
                               relative
@@ -543,7 +576,7 @@ const StartivesEcosystemSection: React.FC =
                             "
                           >
 
-                            {/* LIGHT IMAGE */}
+                            {/* LIGHT */}
 
                             <img
                               src={
@@ -568,7 +601,7 @@ const StartivesEcosystemSection: React.FC =
                               "
                             />
 
-                            {/* DARK IMAGE */}
+                            {/* DARK */}
 
                             <img
                               src={
@@ -593,7 +626,7 @@ const StartivesEcosystemSection: React.FC =
                               "
                             />
 
-                            {/* Subtle overlay */}
+                            {/* Image overlay */}
 
                             <div
                               className="
@@ -607,40 +640,50 @@ const StartivesEcosystemSection: React.FC =
                               "
                             />
 
-                            {/* SQUARE GRADIENT ICON
-                                KEPT ON IMAGE */}
+                            {/* =================================
+                                GRADIENT ICON
+                            ================================= */}
 
                             <div
-                              className={`
+                              className="
                                 absolute
                                 bottom-3
                                 left-3
-                                w-10
-                                h-10
+                                w-11
+                                h-11
                                 rounded-xl
                                 bg-gradient-to-br
-                                ${item.gradient}
+                                from-red-500
+                                to-blue-500
                                 flex
                                 items-center
                                 justify-center
-                                shadow-[0_6px_20px_rgba(0,0,0,0.18)]
+                                shadow-[0_6px_20px_rgba(0,0,0,0.20)]
                                 transition-all
                                 duration-500
                                 group-hover:scale-110
                                 group-hover:rotate-2
-                              `}
+                              "
                             >
-                              {React.cloneElement(
-                                item.icon as React.ReactElement,
-                                {
-                                  className:
-                                    'w-5 h-5 text-white',
-                                }
-                              )}
+
+                              <Globe2
+                                className="
+                                  w-5
+                                  h-5
+                                  text-white
+                                "
+                              />
+
                             </div>
 
                           </div>
+
                         ) : (
+
+                          /* =================================
+                             FALLBACK IMAGE AREA
+                          ================================= */
+
                           <div
                             className="
                               relative
@@ -690,7 +733,6 @@ const StartivesEcosystemSection: React.FC =
                                   flex
                                   items-center
                                   justify-center
-                                  shadow-sm
                                 "
                               >
 
@@ -702,6 +744,7 @@ const StartivesEcosystemSection: React.FC =
                                     text-transparent
                                   `}
                                 >
+
                                   {React.cloneElement(
                                     item.icon as React.ReactElement,
                                     {
@@ -709,6 +752,7 @@ const StartivesEcosystemSection: React.FC =
                                         'w-7 h-7',
                                     }
                                   )}
+
                                 </span>
 
                               </div>
@@ -716,21 +760,23 @@ const StartivesEcosystemSection: React.FC =
                             </div>
 
                             <div
-                              className={`
+                              className="
                                 absolute
                                 bottom-3
                                 left-3
-                                w-10
-                                h-10
+                                w-11
+                                h-11
                                 rounded-xl
                                 bg-gradient-to-br
-                                ${item.gradient}
+                                from-red-500
+                                to-blue-500
                                 flex
                                 items-center
                                 justify-center
                                 shadow-lg
-                              `}
+                              "
                             >
+
                               {React.cloneElement(
                                 item.icon as React.ReactElement,
                                 {
@@ -738,13 +784,14 @@ const StartivesEcosystemSection: React.FC =
                                     'w-5 h-5 text-white',
                                 }
                               )}
+
                             </div>
 
                           </div>
                         )}
 
                         {/* =================================
-                            TITLE
+                            TITLE + DESCRIPTION
                         ================================= */}
 
                         <div className="mt-6">
@@ -818,7 +865,8 @@ const StartivesEcosystemSection: React.FC =
                         </div>
 
                         {/* =================================
-                            STATS — CLOSE TO TAGS
+                            STATS
+                            VERY CLOSE TO TAGS
                         ================================= */}
 
                         <div
@@ -839,6 +887,8 @@ const StartivesEcosystemSection: React.FC =
                             "
                           >
 
+                            {/* STATS */}
+
                             <div
                               className="
                                 flex
@@ -858,6 +908,7 @@ const StartivesEcosystemSection: React.FC =
                                       className="
                                         text-sm
                                         font-black
+                                        leading-none
                                         text-black
                                         dark:text-white
                                       "
@@ -869,11 +920,12 @@ const StartivesEcosystemSection: React.FC =
 
                                     <div
                                       className="
-                                        mt-0.5
+                                        mt-1
                                         text-[8px]
                                         font-bold
                                         uppercase
                                         tracking-wider
+                                        leading-none
                                         text-neutral-400
                                       "
                                     >
@@ -888,10 +940,12 @@ const StartivesEcosystemSection: React.FC =
 
                             </div>
 
-                            {/* RED → BLUE BUTTON */}
+                            {/* =================================
+                                CTA
+                            ================================= */}
 
-                            <a
-                              href={item.to}
+                            <Link
+                              to={item.to}
                               className={`
                                 relative
                                 flex
@@ -918,14 +972,16 @@ const StartivesEcosystemSection: React.FC =
                               aria-label={`Explore ${item.title}`}
                             >
 
+                              {/* Shine animation */}
+
                               <span
                                 className="
                                   absolute
                                   inset-0
                                   bg-gradient-to-r
-                                  from-white/0
+                                  from-transparent
                                   via-white/30
-                                  to-white/0
+                                  to-transparent
                                   -translate-x-full
                                   group-hover:translate-x-full
                                   transition-transform
@@ -942,7 +998,7 @@ const StartivesEcosystemSection: React.FC =
                                 "
                               />
 
-                            </a>
+                            </Link>
 
                           </div>
 
@@ -950,7 +1006,9 @@ const StartivesEcosystemSection: React.FC =
 
                       </div>
 
-                      {/* Bottom glow */}
+                      {/* =================================
+                          BOTTOM SOFT GLOW
+                      ================================= */}
 
                       <div
                         className="
@@ -1090,6 +1148,7 @@ const StartivesEcosystemSection: React.FC =
                 "
               >
                 One ecosystem.
+
                 <span className="text-black dark:text-white">
                   {' '}
                   Infinite possibilities.
@@ -1110,6 +1169,10 @@ const StartivesEcosystemSection: React.FC =
           </div>
 
         </div>
+
+        {/* =========================================
+            ANIMATIONS
+        ========================================= */}
 
         <style>{`
 
