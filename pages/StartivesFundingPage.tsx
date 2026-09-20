@@ -990,7 +990,6 @@ const FUNDING: FundingItem[] = [
     description: "Selective accelerator by Jason Calacanis focused on small batches of high-potential startups with hands-on support.",
     verified: "Sep 2026"
   },
-  // —— 5 additional authentic global programs ——
   {
     id: "76",
     name: "Station F",
@@ -1066,7 +1065,7 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
   const [failed, setFailed] = useState(false);
   if (failed)
     return (
-      <div className="w-11 h-11 rounded-2xl bg-[var(--background-tertiary)] border border-[var(--border-primary)] flex items-center justify-center text-xs font-black text-purple-500">
+      <div className="w-11 h-11 rounded-2xl bg-[var(--background-tertiary)] border border-[var(--border-primary)] flex items-center justify-center text-xs font-black text-purple-500 font-poppins">
         {item.name
           .split(" ")
           .map((x) => x[0])
@@ -1075,7 +1074,7 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
       </div>
     );
   return (
-    <div className="w-11 h-11 rounded-2xl bg-white dark:bg-white/10 border border-[var(--border-primary)] flex items-center justify-center overflow-hidden shrink-0">
+    <div className="w-11 h-11 rounded-2xl bg-white/90 dark:bg-white/10 border border-[var(--border-primary)] flex items-center justify-center overflow-hidden shrink-0 backdrop-blur-sm">
       <img
         src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
         alt=""
@@ -1087,7 +1086,6 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
   );
 };
 
-/* —— Custom Glass Dropdown (white/glass panel) —— */
 const GlassSelect: React.FC<{
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -1111,9 +1109,11 @@ const GlassSelect: React.FC<{
         type="button"
         onClick={() => setOpen((o) => !o)}
         className="w-full h-11 px-4 rounded-full
-          bg-[var(--background-tertiary)]
-          border border-[var(--border-primary)]
-          text-xs font-medium text-[var(--text-primary)]
+          bg-white/40 dark:bg-white/[0.06]
+          backdrop-blur-xl
+          border border-white/50 dark:border-white/10
+          shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]
+          text-xs font-medium text-[var(--text-primary)] font-poppins
           flex items-center justify-between gap-2
           outline-none focus:ring-2 focus:ring-purple-500/25
           transition-all duration-200"
@@ -1134,11 +1134,11 @@ const GlassSelect: React.FC<{
         <div
           className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto
             rounded-2xl
-            bg-white/95 dark:bg-[var(--component-background)]
-            backdrop-blur-xl
-            border border-[var(--border-primary)]
-            shadow-lg
-            py-1.5"
+            bg-white/90 dark:bg-[var(--component-background)]/95
+            backdrop-blur-2xl
+            border border-white/60 dark:border-white/10
+            shadow-[0_16px_48px_rgba(0,0,0,0.12)]
+            py-1.5 font-poppins"
         >
           {options.map((option) => (
             <button
@@ -1151,8 +1151,8 @@ const GlassSelect: React.FC<{
               className={`w-full text-left px-4 py-2.5 text-xs font-medium transition-colors
                 ${
                   value === option
-                    ? "bg-purple-500/10 text-purple-600 dark:text-purple-400"
-                    : "text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10"
+                    ? "bg-purple-500/12 text-purple-600 dark:text-purple-400"
+                    : "text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/8"
                 }`}
             >
               {option}
@@ -1165,9 +1165,11 @@ const GlassSelect: React.FC<{
 };
 
 const Detail: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-3">
-    <div className="text-[8px] uppercase tracking-widest font-bold text-[var(--text-muted)] mb-1">{label}</div>
-    <div className="text-[11px] font-medium leading-5 break-words">{value}</div>
+  <div className="rounded-2xl border border-[var(--border-primary)] bg-white/30 dark:bg-white/[0.04] backdrop-blur-md p-3">
+    <div className="text-[8px] uppercase tracking-widest font-bold text-[var(--text-muted)] mb-1 font-['Work_Sans']">
+      {label}
+    </div>
+    <div className="text-[11px] font-semibold leading-5 break-words font-poppins">{value}</div>
   </div>
 );
 
@@ -1204,47 +1206,51 @@ export const StartivesFundingPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full font-sans text-[var(--text-primary)]">
+    <section className="w-full font-poppins text-[var(--text-primary)]">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
         {/* HEADER */}
         <div className="mb-8 md:mb-10">
           <div className="max-w-3xl">
-            <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] leading-[0.98]">
+            <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] leading-[0.98] font-poppins">
               Find funding for your{" "}
               <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
                 startup.
               </span>
             </h1>
-            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-normal tracking-normal">
+            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-['Work_Sans']">
               Discover government schemes, grants, accelerators, VCs and startup programs with direct official links and
               filters for your stage and region.
             </p>
           </div>
         </div>
 
-        {/* FILTERS */}
-        <div className="sticky top-2 z-20 mb-5 p-2 rounded-2xl bg-[var(--component-background)]/80 backdrop-blur-xl border border-[var(--border-primary)]">
+        {/* FILTERS — glass bar */}
+        <div className="sticky top-2 z-20 mb-5 p-2 rounded-2xl
+          bg-white/50 dark:bg-white/[0.05]
+          backdrop-blur-2xl
+          border border-white/60 dark:border-white/10
+          shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.9fr_1fr_1fr_1fr] gap-2.5">
-            {/* Search + Reset */}
             <div className="relative flex items-center">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search funding, investor, sector..."
                 className="w-full h-11 pl-4 pr-20 rounded-full
-                  bg-[var(--background-tertiary)]
-                  border border-[var(--border-primary)]
+                  bg-white/40 dark:bg-white/[0.06]
+                  backdrop-blur-xl
+                  border border-white/50 dark:border-white/10
                   text-xs md:text-sm text-[var(--text-primary)]
                   placeholder:text-[var(--text-muted)]
                   outline-none focus:ring-2 focus:ring-purple-500/20
-                  font-normal"
+                  font-['Work_Sans']"
               />
               <button
                 type="button"
                 onClick={reset}
                 className="absolute right-1.5 h-8 px-3.5 rounded-full
                   bg-gradient-to-r from-red-500 to-blue-500
-                  text-white text-[10px] font-bold uppercase tracking-wider
+                  text-white text-[10px] font-bold uppercase tracking-wider font-poppins
                   hover:opacity-90 active:scale-95 transition-all"
               >
                 Reset
@@ -1258,10 +1264,10 @@ export const StartivesFundingPage: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between mb-3 px-1">
-          <p className="text-[11px] text-[var(--text-muted)] font-normal">
-            Showing <b className="text-[var(--text-primary)] font-semibold">{filtered.length}</b> opportunities
+          <p className="text-[11px] text-[var(--text-muted)] font-['Work_Sans']">
+            Showing <b className="text-[var(--text-primary)] font-semibold font-poppins">{filtered.length}</b> opportunities
           </p>
-          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-normal">Updated: Sep 2026</p>
+          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-['Work_Sans']">Updated: Sep 2026</p>
         </div>
 
         {filtered.length > 0 ? (
@@ -1271,30 +1277,31 @@ export const StartivesFundingPage: React.FC = () => {
                 key={item.id}
                 onClick={() => setSelected(item)}
                 className="group cursor-pointer rounded-2xl
-                  bg-[var(--component-background)]
-                  border border-[var(--border-primary)]
-                  shadow-sm
+                  bg-white/40 dark:bg-white/[0.05]
+                  backdrop-blur-xl
+                  border border-white/50 dark:border-white/10
+                  shadow-[0_8px_32px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.35)]
                   p-4 md:p-5
                   transition-all duration-300
-                  hover:-translate-y-0.5 hover:shadow-md
-                  hover:border-purple-500/30"
+                  hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)]
+                  hover:border-purple-500/25"
               >
                 <div className="flex items-start justify-between gap-3">
                   <Logo item={item} />
                   <span className="inline-flex max-w-[140px] truncate px-2.5 py-1 rounded-full
                     bg-gradient-to-r from-red-500/10 to-blue-500/10
                     border border-purple-500/20
-                    text-[9px] font-semibold text-purple-600 dark:text-purple-400">
+                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-poppins">
                     {item.region}
                   </span>
                 </div>
 
-                <h2 className="mt-4 text-[16px] md:text-[17px] leading-tight font-bold tracking-tight group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                <h2 className="mt-4 text-[16px] md:text-[17px] leading-tight font-bold tracking-tight font-poppins group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   {item.name}
                 </h2>
-                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate">{item.provider}</p>
+                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-['Work_Sans']">{item.provider}</p>
 
-                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-normal">
+                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-['Work_Sans']">
                   {item.description}
                 </p>
 
@@ -1302,23 +1309,23 @@ export const StartivesFundingPage: React.FC = () => {
                   {item.stage.slice(0, 3).map((s) => (
                     <span
                       key={s}
-                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[9px] font-medium text-[var(--text-muted)]"
+                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)]/80 text-[9px] font-medium text-[var(--text-muted)] font-poppins"
                     >
                       {s}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]">
-                  <p className="text-[12px] md:text-[13px] font-semibold tracking-tight">{item.funding}</p>
+                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]/50">
+                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-poppins">{item.funding}</p>
                   <div className="mt-2 flex items-center justify-between gap-3">
-                    <span className="text-[9px] text-[var(--text-muted)] font-normal">Official source</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-['Work_Sans']">Official source</span>
                     <a
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 hover:underline"
+                      className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 hover:underline font-poppins"
                     >
                       Visit
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -1332,12 +1339,12 @@ export const StartivesFundingPage: React.FC = () => {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--border-primary)] p-14 text-center">
-            <p className="text-sm font-semibold">No funding opportunities found</p>
-            <p className="mt-1 text-xs text-[var(--text-muted)] font-normal">Try another search or reset the filters.</p>
+            <p className="text-sm font-bold font-poppins">No funding opportunities found</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)] font-['Work_Sans']">Try another search or reset the filters.</p>
           </div>
         )}
 
-        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-normal tracking-normal">
+        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-['Caudex']">
           Funding amounts, eligibility, deadlines and investment terms can change. Always verify the latest information
           on the official provider website before applying.
         </p>
@@ -1346,13 +1353,14 @@ export const StartivesFundingPage: React.FC = () => {
       {/* MODAL */}
       {selected && (
         <div
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-5 bg-black/50 dark:bg-black/70 backdrop-blur-sm"
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-5 bg-black/50 dark:bg-black/65 backdrop-blur-md"
           style={{ width: "100vw", height: "100dvh" }}
           onMouseDown={(e) => e.target === e.currentTarget && setSelected(null)}
         >
           <div
             className="w-full max-w-[620px] max-h-[88vh] overflow-y-auto rounded-[1.75rem]
-              bg-[var(--component-background)]
+              bg-[var(--component-background)]/95
+              backdrop-blur-2xl
               border border-[var(--border-primary)]
               shadow-2xl"
             onMouseDown={(e) => e.stopPropagation()}
@@ -1369,21 +1377,35 @@ export const StartivesFundingPage: React.FC = () => {
                 </button>
               </div>
 
-              <h2 className="mt-5 text-2xl md:text-3xl font-black tracking-[-0.03em] leading-tight">{selected.name}</h2>
-              <p className="mt-1 text-xs text-purple-500 font-medium">
+              <h2 className="mt-5 text-2xl md:text-3xl font-black tracking-[-0.03em] leading-tight font-poppins">
+                {selected.name}
+              </h2>
+              <p className="mt-1 text-xs text-purple-500 font-medium font-['Work_Sans']">
                 {selected.provider} · {selected.region}
               </p>
 
+              {/* Funding + Type */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                 <Detail label="Funding" value={selected.funding} />
                 <Detail label="Type" value={selected.type} />
+              </div>
+
+              {/* Description between Funding/Type and rest */}
+              <div className="mt-3 rounded-2xl border border-[var(--border-primary)] bg-white/25 dark:bg-white/[0.04] backdrop-blur-md p-4">
+                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-['Work_Sans']">
+                  {selected.description}
+                </p>
+              </div>
+
+              {/* Remaining details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
                 <Detail label="Startup stage" value={selected.stage.join(" · ")} />
                 <Detail label="Region" value={selected.region} />
                 <Detail label="Source checked" value={selected.verified} />
                 <Detail label="Official domain" value={selected.domain} />
               </div>
 
-              {/* Single Visit button (Close removed — X already present) */}
+              {/* Visit button */}
               <div className="mt-5">
                 <a
                   href={selected.url}
@@ -1392,7 +1414,7 @@ export const StartivesFundingPage: React.FC = () => {
                   className="w-full h-11 rounded-full
                     bg-gradient-to-r from-red-500 to-blue-500
                     text-white flex items-center justify-center gap-1.5
-                    text-[9px] font-bold uppercase tracking-widest
+                    text-[9px] font-bold uppercase tracking-widest font-poppins
                     hover:opacity-95 active:scale-[0.98] transition-all"
                 >
                   Visit Official Source
@@ -1402,8 +1424,9 @@ export const StartivesFundingPage: React.FC = () => {
                 </a>
               </div>
 
-              <p className="mt-5 text-[11px] leading-6 text-[var(--text-muted)] font-normal">
-                {selected.description}
+              {/* Short disclaimer under Visit */}
+              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-['Caudex']">
+                Funding amounts, eligibility, deadlines and investment terms can change. Always verify.
               </p>
             </div>
           </div>
