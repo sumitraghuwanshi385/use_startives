@@ -25,7 +25,7 @@ const FUNDING: FundingItem[] = [
     funding: "Up to ₹20L grant + up to ₹50L convertible/debt support",
     url: "https://seedfund.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Flagship DPIIT seed scheme for early-stage startups. Provides grant for PoC/prototype and convertible debt for market entry through approved incubators.",
     verified: "Sep 2026"
   },
   {
@@ -38,7 +38,7 @@ const FUNDING: FundingItem[] = [
     funding: "Credit guarantee up to ₹20 Cr per borrower",
     url: "https://www.startupindia.gov.in/content/sih/en/credit-guarantee-scheme-for-startups.html",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Collateral-free credit guarantee for DPIIT-recognised startups. Banks and NBFCs extend loans backed by NCGTC cover up to ₹20 crore.",
     verified: "Sep 2026"
   },
   {
@@ -51,7 +51,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investor discovery / investment opportunities",
     url: "https://www.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Official platform connecting DPIIT-recognised startups with investors, VCs and angel networks for fundraising and visibility.",
     verified: "Sep 2026"
   },
   {
@@ -64,7 +64,7 @@ const FUNDING: FundingItem[] = [
     funding: "Indirect VC funding through eligible AIFs",
     url: "https://www.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Government corpus that invests in SEBI-registered AIFs, which in turn fund startups across stages and sectors.",
     verified: "Sep 2026"
   },
   {
@@ -77,7 +77,7 @@ const FUNDING: FundingItem[] = [
     funding: "₹10,000 Cr corpus for deep-tech & manufacturing",
     url: "https://www.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "₹10,000 crore FoF focused on deep-tech, manufacturing and long-term patient capital for Indian startups via AIFs.",
     verified: "Sep 2026"
   },
   {
@@ -90,7 +90,7 @@ const FUNDING: FundingItem[] = [
     funding: "Government procurement opportunity",
     url: "https://gem.gov.in/",
     domain: "gem.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Priority access for startups on the Government e-Marketplace. Enables selling products and services to central and state departments.",
     verified: "Sep 2026"
   },
   {
@@ -103,7 +103,7 @@ const FUNDING: FundingItem[] = [
     funding: "Up to ₹10L seed support listed in policy",
     url: "https://www.startupindia.gov.in/content/sih/en/state-startup-policies/Bihar-state-policy.html",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "State policy offering seed support, incentives and ecosystem benefits for startups registered in Bihar.",
     verified: "Sep 2026"
   },
   {
@@ -116,7 +116,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific grants and support",
     url: "https://startupmission.kerala.gov.in/",
     domain: "startupmission.kerala.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Kerala’s nodal agency for startups. Offers grants, incubation, mentorship and sector-focused programs across stages.",
     verified: "Sep 2026"
   },
   {
@@ -129,7 +129,7 @@ const FUNDING: FundingItem[] = [
     funding: "Elevate seed funding up to ₹50L / ₹1 Cr deep-tech",
     url: "https://startup.karnataka.gov.in/",
     domain: "startup.karnataka.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "State startup cell with Elevate and Elevate NxT programs providing significant seed support, especially for deep-tech.",
     verified: "Sep 2026"
   },
   {
@@ -142,7 +142,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific support",
     url: "https://startuptn.in/",
     domain: "startuptn.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Tamil Nadu’s startup mission offering grants, incubation, patent support and market linkages for local founders.",
     verified: "Sep 2026"
   },
   {
@@ -155,7 +155,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific support + CM MahaFund",
     url: "https://startup.maharashtra.gov.in/",
     domain: "startup.maharashtra.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "State ecosystem with seed support, tax benefits and the CM MahaFund for high-potential startups.",
     verified: "Sep 2026"
   },
   {
@@ -168,7 +168,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific support",
     url: "https://startup.gujarat.gov.in/",
     domain: "startup.gujarat.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Gujarat startup policy providing financial assistance, land benefits and R&D support across key sectors.",
     verified: "Sep 2026"
   },
   {
@@ -181,7 +181,7 @@ const FUNDING: FundingItem[] = [
     funding: "₹1,000 Cr Startup Fund + T-Hub support",
     url: "https://startup.telangana.gov.in/",
     domain: "startup.telangana.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Telangana’s startup framework with a large fund-of-funds, T-Hub incubation and strong AI/spacetech focus.",
     verified: "Sep 2026"
   },
   {
@@ -194,7 +194,7 @@ const FUNDING: FundingItem[] = [
     funding: "Prototype support up to ₹20L–₹40L via centres",
     url: "https://nidhi.dst.gov.in/",
     domain: "nidhi.dst.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "DST scheme that funds innovators to convert ideas into working prototypes through PRAYAS Centres across India.",
     verified: "Sep 2026"
   },
   {
@@ -207,7 +207,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific seed support via TBIs",
     url: "https://nidhi.dst.gov.in/",
     domain: "nidhi.dst.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Seed capital for startups incubated in DST-supported Technology Business Incubators to bridge prototype to market.",
     verified: "Sep 2026"
   },
   {
@@ -220,7 +220,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific support",
     url: "https://www.meity.gov.in/",
     domain: "meity.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "MeitY program supporting technology startups through incubators with grants and mentoring for early product development.",
     verified: "Sep 2026"
   },
   {
@@ -233,7 +233,7 @@ const FUNDING: FundingItem[] = [
     funding: "₹10L to ₹1 Cr for Tier-II/III tech startups",
     url: "https://www.meity.gov.in/",
     domain: "meity.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Focused scheme for technology startups in Tier-II and Tier-III cities with pilot funding and growth support.",
     verified: "Sep 2026"
   },
   {
@@ -246,7 +246,7 @@ const FUNDING: FundingItem[] = [
     funding: "$500K standard deal",
     url: "https://www.ycombinator.com/apply",
     domain: "ycombinator.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "World’s most well-known accelerator. Standard deal is $500K for \~7% equity plus unmatched network and Demo Day access.",
     verified: "Sep 2026"
   },
   {
@@ -259,7 +259,7 @@ const FUNDING: FundingItem[] = [
     funding: "$220K current standard offer",
     url: "https://www.techstars.com/accelerators",
     domain: "techstars.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global accelerator network with programs in multiple cities. Offers capital, mentorship and corporate connections.",
     verified: "Sep 2026"
   },
   {
@@ -272,7 +272,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific investment",
     url: "https://www.antler.co/location/india",
     domain: "antler.co",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Day-zero investor and company builder. Helps founders form teams and backs them with early capital in India.",
     verified: "Sep 2026"
   },
   {
@@ -285,7 +285,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.100x.vc/",
     domain: "100x.vc",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "India-focused early-stage VC writing first cheques and supporting founders through the seed stage.",
     verified: "Sep 2026"
   },
   {
@@ -298,7 +298,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific investment",
     url: "https://www.indiaaccelerator.co/",
     domain: "indiaaccelerator.co",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Indian accelerator providing capital, mentorship and go-to-market support for pre-seed and seed startups.",
     verified: "Sep 2026"
   },
   {
@@ -311,7 +311,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://venturecatalysts.in/",
     domain: "venturecatalysts.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Hybrid incubator and early-stage fund helping Indian startups raise capital and scale operations.",
     verified: "Sep 2026"
   },
   {
@@ -324,7 +324,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.peakxv.com/",
     domain: "peakxv.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Leading India-focused growth and early-stage VC (formerly Sequoia India & SEA) backing category-defining companies.",
     verified: "Sep 2026"
   },
   {
@@ -337,7 +337,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://blume.vc/",
     domain: "blume.vc",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Early-stage Indian VC known for backing tech startups from pre-seed through Series A with active support.",
     verified: "Sep 2026"
   },
   {
@@ -350,7 +350,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.elevationcapital.com/",
     domain: "elevationcapital.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "India-focused venture firm investing across seed to growth stages in consumer and enterprise tech.",
     verified: "Sep 2026"
   },
   {
@@ -363,7 +363,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.accel.com/",
     domain: "accel.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global VC with a strong India practice, backing high-growth startups from seed through later stages.",
     verified: "Sep 2026"
   },
   {
@@ -376,7 +376,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.z47.com/",
     domain: "z47.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "India-focused VC (formerly Matrix Partners India) investing in ambitious early and growth-stage companies.",
     verified: "Sep 2026"
   },
   {
@@ -389,7 +389,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://piventures.in/",
     domain: "piventures.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Early-stage fund focused on AI, deep-tech and enterprise startups in India.",
     verified: "Sep 2026"
   },
   {
@@ -402,7 +402,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.3one4capital.com/",
     domain: "3one4capital.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "India-centric VC investing across seed to Series B in technology and consumer businesses.",
     verified: "Sep 2026"
   },
   {
@@ -415,7 +415,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.goodcapital.vc/",
     domain: "goodcapital.vc",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Pre-seed and seed fund supporting early Indian founders with capital and hands-on guidance.",
     verified: "Sep 2026"
   },
   {
@@ -428,7 +428,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.ipventures.in/",
     domain: "ipventures.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Active angel network in India that syndicates early-stage investments for promising startups.",
     verified: "Sep 2026"
   },
   {
@@ -441,7 +441,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://letsventure.com/",
     domain: "letsventure.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Online platform connecting Indian startups with angels and early-stage investors for fundraising.",
     verified: "Sep 2026"
   },
   {
@@ -454,7 +454,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program / investment-specific",
     url: "https://500.co/",
     domain: "500.co",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global venture firm and accelerator with strong presence across emerging markets and multiple continents.",
     verified: "Sep 2026"
   },
   {
@@ -467,7 +467,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://a16z.com/",
     domain: "a16z.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Leading Silicon Valley firm investing across stages with deep platform support in crypto, AI, bio and consumer.",
     verified: "Sep 2026"
   },
   {
@@ -480,7 +480,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://foundersfund.com/",
     domain: "foundersfund.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Peter Thiel-backed fund known for bold bets on transformative technology companies.",
     verified: "Sep 2026"
   },
   {
@@ -493,7 +493,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.sequoiacap.com/",
     domain: "sequoiacap.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Iconic global VC partnering with founders from seed through growth and public markets.",
     verified: "Sep 2026"
   },
   {
@@ -506,7 +506,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://lsvp.com/",
     domain: "lsvp.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Multi-stage global firm investing in enterprise, consumer and fintech startups worldwide.",
     verified: "Sep 2026"
   },
   {
@@ -519,7 +519,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.generalcatalyst.com/",
     domain: "generalcatalyst.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global venture firm focused on resilient, transformative companies across stages.",
     verified: "Sep 2026"
   },
   {
@@ -532,7 +532,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.indexventures.com/",
     domain: "indexventures.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "European-rooted global VC backing ambitious technology companies from early stage onward.",
     verified: "Sep 2026"
   },
   {
@@ -545,7 +545,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.benchmark.com/",
     domain: "benchmark.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Selective early-stage firm known for concentrated partnerships with category-defining startups.",
     verified: "Sep 2026"
   },
   {
@@ -558,7 +558,7 @@ const FUNDING: FundingItem[] = [
     funding: "Investment-specific",
     url: "https://www.generalatlantic.com/",
     domain: "generalatlantic.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global growth equity firm providing capital and strategic support to scaling technology companies.",
     verified: "Sep 2026"
   },
   {
@@ -571,7 +571,7 @@ const FUNDING: FundingItem[] = [
     funding: "Free founder education / network",
     url: "https://www.startupschool.org/",
     domain: "startupschool.org",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Free online program from Y Combinator teaching founders how to start and grow a startup with peer support.",
     verified: "Sep 2026"
   },
   {
@@ -584,7 +584,7 @@ const FUNDING: FundingItem[] = [
     funding: "AWS credits; eligibility-based",
     url: "https://aws.amazon.com/activate/",
     domain: "aws.amazon.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Startup program offering AWS credits, technical support and training to help early teams build on the cloud.",
     verified: "Sep 2026"
   },
   {
@@ -597,7 +597,7 @@ const FUNDING: FundingItem[] = [
     funding: "Credits and benefits; eligibility-based",
     url: "https://www.microsoft.com/en-us/startups",
     domain: "microsoft.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Founders Hub provides Azure credits, GitHub, OpenAI and developer tools to eligible early-stage startups.",
     verified: "Sep 2026"
   },
   {
@@ -610,7 +610,7 @@ const FUNDING: FundingItem[] = [
     funding: "Cloud credits; eligibility-based",
     url: "https://cloud.google.com/startup",
     domain: "cloud.google.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Google Cloud credits and technical support for startups building and scaling on Google Cloud Platform.",
     verified: "Sep 2026"
   },
   {
@@ -623,7 +623,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program benefits / credits vary",
     url: "https://www.nvidia.com/en-us/startups/",
     domain: "nvidia.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Free program for AI, data science and HPC startups offering hardware access, training and go-to-market support.",
     verified: "Sep 2026"
   },
   {
@@ -636,7 +636,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific benefits",
     url: "https://huggingface.co/",
     domain: "huggingface.co",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Platform and community support for AI startups building with open-source models and infrastructure.",
     verified: "Sep 2026"
   },
   {
@@ -649,7 +649,7 @@ const FUNDING: FundingItem[] = [
     funding: "Cloud / program benefits vary",
     url: "https://www.oracle.com/startup/",
     domain: "oracle.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Cloud credits, technical resources and go-to-market support for startups building on Oracle Cloud.",
     verified: "Sep 2026"
   },
   {
@@ -662,7 +662,7 @@ const FUNDING: FundingItem[] = [
     funding: "Product benefits / credits",
     url: "https://github.com/enterprise/startups",
     domain: "github.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Free or discounted GitHub Enterprise and developer tools for early-stage startups and open-source teams.",
     verified: "Sep 2026"
   },
   {
@@ -675,7 +675,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific benefits",
     url: "https://openai.com/startups/",
     domain: "openai.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Credits, technical guidance and early access opportunities for startups building with OpenAI models and APIs.",
     verified: "Sep 2026"
   },
   {
@@ -688,7 +688,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific investment",
     url: "https://www.alchemistaccelerator.com/",
     domain: "alchemistaccelerator.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Enterprise-focused accelerator providing capital, mentorship and customer introductions for B2B startups.",
     verified: "Sep 2026"
   },
   {
@@ -701,7 +701,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific",
     url: "https://www.plugandplaytechcenter.com/",
     domain: "plugandplaytechcenter.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global innovation platform connecting startups with corporate partners across multiple verticals and regions.",
     verified: "Sep 2026"
   },
   {
@@ -714,7 +714,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific (equity-free options)",
     url: "https://masschallenge.org/",
     domain: "masschallenge.org",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Equity-free accelerator and competition supporting high-impact startups with mentorship and prizes.",
     verified: "Sep 2026"
   },
   {
@@ -727,10 +727,9 @@ const FUNDING: FundingItem[] = [
     funding: "No-equity accelerator program",
     url: "https://startx.com/",
     domain: "startx.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Stanford-affiliated non-profit accelerator offering equity-free support, mentorship and network access.",
     verified: "Sep 2026"
   },
-  // —— New India schemes ——
   {
     id: "56",
     name: "BIRAC BIG",
@@ -741,7 +740,7 @@ const FUNDING: FundingItem[] = [
     funding: "Up to ₹50L over 18 months for biotech",
     url: "https://birac.nic.in/",
     domain: "birac.nic.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Flagship equity-free grant for biotech innovators. Up to ₹50 lakh over 18 months to establish proof of concept.",
     verified: "Sep 2026"
   },
   {
@@ -754,7 +753,7 @@ const FUNDING: FundingItem[] = [
     funding: "₹1.5 Cr to ₹10 Cr defence innovation grants",
     url: "https://idex.gov.in/",
     domain: "idex.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Defence innovation challenges offering milestone-based grants up to ₹1.5 Cr (and higher under Prime/ADITI) for dual-use tech.",
     verified: "Sep 2026"
   },
   {
@@ -767,7 +766,7 @@ const FUNDING: FundingItem[] = [
     funding: "Matched investment up to ₹40L",
     url: "https://www.meity.gov.in/",
     domain: "meity.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "MeitY scheme providing matched investment and acceleration support for software product startups.",
     verified: "Sep 2026"
   },
   {
@@ -780,7 +779,7 @@ const FUNDING: FundingItem[] = [
     funding: "₹1,000 Cr fund; seed up to ₹15–50L; deep-tech patient capital",
     url: "https://www.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "New state policy with a ₹1,000 crore fund, enhanced seed grants and dedicated support for deep-tech startups.",
     verified: "Sep 2026"
   },
   {
@@ -793,7 +792,7 @@ const FUNDING: FundingItem[] = [
     funding: "₹30,000/month fellowship for 18 months",
     url: "https://nidhi.dst.gov.in/",
     domain: "nidhi.dst.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Entrepreneur-in-Residence fellowship providing monthly stipend so innovators can focus full-time on building a startup.",
     verified: "Sep 2026"
   },
   {
@@ -806,7 +805,7 @@ const FUNDING: FundingItem[] = [
     funding: "Facilitated patent, trademark & design protection",
     url: "https://www.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Government facilitation scheme that helps startups protect patents, trademarks and designs at reduced cost.",
     verified: "Sep 2026"
   },
   {
@@ -819,7 +818,7 @@ const FUNDING: FundingItem[] = [
     funding: "Up to ₹25L seed + incubation for Tier-II/III",
     url: "https://www.stpi.in/",
     domain: "stpi.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "STPI incubation and seed support aimed at software and technology startups outside major metros.",
     verified: "Sep 2026"
   },
   {
@@ -832,7 +831,7 @@ const FUNDING: FundingItem[] = [
     funding: "Grant up to ₹1 Cr in tranches",
     url: "https://aim.gov.in/",
     domain: "aim.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Challenge-based grants from AIM for startups solving national priority problems with commercialisation potential.",
     verified: "Sep 2026"
   },
   {
@@ -845,7 +844,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific seed & ecosystem support",
     url: "https://startup.rajasthan.gov.in/",
     domain: "startup.rajasthan.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "State policy offering seed funding, incentives and incubation support for startups based in Rajasthan.",
     verified: "Sep 2026"
   },
   {
@@ -858,7 +857,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific grants and incubation",
     url: "https://startupodisha.gov.in/",
     domain: "startupodisha.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Odisha’s startup policy providing grants, incubation and ecosystem benefits for local founders.",
     verified: "Sep 2026"
   },
   {
@@ -871,7 +870,7 @@ const FUNDING: FundingItem[] = [
     funding: "Program-specific support for NE startups",
     url: "https://startup.assam.gov.in/",
     domain: "startup.assam.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "State initiative supporting startups in Assam and the North-East with funding and incubation access.",
     verified: "Sep 2026"
   },
   {
@@ -884,10 +883,9 @@ const FUNDING: FundingItem[] = [
     funding: "Agri & rural enterprise focused AIF investments",
     url: "https://www.startupindia.gov.in/",
     domain: "startupindia.gov.in",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Fund supporting agriculture and rural startups through AIFs and direct investments in the agri value chain.",
     verified: "Sep 2026"
   },
-  // —— New Global schemes ——
   {
     id: "68",
     name: "Entrepreneur First",
@@ -898,7 +896,7 @@ const FUNDING: FundingItem[] = [
     funding: "Up to $250K program investment",
     url: "https://www.joinef.com/",
     domain: "joinef.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Pre-idea accelerator that helps talented individuals find co-founders and form companies, then invests in the best teams.",
     verified: "Sep 2026"
   },
   {
@@ -911,7 +909,7 @@ const FUNDING: FundingItem[] = [
     funding: "Deep-tech & health focused investment",
     url: "https://sosv.com/",
     domain: "sosv.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Deep-tech and life-sciences focused firm running HAX and IndieBio programs with lab space and capital.",
     verified: "Sep 2026"
   },
   {
@@ -924,7 +922,7 @@ const FUNDING: FundingItem[] = [
     funding: "Europe-focused early-stage investment",
     url: "https://seedcamp.com/",
     domain: "seedcamp.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Europe’s leading early-stage fund and accelerator network backing ambitious founders across the continent.",
     verified: "Sep 2026"
   },
   {
@@ -937,7 +935,7 @@ const FUNDING: FundingItem[] = [
     funding: "\~$200K for \~5–7.5% equity",
     url: "https://skydeck.berkeley.edu/",
     domain: "berkeley.edu",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "UC Berkeley accelerator offering capital, advisors and Demo Day exposure to deep-tech and software startups.",
     verified: "Sep 2026"
   },
   {
@@ -947,10 +945,10 @@ const FUNDING: FundingItem[] = [
     region: "Global",
     type: "Accelerator",
     stage: ["Idea", "Pre-Seed"],
-    funding: "Equity-based pre-seed program",
+    funding: "Equity-based pre-seed program (2.5% warrant)",
     url: "https://fi.co/",
     domain: "fi.co",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Global pre-seed accelerator operating in 200+ cities. Idea-stage founders form companies and join the Equity Collective.",
     verified: "Sep 2026"
   },
   {
@@ -963,7 +961,7 @@ const FUNDING: FundingItem[] = [
     funding: "Up to $1M ($500K + follow-on)",
     url: "https://a16z.com/",
     domain: "a16z.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Highly selective a16z accelerator for early AI, tech and entertainment startups with large checks and platform access.",
     verified: "Sep 2026"
   },
   {
@@ -976,7 +974,7 @@ const FUNDING: FundingItem[] = [
     funding: "$400K + guaranteed follow-on support",
     url: "https://www.southparkcommons.com/",
     domain: "southparkcommons.com",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Talent-dense community and Founder Fellowship offering $400K upfront for 7% plus guaranteed follow-on capital.",
     verified: "Sep 2026"
   },
   {
@@ -989,7 +987,73 @@ const FUNDING: FundingItem[] = [
     funding: "\~$125K for \~7% equity",
     url: "https://www.launch.co/",
     domain: "launch.co",
-    description: "Funding or startup ecosystem opportunity. Check the official source for current eligibility, application window and terms.",
+    description: "Selective accelerator by Jason Calacanis focused on small batches of high-potential startups with hands-on support.",
+    verified: "Sep 2026"
+  },
+  // —— 5 additional authentic global programs ——
+  {
+    id: "76",
+    name: "Station F",
+    provider: "Station F",
+    region: "Global",
+    type: "Accelerator / Campus",
+    stage: ["MVP", "Early Stage", "Growth"],
+    funding: "Program-specific (campus + selected tracks)",
+    url: "https://stationf.co/",
+    domain: "stationf.co",
+    description: "World’s largest startup campus in Paris. Offers space, programs and corporate partnerships for global founders.",
+    verified: "Sep 2026"
+  },
+  {
+    id: "77",
+    name: "AngelPad",
+    provider: "AngelPad",
+    region: "Global",
+    type: "Accelerator",
+    stage: ["MVP", "Early Stage"],
+    funding: "Program-specific investment",
+    url: "https://angelpad.com/",
+    domain: "angelpad.com",
+    description: "Highly selective early-stage accelerator known for intensive mentorship and strong follow-on outcomes.",
+    verified: "Sep 2026"
+  },
+  {
+    id: "78",
+    name: "Creative Destruction Lab",
+    provider: "Creative Destruction Lab",
+    region: "Global",
+    type: "Accelerator",
+    stage: ["Prototype", "MVP", "Early Stage"],
+    funding: "Mentorship-driven (equity varies by stream)",
+    url: "https://creativedestructionlab.com/",
+    domain: "creativedestructionlab.com",
+    description: "Objectives-based program for science and deep-tech startups with intensive mentor engagement across global sites.",
+    verified: "Sep 2026"
+  },
+  {
+    id: "79",
+    name: "Entrepreneurs Roundtable Accelerator",
+    provider: "ERA",
+    region: "Global",
+    type: "Accelerator",
+    stage: ["MVP", "Early Stage"],
+    funding: "Program-specific investment",
+    url: "https://www.eranyc.com/",
+    domain: "eranyc.com",
+    description: "New York-based accelerator providing capital, mentorship and a strong East Coast investor network.",
+    verified: "Sep 2026"
+  },
+  {
+    id: "80",
+    name: "HF0",
+    provider: "HF0",
+    region: "Global",
+    type: "Accelerator",
+    stage: ["Idea", "MVP", "Early Stage"],
+    funding: "Program-specific (live-in residency)",
+    url: "https://hf0.com/",
+    domain: "hf0.com",
+    description: "Intensive live-in accelerator residency designed for technical founders to ship product in a focused environment.",
     verified: "Sep 2026"
   }
 ];
@@ -1011,7 +1075,7 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
       </div>
     );
   return (
-    <div className="w-11 h-11 rounded-2xl bg-white/90 dark:bg-white/10 border border-[var(--border-primary)] flex items-center justify-center overflow-hidden shrink-0 backdrop-blur-sm">
+    <div className="w-11 h-11 rounded-2xl bg-white dark:bg-white/10 border border-[var(--border-primary)] flex items-center justify-center overflow-hidden shrink-0">
       <img
         src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
         alt=""
@@ -1023,7 +1087,7 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
   );
 };
 
-/* —— Custom Glass iOS-style Dropdown —— */
+/* —— Custom Glass Dropdown (white/glass panel) —— */
 const GlassSelect: React.FC<{
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -1047,13 +1111,11 @@ const GlassSelect: React.FC<{
         type="button"
         onClick={() => setOpen((o) => !o)}
         className="w-full h-11 px-4 rounded-full
-          bg-white/40 dark:bg-white/8
-          backdrop-blur-xl
-          border border-white/50 dark:border-white/15
-          shadow-[0_4px_24px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.4)]
-          text-xs font-semibold text-[var(--text-primary)]
+          bg-[var(--background-tertiary)]
+          border border-[var(--border-primary)]
+          text-xs font-medium text-[var(--text-primary)]
           flex items-center justify-between gap-2
-          outline-none focus:ring-2 focus:ring-purple-500/30
+          outline-none focus:ring-2 focus:ring-purple-500/25
           transition-all duration-200"
       >
         <span className="truncate">{value === "All" ? placeholder : value}</span>
@@ -1072,12 +1134,11 @@ const GlassSelect: React.FC<{
         <div
           className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto
             rounded-2xl
-            bg-white/70 dark:bg-[#1c1c1e]/85
-            backdrop-blur-2xl
-            border border-white/60 dark:border-white/10
-            shadow-[0_20px_60px_rgba(0,0,0,0.15),0_0_0_0.5px_rgba(0,0,0,0.05)]
-            py-1.5
-            animate-in fade-in slide-in-from-top-1 duration-150"
+            bg-white/95 dark:bg-[var(--component-background)]
+            backdrop-blur-xl
+            border border-[var(--border-primary)]
+            shadow-lg
+            py-1.5"
         >
           {options.map((option) => (
             <button
@@ -1090,7 +1151,7 @@ const GlassSelect: React.FC<{
               className={`w-full text-left px-4 py-2.5 text-xs font-medium transition-colors
                 ${
                   value === option
-                    ? "bg-purple-500/15 text-purple-600 dark:text-purple-400"
+                    ? "bg-purple-500/10 text-purple-600 dark:text-purple-400"
                     : "text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/10"
                 }`}
             >
@@ -1104,9 +1165,9 @@ const GlassSelect: React.FC<{
 };
 
 const Detail: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)]/80 backdrop-blur-sm p-3">
-    <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1">{label}</div>
-    <div className="text-[11px] font-semibold leading-5 break-words">{value}</div>
+  <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-3">
+    <div className="text-[8px] uppercase tracking-widest font-bold text-[var(--text-muted)] mb-1">{label}</div>
+    <div className="text-[11px] font-medium leading-5 break-words">{value}</div>
   </div>
 );
 
@@ -1143,53 +1204,48 @@ export const StartivesFundingPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full font-poppins text-[var(--text-primary)]">
+    <section className="w-full font-sans text-[var(--text-primary)]">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
-        {/* HEADER — no top pill */}
+        {/* HEADER */}
         <div className="mb-8 md:mb-10">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] leading-[0.98]">
               Find funding for your{" "}
-              <span
-                className="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-clip-text text-transparent"
-                style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
-              >
+              <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
                 startup.
               </span>
             </h1>
-            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl">
+            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-normal tracking-normal">
               Discover government schemes, grants, accelerators, VCs and startup programs with direct official links and
               filters for your stage and region.
             </p>
           </div>
         </div>
 
-        {/* FILTERS — search pill with reset inside + glass dropdowns */}
-        <div className="sticky top-2 z-20 mb-5 p-2 rounded-2xl bg-[var(--component-background)]/70 backdrop-blur-2xl border border-[var(--border-primary)]/60 shadow-sm">
+        {/* FILTERS */}
+        <div className="sticky top-2 z-20 mb-5 p-2 rounded-2xl bg-[var(--component-background)]/80 backdrop-blur-xl border border-[var(--border-primary)]">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.9fr_1fr_1fr_1fr] gap-2.5">
-            {/* Search + Reset inside pill */}
+            {/* Search + Reset */}
             <div className="relative flex items-center">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search funding, investor, sector..."
                 className="w-full h-11 pl-4 pr-20 rounded-full
-                  bg-white/40 dark:bg-white/8
-                  backdrop-blur-xl
-                  border border-white/50 dark:border-white/15
-                  shadow-[0_4px_24px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.35)]
+                  bg-[var(--background-tertiary)]
+                  border border-[var(--border-primary)]
                   text-xs md:text-sm text-[var(--text-primary)]
                   placeholder:text-[var(--text-muted)]
-                  outline-none focus:ring-2 focus:ring-purple-500/25
-                  transition-all"
+                  outline-none focus:ring-2 focus:ring-purple-500/20
+                  font-normal"
               />
               <button
                 type="button"
                 onClick={reset}
                 className="absolute right-1.5 h-8 px-3.5 rounded-full
-                  bg-gradient-to-r from-red-500 via-purple-500 to-blue-500
-                  text-white text-[10px] font-black uppercase tracking-wider
-                  shadow-md hover:opacity-90 active:scale-95 transition-all"
+                  bg-gradient-to-r from-red-500 to-blue-500
+                  text-white text-[10px] font-bold uppercase tracking-wider
+                  hover:opacity-90 active:scale-95 transition-all"
               >
                 Reset
               </button>
@@ -1202,10 +1258,10 @@ export const StartivesFundingPage: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between mb-3 px-1">
-          <p className="text-[11px] text-[var(--text-muted)]">
-            Showing <b className="text-[var(--text-primary)]">{filtered.length}</b> opportunities
+          <p className="text-[11px] text-[var(--text-muted)] font-normal">
+            Showing <b className="text-[var(--text-primary)] font-semibold">{filtered.length}</b> opportunities
           </p>
-          <p className="hidden sm:block text-[10px] text-[var(--text-muted)]">Updated: Sep 2026</p>
+          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-normal">Updated: Sep 2026</p>
         </div>
 
         {filtered.length > 0 ? (
@@ -1215,22 +1271,20 @@ export const StartivesFundingPage: React.FC = () => {
                 key={item.id}
                 onClick={() => setSelected(item)}
                 className="group cursor-pointer rounded-2xl
-                  bg-white/35 dark:bg-white/[0.06]
-                  backdrop-blur-xl
-                  border border-white/50 dark:border-white/10
-                  shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.4)]
+                  bg-[var(--component-background)]
+                  border border-[var(--border-primary)]
+                  shadow-sm
                   p-4 md:p-5
                   transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]
-                  hover:border-purple-500/25"
+                  hover:-translate-y-0.5 hover:shadow-md
+                  hover:border-purple-500/30"
               >
                 <div className="flex items-start justify-between gap-3">
                   <Logo item={item} />
-                  {/* Region pill (theme color) — type pill removed */}
                   <span className="inline-flex max-w-[140px] truncate px-2.5 py-1 rounded-full
-                    bg-gradient-to-r from-red-500/15 via-purple-500/15 to-blue-500/15
-                    border border-purple-500/25
-                    text-[9px] font-bold text-purple-600 dark:text-purple-400">
+                    bg-gradient-to-r from-red-500/10 to-blue-500/10
+                    border border-purple-500/20
+                    text-[9px] font-semibold text-purple-600 dark:text-purple-400">
                     {item.region}
                   </span>
                 </div>
@@ -1240,7 +1294,7 @@ export const StartivesFundingPage: React.FC = () => {
                 </h2>
                 <p className="mt-1 text-[10px] text-purple-500 font-medium truncate">{item.provider}</p>
 
-                <p className="mt-3 text-[11px] leading-[1.6] text-[var(--text-muted)] line-clamp-2 min-h-[35px]">
+                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-normal">
                   {item.description}
                 </p>
 
@@ -1248,23 +1302,23 @@ export const StartivesFundingPage: React.FC = () => {
                   {item.stage.slice(0, 3).map((s) => (
                     <span
                       key={s}
-                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)]/70 text-[9px] font-semibold text-[var(--text-muted)]"
+                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[9px] font-medium text-[var(--text-muted)]"
                     >
                       {s}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]/60">
-                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight">{item.funding}</p>
+                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]">
+                  <p className="text-[12px] md:text-[13px] font-semibold tracking-tight">{item.funding}</p>
                   <div className="mt-2 flex items-center justify-between gap-3">
-                    <span className="text-[9px] text-[var(--text-muted)]">Official source</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-normal">Official source</span>
                     <a
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-purple-600 dark:text-purple-400 hover:underline"
+                      className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 hover:underline"
                     >
                       Visit
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -1278,28 +1332,29 @@ export const StartivesFundingPage: React.FC = () => {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--border-primary)] p-14 text-center">
-            <p className="text-sm font-bold">No funding opportunities found</p>
-            <p className="mt-1 text-xs text-[var(--text-muted)]">Try another search or reset the filters.</p>
+            <p className="text-sm font-semibold">No funding opportunities found</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)] font-normal">Try another search or reset the filters.</p>
           </div>
         )}
 
-        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)]">
+        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-normal tracking-normal">
           Funding amounts, eligibility, deadlines and investment terms can change. Always verify the latest information
           on the official provider website before applying.
         </p>
       </div>
 
-      {/* DETAIL MODAL */}
+      {/* MODAL */}
       {selected && (
         <div
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-5 bg-black/65 backdrop-blur-md"
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-5 bg-black/50 dark:bg-black/70 backdrop-blur-sm"
           style={{ width: "100vw", height: "100dvh" }}
           onMouseDown={(e) => e.target === e.currentTarget && setSelected(null)}
         >
           <div
             className="w-full max-w-[620px] max-h-[88vh] overflow-y-auto rounded-[1.75rem]
-              bg-[var(--component-background)]/95 backdrop-blur-2xl
-              border border-[var(--border-primary)] shadow-2xl"
+              bg-[var(--component-background)]
+              border border-[var(--border-primary)]
+              shadow-2xl"
             onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="p-5 md:p-7">
@@ -1314,8 +1369,8 @@ export const StartivesFundingPage: React.FC = () => {
                 </button>
               </div>
 
-              <h2 className="mt-5 text-2xl md:text-4xl font-black tracking-[-0.04em] leading-tight">{selected.name}</h2>
-              <p className="mt-1 text-xs text-purple-500 font-semibold">
+              <h2 className="mt-5 text-2xl md:text-3xl font-black tracking-[-0.03em] leading-tight">{selected.name}</h2>
+              <p className="mt-1 text-xs text-purple-500 font-medium">
                 {selected.provider} · {selected.region}
               </p>
 
@@ -1328,37 +1383,26 @@ export const StartivesFundingPage: React.FC = () => {
                 <Detail label="Official domain" value={selected.domain} />
               </div>
 
-              <div className="mt-5 flex flex-col sm:flex-row gap-2.5">
+              {/* Single Visit button (Close removed — X already present) */}
+              <div className="mt-5">
                 <a
                   href={selected.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 h-11 rounded-full
-                    bg-gradient-to-r from-red-500 via-purple-500 to-blue-500
+                  className="w-full h-11 rounded-full
+                    bg-gradient-to-r from-red-500 to-blue-500
                     text-white flex items-center justify-center gap-1.5
-                    text-[10px] font-black uppercase tracking-widest
-                    shadow-lg hover:opacity-95 active:scale-[0.98] transition-all"
+                    text-[9px] font-bold uppercase tracking-widest
+                    hover:opacity-95 active:scale-[0.98] transition-all"
                 >
                   Visit Official Source
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                   </svg>
                 </a>
-                <button
-                  type="button"
-                  onClick={() => setSelected(null)}
-                  className="h-11 px-6 rounded-full
-                    border border-[var(--border-primary)]
-                    bg-[var(--background-tertiary)]
-                    text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]
-                    hover:text-[var(--text-primary)] hover:border-purple-500/40 transition-all"
-                >
-                  Close
-                </button>
               </div>
 
-              {/* Description moved below Close button */}
-              <p className="mt-5 text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] text-center sm:text-left">
+              <p className="mt-5 text-[11px] leading-6 text-[var(--text-muted)] font-normal">
                 {selected.description}
               </p>
             </div>
