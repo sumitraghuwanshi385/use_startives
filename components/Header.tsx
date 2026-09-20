@@ -198,6 +198,7 @@ const Header: React.FC = () => {
     { name: 'Startalks', path: '/startalks' },
     { name: 'Messenger', path: '/messages' },
     { name: 'Starverse', path: '/globe' },
+{ name: 'Fundverse', path: '/funding' },
   ];
 
   const getInitials = (name?: string): string => {
