@@ -1074,7 +1074,7 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
       </div>
     );
   return (
-    <div className="w-11 h-11 rounded-2xl bg-white/90 dark:bg-white/10 border border-[var(--border-primary)] flex items-center justify-center overflow-hidden shrink-0 backdrop-blur-sm">
+    <div className="w-11 h-11 rounded-2xl bg-white dark:bg-white/10 border border-[var(--border-primary)] flex items-center justify-center overflow-hidden shrink-0">
       <img
         src={`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`}
         alt=""
@@ -1086,6 +1086,7 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
   );
 };
 
+/* Dropdown — solid enough in light mode, light glass in dark */
 const GlassSelect: React.FC<{
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -1109,14 +1110,13 @@ const GlassSelect: React.FC<{
         type="button"
         onClick={() => setOpen((o) => !o)}
         className="w-full h-11 px-4 rounded-full
-          bg-white/40 dark:bg-white/[0.06]
-          backdrop-blur-xl
-          border border-white/50 dark:border-white/10
-          shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]
-          text-xs font-medium text-[var(--text-primary)] font-poppins
+          bg-[var(--background-tertiary)]
+          border border-[var(--border-primary)]
+          text-xs font-medium text-[var(--text-primary)] font-['Public_Sans']
           flex items-center justify-between gap-2
           outline-none focus:ring-2 focus:ring-purple-500/25
-          transition-all duration-200"
+          transition-all duration-200
+          shadow-sm"
       >
         <span className="truncate">{value === "All" ? placeholder : value}</span>
         <svg
@@ -1134,11 +1134,10 @@ const GlassSelect: React.FC<{
         <div
           className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto
             rounded-2xl
-            bg-white/90 dark:bg-[var(--component-background)]/95
-            backdrop-blur-2xl
-            border border-white/60 dark:border-white/10
-            shadow-[0_16px_48px_rgba(0,0,0,0.12)]
-            py-1.5 font-poppins"
+            bg-[var(--component-background)]
+            border border-[var(--border-primary)]
+            shadow-lg
+            py-1.5 font-['Public_Sans']"
         >
           {options.map((option) => (
             <button
@@ -1152,7 +1151,7 @@ const GlassSelect: React.FC<{
                 ${
                   value === option
                     ? "bg-purple-500/12 text-purple-600 dark:text-purple-400"
-                    : "text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/8"
+                    : "text-[var(--text-primary)] hover:bg-black/[0.04] dark:hover:bg-white/8"
                 }`}
             >
               {option}
@@ -1165,11 +1164,11 @@ const GlassSelect: React.FC<{
 };
 
 const Detail: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="rounded-2xl border border-[var(--border-primary)] bg-white/30 dark:bg-white/[0.04] backdrop-blur-md p-3">
-    <div className="text-[8px] uppercase tracking-widest font-bold text-[var(--text-muted)] mb-1 font-['Work_Sans']">
+  <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-3">
+    <div className="text-[8px] uppercase tracking-widest font-bold text-[var(--text-muted)] mb-1 font-['Archivo']">
       {label}
     </div>
-    <div className="text-[11px] font-semibold leading-5 break-words font-poppins">{value}</div>
+    <div className="text-[11px] font-semibold leading-5 break-words font-['Public_Sans']">{value}</div>
   </div>
 );
 
@@ -1206,9 +1205,9 @@ export const StartivesFundingPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full font-poppins text-[var(--text-primary)]">
+    <section className="w-full font-['Public_Sans'] text-[var(--text-primary)]">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
-        {/* HEADER */}
+        {/* HEADER — Poppins on title only */}
         <div className="mb-8 md:mb-10">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] leading-[0.98] font-poppins">
@@ -1217,19 +1216,19 @@ export const StartivesFundingPage: React.FC = () => {
                 startup.
               </span>
             </h1>
-            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-['Work_Sans']">
+            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-['Public_Sans']">
               Discover government schemes, grants, accelerators, VCs and startup programs with direct official links and
               filters for your stage and region.
             </p>
           </div>
         </div>
 
-        {/* FILTERS — glass bar */}
+        {/* FILTERS — reduced glass, solid in light */}
         <div className="sticky top-2 z-20 mb-5 p-2 rounded-2xl
-          bg-white/50 dark:bg-white/[0.05]
-          backdrop-blur-2xl
-          border border-white/60 dark:border-white/10
-          shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
+          bg-[var(--component-background)]
+          border border-[var(--border-primary)]
+          shadow-sm
+          dark:bg-white/[0.04] dark:backdrop-blur-md dark:border-white/10">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.9fr_1fr_1fr_1fr] gap-2.5">
             <div className="relative flex items-center">
               <input
@@ -1237,13 +1236,13 @@ export const StartivesFundingPage: React.FC = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search funding, investor, sector..."
                 className="w-full h-11 pl-4 pr-20 rounded-full
-                  bg-white/40 dark:bg-white/[0.06]
-                  backdrop-blur-xl
-                  border border-white/50 dark:border-white/10
+                  bg-[var(--background-tertiary)]
+                  border border-[var(--border-primary)]
                   text-xs md:text-sm text-[var(--text-primary)]
                   placeholder:text-[var(--text-muted)]
                   outline-none focus:ring-2 focus:ring-purple-500/20
-                  font-['Work_Sans']"
+                  font-['Public_Sans']
+                  shadow-sm"
               />
               <button
                 type="button"
@@ -1264,10 +1263,10 @@ export const StartivesFundingPage: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between mb-3 px-1">
-          <p className="text-[11px] text-[var(--text-muted)] font-['Work_Sans']">
+          <p className="text-[11px] text-[var(--text-muted)] font-['Public_Sans']">
             Showing <b className="text-[var(--text-primary)] font-semibold font-poppins">{filtered.length}</b> opportunities
           </p>
-          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-['Work_Sans']">Updated: Sep 2026</p>
+          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-['Public_Sans']">Updated: Sep 2026</p>
         </div>
 
         {filtered.length > 0 ? (
@@ -1277,31 +1276,32 @@ export const StartivesFundingPage: React.FC = () => {
                 key={item.id}
                 onClick={() => setSelected(item)}
                 className="group cursor-pointer rounded-2xl
-                  bg-white/40 dark:bg-white/[0.05]
-                  backdrop-blur-xl
-                  border border-white/50 dark:border-white/10
-                  shadow-[0_8px_32px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.35)]
+                  bg-[var(--component-background)]
+                  border border-[var(--border-primary)]
+                  shadow-sm
                   p-4 md:p-5
                   transition-all duration-300
-                  hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)]
-                  hover:border-purple-500/25"
+                  hover:-translate-y-0.5 hover:shadow-md
+                  hover:border-purple-500/25
+                  dark:bg-white/[0.04] dark:backdrop-blur-sm dark:border-white/10"
               >
                 <div className="flex items-start justify-between gap-3">
                   <Logo item={item} />
                   <span className="inline-flex max-w-[140px] truncate px-2.5 py-1 rounded-full
                     bg-gradient-to-r from-red-500/10 to-blue-500/10
                     border border-purple-500/20
-                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-poppins">
+                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-['Public_Sans']">
                     {item.region}
                   </span>
                 </div>
 
+                {/* Card name — Poppins */}
                 <h2 className="mt-4 text-[16px] md:text-[17px] leading-tight font-bold tracking-tight font-poppins group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   {item.name}
                 </h2>
-                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-['Work_Sans']">{item.provider}</p>
+                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-['Public_Sans']">{item.provider}</p>
 
-                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-['Work_Sans']">
+                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-['Public_Sans']">
                   {item.description}
                 </p>
 
@@ -1309,17 +1309,17 @@ export const StartivesFundingPage: React.FC = () => {
                   {item.stage.slice(0, 3).map((s) => (
                     <span
                       key={s}
-                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)]/80 text-[9px] font-medium text-[var(--text-muted)] font-poppins"
+                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[9px] font-medium text-[var(--text-muted)] font-['Public_Sans']"
                     >
                       {s}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]/50">
-                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-poppins">{item.funding}</p>
+                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]/60">
+                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-['Public_Sans']">{item.funding}</p>
                   <div className="mt-2 flex items-center justify-between gap-3">
-                    <span className="text-[9px] text-[var(--text-muted)] font-['Work_Sans']">Official source</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-['Public_Sans']">Official source</span>
                     <a
                       href={item.url}
                       target="_blank"
@@ -1340,11 +1340,11 @@ export const StartivesFundingPage: React.FC = () => {
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--border-primary)] p-14 text-center">
             <p className="text-sm font-bold font-poppins">No funding opportunities found</p>
-            <p className="mt-1 text-xs text-[var(--text-muted)] font-['Work_Sans']">Try another search or reset the filters.</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)] font-['Public_Sans']">Try another search or reset the filters.</p>
           </div>
         )}
 
-        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-['Caudex']">
+        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-['Archivo']">
           Funding amounts, eligibility, deadlines and investment terms can change. Always verify the latest information
           on the official provider website before applying.
         </p>
@@ -1353,14 +1353,13 @@ export const StartivesFundingPage: React.FC = () => {
       {/* MODAL */}
       {selected && (
         <div
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-5 bg-black/50 dark:bg-black/65 backdrop-blur-md"
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-5 bg-black/45 dark:bg-black/65 backdrop-blur-sm"
           style={{ width: "100vw", height: "100dvh" }}
           onMouseDown={(e) => e.target === e.currentTarget && setSelected(null)}
         >
           <div
             className="w-full max-w-[620px] max-h-[88vh] overflow-y-auto rounded-[1.75rem]
-              bg-[var(--component-background)]/95
-              backdrop-blur-2xl
+              bg-[var(--component-background)]
               border border-[var(--border-primary)]
               shadow-2xl"
             onMouseDown={(e) => e.stopPropagation()}
@@ -1380,24 +1379,21 @@ export const StartivesFundingPage: React.FC = () => {
               <h2 className="mt-5 text-2xl md:text-3xl font-black tracking-[-0.03em] leading-tight font-poppins">
                 {selected.name}
               </h2>
-              <p className="mt-1 text-xs text-purple-500 font-medium font-['Work_Sans']">
+              <p className="mt-1 text-xs text-purple-500 font-medium font-['Public_Sans']">
                 {selected.provider} · {selected.region}
               </p>
 
-              {/* Funding + Type */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                 <Detail label="Funding" value={selected.funding} />
                 <Detail label="Type" value={selected.type} />
               </div>
 
-              {/* Description between Funding/Type and rest */}
-              <div className="mt-3 rounded-2xl border border-[var(--border-primary)] bg-white/25 dark:bg-white/[0.04] backdrop-blur-md p-4">
-                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-['Work_Sans']">
+              <div className="mt-3 rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-4">
+                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-['Public_Sans']">
                   {selected.description}
                 </p>
               </div>
 
-              {/* Remaining details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
                 <Detail label="Startup stage" value={selected.stage.join(" · ")} />
                 <Detail label="Region" value={selected.region} />
@@ -1405,7 +1401,6 @@ export const StartivesFundingPage: React.FC = () => {
                 <Detail label="Official domain" value={selected.domain} />
               </div>
 
-              {/* Visit button */}
               <div className="mt-5">
                 <a
                   href={selected.url}
@@ -1424,8 +1419,7 @@ export const StartivesFundingPage: React.FC = () => {
                 </a>
               </div>
 
-              {/* Short disclaimer under Visit */}
-              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-['Caudex']">
+              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-['Archivo']">
                 Funding amounts, eligibility, deadlines and investment terms can change. Always verify.
               </p>
             </div>
