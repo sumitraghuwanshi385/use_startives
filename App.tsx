@@ -8,7 +8,7 @@ import PostIdeaPage from './pages/PostIdeaPage';
 import IdeaDetailPage from './pages/IdeaDetailPage';
 import AssetDetailsPage from './pages/AssetDetailsPage';
 import SubmitAssetPage from './pages/SubmitAssetPage';
-import StartivesFundingPage from "./StartivesFundingPage";
+import StartivesFundingPage from './pages/StartivesFundingPage';
 import EditAssetPage from './pages/EditAssetPage';
 import ApplyPage from './pages/ApplyPage';
 import NotificationArea from './components/NotificationArea';
