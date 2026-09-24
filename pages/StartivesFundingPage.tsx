@@ -1061,6 +1061,117 @@ const STAGES = ["All", "Idea", "Prototype", "MVP", "Pre-Seed", "Seed", "Early St
 const TYPES = ["All", ...Array.from(new Set(FUNDING.map((x) => x.type))).sort()];
 const REGIONS = ["All", ...Array.from(new Set(FUNDING.map((x) => x.region))).sort()];
 
+/* —— Icons (same style as ProjectsListPage) —— */
+const ChevronDownIconUI: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+  </svg>
+);
+
+const CheckIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+  </svg>
+);
+
+const GrowthIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+  </svg>
+);
+
+const CategoryIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className={className}>
+    <rect x="3" y="3" width="7" height="7" rx="2" />
+    <rect x="14" y="3" width="7" height="7" rx="2" />
+    <rect x="3" y="14" width="7" height="7" rx="2" />
+    <rect x="14" y="14" width="7" height="7" rx="2" />
+  </svg>
+);
+
+const MapPinIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+  </svg>
+);
+
+const SearchIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+  </svg>
+);
+
+/* —— Custom Dropdown (ProjectsListPage style) —— */
+interface CustomDropdownProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+  icon: React.ReactNode;
+}
+
+const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange, options, icon }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const selectedOption = options.find((opt) => opt.value === value);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none
+        ${
+          isOpen
+            ? "bg-white dark:bg-neutral-800 border-purple-500"
+            : "bg-gray-100 dark:bg-neutral-800 border-transparent hover:border-purple-500/50"
+        }
+        text-[var(--text-primary)] focus:outline-none flex-1 font-poppins`}
+      >
+        <span className="flex-shrink-0 text-purple-600 dark:text-purple-400">{icon}</span>
+        <span className="truncate max-w-[90px] font-poppins">
+          {selectedOption && selectedOption.value !== "All" ? selectedOption.label : label}
+        </span>
+        <ChevronDownIconUI className={`w-3 h-3 text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden font-poppins">
+          <div className="overflow-y-auto max-h-80 p-2 custom-scrollable">
+            {options.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => {
+                  onChange(option.value);
+                  setIsOpen(false);
+                }}
+                className={`w-full text-left px-3.5 py-2 rounded-xl text-xs transition-all duration-200 flex items-center justify-between group
+                  ${
+                    value === option.value
+                      ? "bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold"
+                      : "text-[var(--text-secondary)] hover:bg-[var(--component-background-hover)] hover:text-[var(--text-primary)]"
+                  }`}
+              >
+                <span className="truncate">{option.label}</span>
+                {value === option.value && <CheckIcon className="w-4 h-4" />}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
   const [failed, setFailed] = useState(false);
   if (failed)
@@ -1086,89 +1197,10 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
   );
 };
 
-/* Dropdown — solid enough in light mode, light glass in dark */
-const GlassSelect: React.FC<{
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
-  options: string[];
-  placeholder?: string;
-}> = ({ value, setValue, options, placeholder = "Select" }) => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative w-full">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="w-full h-11 px-4 rounded-full
-          bg-[var(--background-tertiary)]
-          border border-[var(--border-primary)]
-          text-xs font-medium text-[var(--text-primary)] font-['Public_Sans']
-          flex items-center justify-between gap-2
-          outline-none focus:ring-2 focus:ring-purple-500/25
-          transition-all duration-200
-          shadow-sm"
-      >
-        <span className="truncate">{value === "All" ? placeholder : value}</span>
-        <svg
-          className={`w-3.5 h-3.5 shrink-0 text-[var(--text-muted)] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2.5}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {open && (
-        <div
-          className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto
-            rounded-2xl
-            bg-[var(--component-background)]
-            border border-[var(--border-primary)]
-            shadow-lg
-            py-1.5 font-['Public_Sans']"
-        >
-          {options.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => {
-                setValue(option);
-                setOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2.5 text-xs font-medium transition-colors
-                ${
-                  value === option
-                    ? "bg-purple-500/12 text-purple-600 dark:text-purple-400"
-                    : "text-[var(--text-primary)] hover:bg-black/[0.04] dark:hover:bg-white/8"
-                }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
 const Detail: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-3">
-    <div className="text-[8px] uppercase tracking-widest font-bold text-[var(--text-muted)] mb-1 font-['Archivo']">
-      {label}
-    </div>
-    <div className="text-[11px] font-semibold leading-5 break-words font-['Public_Sans']">{value}</div>
+    <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1 font-poppins">{label}</div>
+    <div className="text-[11px] font-semibold leading-5 break-words font-poppins">{value}</div>
   </div>
 );
 
@@ -1205,68 +1237,80 @@ export const StartivesFundingPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full font-['Public_Sans'] text-[var(--text-primary)]">
+    <section className="w-full font-poppins text-[var(--text-primary)]">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
-        {/* HEADER — Poppins on title only */}
+        {/* HEADER */}
         <div className="mb-8 md:mb-10">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] leading-[0.98] font-poppins">
               Find funding for your{" "}
-              <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
-                startup.
-              </span>
+              <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">startup.</span>
             </h1>
-            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-['Public_Sans']">
+            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-medium font-poppins">
               Discover government schemes, grants, accelerators, VCs and startup programs with direct official links and
               filters for your stage and region.
             </p>
           </div>
         </div>
 
-        {/* FILTERS — reduced glass, solid in light */}
-        <div className="sticky top-2 z-20 mb-5 p-2 rounded-2xl
-          bg-[var(--component-background)]
-          border border-[var(--border-primary)]
-          shadow-sm
-          dark:bg-white/[0.04] dark:backdrop-blur-md dark:border-white/10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.9fr_1fr_1fr_1fr] gap-2.5">
-            <div className="relative flex items-center">
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search funding, investor, sector..."
-                className="w-full h-11 pl-4 pr-20 rounded-full
-                  bg-[var(--background-tertiary)]
-                  border border-[var(--border-primary)]
-                  text-xs md:text-sm text-[var(--text-primary)]
-                  placeholder:text-[var(--text-muted)]
-                  outline-none focus:ring-2 focus:ring-purple-500/20
-                  font-['Public_Sans']
-                  shadow-sm"
-              />
-              <button
-                type="button"
-                onClick={reset}
-                className="absolute right-1.5 h-8 px-3.5 rounded-full
-                  bg-gradient-to-r from-red-500 to-blue-500
-                  text-white text-[10px] font-bold uppercase tracking-wider font-poppins
-                  hover:opacity-90 active:scale-95 transition-all"
-              >
-                Reset
-              </button>
+        {/* Search — ProjectsListPage style pill */}
+        <div className="mb-4 flex justify-center">
+          <div className="relative group max-w-2xl w-full">
+            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+              <SearchIcon className="h-5 w-5 text-[var(--text-muted)]" />
             </div>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search funding, investor, sector..."
+              className="block w-full pl-12 pr-24 py-4 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none focus:border-purple-500 outline-none transition-all text-base font-medium font-poppins"
+            />
+            <button
+              type="button"
+              onClick={reset}
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-9 px-4 rounded-full
+                bg-gradient-to-r from-red-500 to-blue-500
+                text-white text-[10px] font-black uppercase tracking-wider font-poppins
+                hover:opacity-90 active:scale-95 transition-all"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
 
-            <GlassSelect value={stage} setValue={setStage} options={STAGES} placeholder="Stage" />
-            <GlassSelect value={type} setValue={setType} options={TYPES} placeholder="Type" />
-            <GlassSelect value={region} setValue={setRegion} options={REGIONS} placeholder="Region" />
+        {/* Filters — pill dropdowns like ProjectsListPage */}
+        <div className="sticky top-2 z-30 mb-5 py-2 border-b border-[var(--border-primary)] bg-[var(--background-secondary)]/80 backdrop-blur-lg -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center gap-3">
+            <CustomDropdown
+              label="All stages"
+              icon={<GrowthIcon className="w-3.5 h-3.5" />}
+              value={stage}
+              onChange={setStage}
+              options={STAGES.map((s) => ({ value: s, label: s === "All" ? "All stages" : s }))}
+            />
+            <CustomDropdown
+              label="All types"
+              icon={<CategoryIcon className="w-3.5 h-3.5" />}
+              value={type}
+              onChange={setType}
+              options={TYPES.map((t) => ({ value: t, label: t === "All" ? "All types" : t }))}
+            />
+            <CustomDropdown
+              label="All regions"
+              icon={<MapPinIcon className="w-3.5 h-3.5" />}
+              value={region}
+              onChange={setRegion}
+              options={REGIONS.map((r) => ({ value: r, label: r === "All" ? "All regions" : r }))}
+            />
           </div>
         </div>
 
         <div className="flex items-center justify-between mb-3 px-1">
-          <p className="text-[11px] text-[var(--text-muted)] font-['Public_Sans']">
-            Showing <b className="text-[var(--text-primary)] font-semibold font-poppins">{filtered.length}</b> opportunities
+          <p className="text-[11px] text-[var(--text-muted)] font-poppins">
+            Showing <b className="text-[var(--text-primary)] font-semibold">{filtered.length}</b> opportunities
           </p>
-          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-['Public_Sans']">Updated: Sep 2026</p>
+          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-poppins">Updated: Sep 2026</p>
         </div>
 
         {filtered.length > 0 ? (
@@ -1278,30 +1322,29 @@ export const StartivesFundingPage: React.FC = () => {
                 className="group cursor-pointer rounded-2xl
                   bg-[var(--component-background)]
                   border border-[var(--border-primary)]
-                  shadow-sm
+                  shadow-none
                   p-4 md:p-5
                   transition-all duration-300
                   hover:-translate-y-0.5 hover:shadow-md
                   hover:border-purple-500/25
-                  dark:bg-white/[0.04] dark:backdrop-blur-sm dark:border-white/10"
+                  font-poppins"
               >
                 <div className="flex items-start justify-between gap-3">
                   <Logo item={item} />
                   <span className="inline-flex max-w-[140px] truncate px-2.5 py-1 rounded-full
                     bg-gradient-to-r from-red-500/10 to-blue-500/10
                     border border-purple-500/20
-                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-['Public_Sans']">
+                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-poppins">
                     {item.region}
                   </span>
                 </div>
 
-                {/* Card name — Poppins */}
                 <h2 className="mt-4 text-[16px] md:text-[17px] leading-tight font-bold tracking-tight font-poppins group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   {item.name}
                 </h2>
-                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-['Public_Sans']">{item.provider}</p>
+                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-poppins">{item.provider}</p>
 
-                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-['Public_Sans']">
+                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-medium font-poppins">
                   {item.description}
                 </p>
 
@@ -1309,7 +1352,7 @@ export const StartivesFundingPage: React.FC = () => {
                   {item.stage.slice(0, 3).map((s) => (
                     <span
                       key={s}
-                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[9px] font-medium text-[var(--text-muted)] font-['Public_Sans']"
+                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[9px] font-medium text-[var(--text-muted)] font-poppins"
                     >
                       {s}
                     </span>
@@ -1317,9 +1360,9 @@ export const StartivesFundingPage: React.FC = () => {
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-[var(--border-primary)]/60">
-                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-['Public_Sans']">{item.funding}</p>
+                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-poppins">{item.funding}</p>
                   <div className="mt-2 flex items-center justify-between gap-3">
-                    <span className="text-[9px] text-[var(--text-muted)] font-['Public_Sans']">Official source</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-poppins">Official source</span>
                     <a
                       href={item.url}
                       target="_blank"
@@ -1340,11 +1383,11 @@ export const StartivesFundingPage: React.FC = () => {
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--border-primary)] p-14 text-center">
             <p className="text-sm font-bold font-poppins">No funding opportunities found</p>
-            <p className="mt-1 text-xs text-[var(--text-muted)] font-['Public_Sans']">Try another search or reset the filters.</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)] font-poppins">Try another search or reset the filters.</p>
           </div>
         )}
 
-        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-['Archivo']">
+        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-poppins">
           Funding amounts, eligibility, deadlines and investment terms can change. Always verify the latest information
           on the official provider website before applying.
         </p>
@@ -1361,7 +1404,7 @@ export const StartivesFundingPage: React.FC = () => {
             className="w-full max-w-[620px] max-h-[88vh] overflow-y-auto rounded-[1.75rem]
               bg-[var(--component-background)]
               border border-[var(--border-primary)]
-              shadow-2xl"
+              shadow-2xl font-poppins"
             onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="p-5 md:p-7">
@@ -1379,7 +1422,7 @@ export const StartivesFundingPage: React.FC = () => {
               <h2 className="mt-5 text-2xl md:text-3xl font-black tracking-[-0.03em] leading-tight font-poppins">
                 {selected.name}
               </h2>
-              <p className="mt-1 text-xs text-purple-500 font-medium font-['Public_Sans']">
+              <p className="mt-1 text-xs text-purple-500 font-medium font-poppins">
                 {selected.provider} · {selected.region}
               </p>
 
@@ -1388,8 +1431,12 @@ export const StartivesFundingPage: React.FC = () => {
                 <Detail label="Type" value={selected.type} />
               </div>
 
+              {/* Description with heading */}
               <div className="mt-3 rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-4">
-                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-['Public_Sans']">
+                <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1.5 font-poppins">
+                  Description
+                </div>
+                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-medium font-poppins">
                   {selected.description}
                 </p>
               </div>
@@ -1409,7 +1456,7 @@ export const StartivesFundingPage: React.FC = () => {
                   className="w-full h-11 rounded-full
                     bg-gradient-to-r from-red-500 to-blue-500
                     text-white flex items-center justify-center gap-1.5
-                    text-[9px] font-bold uppercase tracking-widest font-poppins
+                    text-[9px] font-black uppercase tracking-widest font-poppins
                     hover:opacity-95 active:scale-[0.98] transition-all"
                 >
                   Visit Official Source
@@ -1419,7 +1466,7 @@ export const StartivesFundingPage: React.FC = () => {
                 </a>
               </div>
 
-              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-['Archivo']">
+              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-poppins">
                 Funding amounts, eligibility, deadlines and investment terms can change. Always verify.
               </p>
             </div>
