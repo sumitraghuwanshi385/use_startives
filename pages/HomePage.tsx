@@ -11,7 +11,6 @@ import { ProjectCard } from '../pages/ProjectsListPage';
 import HeroSection from '../components/homepage/HeroSection';
 import StartalksSection from '../components/homepage/StartalksSection';
 import StartivesEcosystemSection from '../components/homepage/StartivesEcosystemSection';
-
 import {
   Users,
   Sparkles,
@@ -21,20 +20,12 @@ import {
   Rocket,
 } from 'lucide-react';
 
-
-/* =========================================================
-   IN VIEW
-========================================================= */
-
-function useInView<T extends HTMLElement>(
-  threshold = 0.2
-) {
+function useInView<T extends HTMLElement>(threshold = 0.2) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
-
     if (!node) return;
 
     const observer = new IntersectionObserver(
@@ -48,58 +39,31 @@ function useInView<T extends HTMLElement>(
     );
 
     observer.observe(node);
-
     return () => observer.disconnect();
   }, [threshold]);
 
-  return {
-    ref,
-    inView,
-  };
+  return { ref, inView };
 }
-
-
-/* =========================================================
-   REVEAL
-========================================================= */
 
 const Reveal: React.FC<{
   children: React.ReactNode;
   delay?: number;
   className?: string;
   as?: 'div' | 'section';
-}> = ({
-  children,
-  delay = 0,
-  className = '',
-  as = 'div',
-}) => {
-  const { ref, inView } =
-    useInView<HTMLDivElement>(0.15);
-
+}> = ({ children, delay = 0, className = '', as = 'div' }) => {
+  const { ref, inView } = useInView<HTMLDivElement>(0.15);
   const Tag = as as any;
 
   return (
     <Tag
       ref={ref}
-      className={`reveal-item ${
-        inView ? 'is-visible' : ''
-      } ${className}`}
-      style={{
-        transitionDelay: inView
-          ? `${delay}ms`
-          : '0ms',
-      }}
+      className={`reveal-item ${inView ? 'is-visible' : ''} ${className}`}
+      style={{ transitionDelay: inView ? `${delay}ms` : '0ms' }}
     >
       {children}
     </Tag>
   );
 };
-
-
-/* =========================================================
-   GRADIENT BUTTON
-========================================================= */
 
 const GradientButton: React.FC<{
   to?: string;
@@ -120,57 +84,25 @@ const GradientButton: React.FC<{
 }) => {
   const btnRef = useRef<HTMLElement | null>(null);
 
-  const handleMove = useCallback(
-    (e: React.MouseEvent) => {
-      const el = btnRef.current;
-
-      if (!el) return;
-
-      const rect = el.getBoundingClientRect();
-
-      el.style.setProperty(
-        '--x',
-        `${e.clientX - rect.left}px`
-      );
-
-      el.style.setProperty(
-        '--y',
-        `${e.clientY - rect.top}px`
-      );
-    },
-    []
-  );
+  const handleMove = useCallback((e: React.MouseEvent) => {
+    const el = btnRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--x', `${e.clientX - rect.left}px`);
+    el.style.setProperty('--y', `${e.clientY - rect.top}px`);
+  }, []);
 
   const commonClasses = `
-    button-gradient
-    magnetic-btn
-    group
-    relative
-    inline-flex
-    items-center
-    justify-center
-    overflow-hidden
-    text-white
-    font-semibold
-    py-3
-    px-8
-    rounded-full
-    text-base
-    transition-transform
-    duration-300
-    ease-out
-    hover:scale-[1.03]
-    active:scale-[0.98]
-    focus:outline-none
-    focus:ring-4
-    focus:ring-red-500/40
+    button-gradient magnetic-btn group relative inline-flex items-center justify-center
+    overflow-hidden text-white font-semibold py-3 px-8 rounded-full text-base
+    transition-transform duration-300 ease-out hover:scale-[1.03] active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-red-500/40
     ${className}
   `;
 
   const content = (
     <span className="relative z-10 flex items-center gap-2">
       {children}
-
       {icon && (
         <span className="transition-transform duration-300 group-hover:translate-x-1">
           {icon}
@@ -222,16 +154,7 @@ const GradientButton: React.FC<{
   );
 };
 
-
-/* =========================================================
-   COUNT UP
-========================================================= */
-
-const useCountUp = (
-  endValue: number,
-  active: boolean,
-  duration = 1800
-) => {
+const useCountUp = (endValue: number, active: boolean, duration = 1800) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -241,164 +164,64 @@ const useCountUp = (
     }
 
     let animationFrame: number;
-
     const startTime = performance.now();
 
     const animate = (currentTime: number) => {
-      const elapsed =
-        currentTime - startTime;
-
-      const progress = Math.min(
-        elapsed / duration,
-        1
-      );
-
-      const eased =
-        1 - Math.pow(1 - progress, 3);
-
-      setCount(
-        Math.round(endValue * eased)
-      );
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(endValue * eased));
 
       if (progress < 1) {
-        animationFrame =
-          requestAnimationFrame(animate);
+        animationFrame = requestAnimationFrame(animate);
       } else {
         setCount(endValue);
       }
     };
 
-    animationFrame =
-      requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(animationFrame);
-    };
-  }, [
-    endValue,
-    active,
-    duration,
-  ]);
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [endValue, active, duration]);
 
   return count;
 };
-
-
-/* =========================================================
-   ECOSYSTEM STAT
-========================================================= */
 
 const EcosystemStat: React.FC<{
   endValue: number;
   label: string;
   description: string;
   delay?: number;
-}> = ({
-  endValue,
-  label,
-  description,
-  delay = 0,
-}) => {
-  const { ref, inView } =
-    useInView<HTMLDivElement>(0.15);
-
-  const [shouldAnimate, setShouldAnimate] =
-    useState(false);
-
-  const count = useCountUp(
-    endValue,
-    shouldAnimate,
-    1800
-  );
+}> = ({ endValue, label, description, delay = 0 }) => {
+  const { ref, inView } = useInView<HTMLDivElement>(0.15);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const count = useCountUp(endValue, shouldAnimate, 1800);
 
   useEffect(() => {
     if (!inView) return;
-
-    const timer = window.setTimeout(() => {
-      setShouldAnimate(true);
-    }, delay);
-
-    return () =>
-      window.clearTimeout(timer);
+    const timer = window.setTimeout(() => setShouldAnimate(true), delay);
+    return () => window.clearTimeout(timer);
   }, [inView, delay]);
 
   return (
-    <div
-      ref={ref}
-      className="ecosystem-stat text-center"
-    >
+    <div ref={ref} className="ecosystem-stat text-center">
       <div
-        className={`
-          ecosystem-stat-number
-          button-gradient
-          text-3xl
-          sm:text-4xl
-          md:text-[42px]
-          font-black
-          tracking-[-0.04em]
-          tabular-nums
-          font-poppins
-          bg-clip-text
-          text-transparent
-          [-webkit-background-clip:text]
-          [-webkit-text-fill-color:transparent]
-          transition-all
-          duration-500
-          ${
-            shouldAnimate
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-2'
-          }
-        `}
+        className={`ecosystem-stat-number button-gradient text-3xl sm:text-4xl md:text-[42px] font-black tracking-[-0.04em] tabular-nums font-poppins bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] transition-all duration-500 ${
+          shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+        }`}
       >
         {count}+
       </div>
-
       <div
-        className={`
-          mt-0.5
-          text-[9px]
-          sm:text-[10px]
-          md:text-[11px]
-          font-bold
-          uppercase
-          tracking-[0.14em]
-          text-neutral-700
-          dark:text-neutral-300
-          font-poppins
-          transition-all
-          duration-500
-          ${
-            shouldAnimate
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-1'
-          }
-        `}
+        className={`mt-0.5 text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-700 dark:text-neutral-300 font-poppins transition-all duration-500 ${
+          shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'
+        }`}
       >
         {label}
       </div>
-
       <p
-        className={`
-          mt-1.5
-          max-w-[210px]
-          mx-auto
-          text-[10px]
-          sm:text-[10.5px]
-          md:text-[11px]
-          leading-[1.45]
-          font-medium
-          text-neutral-500
-          dark:text-neutral-400
-          font-poppins
-          transition-all
-          duration-500
-          ${
-            shouldAnimate
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-1'
-          }
-        `}
+        className={`mt-1.5 max-w-[210px] mx-auto text-[10px] sm:text-[10.5px] md:text-[11px] leading-[1.45] font-medium text-neutral-500 dark:text-neutral-400 font-poppins transition-all duration-500 ${
+          shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'
+        }`}
       >
         {description}
       </p>
@@ -406,60 +229,27 @@ const EcosystemStat: React.FC<{
   );
 };
 
-
-/* =========================================================
-   HOME PAGE
-========================================================= */
-
 const HomePage: React.FC = () => {
-
-  const pageRef =
-    useRef<HTMLDivElement>(null);
-
+  const pageRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { startupIdeas, currentUser } = useAppContext();
 
-  const {
-    startupIdeas,
-    currentUser,
-  } = useAppContext();
-
-
-  /* =======================================================
-     PROJECTS
-  ======================================================= */
-
-  const recentProjects = [
-    ...startupIdeas,
-  ]
-    .filter(
-      (idea) => !idea.askingPrice
-    )
+  const recentProjects = [...startupIdeas]
+    .filter((idea) => !idea.askingPrice)
     .sort(
       (a, b) =>
-        new Date(
-          b.createdAt || b.postedDate
-        ).getTime() -
-        new Date(
-          a.createdAt || a.postedDate
-        ).getTime()
+        new Date(b.createdAt || b.postedDate).getTime() -
+        new Date(a.createdAt || a.postedDate).getTime()
     )
     .slice(0, 4);
 
-
-  const handleProtectedRoute = (
-    path: string
-  ) => {
+  const handleProtectedRoute = (path: string) => {
     if (!currentUser) {
       navigate('/login');
     } else {
       navigate(path);
     }
   };
-
-
-  /* =======================================================
-     FEATURES
-  ======================================================= */
 
   const features = [
     {
@@ -491,11 +281,6 @@ const HomePage: React.FC = () => {
         'Access a global network of talent, mentors, and resources to grow your startup beyond its initial stages.',
     },
   ];
-
-
-  /* =======================================================
-     TESTIMONIALS — 7 CARDS
-  ======================================================= */
 
   const testimonials = [
     {
@@ -541,73 +326,42 @@ const HomePage: React.FC = () => {
     },
   ];
 
-
-  /* =======================================================
-     TESTIMONIAL PAUSE
-  ======================================================= */
-
-  const [
-    testimonialPaused,
-    setTestimonialPaused,
-  ] = useState(false);
-
-
-  /* =======================================================
-     WHY STARTIVES
-  ======================================================= */
+  const [testimonialPaused, setTestimonialPaused] = useState(false);
 
   const whyChooseFeatures = [
     {
       title: 'Forge global alliances.',
       description:
         'Break geographical barriers. Connect with a diverse pool of innovators, mentors, and investors from every corner of the globe.',
-      gradient:
-        'from-sky-400 to-cyan-300',
+      gradient: 'from-sky-400 to-cyan-300',
     },
     {
       title: 'Assemble your dream team.',
       description:
         'Find the missing piece to your puzzle. Our platform is the crucible where visionary founders meet brilliant developers and designers.',
-      gradient:
-        'from-red-500 to-red-400',
+      gradient: 'from-red-500 to-red-400',
     },
     {
       title: 'Launchpad for legends.',
       description:
         'Go from a spark of genius to a market-ready MVP. We provide the tools and community support to validate your vision.',
-      gradient:
-        'from-orange-400 to-yellow-300',
+      gradient: 'from-orange-400 to-yellow-300',
     },
   ];
 
-
   return (
-
     <div
       ref={pageRef}
-      className="
-        min-h-full
-        w-full
-        overflow-x-hidden
-        bg-white
-        dark:bg-black
-        text-black
-        dark:text-white
-        font-poppins
-      "
+      className="min-h-full w-full overflow-x-hidden bg-white dark:bg-black text-black dark:text-white font-poppins"
     >
-
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            '@context':
-              'https://schema.org',
-            '@type':
-              'Organization',
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
             name: APP_NAME,
-            url:
-              'https://startives.com',
+            url: 'https://startives.com',
             sameAs: [
               'https://linkedin.com/company/startives',
               'https://github.com/startives',
@@ -617,1699 +371,535 @@ const HomePage: React.FC = () => {
         }}
       />
 
-
       <div className="relative z-10 bg-white dark:bg-black">
-
-
-        {/* =================================================
-            HERO
-        ================================================= */}
-
         <HeroSection />
 
-
-        {/* =================================================
-            DISCOVER PROJECTS
-        ================================================= */}
-
         <section className="py-12 sm:py-16 bg-white dark:bg-black">
-
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-10">
-
               <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase text-black dark:text-white">
                 Discover Projects
               </h2>
-
               <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
-                Explore live startup ideas, apply
-                to join teams, or submit your own
+                Explore live startup ideas, apply to join teams, or submit your own
                 and find co-founders.
               </p>
-
             </Reveal>
 
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-              {recentProjects.map(
-                (idea, index) => (
-
-                  <Reveal
-                    key={idea.id}
-                    delay={index * 80}
+              {recentProjects.map((idea, index) => (
+                <Reveal key={idea.id} delay={index * 80}>
+                  <div
+                    onClick={() => handleProtectedRoute(`/idea/${idea.id}`)}
+                    className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
                   >
-
-                    <div
-                      onClick={() =>
-                        handleProtectedRoute(
-                          `/idea/${idea.id}`
-                        )
-                      }
-                      className="cursor-pointer transition-transform duration-300 hover:-translate-y-1"
-                    >
-
-                      <ProjectCard
-                        idea={idea}
-                      />
-
-                    </div>
-
-                  </Reveal>
-
-                )
-              )}
-
+                    <ProjectCard idea={idea} />
+                  </div>
+                </Reveal>
+              ))}
             </div>
 
-
-            <Reveal
-              className="flex justify-center gap-4 mt-10"
-              delay={160}
-            >
-
+            <Reveal className="flex justify-center gap-4 mt-10" delay={160}>
               <button
-                onClick={() =>
-                  handleProtectedRoute(
-                    '/discover'
-                  )
-                }
-                className="
-                  button-gradient
-                  text-white
-                  px-8
-                  py-2.5
-                  rounded-full
-                  text-[11px]
-                  font-black
-                  uppercase
-                  tracking-widest
-                  transition-transform
-                  duration-300
-                  hover:scale-105
-                  active:scale-95
-                "
+                onClick={() => handleProtectedRoute('/discover')}
+                className="button-gradient text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-transform duration-300 hover:scale-105 active:scale-95"
               >
                 Explore Projects
               </button>
-
-
               <button
-                onClick={() =>
-                  handleProtectedRoute(
-                    '/submit-idea'
-                  )
-                }
-                className="
-                  bg-white
-                  dark:bg-black
-                  border
-                  border-neutral-200
-                  dark:border-white/15
-                  text-black
-                  dark:text-white
-                  px-8
-                  py-2.5
-                  rounded-full
-                  text-[11px]
-                  font-black
-                  uppercase
-                  tracking-widest
-                  transition-all
-                  duration-300
-                  hover:scale-105
-                  active:scale-95
-                  hover:bg-neutral-50
-                  dark:hover:bg-white/[0.04]
-                "
+                onClick={() => handleProtectedRoute('/submit-idea')}
+                className="bg-white dark:bg-black border border-neutral-200 dark:border-white/15 text-black dark:text-white px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 hover:bg-neutral-50 dark:hover:bg-white/[0.04]"
               >
                 Submit Idea
               </button>
-
             </Reveal>
-
           </div>
-
         </section>
 
-
-        {/* =================================================
-            ECOSYSTEM
-        ================================================= */}
-
         <section className="py-8 sm:py-10 bg-white dark:bg-black relative overflow-hidden">
-
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-2 sm:mb-3">
-
               <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight font-poppins uppercase">
                 An ecosystem in motion
               </h2>
-
             </Reveal>
 
-
-            <Reveal
-              className="text-center mb-3 sm:mb-4"
-              delay={50}
-            >
-
+            <Reveal className="text-center mb-3 sm:mb-4" delay={50}>
               <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm sm:text-base font-medium leading-relaxed font-poppins">
-                Witness the pulse of innovation.
-                Our platform is a dynamic network
-                where connections spark, ideas ignite,
-                and ventures take flight every day.
+                Witness the pulse of innovation. Our platform is a dynamic network
+                where connections spark, ideas ignite, and ventures take flight every
+                day.
               </p>
-
             </Reveal>
 
-
-            <Reveal
-              className="w-full"
-              delay={90}
-            >
-
+            <Reveal className="w-full" delay={90}>
               <div className="ecosystem-image-wrap w-full flex justify-center">
-
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787123288/file_000000005e3881fab327925e0e8d2e28_kbpxgq.png"
                   alt="Startives ecosystem"
-                  className="
-                    block
-                    dark:hidden
-                    w-full
-                    max-w-[1100px]
-                    h-auto
-                    object-contain
-                    object-center
-                  "
+                  className="block dark:hidden w-full max-w-[1100px] h-auto object-contain object-center"
                 />
-
                 <img
                   src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787122074/file_00000000b90081fab560a74114540bc4_vea15j.png"
                   alt="Startives ecosystem"
-                  className="
-                    hidden
-                    dark:block
-                    w-full
-                    max-w-[1100px]
-                    h-auto
-                    object-contain
-                    object-center
-                  "
+                  className="hidden dark:block w-full max-w-[1100px] h-auto object-contain object-center"
                 />
-
               </div>
-
             </Reveal>
 
-
-            <Reveal
-              className="w-full mt-4 sm:mt-5"
-              delay={130}
-            >
-
+            <Reveal className="w-full mt-4 sm:mt-5" delay={130}>
               <div className="w-full max-w-4xl mx-auto">
-
                 <div className="ecosystem-stats grid grid-cols-1 md:grid-cols-3">
-
                   <EcosystemStat
                     endValue={50}
                     label="Projects Launched"
                     description="Ideas turning into real products, teams, and ventures."
                     delay={0}
                   />
-
                   <EcosystemStat
                     endValue={200}
                     label="Founders Connected"
                     description="Builders finding the right people to bring their vision to life."
                     delay={120}
                   />
-
                   <EcosystemStat
                     endValue={500}
                     label="Innovators"
                     description="A growing community of creators, developers, and ambitious minds."
                     delay={240}
                   />
-
                 </div>
-
               </div>
-
             </Reveal>
-
           </div>
-
         </section>
 
-
-        {/* =================================================
-            FEATURES
-        ================================================= */}
-
         <section className="py-10 sm:py-12 bg-white dark:bg-black">
-
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-8 sm:mb-9">
-
               <h2 className="text-[21px] sm:text-2xl md:text-3xl font-extrabold text-black dark:text-white mb-2 tracking-tight font-poppins uppercase">
                 Everything you need to start
               </h2>
-
               <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-[12.5px] sm:text-[13.5px] font-medium font-poppins">
-                From idea to launch, {APP_NAME}
-                provides the tools and community
-                to support your journey.
+                From idea to launch, {APP_NAME} provides the tools and community to
+                support your journey.
               </p>
-
             </Reveal>
 
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {features.map((feature, index) => (
+                <Reveal key={index} delay={index * 90}>
+                  <div className="feature-liquid-card group relative overflow-hidden min-h-[315px] sm:min-h-[335px] p-5 sm:p-5.5 rounded-[1.7rem] border border-neutral-200 dark:border-white/15 flex flex-col transition-all duration-500 hover:-translate-y-2">
+                    <div className="feature-card-number">#{index + 1}</div>
+                    <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
+                    <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
+                    <div className="absolute -top-20 -right-16 w-36 h-36 rounded-full bg-red-500/[0.08] blur-[55px] pointer-events-none" />
+                    <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/70 dark:border-white/10 pointer-events-none" />
 
-              {features.map(
-                (feature, index) => (
-
-                  <Reveal
-                    key={index}
-                    delay={index * 90}
-                  >
-
-                    <div
-                      className="
-                        feature-liquid-card
-                        group
-                        relative
-                        overflow-hidden
-                        min-h-[315px]
-                        sm:min-h-[335px]
-                        p-5
-                        sm:p-5.5
-                        rounded-[1.7rem]
-                        border
-                        border-neutral-200
-                        dark:border-white/15
-                        flex
-                        flex-col
-                        transition-all
-                        duration-500
-                        hover:-translate-y-2
-                      "
-                    >
-
-                      <div className="feature-card-number">
-                        #{index + 1}
-                      </div>
-
-
-                      <div className="absolute inset-0 bg-white/70 dark:bg-black/70 backdrop-blur-2xl" />
-
-                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.08] via-purple-500/[0.06] to-blue-500/[0.13] pointer-events-none dark:opacity-40" />
-
-                      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-60 h-36 rounded-full bg-blue-500/[0.15] blur-[60px] pointer-events-none transition-all duration-500 group-hover:bg-blue-500/[0.22]" />
-
-                      <div className="absolute -top-20 -right-16 w-36 h-36 rounded-full bg-red-500/[0.08] blur-[55px] pointer-events-none" />
-
-                      <div className="absolute inset-[1px] rounded-[calc(1.7rem-1px)] border border-white/70 dark:border-white/10 pointer-events-none" />
-
-
-                      <div className="relative z-10 flex flex-col h-full">
-
-                        <div className="flex-1 flex items-center justify-center">
-
-                          <div className="relative w-full h-[165px] sm:h-[175px] flex items-center justify-center">
-
-                            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
-
-                            <img
-                              src={feature.image}
-                              alt={feature.title}
-                              className="
-                                relative
-                                z-10
-                                w-[162px]
-                                h-[162px]
-                                sm:w-[184px]
-                                sm:h-[184px]
-                                object-contain
-                                transition-transform
-                                duration-500
-                                ease-out
-                                group-hover:scale-[1.06]
-                                group-hover:-translate-y-1
-                              "
-                            />
-
-                          </div>
-
+                    <div className="relative z-10 flex flex-col h-full">
+                      <div className="flex-1 flex items-center justify-center">
+                        <div className="relative w-full h-[165px] sm:h-[175px] flex items-center justify-center">
+                          <div className="absolute w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-br from-red-500/10 via-purple-500/10 to-blue-500/20 blur-3xl" />
+                          <img
+                            src={feature.image}
+                            alt={feature.title}
+                            className="relative z-10 w-[162px] h-[162px] sm:w-[184px] sm:h-[184px] object-contain transition-transform duration-500 ease-out group-hover:scale-[1.06] group-hover:-translate-y-1"
+                          />
                         </div>
-
-
-                        <div className="text-center">
-
-                          <h3 className="text-[15px] sm:text-[16px] font-bold text-black dark:text-white mb-1.5 tracking-tight font-poppins">
-                            {feature.title}
-                          </h3>
-
-                          <p className="text-[10.5px] sm:text-[11px] font-medium leading-[1.5] font-poppins max-w-[245px] mx-auto text-neutral-600 dark:text-neutral-400">
-                            {feature.description}
-                          </p>
-
-                        </div>
-
                       </div>
-
+                      <div className="text-center">
+                        <h3 className="text-[15px] sm:text-[16px] font-bold text-black dark:text-white mb-1.5 tracking-tight font-poppins">
+                          {feature.title}
+                        </h3>
+                        <p className="text-[10.5px] sm:text-[11px] font-medium leading-[1.5] font-poppins max-w-[245px] mx-auto text-neutral-600 dark:text-neutral-400">
+                          {feature.description}
+                        </p>
+                      </div>
                     </div>
-
-                  </Reveal>
-
-                )
-              )}
-
+                  </div>
+                </Reveal>
+              ))}
             </div>
-
           </div>
-
         </section>
-
-
-        {/* =================================================
-            STARTALKS
-        ================================================= */}
 
         <StartalksSection Reveal={Reveal} />
 
-
-        {/* =================================================
-            STARTIVES ECOSYSTEM
-        ================================================= */}
-
         <StartivesEcosystemSection />
 
-
-        {/* =================================================
-            WHY STARTIVES
-        ================================================= */}
-
-        <section className="py-12 sm:py-16 bg-white dark:bg-black">
-
+        <section className="py-12 sm:py-16 bg-white dark:bg-black overflow-hidden">
           <div className="container mx-auto px-4">
-
             <Reveal className="text-center mb-10">
-
-              <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight font-poppins uppercase">
-                Why Startives exists?
+              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-poppins uppercase text-black dark:text-white">
+                What builders are saying
               </h2>
-
-              <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                We're more than a platform; we're
-                your strategic partner in innovation.
+              <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base font-medium font-poppins">
+                Real voices from founders, developers, and designers building on
+                Startives.
               </p>
-
             </Reveal>
-
-
-            <div className="max-w-4xl mx-auto space-y-12">
-
-              {whyChooseFeatures.map(
-                (feature, index) => (
-
-                  <Reveal
-                    key={index}
-                    delay={index * 100}
-                    className={`flex flex-col ${
-                      index % 2 === 0
-                        ? 'md:items-start text-center md:text-left'
-                        : 'md:items-end text-center md:text-right'
-                    }`}
-                  >
-
-                    <h3
-                      className={`
-                        text-2xl
-                        font-bold
-                        bg-gradient-to-r
-                        ${feature.gradient}
-                        gradient-text
-                        mb-3
-                        inline-block
-                        tracking-tight
-                        font-poppins
-                      `}
-                    >
-                      {feature.title}
-                    </h3>
-
-                    <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base leading-relaxed max-w-3xl font-medium font-poppins">
-                      {feature.description}
-                    </p>
-
-                  </Reveal>
-
-                )
-              )}
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        {/* =================================================
-            TESTIMONIALS
-        ================================================= */}
-
-        <section className="py-12 sm:py-16 bg-white dark:bg-black">
-
-          <div className="container mx-auto px-4 max-w-7xl">
-
-            <Reveal className="text-center mb-10">
-
-              <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white tracking-tight font-poppins uppercase">
-                From our community
-              </h2>
-
-              <p className="text-neutral-600 dark:text-neutral-400 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium font-poppins">
-                Innovators are building,
-                connecting, and succeeding on{' '}
-                {APP_NAME}.
-              </p>
-
-            </Reveal>
-
 
             <div
-              className="
-                relative
-                w-full
-                overflow-hidden
-                mask-gradient
-              "
+              className="relative w-full overflow-hidden"
+              onMouseEnter={() => setTestimonialPaused(true)}
+              onMouseLeave={() => setTestimonialPaused(false)}
             >
-
               <div
-                className={`
-                  testimonials-marquee-track
-                  flex
-                  ${
-                    testimonialPaused
-                      ? 'testimonial-marquee-paused'
-                      : ''
-                  }
-                `}
+                className={`testimonials-marquee-track ${
+                  testimonialPaused ? 'testimonial-marquee-paused' : ''
+                }`}
               >
+                {[...testimonials, ...testimonials].map((testimonial, index) => (
+                  <div key={index} className="testimonial-card-item">
+                    <div className="testimonial-gradient-card relative rounded-[1.5rem] p-5 sm:p-6 flex flex-col cursor-pointer select-none font-poppins">
+                      <img
+                        src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute -top-4 -right-4 w-[87px] h-[87px] object-contain opacity-[0.15] dark:opacity-[0.17] pointer-events-none z-[1]"
+                      />
+                      <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-white/[0.10] via-transparent to-white/[0.035] pointer-events-none z-[2]" />
 
-                {[
-                  ...testimonials,
-                  ...testimonials,
-                  ...testimonials,
-                ].map(
-                  (
-                    testimonial,
-                    index
-                  ) => (
-
-                    <div
-                      key={`\( {testimonial.name}- \){index}`}
-                      className="
-                        testimonial-card-item
-                        flex-shrink-0
-                      "
-                    >
-
-                      <div
-                        onClick={() =>
-                          setTestimonialPaused(
-                            (prev) => !prev
-                          )
-                        }
-                        className="
-                          testimonial-gradient-card
-                          relative
-                          overflow-hidden
-                          p-[18px]
-                          sm:p-[20px]
-                          rounded-[1.4rem]
-                          min-h-[212.34px]
-                          flex
-                          flex-col
-                          cursor-pointer
-                          select-none
-                          font-poppins
-                        "
-                      >
-
-                        {/* SINGLE STARTIVES LOGO */}
-
-                        <img
-                          src="https://res.cloudinary.com/dp7avkarg/image/upload/v1774009098/Picsart_26-03-20_17-47-02-831_szxuv6.png"
-                          alt=""
-                          aria-hidden="true"
-                          className="
-                            absolute
-                            -top-4
-                            -right-4
-                            w-[87px]
-                            h-[87px]
-                            object-contain
-                            opacity-[0.15]
-                            dark:opacity-[0.17]
-                            pointer-events-none
-                            z-[1]
-                          "
-                        />
-
-
-                        {/* SUBTLE INNER GLASS */}
-
-                        <div
-                          className="
-                            absolute
-                            inset-0
-                            rounded-[inherit]
-                            bg-gradient-to-br
-                            from-white/[0.10]
-                            via-transparent
-                            to-white/[0.035]
-                            pointer-events-none
-                            z-[2]
-                          "
-                        />
-
-
-                        {/* STARS */}
-
-                        <div
-                          className="
-                            relative
-                            z-10
-                            flex
-                            items-center
-                            mb-3.5
-                          "
-                        >
-
-                          <div
-                            className="
-                              flex
-                              space-x-1
-                              text-yellow-400
-                            "
-                          >
-
-                            {Array.from({
-                              length: 5,
-                            }).map(
-                              (_, starIndex) => (
-
-                                <Star
-                                  key={starIndex}
-                                  className="
-                                    w-[13px]
-                                    h-[13px]
-                                    fill-current
-                                  "
-                                />
-
-                              )
-                            )}
-
-                          </div>
-
+                      <div className="relative z-10 flex items-center mb-3.5">
+                        <div className="flex space-x-1 text-yellow-400">
+                          {Array.from({ length: 5 }).map((_, starIndex) => (
+                            <Star
+                              key={starIndex}
+                              className="w-[13px] h-[13px] fill-current"
+                            />
+                          ))}
                         </div>
-
-
-                        {/* QUOTE */}
-
-                        <p
-                          className="
-                            relative
-                            z-10
-                            text-neutral-800
-                            dark:text-neutral-200
-                            text-[10px]
-                            sm:text-[10.5px]
-                            italic
-                            flex-grow
-                            leading-[1.55]
-                            font-medium
-                          "
-                        >
-                          "{testimonial.quote}"
-                        </p>
-
-
-                        {/* AUTHOR */}
-
-                        <div
-                          className="
-                            relative
-                            z-10
-                            mt-3.5
-                          "
-                        >
-
-                          <p
-                            className="
-                              font-bold
-                              text-black
-                              dark:text-white
-                              text-[10.5px]
-                            "
-                          >
-                            {testimonial.name}
-                          </p>
-
-                          <p
-                            className="
-                              mt-0.5
-                              text-[8.5px]
-                              text-neutral-600
-                              dark:text-neutral-400
-                            "
-                          >
-                            {testimonial.role}
-                          </p>
-
-                        </div>
-
                       </div>
 
+                      <p className="relative z-10 text-neutral-800 dark:text-neutral-200 text-[10px] sm:text-[10.5px] italic flex-grow leading-[1.55] font-medium">
+                        "{testimonial.quote}"
+                      </p>
+
+                      <div className="relative z-10 mt-3.5">
+                        <p className="font-bold text-black dark:text-white text-[10.5px]">
+                          {testimonial.name}
+                        </p>
+                        <p className="mt-0.5 text-[8.5px] text-neutral-600 dark:text-neutral-400">
+                          {testimonial.role}
+                        </p>
+                      </div>
                     </div>
-
-                  )
-                )}
-
+                  </div>
+                ))}
               </div>
-
             </div>
-
           </div>
-
         </section>
 
-
-        {/* =================================================
-            LAUNCH YOUR VISION
-        ================================================= */}
-
         <section className="text-center pt-2 pb-0 sm:pt-3 sm:pb-0 px-4 bg-white dark:bg-black">
-
           <Reveal className="container mx-auto max-w-5xl font-poppins">
-
-            {/* LIGHT MODE */}
-
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787509112/Picsart_26-08-23_23-45-37-694_dwftvg.jpg"
               alt=""
               aria-hidden="true"
-              className="
-                mx-auto
-                w-full
-                max-w-4xl
-                h-auto
-                object-contain
-                object-center
-                block
-                dark:hidden
-              "
+              className="mx-auto w-full max-w-4xl h-auto object-contain object-center block dark:hidden"
             />
-
-            {/* DARK MODE */}
-
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787509110/IMG_20260823_234748_rfqpc9.jpg"
               alt=""
               aria-hidden="true"
-              className="
-                mx-auto
-                w-full
-                max-w-4xl
-                h-auto
-                object-contain
-                object-center
-                hidden
-                dark:block
-              "
+              className="mx-auto w-full max-w-4xl h-auto object-contain object-center hidden dark:block"
             />
 
-
             <div className="mt-4 sm:mt-5 flex justify-center">
-
               <Link
                 to="/signup"
-                className="
-                  button-gradient
-                  group
-                  relative
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-3.5
-                  rounded-full
-                  px-[6.92px]
-                  py-[6.05px]
-                  pl-[18.68px]
-                  sm:pl-[21.80px]
-                  text-white
-                  font-bold
-                  text-[10.90px]
-                  sm:text-[11.68px]
-                  tracking-tight
-                  select-none
-                  overflow-hidden
-                  transition-all
-                  duration-300
-                  hover:scale-[1.035]
-                  active:scale-[0.97]
-                  focus:outline-none
-                  focus-visible:ring-4
-                  focus-visible:ring-red-500/40
-                "
+                className="button-gradient group relative inline-flex items-center justify-center gap-3.5 rounded-full px-[6.92px] py-[6.05px] pl-[18.68px] sm:pl-[21.80px] text-white font-bold text-[10.90px] sm:text-[11.68px] tracking-tight select-none overflow-hidden transition-all duration-300 hover:scale-[1.035] active:scale-[0.97] focus:outline-none focus-visible:ring-4 focus-visible:ring-red-500/40"
               >
-
                 <span className="relative z-10 whitespace-nowrap">
                   Launch your vision
                 </span>
-
-
-                <span
-                  className="
-                    relative
-                    z-10
-                    flex
-                    items-center
-                    justify-center
-                    w-[28.02px]
-                    h-[28.02px]
-                    sm:w-[31.14px]
-                    sm:h-[31.14px]
-                    rounded-full
-                    overflow-hidden
-                    border
-                    border-white/60
-                    dark:border-white/12
-                    bg-white/25
-                    dark:bg-black/30
-                    backdrop-blur-xl
-                    shadow-[inset_0_1px_2px_rgba(255,255,255,0.65)]
-                    transition-all
-                    duration-300
-                  "
-                >
-
-                  <span
-                    className="
-                      absolute
-                      inset-0
-                      rounded-full
-                      bg-gradient-to-br
-                      from-red-500/35
-                      via-purple-400/20
-                      to-blue-500/40
-                      opacity-70
-                      pointer-events-none
-                    "
-                  />
-
-                  <span
-                    className="
-                      absolute
-                      inset-[1px]
-                      rounded-full
-                      bg-white/20
-                      dark:bg-black/35
-                      backdrop-blur-md
-                    "
-                  />
-
-                  <ArrowRight
-                    className="
-                      relative
-                      z-10
-                      w-[12.45px]
-                      h-[12.45px]
-                      sm:w-[14.02px]
-                      sm:h-[14.02px]
-                      text-white
-                      transition-transform
-                      duration-300
-                      group-hover:translate-x-0.5
-                    "
-                  />
-
+                <span className="relative z-10 flex items-center justify-center w-[28.02px] h-[28.02px] sm:w-[31.14px] sm:h-[31.14px] rounded-full overflow-hidden border border-white/60 dark:border-white/12 bg-white/25 dark:bg-black/30 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.65)] transition-all duration-300">
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500/35 via-purple-400/20 to-blue-500/40 opacity-70 pointer-events-none" />
+                  <span className="absolute inset-[1px] rounded-full bg-white/20 dark:bg-black/35 backdrop-blur-md" />
+                  <ArrowRight className="relative z-10 w-[12.45px] h-[12.45px] sm:w-[14.02px] sm:h-[14.02px] text-white transition-transform duration-300 group-hover:translate-x-0.5" />
                 </span>
-
               </Link>
-
             </div>
-
           </Reveal>
-
         </section>
 
-
         <div className="w-full bg-white dark:bg-black h-8 sm:h-10" />
-
       </div>
 
-
-      {/* =====================================================
-          GLOBAL PAGE STYLES
-      ===================================================== */}
-
       <style>{`
-
-        /* =========================================
-           REVEAL
-        ========================================= */
-
         .reveal-item {
           opacity: 0;
           transform: translateY(24px);
-
-          transition:
-            opacity 0.7s
-              cubic-bezier(0.16, 1, 0.3, 1),
-            transform 0.7s
-              cubic-bezier(0.16, 1, 0.3, 1);
-
-          will-change:
-            opacity,
-            transform;
+          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
         }
-
         .reveal-item.is-visible {
           opacity: 1;
           transform: translateY(0);
         }
-
-
-        /* =========================================
-           MAGNETIC BUTTON
-        ========================================= */
-
         .magnetic-btn::before {
           content: '';
-
           position: absolute;
           inset: 0;
-
-          background:
-            radial-gradient(
-              120px circle at
-              var(--x, 50%)
-              var(--y, 50%),
-              rgba(255, 255, 255, 0.25),
-              transparent 70%
-            );
-
+          background: radial-gradient(120px circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.25), transparent 70%);
           opacity: 0;
-
-          transition:
-            opacity 0.3s ease;
-
+          transition: opacity 0.3s ease;
           pointer-events: none;
         }
-
         .magnetic-btn:hover::before {
           opacity: 1;
         }
-
-
-        /* =========================================
-           ECOSYSTEM
-        ========================================= */
-
         .ecosystem-image-wrap {
           width: 100%;
           margin-top: 0;
         }
-
         .ecosystem-stats {
           width: 100%;
         }
-
         .ecosystem-stat {
           min-width: 0;
           padding: 0 18px;
         }
-
-        .ecosystem-stat
-        + .ecosystem-stat {
-          border-left:
-            1px solid
-            rgba(0, 0, 0, 0.08);
+        .ecosystem-stat + .ecosystem-stat {
+          border-left: 1px solid rgba(0, 0, 0, 0.08);
         }
-
-        .dark
-        .ecosystem-stat
-        + .ecosystem-stat {
-          border-left-color:
-            rgba(255, 255, 255, 0.10);
+        .dark .ecosystem-stat + .ecosystem-stat {
+          border-left-color: rgba(255, 255, 255, 0.10);
         }
-
         .ecosystem-stat-number {
           line-height: 1;
-
-          background-clip:
-            text !important;
-
-          -webkit-background-clip:
-            text !important;
-
-          color:
-            transparent !important;
-
-          -webkit-text-fill-color:
-            transparent !important;
+          background-clip: text !important;
+          -webkit-background-clip: text !important;
+          color: transparent !important;
+          -webkit-text-fill-color: transparent !important;
         }
-
-
-        /* =========================================
-           FEATURE NUMBERS
-        ========================================= */
-
         .feature-card-number {
           position: absolute;
-
           top: 13px;
           left: 18px;
-
           z-index: 30;
-
-          font-family:
-            Poppins,
-            sans-serif;
-
+          font-family: Poppins, sans-serif;
           font-size: 32.4px;
-
           line-height: 1;
-
           font-weight: 900;
-
-          letter-spacing:
-            -0.055em;
-
-          color:
-            rgba(72, 78, 88, 0.48);
-
-          text-shadow:
-            0 2px 0
-              rgba(255, 255, 255, 0.85),
-            0 5px 12px
-              rgba(80, 85, 95, 0.20),
-            0 10px 22px
-              rgba(80, 85, 95, 0.12);
-
+          letter-spacing: -0.055em;
+          color: rgba(72, 78, 88, 0.48);
+          text-shadow: 0 2px 0 rgba(255, 255, 255, 0.85), 0 5px 12px rgba(80, 85, 95, 0.20), 0 10px 22px rgba(80, 85, 95, 0.12);
           pointer-events: none;
-
           user-select: none;
-
-          transition:
-            transform 0.4s
-              cubic-bezier(0.16, 1, 0.3, 1),
-            color 0.4s ease,
-            text-shadow 0.4s ease;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, text-shadow 0.4s ease;
         }
-
         .dark .feature-card-number {
-          color:
-            rgba(72, 78, 88, 0.48);
-
-          text-shadow:
-            0 2px 0
-              rgba(255, 255, 255, 0.85),
-            0 5px 12px
-              rgba(80, 85, 95, 0.20),
-            0 10px 22px
-              rgba(80, 85, 95, 0.12);
+          color: rgba(72, 78, 88, 0.48);
+          text-shadow: 0 2px 0 rgba(255, 255, 255, 0.85), 0 5px 12px rgba(80, 85, 95, 0.20), 0 10px 22px rgba(80, 85, 95, 0.12);
         }
-
-        .feature-liquid-card:hover
-        .feature-card-number {
-          transform:
-            translateY(-2px)
-            scale(1.05);
-
-          color:
-            rgba(58, 64, 74, 0.58);
-
-          text-shadow:
-            0 2px 0
-              rgba(255, 255, 255, 0.9),
-            0 6px 16px
-              rgba(70, 75, 85, 0.24),
-            0 12px 28px
-              rgba(70, 75, 85, 0.15);
+        .feature-liquid-card:hover .feature-card-number {
+          transform: translateY(-2px) scale(1.05);
+          color: rgba(58, 64, 74, 0.58);
+          text-shadow: 0 2px 0 rgba(255, 255, 255, 0.9), 0 6px 16px rgba(70, 75, 85, 0.24), 0 12px 28px rgba(70, 75, 85, 0.15);
         }
-
-        .dark
-        .feature-liquid-card:hover
-        .feature-card-number {
-          color:
-            rgba(58, 64, 74, 0.58);
-
-          text-shadow:
-            0 2px 0
-              rgba(255, 255, 255, 0.9),
-            0 6px 16px
-              rgba(70, 75, 85, 0.24),
-            0 12px 28px
-              rgba(70, 75, 85, 0.15);
+        .dark .feature-liquid-card:hover .feature-card-number {
+          color: rgba(58, 64, 74, 0.58);
+          text-shadow: 0 2px 0 rgba(255, 255, 255, 0.9), 0 6px 16px rgba(70, 75, 85, 0.24), 0 12px 28px rgba(70, 75, 85, 0.15);
         }
-
-
-        /* =========================================
-           FEATURE CARDS
-        ========================================= */
-
         .feature-liquid-card {
-          -webkit-backdrop-filter:
-            blur(26px)
-            saturate(180%);
-
-          backdrop-filter:
-            blur(26px)
-            saturate(180%);
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 255, 255, 0.82),
-              rgba(255, 255, 255, 0.55)
-            );
-
-          box-shadow:
-            none !important;
+          -webkit-backdrop-filter: blur(26px) saturate(180%);
+          backdrop-filter: blur(26px) saturate(180%);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.55));
+          box-shadow: none !important;
         }
-
         .dark .feature-liquid-card {
-          background:
-            #000000 !important;
-
-          box-shadow:
-            none !important;
+          background: #000000 !important;
+          box-shadow: none !important;
         }
-
         .feature-liquid-card::before {
           content: '';
-
           position: absolute;
           inset: 0;
-
-          border-radius:
-            inherit;
-
-          background:
-            linear-gradient(
-              115deg,
-              rgba(255, 255, 255, 0.72),
-              transparent 28%,
-              transparent 70%,
-              rgba(255, 255, 255, 0.35)
-            );
-
+          border-radius: inherit;
+          background: linear-gradient(115deg, rgba(255, 255, 255, 0.72), transparent 28%, transparent 70%, rgba(255, 255, 255, 0.35));
           opacity: 0.75;
-
           pointer-events: none;
         }
-
-        .dark
-        .feature-liquid-card::before {
-          background:
-            transparent;
-
+        .dark .feature-liquid-card::before {
+          background: transparent;
           opacity: 0;
         }
-
         .feature-liquid-card::after {
           content: '';
-
           position: absolute;
-
           left: 8%;
           right: 8%;
           top: 0;
-
           height: 1px;
-
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(255, 255, 255, 0.95),
-              transparent
-            );
-
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
           pointer-events: none;
         }
-
-        .dark
-        .feature-liquid-card::after {
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(255, 255, 255, 0.12),
-              transparent
-            );
+        .dark .feature-liquid-card::after {
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
         }
-
         .feature-liquid-card:hover {
-          border-color:
-            rgba(255, 255, 255, 0.95);
-
-          box-shadow:
-            none !important;
+          border-color: rgba(255, 255, 255, 0.95);
+          box-shadow: none !important;
         }
-
-        .dark
-        .feature-liquid-card:hover {
-          border-color:
-            rgba(255, 255, 255, 0.18);
-
-          box-shadow:
-            none !important;
+        .dark .feature-liquid-card:hover {
+          border-color: rgba(255, 255, 255, 0.18);
+          box-shadow: none !important;
         }
-
-
-        /* =================================================
-           TESTIMONIALS
-           7 CARD SEAMLESS MARQUEE
-           SPEED = 38.8s
-        ================================================= */
-
         .testimonials-marquee-track {
-
-          display:
-            flex;
-
-          width:
-            max-content;
-
-          animation:
-            testimonial-marquee
-            38.8s
-            linear
-            infinite;
-
-          will-change:
-            transform;
-
-          transform:
-            translate3d(0, 0, 0);
-
-          backface-visibility:
-            hidden;
+          display: flex;
+          width: max-content;
+          animation: testimonial-marquee 38.8s linear infinite;
+          will-change: transform;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
         }
-
-
         .testimonials-marquee-track.testimonial-marquee-paused {
-
-          animation-play-state:
-            paused;
+          animation-play-state: paused;
         }
-
-
-        /* =================================================
-           TESTIMONIAL CARD WIDTH
-           433.33px
-        ================================================= */
-
         .testimonial-card-item {
-
-          width:
-            433.33px;
-
-          margin-right:
-            32px;
-
-          flex:
-            0 0 433.33px;
+          width: 433.33px;
+          margin-right: 32px;
+          flex: 0 0 433.33px;
         }
-
-
-        /* =================================================
-           TESTIMONIAL GRADIENT CARD
-           height 212.34px
-        ================================================= */
-
         .testimonial-gradient-card {
-
-          position:
-            relative;
-
-          isolation:
-            isolate;
-
-          width:
-            100%;
-
-          min-height:
-            212.34px;
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(255, 68, 80, 0.18) 0%,
-              rgba(190, 65, 175, 0.14) 48%,
-              rgba(50, 125, 255, 0.19) 100%
-            );
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.68);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.42);
-
-          transition:
-            none !important;
+          position: relative;
+          isolation: isolate;
+          width: 100%;
+          min-height: 212.34px;
+          background: linear-gradient(135deg, rgba(255, 68, 80, 0.18) 0%, rgba(190, 65, 175, 0.14) 48%, rgba(50, 125, 255, 0.19) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.68);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.42);
+          transition: none !important;
         }
-
-
-        /* =================================================
-           DARK MODE GRADIENT
-        ================================================= */
-
         .dark .testimonial-gradient-card {
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(120, 25, 40, 0.34) 0%,
-              rgba(70, 30, 72, 0.30) 48%,
-              rgba(20, 65, 125, 0.36) 100%
-            );
-
-          border-color:
-            rgba(255, 255, 255, 0.12);
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.07);
-
-          -webkit-backdrop-filter:
-            blur(18px)
-            saturate(145%);
-
-          backdrop-filter:
-            blur(18px)
-            saturate(145%);
+          background: linear-gradient(135deg, rgba(120, 25, 40, 0.34) 0%, rgba(70, 30, 72, 0.30) 48%, rgba(20, 65, 125, 0.36) 100%);
+          border-color: rgba(255, 255, 255, 0.12);
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.07);
+          -webkit-backdrop-filter: blur(18px) saturate(145%);
+          backdrop-filter: blur(18px) saturate(145%);
         }
-
-
-        /* =================================================
-           NO HOVER MOVEMENT / SHADOW
-        ================================================= */
-
         .testimonial-gradient-card:hover {
-
-          transform:
-            none !important;
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.42) !important;
-
-          border-color:
-            rgba(255, 255, 255, 0.68) !important;
+          transform: none !important;
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.42) !important;
+          border-color: rgba(255, 255, 255, 0.68) !important;
         }
-
-
-        .dark
-        .testimonial-gradient-card:hover {
-
-          transform:
-            none !important;
-
-          box-shadow:
-            inset 0 1px 1px
-              rgba(255, 255, 255, 0.07) !important;
-
-          border-color:
-            rgba(255, 255, 255, 0.12) !important;
+        .dark .testimonial-gradient-card:hover {
+          transform: none !important;
+          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.07) !important;
+          border-color: rgba(255, 255, 255, 0.12) !important;
         }
-
-
-        /* =================================================
-           NO DIVIDER INSIDE TESTIMONIAL
-        ================================================= */
-
-        .testimonial-gradient-card
-        .border-t {
-
-          border-top:
-            0 !important;
+        .testimonial-gradient-card .border-t {
+          border-top: 0 !important;
         }
-
-
-        /* =================================================
-           SEAMLESS 7-CARD LOOP
-        ================================================= */
-
         @keyframes testimonial-marquee {
-
-          from {
-
-            transform:
-              translate3d(
-                0,
-                0,
-                0
-              );
-
-          }
-
-          to {
-
-            transform:
-              translate3d(
-                calc(
-                  -7 *
-                  (433.33px + 32px)
-                ),
-                0,
-                0
-              );
-
-          }
-
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(calc(-7 * (433.33px + 32px)), 0, 0); }
         }
-
-
-        /* =================================================
-           MOBILE TESTIMONIALS
-        ================================================= */
-
         @media (max-width: 639px) {
-
           .testimonial-card-item {
-
-            width:
-              78.78vw;
-
-            max-width:
-              433.33px;
-
-            flex:
-              0 0 78.78vw;
-
-            margin-right:
-              24px;
+            width: 78.78vw;
+            max-width: 433.33px;
+            flex: 0 0 78.78vw;
+            margin-right: 24px;
           }
-
-
           .testimonial-gradient-card {
-
-            min-height:
-              212.34px;
-
-            padding:
-              18px;
-
-            border-radius:
-              1.4rem;
+            min-height: 212.34px;
+            padding: 18px;
+            border-radius: 1.4rem;
           }
-
-
           .testimonial-gradient-card:hover {
-
-            transform:
-              none !important;
+            transform: none !important;
           }
-
-
           @keyframes testimonial-marquee {
-
-            from {
-
-              transform:
-                translate3d(
-                  0,
-                  0,
-                  0
-                );
-
-            }
-
-            to {
-
-              transform:
-                translate3d(
-                  calc(
-                    -7 *
-                    (78.78vw + 24px)
-                  ),
-                  0,
-                  0
-                );
-
-            }
-
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(calc(-7 * (78.78vw + 24px)), 0, 0); }
           }
-
         }
-
-
-        /* =================================================
-           FLOAT
-        ================================================= */
-
         @keyframes float-slow {
-
-          0%,
-          100% {
-            transform:
-              translate(0, 0);
-          }
-
-          50% {
-            transform:
-              translate(12px, -18px);
-          }
-
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(12px, -18px); }
         }
-
         .animate-float-slow {
-
-          animation:
-            float-slow
-            8s
-            ease-in-out
-            infinite;
+          animation: float-slow 8s ease-in-out infinite;
         }
-
-
-        /* =================================================
-           MOBILE
-        ================================================= */
-
         @media (max-width: 639px) {
-
           .ecosystem-stat-number.button-gradient {
-
-            background-clip:
-              text !important;
-
-            -webkit-background-clip:
-              text !important;
-
-            color:
-              transparent !important;
-
-            -webkit-text-fill-color:
-              transparent !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            color: transparent !important;
+            -webkit-text-fill-color: transparent !important;
           }
-
-
           .ecosystem-stats {
-
-            display:
-              flex;
-
-            flex-direction:
-              column;
-
-            align-items:
-              center;
-
-            gap:
-              0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
           }
-
-
           .ecosystem-stat {
-
-            width:
-              100%;
-
-            padding:
-              9px 0;
+            width: 100%;
+            padding: 9px 0;
           }
-
-
-          .ecosystem-stat
-          + .ecosystem-stat {
-
-            border-left:
-              0;
-
-            border-top:
-              1px solid
-              rgba(0, 0, 0, 0.08);
+          .ecosystem-stat + .ecosystem-stat {
+            border-left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
           }
-
-
-          .dark
-          .ecosystem-stat
-          + .ecosystem-stat {
-
-            border-top-color:
-              rgba(255, 255, 255, 0.10);
+          .dark .ecosystem-stat + .ecosystem-stat {
+            border-top-color: rgba(255, 255, 255, 0.10);
           }
-
-
           .ecosystem-image-wrap {
-
-            margin-top:
-              0;
+            margin-top: 0;
           }
-
-
           .feature-liquid-card {
-
-            min-height:
-              315px;
-
-            padding:
-              20px;
-
-            border-radius:
-              1.7rem;
+            min-height: 315px;
+            padding: 20px;
+            border-radius: 1.7rem;
           }
-
-
           .feature-card-number {
-
-            top:
-              14px;
-
-            left:
-              17px;
-
-            font-size:
-              28.8px;
-
-            letter-spacing:
-              -0.055em;
+            top: 14px;
+            left: 17px;
+            font-size: 28.8px;
+            letter-spacing: -0.055em;
           }
-
-
           .feature-liquid-card img {
-
-            width:
-              162px;
-
-            height:
-              162px;
+            width: 162px;
+            height: 162px;
           }
-
         }
-
-
-        /* =================================================
-           DESKTOP
-        ================================================= */
-
         @media (min-width: 640px) {
-
           .ecosystem-stats {
-
-            grid-template-columns:
-              repeat(
-                3,
-                minmax(0, 1fr)
-              );
+            grid-template-columns: repeat(3, minmax(0, 1fr));
           }
-
-
           .feature-card-number {
-
-            top:
-              14px;
-
-            left:
-              18px;
-
-            font-size:
-              32.4px;
+            top: 14px;
+            left: 18px;
+            font-size: 32.4px;
           }
-
         }
-
-
-        /* =================================================
-           REDUCED MOTION
-        ================================================= */
-
         @media (prefers-reduced-motion: reduce) {
-
           .reveal-item {
-
-            opacity:
-              1 !important;
-
-            transform:
-              none !important;
-
-            transition:
-              none !important;
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
           }
-
-
           .animate-float-slow {
-
-            animation:
-              none !important;
+            animation: none !important;
           }
-
-
           .feature-liquid-card {
-
-            transition:
-              none !important;
+            transition: none !important;
           }
-
-
           .feature-card-number {
-
-            transition:
-              none !important;
+            transition: none !important;
           }
-
-
           .testimonials-marquee-track {
-
-            animation:
-              none !important;
+            animation: none !important;
           }
-
         }
-
       `}</style>
-
     </div>
   );
 };
-
 
 export default HomePage;
