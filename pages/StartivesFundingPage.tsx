@@ -1127,7 +1127,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none font-['Inter']
+        className={`flex items-center justify-center gap-1 px-2 py-1 text-[10px] font-bold rounded-full transition-all duration-300 border shadow-none font-['Plus_Jakarta_Sans']
         ${
           isOpen
             ? "bg-white dark:bg-neutral-800 border-purple-500"
@@ -1143,7 +1143,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({ label, value, onChange,
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden font-['Inter']">
+        <div className="absolute left-0 mt-2 w-56 max-h-80 bg-[var(--component-background)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl shadow-2xl z-[100] overflow-hidden font-['Plus_Jakarta_Sans']">
           <div className="overflow-y-auto max-h-80 p-2 custom-scrollable">
             {options.map((option) => (
               <button
@@ -1197,8 +1197,8 @@ const Logo: React.FC<{ item: FundingItem }> = ({ item }) => {
 
 const Detail: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-3">
-    <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1 font-['Inter']">{label}</div>
-    <div className="text-[11px] font-semibold leading-5 break-words font-['Space_Grotesk']">{value}</div>
+    <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1 font-['Plus_Jakarta_Sans']">{label}</div>
+    <div className="text-[11px] font-semibold leading-5 break-words font-['Plus_Jakarta_Sans']">{value}</div>
   </div>
 );
 
@@ -1235,7 +1235,7 @@ export const StartivesFundingPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full font-['Inter'] text-[var(--text-primary)]">
+    <section className="w-full font-['Plus_Jakarta_Sans'] text-[var(--text-primary)]">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
         <div className="mb-8 md:mb-10">
           <div className="max-w-3xl">
@@ -1243,7 +1243,7 @@ export const StartivesFundingPage: React.FC = () => {
               Find funding for your{" "}
               <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">startup.</span>
             </h1>
-            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-medium font-['Inter']">
+            <p className="mt-4 text-sm md:text-base leading-7 text-[var(--text-muted)] max-w-2xl font-medium font-['Plus_Jakarta_Sans']">
               Discover government schemes, grants, accelerators, VCs and startup programs with direct official links and
               filters for your stage and region.
             </p>
@@ -1263,9 +1263,9 @@ export const StartivesFundingPage: React.FC = () => {
               className="block w-full pl-12 pr-24 py-4
                 bg-[var(--component-background)] border border-[var(--border-primary)] rounded-full shadow-none
                 focus:border-purple-500 outline-none transition-all
-                text-sm font-medium font-['Space_Grotesk']
+                text-sm font-medium font-['Plus_Jakarta_Sans']
                 text-[var(--text-primary)]
-                placeholder:text-[13px] placeholder:font-['Space_Grotesk'] placeholder:text-[var(--text-muted)]"
+                placeholder:text-[13px] placeholder:font-['Plus_Jakarta_Sans'] placeholder:text-[var(--text-muted)]"
             />
             <button
               type="button"
@@ -1307,10 +1307,10 @@ export const StartivesFundingPage: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between mb-3 px-1">
-          <p className="text-[11px] text-[var(--text-muted)] font-['Inter']">
+          <p className="text-[11px] text-[var(--text-muted)] font-['Plus_Jakarta_Sans']">
             Showing <b className="text-[var(--text-primary)] font-semibold font-poppins">{filtered.length}</b> opportunities
           </p>
-          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-['Inter']">Updated: Sep 2026</p>
+          <p className="hidden sm:block text-[10px] text-[var(--text-muted)] font-['Plus_Jakarta_Sans']">Updated: Sep 2026</p>
         </div>
 
         {filtered.length > 0 ? (
@@ -1333,7 +1333,7 @@ export const StartivesFundingPage: React.FC = () => {
                   <span className="inline-flex max-w-[140px] truncate px-2.5 py-1 rounded-full
                     bg-gradient-to-r from-red-500/10 to-blue-500/10
                     border border-purple-500/20
-                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-['Inter']">
+                    text-[9px] font-semibold text-purple-600 dark:text-purple-400 font-['Plus_Jakarta_Sans']">
                     {item.region}
                   </span>
                 </div>
@@ -1341,27 +1341,18 @@ export const StartivesFundingPage: React.FC = () => {
                 <h2 className="mt-4 text-[16px] md:text-[17px] leading-tight font-bold tracking-tight font-poppins group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   {item.name}
                 </h2>
-                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-['Inter']">{item.provider}</p>
+                <p className="mt-1 text-[10px] text-purple-500 font-medium truncate font-['Plus_Jakarta_Sans']">{item.provider}</p>
 
-                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-medium font-['Space_Grotesk']">
+                <p className="mt-3 text-[11px] leading-[1.55] text-[var(--text-muted)] line-clamp-2 min-h-[34px] font-medium font-['Plus_Jakarta_Sans']">
                   {item.description}
                 </p>
 
-                <div className="flex flex-wrap gap-1.5 mt-4">
-                  {item.stage.slice(0, 3).map((s) => (
-                    <span
-                      key={s}
-                      className="px-2 py-1 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[9px] font-medium text-[var(--text-muted)] font-['Inter']"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
+                {/* Stage pills removed from card — only in modal */}
 
-                <div className="mt-4 pt-3 border-t border-[var(--border-primary)]/60">
-                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-['Inter']">{item.funding}</p>
+                <div className="mt-4 pt-3 border-t border-gray-200 dark:border-neutral-700">
+                  <p className="text-[12px] md:text-[13px] font-bold tracking-tight font-['Plus_Jakarta_Sans']">{item.funding}</p>
                   <div className="mt-2 flex items-center justify-between gap-3">
-                    <span className="text-[9px] text-[var(--text-muted)] font-['Inter']">Official source</span>
+                    <span className="text-[9px] text-[var(--text-muted)] font-['Plus_Jakarta_Sans']">Official source</span>
                     <a
                       href={item.url}
                       target="_blank"
@@ -1382,11 +1373,11 @@ export const StartivesFundingPage: React.FC = () => {
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--border-primary)] p-14 text-center">
             <p className="text-sm font-bold font-poppins">No funding opportunities found</p>
-            <p className="mt-1 text-xs text-[var(--text-muted)] font-['Inter']">Try another search or reset the filters.</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)] font-['Plus_Jakarta_Sans']">Try another search or reset the filters.</p>
           </div>
         )}
 
-        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-['Inter']">
+        <p className="mt-7 px-1 text-[10px] leading-5 text-[var(--text-muted)] font-['Plus_Jakarta_Sans']">
           Funding amounts, eligibility, deadlines and investment terms can change. Always verify the latest information
           on the official provider website before applying.
         </p>
@@ -1420,7 +1411,7 @@ export const StartivesFundingPage: React.FC = () => {
               <h2 className="mt-5 text-2xl md:text-3xl font-black tracking-[-0.03em] leading-tight font-poppins">
                 {selected.name}
               </h2>
-              <p className="mt-1 text-xs text-purple-500 font-medium font-['Inter']">
+              <p className="mt-1 text-xs text-purple-500 font-medium font-['Plus_Jakarta_Sans']">
                 {selected.provider} · {selected.region}
               </p>
 
@@ -1430,10 +1421,10 @@ export const StartivesFundingPage: React.FC = () => {
               </div>
 
               <div className="mt-3 rounded-2xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-4">
-                <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1.5 font-['Inter']">
+                <div className="text-[8px] uppercase tracking-widest font-black text-[var(--text-muted)] mb-1.5 font-['Plus_Jakarta_Sans']">
                   Description
                 </div>
-                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-medium font-['Space_Grotesk']">
+                <p className="text-[11px] md:text-xs leading-6 text-[var(--text-secondary)] font-medium font-['Plus_Jakarta_Sans']">
                   {selected.description}
                 </p>
               </div>
@@ -1463,8 +1454,8 @@ export const StartivesFundingPage: React.FC = () => {
                 </a>
               </div>
 
-              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-['Inter']">
-                Funding amounts, eligibility, deadlines and investment terms can change. So, always verify.
+              <p className="mt-4 text-[9px] leading-5 text-[var(--text-muted)] text-center font-['Plus_Jakarta_Sans']">
+                Funding amounts, eligibility, deadlines and investment terms can change. Always verify.
               </p>
             </div>
           </div>
