@@ -6,12 +6,28 @@ import {
   Rocket,
   CircleDollarSign,
   HandCoins,
+  Building2,
+  Briefcase,
+  TrendingUp,
 } from 'lucide-react';
 
 const FundverseSection: React.FC = () => {
+  const pills = [
+    { icon: Landmark, label: 'Grants', sub: '₹ Government' },
+    { icon: CircleDollarSign, label: 'Investors', sub: 'Smart Capital' },
+    { icon: Rocket, label: 'Accelerators', sub: 'Growth Programs' },
+    { icon: HandCoins, label: 'Funding', sub: 'Opportunities' },
+    { icon: Building2, label: 'Govt Schemes', sub: 'Official Support' },
+    { icon: Briefcase, label: 'Startup Programs', sub: 'Early Stage' },
+    { icon: TrendingUp, label: 'Venture Capital', sub: 'Scale Ready' },
+  ];
+
+  // Duplicate for seamless infinite scroll
+  const slidingPills = [...pills, ...pills];
+
   return (
     <section className="relative w-full overflow-hidden px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
-      {/* Soft ambient red-blue background (contrast +15%) */}
+      {/* Soft ambient red-blue background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-br from-red-400/10 via-purple-400/8 to-blue-400/10 rounded-full blur-[120px]" />
         <div className="absolute -top-20 right-0 w-80 h-80 bg-blue-400/8 rounded-full blur-[100px]" />
@@ -20,7 +36,7 @@ const FundverseSection: React.FC = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Centered Content */}
-        <div className="text-center max-w-3xl mx-auto mb-10 lg:mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-8">
           <h2 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-startives-brand tracking-tighter leading-[1.05] text-[var(--text-primary)]">
             Where ideas meet
             <span className="block text-[var(--text-primary)] mt-1">
@@ -31,139 +47,80 @@ const FundverseSection: React.FC = () => {
           <p className="mt-5 text-sm sm:text-base lg:text-lg leading-relaxed text-[var(--text-secondary)] font-medium font-poppins max-w-2xl mx-auto">
             Discover grants, government schemes, accelerators, investors and funding opportunities built for founders at every stage.
           </p>
+
+          {/* Buttons right below description */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-7">
+            <Link
+              to="/funding"
+              className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-red-500/90 to-blue-500/90 hover:from-red-600 hover:to-blue-600 text-white text-xs font-black uppercase tracking-widest font-poppins transition-all duration-300 hover:scale-[1.03]"
+            >
+              Explore Fundverse
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+
+            <Link
+              to="/funding"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--background-tertiary)]/80 backdrop-blur-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-xs font-black uppercase tracking-widest font-poppins hover:border-red-400/40 hover:text-[var(--text-primary)] transition-all duration-300"
+            >
+              Grab Funding
+            </Link>
+          </div>
         </div>
 
-        {/* Premium Visual Stage */}
-        <div className="relative min-h-[340px] sm:min-h-[400px] flex items-center justify-center mb-10">
-          
-          {/* Soft ambient glow behind center only */}
-          <div className="absolute w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] rounded-full bg-gradient-to-br from-red-400/12 via-purple-400/10 to-blue-400/12 blur-2xl" />
-
-          {/* Floating pill - Top Left (Grants) */}
-          <div className="absolute top-[6%] left-[4%] sm:left-[10%] animate-[float_6s_ease-in-out_infinite]">
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[var(--component-background)]/90 backdrop-blur-md border border-red-400/20 shadow-lg">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-400/25 to-red-500/15 flex items-center justify-center">
-                <Landmark className="w-4 h-4 text-red-500" />
-              </div>
-              <div>
-                <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider font-poppins">
-                  Grants
-                </p>
-                <p className="text-[11px] font-bold text-[var(--text-primary)] font-poppins">
-                  ₹ Government
-                </p>
-              </div>
-            </div>
+        {/* Center Image - Rectangle / Square */}
+        <div className="flex justify-center mb-10">
+          <div className="relative w-full max-w-2xl aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-[var(--component-background)] border border-[var(--border-primary)] shadow-xl">
+            <img
+              src="https://res.cloudinary.com/dp7avkarg/image/upload/v1790452191/file_00000000a4f081fa9fd542aeb3106314_tcfoyx.png"
+              alt="Fundverse"
+              className="w-full h-full object-cover"
+            />
           </div>
-
-          {/* Floating pill - Top Right (Investors) */}
-          <div className="absolute top-[10%] right-[3%] sm:right-[9%] animate-[float_7s_ease-in-out_infinite_0.5s]">
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[var(--component-background)]/90 backdrop-blur-md border border-blue-400/20 shadow-lg">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400/25 to-blue-500/15 flex items-center justify-center">
-                <CircleDollarSign className="w-4 h-4 text-blue-500" />
-              </div>
-              <div>
-                <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider font-poppins">
-                  Investors
-                </p>
-                <p className="text-[11px] font-bold text-[var(--text-primary)] font-poppins">
-                  Smart Capital
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Floating pill - Bottom Left (Accelerators) */}
-          <div className="absolute bottom-[10%] left-[2%] sm:left-[8%] animate-[float_6.5s_ease-in-out_infinite_0.8s]">
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[var(--component-background)]/90 backdrop-blur-md border border-red-400/20 shadow-lg">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-400/25 to-purple-400/15 flex items-center justify-center">
-                <Rocket className="w-4 h-4 text-red-500" />
-              </div>
-              <div>
-                <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider font-poppins">
-                  Accelerators
-                </p>
-                <p className="text-[11px] font-bold text-[var(--text-primary)] font-poppins">
-                  Growth Programs
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Floating pill - Bottom Right (Funding) */}
-          <div className="absolute bottom-[6%] right-[4%] sm:right-[10%] animate-[float_7.5s_ease-in-out_infinite_0.3s]">
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[var(--component-background)]/90 backdrop-blur-md border border-blue-400/20 shadow-lg">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400/25 to-blue-500/15 flex items-center justify-center">
-                <HandCoins className="w-4 h-4 text-blue-500" />
-              </div>
-              <div>
-                <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider font-poppins">
-                  Funding
-                </p>
-                <p className="text-[11px] font-bold text-[var(--text-primary)] font-poppins">
-                  Opportunities
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Center Hero - Clean Glass + Dark Mode Black BG */}
-          <div className="relative z-20 w-36 h-36 sm:w-44 sm:h-44 rounded-full flex items-center justify-center">
-            {/* Soft ambient glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-400/15 via-purple-400/12 to-blue-400/15 blur-xl" />
-            
-            {/* Pure glass circle */}
-            <div className="relative w-full h-full rounded-full overflow-hidden bg-white/10 dark:bg-black backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl">
-              <img
-                src="https://res.cloudinary.com/dp7avkarg/image/upload/v1790450159/bd5b83809a5606cd88b448bfc1610261_uv0t9i.gif"
-                alt="Fundverse"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-
-          {/* 4 Lightning / Thunder style connection lines */}
-          
-          {/* Top-Left → Center (Grants) */}
-          <div className="absolute top-[28%] left-[22%] sm:left-[26%] w-[85px] h-[2px] bg-gradient-to-r from-red-400/70 via-red-300/50 to-transparent rotate-[32deg] origin-left shadow-[0_0_8px_rgba(248,113,113,0.4)]" />
-          <div className="absolute top-[30%] left-[24%] sm:left-[28%] w-[40px] h-[1.5px] bg-gradient-to-r from-red-300/60 to-transparent rotate-[18deg] origin-left" />
-
-          {/* Top-Right → Center (Investors) */}
-          <div className="absolute top-[26%] right-[20%] sm:right-[24%] w-[85px] h-[2px] bg-gradient-to-l from-blue-400/70 via-blue-300/50 to-transparent rotate-[-32deg] origin-right shadow-[0_0_8px_rgba(96,165,250,0.4)]" />
-          <div className="absolute top-[28%] right-[22%] sm:right-[26%] w-[40px] h-[1.5px] bg-gradient-to-l from-blue-300/60 to-transparent rotate-[-18deg] origin-right" />
-
-          {/* Bottom-Left → Center (Accelerators) */}
-          <div className="absolute bottom-[28%] left-[20%] sm:left-[24%] w-[80px] h-[2px] bg-gradient-to-r from-red-400/70 via-purple-400/40 to-transparent rotate-[-28deg] origin-left shadow-[0_0_8px_rgba(248,113,113,0.35)]" />
-          <div className="absolute bottom-[30%] left-[22%] sm:left-[26%] w-[38px] h-[1.5px] bg-gradient-to-r from-red-300/50 to-transparent rotate-[-15deg] origin-left" />
-
-          {/* Bottom-Right → Center (Funding) */}
-          <div className="absolute bottom-[26%] right-[18%] sm:right-[22%] w-[80px] h-[2px] bg-gradient-to-l from-blue-400/70 via-blue-300/50 to-transparent rotate-[28deg] origin-right shadow-[0_0_8px_rgba(96,165,250,0.35)]" />
-          <div className="absolute bottom-[28%] right-[20%] sm:right-[24%] w-[38px] h-[1.5px] bg-gradient-to-l from-blue-300/50 to-transparent rotate-[15deg] origin-right" />
         </div>
 
-        {/* Buttons at the bottom */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link
-            to="/funding"
-            className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-red-500/90 to-blue-500/90 hover:from-red-600 hover:to-blue-600 text-white text-xs font-black uppercase tracking-widest font-poppins transition-all duration-300 hover:scale-[1.03]"
-          >
-            Explore Fundverse
-            <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </Link>
-
-          <Link
-            to="/funding"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--background-tertiary)]/80 backdrop-blur-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-xs font-black uppercase tracking-widest font-poppins hover:border-red-400/40 hover:text-[var(--text-primary)] transition-all duration-300"
-          >
-            Grab Funding
-          </Link>
+        {/* Horizontal Auto-Sliding Pills */}
+        <div className="relative overflow-hidden">
+          <div className="flex gap-4 animate-slide">
+            {slidingPills.map((pill, index) => {
+              const Icon = pill.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex-shrink-0 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[var(--component-background)]/90 backdrop-blur-md border border-red-400/15 shadow-md"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-400/20 to-blue-400/20 flex items-center justify-center">
+                    <Icon className="w-4 h-4 text-red-500" />
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider font-poppins whitespace-nowrap">
+                      {pill.label}
+                    </p>
+                    <p className="text-[11px] font-bold text-[var(--text-primary)] font-poppins whitespace-nowrap">
+                      {pill.sub}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+        @keyframes slide {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-slide {
+          animation: slide 28s linear infinite;
+          width: max-content;
+        }
+        .animate-slide:hover {
+          animation-play-state: paused;
         }
       `}</style>
     </section>
