@@ -440,7 +440,7 @@ return validIdeas.length;
         <div className="flex flex-col gap-4">
             <FundverseShortcut />
             <MarketplaceShortcut />
-            <MessageCenter />
+             
    <BuildersStoriesShortcut />
 
         </div>
