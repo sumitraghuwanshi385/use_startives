@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
-import { Medal, PiggyBank } from 'lucide-react';
+import { Medal, BadgeDollarSign } from 'lucide-react';
 import { 
   IdeaStarIcon,
   ChevronRightIcon,
@@ -91,7 +91,7 @@ const FundverseShortcut: React.FC = () => {
 
             <div className="flex items-center gap-4 relative">
                 <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-all duration-500 border border-emerald-500/10 group-hover:scale-105">
-                    <PiggyBank className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+                    <BadgeDollarSign className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
                 </div>
 
                 <div>
