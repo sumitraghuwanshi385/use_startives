@@ -1,51 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowUpRight, Handshake, Eye, EyeOff } from "lucide-react";
 
 export default function BuildersStoriesPage() {
   const [showHero, setShowHero] = useState(true);
-  const [isDark, setIsDark] = useState(false);
 
   const fakeMayoUrl =
     "https://fakemayo.com/?utm_source=startives&utm_medium=partnership&utm_campaign=builders_stories";
 
-  // Detect dark mode for forcing on FakeMayo iframe
-  useEffect(() => {
-    const checkDark = () => {
-      const isDarkMode =
-        document.documentElement.classList.contains("dark") ||
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDark(isDarkMode);
-    };
-
-    checkDark();
-
-    const observer = new MutationObserver(checkDark);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    mediaQuery.addEventListener("change", checkDark);
-
-    return () => {
-      observer.disconnect();
-      mediaQuery.removeEventListener("change", checkDark);
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-[var(--background-primary)] text-[var(--text-primary)] transition-colors duration-300 font-['Poppins']">
       <section className="relative pt-8 md:pt-10 pb-10 md:pb-14 overflow-hidden border-b border-[var(--border-primary)]">
-        {/* Background blobs - light mode almost white/subtle, dark mode visible */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-260px] left-1/2 -translate-x-1/2 w-[850px] h-[850px] rounded-full blur-3xl opacity-[0.04] dark:opacity-[0.12] bg-gradient-to-br from-red-500 to-blue-500" />
-          <div className="absolute bottom-[-80px] left-[-80px] w-[220px] h-[220px] rounded-full blur-3xl opacity-[0.05] dark:opacity-15 bg-red-500" />
-          <div className="absolute top-20 right-[-90px] w-[220px] h-[220px] rounded-full blur-3xl opacity-[0.05] dark:opacity-15 bg-blue-500" />
-        </div>
-
         <div className="max-w-7xl mx-auto px-5 md:px-8 relative z-10">
           {/* Hero Content */}
           {showHero && (
@@ -133,14 +99,12 @@ export default function BuildersStoriesPage() {
             </div>
           </a>
 
-          {/* Iframe - force dark mode when site is in dark mode */}
+          {/* Iframe */}
           <div className="mt-4 w-full overflow-hidden rounded-2xl border border-[var(--border-primary)] bg-[var(--component-background)] shadow-sm">
             <iframe
               src={fakeMayoUrl}
               title="FakeMayo.com"
-              className={`block w-full h-[calc(100vh-150px)] min-h-[600px] border-0 bg-white transition-all duration-300 ${
-                isDark ? "invert hue-rotate-180" : ""
-              }`}
+              className="block w-full h-[calc(100vh-150px)] min-h-[600px] border-0 bg-white"
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
               allow="clipboard-write"
