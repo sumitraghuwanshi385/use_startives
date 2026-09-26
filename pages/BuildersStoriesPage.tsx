@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -35,14 +36,8 @@ export default function BuildersStoriesPage() {
           border-[var(--border-primary)]
         "
       >
-        <div
-          className="
-            absolute
-            inset-0
-            overflow-hidden
-            pointer-events-none
-          "
-        >
+        {/* Background blobs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
             className="
               absolute
@@ -59,7 +54,6 @@ export default function BuildersStoriesPage() {
               to-blue-500
             "
           />
-
           <div
             className="
               absolute
@@ -73,7 +67,6 @@ export default function BuildersStoriesPage() {
               bg-red-500
             "
           />
-
           <div
             className="
               absolute
@@ -89,88 +82,10 @@ export default function BuildersStoriesPage() {
           />
         </div>
 
-        <div
-          className="
-            max-w-7xl
-            mx-auto
-            px-5
-            md:px-8
-            relative
-            z-10
-          "
-        >
+        <div className="max-w-7xl mx-auto px-5 md:px-8 relative z-10">
+          {/* Hero Content */}
           {showHero && (
             <div className="max-w-4xl">
-              <div
-                className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  px-4
-                  py-2
-                  rounded-full
-                  border
-                  border-[var(--border-primary)]
-                  bg-[var(--component-background)]
-                  backdrop-blur-xl
-                  shadow-sm
-                  mb-4
-                "
-              >
-                <span
-                  className="
-                    relative
-                    flex
-                    items-center
-                    justify-center
-                    w-2
-                    h-2
-                  "
-                >
-                  <span
-                    className="
-                      absolute
-                      w-2
-                      h-2
-                      rounded-full
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                      animate-pulse
-                    "
-                  />
-
-                  <span
-                    className="
-                      relative
-                      w-1.5
-                      h-1.5
-                      rounded-full
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                    "
-                  />
-                </span>
-
-                <p
-                  className="
-                    uppercase
-                    tracking-[0.22em]
-                    text-[10px]
-                    md:text-xs
-                    font-bold
-                    bg-gradient-to-r
-                    from-red-500
-                    to-blue-500
-                    bg-clip-text
-                    text-transparent
-                  "
-                >
-                  Builders Stories
-                </p>
-              </div>
-
               <h1
                 className="
                   text-4xl
@@ -183,7 +98,6 @@ export default function BuildersStoriesPage() {
               >
                 Real Founder Stories.
                 <br />
-
                 <span
                   className="
                     bg-gradient-to-r
@@ -212,144 +126,10 @@ export default function BuildersStoriesPage() {
                 revenue, acquisition strategies, failures,
                 distribution, and how internet startups scaled.
               </p>
-
-              <div
-                className="
-                  flex
-                  flex-wrap
-                  gap-2
-                  mt-5
-                "
-              >
-                <div
-                  className="
-                    px-3
-                    py-2.5
-                    rounded-xl
-                    bg-[var(--component-background)]
-                    border
-                    border-[var(--border-primary)]
-                    min-w-[99px]
-                    shadow-sm
-                    transition-all
-                    duration-300
-                    hover:border-purple-500/30
-                  "
-                >
-                  <p
-                    className="
-                      text-base
-                      md:text-lg
-                      font-black
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                      bg-clip-text
-                      text-transparent
-                    "
-                  >
-                    30+
-                  </p>
-
-                  <p
-                    className="
-                      text-[9px]
-                      text-[var(--text-secondary)]
-                      mt-0.5
-                      font-medium
-                    "
-                  >
-                    Founder Stories
-                  </p>
-                </div>
-
-                <div
-                  className="
-                    px-3
-                    py-2.5
-                    rounded-xl
-                    bg-[var(--component-background)]
-                    border
-                    border-[var(--border-primary)]
-                    min-w-[103px]
-                    shadow-sm
-                    transition-all
-                    duration-300
-                    hover:border-purple-500/30
-                  "
-                >
-                  <p
-                    className="
-                      text-base
-                      md:text-lg
-                      font-black
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                      bg-clip-text
-                      text-transparent
-                    "
-                  >
-                    $10M+
-                  </p>
-
-                  <p
-                    className="
-                      text-[9px]
-                      text-[var(--text-secondary)]
-                      mt-0.5
-                      font-medium
-                    "
-                  >
-                    Revenue Tracked
-                  </p>
-                </div>
-
-                <div
-                  className="
-                    px-3
-                    py-2.5
-                    rounded-xl
-                    bg-[var(--component-background)]
-                    border
-                    border-[var(--border-primary)]
-                    min-w-[122px]
-                    shadow-sm
-                    transition-all
-                    duration-300
-                    hover:border-purple-500/30
-                  "
-                >
-                  <p
-                    className="
-                      text-base
-                      md:text-lg
-                      font-black
-                      bg-gradient-to-r
-                      from-red-500
-                      to-blue-500
-                      bg-clip-text
-                      text-transparent
-                    "
-                  >
-                    Bootstrapped
-                  </p>
-
-                  <p
-                    className="
-                      text-[9px]
-                      text-[var(--text-secondary)]
-                      mt-0.5
-                      font-medium
-                    "
-                  >
-                    Internet Businesses
-                  </p>
-                </div>
-              </div>
             </div>
           )}
 
+          {/* Partnership Box */}
           <a
             href={fakeMayoUrl}
             target="_self"
@@ -375,6 +155,7 @@ export default function BuildersStoriesPage() {
               ${showHero ? "mt-7" : "mt-0"}
             `}
           >
+            {/* Top gradient line */}
             <div
               className="
                 absolute
@@ -389,6 +170,7 @@ export default function BuildersStoriesPage() {
               "
             />
 
+            {/* Decorative blobs */}
             <div
               className="
                 absolute
@@ -402,7 +184,6 @@ export default function BuildersStoriesPage() {
                 pointer-events-none
               "
             />
-
             <div
               className="
                 absolute
@@ -431,15 +212,8 @@ export default function BuildersStoriesPage() {
                 md:py-5
               "
             >
-              <div
-                className="
-                  flex
-                  items-center
-                  gap-3
-                  md:gap-4
-                  min-w-0
-                "
-              >
+              <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                {/* Logo (dot removed) */}
                 <div className="relative shrink-0">
                   <img
                     src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787287617/IMG_20260821_101542_vkuyku.jpg"
@@ -457,55 +231,14 @@ export default function BuildersStoriesPage() {
                       shadow-sm
                     "
                   />
-
-                  <span
-                    className="
-                      absolute
-                      -right-1
-                      -bottom-1
-                      w-4
-                      h-4
-                      rounded-full
-                      bg-[var(--component-background)]
-                      border
-                      border-[var(--border-primary)]
-                      flex
-                      items-center
-                      justify-center
-                    "
-                  >
-                    <span
-                      className="
-                        w-2
-                        h-2
-                        rounded-full
-                        bg-gradient-to-r
-                        from-red-500
-                        to-blue-500
-                      "
-                    />
-                  </span>
                 </div>
 
                 <div className="min-w-0">
-                  <div
-                    className="
-                      flex
-                      items-center
-                      gap-1.5
-                      mb-1
-                    "
-                  >
+                  <div className="flex items-center gap-1.5 mb-1">
                     <Handshake
-                      className="
-                        w-3.5
-                        h-3.5
-                        text-purple-500
-                        shrink-0
-                      "
+                      className="w-3.5 h-3.5 text-purple-500 shrink-0"
                       strokeWidth={2}
                     />
-
                     <span
                       className="
                         text-[9px]
@@ -550,15 +283,8 @@ export default function BuildersStoriesPage() {
                 </div>
               </div>
 
-              <div
-                className="
-                  shrink-0
-                  flex
-                  items-center
-                  gap-2
-                  text-purple-500
-                "
-              >
+              {/* Actions */}
+              <div className="shrink-0 flex items-center gap-2 text-purple-500">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -586,9 +312,15 @@ export default function BuildersStoriesPage() {
                   "
                 >
                   {showHero ? (
-                    <EyeOff className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]" strokeWidth={2} />
+                    <EyeOff
+                      className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]"
+                      strokeWidth={2}
+                    />
                   ) : (
-                    <Eye className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]" strokeWidth={2} />
+                    <Eye
+                      className="w-[17px] h-[17px] md:w-[18px] md:h-[18px]"
+                      strokeWidth={2}
+                    />
                   )}
                 </button>
 
@@ -616,6 +348,7 @@ export default function BuildersStoriesPage() {
             </div>
           </a>
 
+          {/* Iframe */}
           <div
             className="
               mt-4
