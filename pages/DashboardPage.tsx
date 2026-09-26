@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
@@ -63,7 +64,7 @@ const DashboardSummaryStatCard: React.FC<DashboardSummaryStatCardProps> = ({ tit
         <h3 className={`text-2xl font-extrabold tracking-tight font-poppins ${isPrimary ? 'text-white' : 'text-[var(--text-primary)]'}`}>{value}</h3>
         <p className={`text-sm font-bold font-poppins ${isPrimary ? 'text-white/90' : 'text-[var(--text-primary)]'}`}>{title}</p>
       </div>
-      <p className={`text-[10px] font-medium tracking-tight mt-1 font-poppins ${isPrimary ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{subtext}</p>
+      <p className={`text-[10px] font-medium tracking-tight mt-1 font-['Plus_Jakarta_Sans'] ${isPrimary ? 'text-white/70' : 'text-[var(--text-muted)]'}`}>{subtext}</p>
     </>
   );
 
@@ -98,7 +99,7 @@ const FundverseShortcut: React.FC = () => {
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">
                         Fundverse
                     </h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-['Plus_Jakarta_Sans']">
                         Discover Funding Opportunities
                     </p>
                 </div>
@@ -129,7 +130,7 @@ const MarketplaceShortcut: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-red-500 transition-colors tracking-tight font-poppins">Marketplace</h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Explore Listings</p>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-['Plus_Jakarta_Sans']">Explore Listings</p>
                 </div>
             </div>
             <div className="relative">
@@ -160,7 +161,7 @@ const BuildersStoriesShortcut: React.FC = () => {
                     <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-blue-500 transition-colors tracking-tight font-poppins">
                         Builders Stories
                     </h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-['Plus_Jakarta_Sans']">
                         Read Success Profiles
                     </p>
                 </div>
@@ -408,7 +409,7 @@ return validIdeas.length;
                   <h1 className="text-4xl font-startives-brand text-[var(--text-primary)] tracking-tighter">
                     Dashboard
                   </h1>
-                  <p className="text-lg text-[var(--text-secondary)] font-medium font-poppins">
+                  <p className="text-lg text-[var(--text-secondary)] font-medium font-['Plus_Jakarta_Sans']">
                     Greetings, {currentUser?.name.split(' ')[0]}. What are you building today?
                   </p>
               </div>
