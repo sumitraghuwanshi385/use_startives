@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Link } from 'react-router-dom';
 import { User } from '../types'; 
-import { Medal } from 'lucide-react';
+import { Medal, Coins } from 'lucide-react';
 import { 
   IdeaStarIcon,
   ChevronRightIcon,
@@ -81,24 +81,32 @@ const DashboardSummaryStatCard: React.FC<DashboardSummaryStatCardProps> = ({ tit
 };
 
 // --- Projects Shortcut ---
-const DiscoverProjectsShortcut: React.FC = () => {
+// --- Fundverse Shortcut ---
+const FundverseShortcut: React.FC = () => {
     return (
         <Link 
-            to="/projects" 
-            className="group relative flex items-center justify-between p-4 bg-gradient-to-br from-purple-500/5 to-pink-500/5 dark:from-purple-500/15 dark:to-pink-500/15 rounded-2xl transition-all duration-300 hover:border-purple-500/30 overflow-hidden"
+            to="/funding" 
+            className="group relative flex items-center justify-between p-4 bg-gradient-to-br from-emerald-500/5 to-green-500/5 dark:from-emerald-500/15 dark:to-green-500/15 rounded-2xl transition-all duration-300 hover:border-emerald-500/30 overflow-hidden"
         >
-             <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
+            <div className="absolute inset-0 dot-pattern-bg opacity-[0.05] dark:opacity-[0.1] pointer-events-none"></div>
+
             <div className="flex items-center gap-4 relative">
-                <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-all duration-500 border border-purple-500/10">
-                    <GlobeModernIcon className="w-5 h-5 text-purple-500 dark:text-purple-400" />
+                <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center shadow-sm transform transition-all duration-500 border border-emerald-500/10 group-hover:scale-105">
+                    <Coins className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
                 </div>
+
                 <div>
-                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-purple-500 transition-colors tracking-tight font-poppins">Discover Projects</h3>
-                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">Explore Trending Innovations</p>
+                    <h3 className="font-bold text-lg text-[var(--text-primary)] group-hover:text-emerald-500 transition-colors tracking-tight font-poppins">
+                        Fundverse
+                    </h3>
+                    <p className="text-xs text-[var(--text-muted)] font-medium font-poppins">
+                        Discover Funding Opportunities
+                    </p>
                 </div>
             </div>
+
             <div className="relative">
-                <span className="bg-purple-600 text-white text-[9px] font-bold px-4 py-1.5 rounded-full shadow-none group-hover:scale-105 transition-transform flex items-center gap-1 tracking-tight font-poppins uppercase">
+                <span className="bg-emerald-500 text-white text-[9px] font-bold px-4 py-1.5 rounded-full shadow-none group-hover:scale-105 transition-transform flex items-center gap-1 tracking-tight font-poppins uppercase">
                     Explore
                     <ChevronRightIcon className="w-2.5 h-2.5" />
                 </span>
@@ -106,6 +114,7 @@ const DiscoverProjectsShortcut: React.FC = () => {
         </Link>
     );
 };
+
 
 // --- Marketplace Shortcut ---
 const MarketplaceShortcut: React.FC = () => {
@@ -451,7 +460,7 @@ return validIdeas.length;
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch mt-8">
         <div className="flex flex-col gap-4">
-            <DiscoverProjectsShortcut />
+            <FundverseShortcut />
             <MarketplaceShortcut />
             <MessageCenter />
    <BuildersStoriesShortcut />
