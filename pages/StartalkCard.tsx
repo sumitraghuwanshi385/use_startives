@@ -713,7 +713,6 @@ const StartalkCardContent: React.FC<{
       <article
         className={`w-full relative bg-[var(--component-background)] rounded-2xl border border-[var(--border-primary)] p-5 md:p-6 transition-all duration-300 hover:border-purple-500/30 group flex flex-col gap-4 select-none font-poppins ${className}`}
       >
-        {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             {profileClickable ? (
@@ -789,7 +788,6 @@ const StartalkCardContent: React.FC<{
           </div>
         </div>
 
-        {/* Content */}
         <div className="space-y-4 text-left">
           <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed font-medium whitespace-pre-wrap break-words">
             {renderTextWithLinks(talk.content)}
@@ -807,7 +805,6 @@ const StartalkCardContent: React.FC<{
           )}
         </div>
 
-        {/* Reactions */}
         {totalReactions > 0 && (
           <div className="flex items-center gap-3 flex-wrap">
             {Object.entries(talk.reactions || {})
@@ -826,11 +823,9 @@ const StartalkCardContent: React.FC<{
           </div>
         )}
 
-        {/* Actions */}
         <div className="relative pt-2 border-t border-[var(--border-primary)]">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
-              {/* React */}
               <div ref={reactionRef} className="relative shrink-0">
                 <button
                   type="button"
@@ -883,7 +878,6 @@ const StartalkCardContent: React.FC<{
                 )}
               </div>
 
-              {/* Comments */}
               <button
                 type="button"
                 onClick={openComments}
@@ -894,7 +888,6 @@ const StartalkCardContent: React.FC<{
                 <span>{displayedCommentCount}</span>
               </button>
 
-              {/* Share */}
               <div ref={shareRef} className="relative shrink-0">
                 <button
                   type="button"
@@ -940,7 +933,6 @@ const StartalkCardContent: React.FC<{
 
       {commentsModal}
 
-      {/* Delete Comment Modal */}
       {commentToDeleteId &&
         typeof document !== 'undefined' &&
         createPortal(
