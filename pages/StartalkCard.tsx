@@ -18,7 +18,6 @@ import {
   Copy,
   Trash2,
   X,
-  ExternalLink,
 } from 'lucide-react';
 
 const MOOD_EMOJIS = ['🚀', '💡', '❤️', '🔥', '💯', '😂', '😭'];
@@ -203,151 +202,6 @@ class StartalkErrorBoundary extends Component<
     return this.props.children;
   }
 }
-
-const extractFirstUrl = (text: string): string | null => {
-  const urlRegex =
-    /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,}[^\s]*)/gi;
-  const match = text.match(urlRegex);
-  if (!match || !match[0]) return null;
-
-  let url = match[0];
-  if (!url.startsWith('http')) {
-    url = `https://${url}`;
-  }
-  return url;
-};
-
-interface LinkPreviewData {
-  title?: string;
-  description?: string;
-  image?: string;
-  url: string;
-  siteName?: string;
-}
-
-const LinkPreview: React.FC<{
-  url: string;
-  onClose?: () => void;
-}> = ({ url, onClose }) => {
-  const [data, setData] = useState<LinkPreviewData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const fetchPreview = async () => {
-      try {
-        setLoading(true);
-        setError(false);
-
-        const res = await fetch(
-          `https://api.microlink.io?url=${encodeURIComponent(url)}&palette=false&audio=false&video=false&iframe=false`
-        );
-        const json = await res.json();
-
-        if (cancelled) return;
-
-        if (json.status === 'success' && json.data) {
-          setData({
-            title: json.data.title,
-            description: json.data.description,
-            image: json.data.image?.url || json.data.logo?.url,
-            url: json.data.url || url,
-            siteName: json.data.publisher || json.data.siteName,
-          });
-        } else {
-          setError(true);
-        }
-      } catch (err) {
-        if (!cancelled) setError(true);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-
-    fetchPreview();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [url]);
-
-  if (loading) {
-    return (
-      <div className="mt-3 rounded-xl border border-[var(--border-primary)] bg-[var(--background-tertiary)] p-4 animate-pulse">
-        <div className="h-4 bg-[var(--border-primary)] rounded w-3/4 mb-2" />
-        <div className="h-3 bg-[var(--border-primary)] rounded w-1/2" />
-      </div>
-    );
-  }
-
-  if (error || !data) return null;
-
-  return (
-    <div className="mt-3 relative group/preview">
-      <a
-        href={data.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => e.stopPropagation()}
-        className="block rounded-xl border border-[var(--border-primary)] overflow-hidden bg-[var(--background-tertiary)] hover:border-purple-500/40 transition-all"
-      >
-        {data.image && (
-          <div className="w-full h-40 sm:h-48 bg-[var(--background-secondary)] overflow-hidden">
-            <img
-              src={data.image}
-              alt={data.title || 'Preview'}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
-          </div>
-        )}
-
-        <div className="p-3.5">
-          {data.siteName && (
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">
-              {data.siteName}
-            </p>
-          )}
-          {data.title && (
-            <h4 className="text-sm font-bold text-[var(--text-primary)] line-clamp-2 leading-snug">
-              {data.title}
-            </h4>
-          )}
-          {data.description && (
-            <p className="mt-1 text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
-              {data.description}
-            </p>
-          )}
-          <div className="mt-2 flex items-center gap-1.5 text-[10px] text-purple-500 font-medium">
-            <ExternalLink className="w-3 h-3" />
-            <span className="truncate">{new URL(data.url).hostname}</span>
-          </div>
-        </div>
-      </a>
-
-      {onClose && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onClose();
-          }}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity hover:bg-black/80"
-          title="Hide preview"
-          aria-label="Hide preview"
-        >
-          <X className="w-3.5 h-3.5" />
-        </button>
-      )}
-    </div>
-  );
-};
 
 const renderTextWithLinks = (text: string) => {
   const parts = text.split(
@@ -665,10 +519,6 @@ const StartalkCardContent: React.FC<{
     setIsShareMenuOpen((prev) => !prev);
   };
 
-  // Link Preview
-  const firstUrl = extractFirstUrl(talk.content || '');
-  const [hidePreview, setHidePreview] = useState(false);
-
   useEffect(() => {
     const handleOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -954,11 +804,6 @@ const StartalkCardContent: React.FC<{
                 loading="lazy"
               />
             </div>
-          )}
-
-          {/* Link Preview */}
-          {firstUrl && !hidePreview && (
-            <LinkPreview url={firstUrl} onClose={() => setHidePreview(true)} />
           )}
         </div>
 
