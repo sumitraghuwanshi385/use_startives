@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
+import { Copy, MessageCircle, Share2, Smile, Trash2, X } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext';
 import { Startalk } from '../types';
 import { timeAgo } from '../constants';
@@ -77,7 +78,7 @@ const normalizeComment = (comment: any): LocalComment => {
     id: String(
       source?.id ||
         source?._id ||
-        `\( {Date.now()}- \){Math.random().toString(36).slice(2)}`
+        `${Date.now()}-${Math.random().toString(36).slice(2)}`
     ),
     text: String(source?.text || source?.content || ''),
     author: String(resolvedAuthor),
@@ -169,13 +170,17 @@ class StartalkErrorBoundary extends Component<
                   {this.state.errorMessage}
                 </p>
                 {this.state.errorStack && (
-                  **Summary:**
-
+                  <div className="mt-3">
+                    <p className="text-[10px] font-black text-red-600 dark:text-red-300 uppercase tracking-wider">
+                      Summary
+                    </p>
+                    <p className="mt-1 text-[10px] font-semibold text-red-500/80 dark:text-red-300/80">
                       Technical details
-                    
+                    </p>
                     <pre className="mt-2 text-[9px] leading-relaxed text-red-500/80 whitespace-pre-wrap break-words">
                       {this.state.errorStack}
                     </pre>
+                  </div>
                 )}
               </div>
               <button
@@ -196,43 +201,27 @@ class StartalkErrorBoundary extends Component<
 }
 
 const SmileIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className} aria-hidden="true">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.18 15.18a4.5 4.5 0 0 1-6.36 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75h.01M14.25 9.75h.01" />
-  </svg>
+  <Smile className={className} aria-hidden="true" />
 );
 
 const CommentIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className} aria-hidden="true">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75h6.75m-6.75 3h4.125M12 21a9 9 0 1 0-8.25-5.4L3 21l5.4-.75A8.96 8.96 0 0 0 12 21Z" />
-  </svg>
+  <MessageCircle className={className} aria-hidden="true" />
 );
 
 const ShareIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className={className} aria-hidden="true">
-    <circle cx="18" cy="5" r="2.2" />
-    <circle cx="6" cy="12" r="2.2" />
-    <circle cx="18" cy="19" r="2.2" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="m8 11 7.8-4.6M8 13l7.8 4.6" />
-  </svg>
+  <Share2 className={className} aria-hidden="true" />
 );
 
 const CopyIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className={className} aria-hidden="true">
-    <rect x="8" y="8" width="11" height="11" rx="2" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-  </svg>
+  <Copy className={className} aria-hidden="true" />
 );
 
 const TrashIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden="true">
-    <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.35 9m-4.78 0L9.26 9m9.97-3.21c.34.05.68.1 1.02.16M19.23 5.79 18.16 19.67a2.25 2.25 0 0 1-2.24 2.08H8.08a2.25 2.25 0 0 1-2.24-2.08L4.77 5.79m14.46 0a48.1 48.1 0 0 0-3.48-.4m-12.56 0c.34-.06.68-.11 1.02-.16m0 0a48.1 48.1 0 0 1 3.48-.4m7.5 0v-.92c0-1.18-.91-2.16-2.09-2.2a52 52 0 0 0-3.32 0c-1.18.04-2.09 1.02-2.09 2.2v.92" />
-  </svg>
+  <Trash2 className={className} aria-hidden="true" />
 );
 
 const XMarkIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} aria-hidden="true">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-  </svg>
+  <X className={className} aria-hidden="true" />
 );
 
 const renderTextWithLinks = (text: string) => {
@@ -489,7 +478,7 @@ const StartalkCardContent: React.FC<{
 
   const shareUrl =
     typeof window !== 'undefined'
-      ? `\( {window.location.origin}/startalk/ \){talk.id}`
+      ? `${window.location.origin}/startalk/${talk.id}`
       : '';
 
   const shareTitle = `${displayName} on Startives`;
