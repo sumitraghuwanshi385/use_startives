@@ -11,6 +11,8 @@ import { ProjectCard } from '../pages/ProjectsListPage';
 import HeroSection from '../components/homepage/HeroSection';
 import StartalksSection from '../components/homepage/StartalksSection';
 import StartivesEcosystemSection from '../components/homepage/StartivesEcosystemSection';
+import FundverseSection from '../components/homepage/FundverseSection';
+
 import {
   Users,
   Sparkles,
@@ -525,6 +527,8 @@ const HomePage: React.FC = () => {
         </section>
 
         <StartalksSection Reveal={Reveal} />
+
+<FundverseSection />
 
         <StartivesEcosystemSection />
 
