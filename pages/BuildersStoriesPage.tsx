@@ -1,40 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowUpRight, Handshake, Eye, EyeOff } from "lucide-react";
 
 export default function BuildersStoriesPage() {
   const [showHero, setShowHero] = useState(true);
-  const [isDark, setIsDark] = useState(false);
 
   const fakeMayoUrl =
     "https://fakemayo.com/?utm_source=startives&utm_medium=partnership&utm_campaign=builders_stories";
-
-  // Detect when site switches to dark mode
-  useEffect(() => {
-    const checkDark = () => {
-      const dark =
-        document.documentElement.classList.contains("dark") ||
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDark(dark);
-    };
-
-    checkDark();
-
-    const observer = new MutationObserver(checkDark);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    media.addEventListener("change", checkDark);
-
-    return () => {
-      observer.disconnect();
-      media.removeEventListener("change", checkDark);
-    };
-  }, []);
 
   return (
     <div className="min-h-screen bg-[var(--background-primary)] text-[var(--text-primary)] transition-colors duration-300 font-['Poppins']">
@@ -126,14 +99,12 @@ export default function BuildersStoriesPage() {
             </div>
           </a>
 
-          {/* Iframe - force dark only when site is in dark mode */}
+          {/* Iframe */}
           <div className="mt-4 w-full overflow-hidden rounded-2xl border border-[var(--border-primary)] bg-[var(--component-background)] shadow-sm">
             <iframe
               src={fakeMayoUrl}
               title="FakeMayo.com"
-              className={`block w-full h-[calc(100vh-150px)] min-h-[600px] border-0 bg-white transition-all duration-300 ${
-                isDark ? "invert hue-rotate-180" : ""
-              }`}
+              className="block w-full h-[calc(100vh-150px)] min-h-[600px] border-0 bg-white"
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
               allow="clipboard-write"
