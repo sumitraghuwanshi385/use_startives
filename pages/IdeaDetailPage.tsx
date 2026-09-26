@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
-import { ClipboardDocumentListIcon, UserCircleIcon, ChevronLeftIcon, AppContextLinkIcon, IdentificationIcon, BookmarkIcon, PencilSquareIcon } from '../constants';
+import { 
+  ClipboardList as ClipboardDocumentListIcon,
+  UserCircle as UserCircleIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ExternalLink as AppContextLinkIcon,
+  BriefcaseBusiness as IdentificationIcon,
+  Bookmark as BookmarkIcon,
+  PencilLine as PencilSquareIcon,
+  Info as InformationCircleIcon,
+  Clock as ClockIcon,
+  Tag as TagIcon
+} from 'lucide-react';
 import { StartupIdea } from '../types';
 
 // --- Icons ---
-const InformationCircleIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className || "w-6 h-6"}><path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
-);
-const ClockIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-);
-const TagIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-  </svg>
-);
 
 const getInitials = (name?: string): string => {
     if (!name || name.trim() === '') return '?';
@@ -148,7 +147,7 @@ useEffect(() => {
       : 'bg-[var(--background-tertiary)] hover:bg-[var(--component-background-hover)] text-[var(--text-secondary)] border border-[var(--border-primary)]'
   }`}
 >
-  <BookmarkIcon className="w-4 h-4" solid={isSaved} />
+  <BookmarkIcon className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
   <span>{isSaved ? 'Saved' : 'Save'}</span>
 </button>
                     </div>
@@ -183,8 +182,70 @@ useEffect(() => {
                   </div>
                 </div>
             </DetailSection>
+
+            <DetailSection title={`Active Openings (${idea.positions.filter(p => p.isOpen).length})`} icon={<IdentificationIcon />}>
+                {idea.positions.filter(p => p.isOpen).length > 0 ? (
+                <div className="space-y-6">
+                    {idea.positions.filter(p => p.isOpen !== false).map(position => {
+
+  const hasApplied = sentApplications?.some(
+    app => app.positionId === position._id
+  );
+
+  return (
+  <div key={position._id} className="bg-[var(--component-secondary-background)] p-6 rounded-2xl border border-[var(--border-primary)] group hover:border-purple-500/30 transition-all">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                            <div>
+                                <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">{position.title}</h3>
+                                <div className="mt-2 flex items-center gap-2">
+                                    <span className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase rounded-lg border border-indigo-100 dark:border-indigo-500/30 flex items-center gap-1.5">
+                                        <ClockIcon className="w-3 h-3" />
+                                        {position.type}
+                                    </span>
+                                    {position.equityOffered && <span className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase rounded-lg border border-emerald-100 dark:border-emerald-500/30">Equity: {position.equityOffered}</span>}
+                                </div>
+                            </div>
+                            {currentUser && !isOwner && (
+  hasApplied ? (
+    <div className="flex flex-col items-start">
+      <button className="bg-gray-200 text-gray-600 text-xs font-bold py-2 px-6 rounded-full cursor-not-allowed">
+        Applied
+      </button>
+      <span className="text-[10px] text-green-600 mt-1 font-medium">
+        You have already applied
+      </span>
+    </div>
+  ) : (
+    <Link
+      to={`/idea/${idea.id}/position/${position._id}/apply`}
+      className="button-gradient inline-flex items-center text-white font-bold py-2 px-6 rounded-full text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105"
+    >
+      Apply Now
+    </Link>
+  )
+)}
+                        </div>
+                        <p className="text-[var(--text-secondary)] mb-5 text-sm leading-relaxed whitespace-pre-wrap font-medium">{position.description}</p>
+                        {position.skills.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                                {position.skills.map(skill => (
+                                    <span key={skill} className="bg-white dark:bg-neutral-800 text-[var(--text-secondary)] text-[10px] px-3 py-1 rounded-full font-bold border border-[var(--border-secondary)] uppercase tracking-tight shadow-sm">
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                     );
+                    })}
+                </div>
+                ) : (
+                <p className="text-[var(--text-muted)] text-sm italic">No open positions at this time.</p>
+                )}
+            </DetailSection>
         </div>
-        <div className="lg:col-span-1 space-y-8 sticky top-24">
+
+        <div className="lg:col-span-1 space-y-8 lg:sticky lg:top-24 self-start">
              <DetailSection title="Founder" icon={<UserCircleIcon />}>
                 {founder && (
   <div className="space-y-4">
@@ -291,68 +352,6 @@ useEffect(() => {
                 </div>
               </DetailSection>
             )}
-        </div>
-        <div className="lg:col-span-3">
-            <DetailSection title={`Active Openings (${idea.positions.filter(p => p.isOpen).length})`} icon={<IdentificationIcon />}>
-                {idea.positions.filter(p => p.isOpen).length > 0 ? (
-                <div className="space-y-6">
-                    {idea.positions.filter(p => p.isOpen !== false).map(position => {
-
-  const hasApplied = sentApplications?.some(
-    app => app.positionId === position._id
-  );
-
-  return (
-  <div key={position._id} className="bg-[var(--component-secondary-background)] p-6 rounded-2xl border border-[var(--border-primary)] group hover:border-purple-500/30 transition-all">
-                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
-                            <div>
-                                <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">{position.title}</h3>
-                                <div className="mt-2 flex items-center gap-2">
-                                    <span className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase rounded-lg border border-indigo-100 dark:border-indigo-500/30 flex items-center gap-1.5">
-                                        <ClockIcon className="w-3 h-3" />
-                                        {position.type}
-                                    </span>
-                                    {position.equityOffered && <span className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase rounded-lg border border-emerald-100 dark:border-emerald-500/30">Equity: {position.equityOffered}</span>}
-                                </div>
-                            </div>
-                            {currentUser && !isOwner && (
-  hasApplied ? (
-    <div className="flex flex-col items-start">
-      <button className="bg-gray-200 text-gray-600 text-xs font-bold py-2 px-6 rounded-full cursor-not-allowed">
-        Applied
-      </button>
-      <span className="text-[10px] text-green-600 mt-1 font-medium">
-        You have already applied
-      </span>
-    </div>
-  ) : (
-    <Link
-      to={`/idea/${idea.id}/position/${position._id}/apply`}
-      className="button-gradient inline-flex items-center text-white font-bold py-2 px-6 rounded-full text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-    >
-      Apply Now
-    </Link>
-  )
-)}
-                        </div>
-                        <p className="text-[var(--text-secondary)] mb-5 text-sm leading-relaxed whitespace-pre-wrap font-medium">{position.description}</p>
-                        {position.skills.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                                {position.skills.map(skill => (
-                                    <span key={skill} className="bg-white dark:bg-neutral-800 text-[var(--text-secondary)] text-[10px] px-3 py-1 rounded-full font-bold border border-[var(--border-secondary)] uppercase tracking-tight shadow-sm">
-                                        {skill}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                     );
-                    })}
-                </div>
-                ) : (
-                <p className="text-[var(--text-muted)] text-sm italic">No open positions at this time.</p>
-                )}
-            </DetailSection>
         </div>
       </div>
     </div>
