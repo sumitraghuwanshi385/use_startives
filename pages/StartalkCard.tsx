@@ -11,14 +11,6 @@ import { Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { Startalk } from '../types';
 import { timeAgo } from '../constants';
-import {
-  Smile,
-  MessageCircle,
-  Share2,
-  Copy,
-  Trash2,
-  X,
-} from 'lucide-react';
 
 const MOOD_EMOJIS = ['🚀', '💡', '❤️', '🔥', '💯', '😂', '😭'];
 
@@ -202,6 +194,46 @@ class StartalkErrorBoundary extends Component<
     return this.props.children;
   }
 }
+
+const SmileIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className} aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.18 15.18a4.5 4.5 0 0 1-6.36 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75h.01M14.25 9.75h.01" />
+  </svg>
+);
+
+const CommentIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={className} aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75h6.75m-6.75 3h4.125M12 21a9 9 0 1 0-8.25-5.4L3 21l5.4-.75A8.96 8.96 0 0 0 12 21Z" />
+  </svg>
+);
+
+const ShareIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className={className} aria-hidden="true">
+    <circle cx="18" cy="5" r="2.2" />
+    <circle cx="6" cy="12" r="2.2" />
+    <circle cx="18" cy="19" r="2.2" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="m8 11 7.8-4.6M8 13l7.8 4.6" />
+  </svg>
+);
+
+const CopyIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className={className} aria-hidden="true">
+    <rect x="8" y="8" width="11" height="11" rx="2" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+  </svg>
+);
+
+const TrashIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.35 9m-4.78 0L9.26 9m9.97-3.21c.34.05.68.1 1.02.16M19.23 5.79 18.16 19.67a2.25 2.25 0 0 1-2.24 2.08H8.08a2.25 2.25 0 0 1-2.24-2.08L4.77 5.79m14.46 0a48.1 48.1 0 0 0-3.48-.4m-12.56 0c.34-.06.68-.11 1.02-.16m0 0a48.1 48.1 0 0 1 3.48-.4m7.5 0v-.92c0-1.18-.91-2.16-2.09-2.2a52 52 0 0 0-3.32 0c-1.18.04-2.09 1.02-2.09 2.2v.92" />
+  </svg>
+);
+
+const XMarkIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+  </svg>
+);
 
 const renderTextWithLinks = (text: string) => {
   const parts = text.split(
@@ -579,15 +611,13 @@ const StartalkCardContent: React.FC<{
             <div className="relative w-full max-w-[520px] overflow-visible">
               <div className="bg-[var(--component-background)] border border-[var(--border-primary)] rounded-[1.75rem] overflow-hidden shadow-2xl max-h-[85vh] flex flex-col">
                 <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-[var(--border-primary)] shrink-0">
-                  <h3 className="text-sm font-bold text-[var(--text-primary)]">
-                    Comments
-                  </h3>
+                  <h3 className="text-sm font-bold text-[var(--text-primary)]">Comments</h3>
                   <button
                     type="button"
                     onClick={closeComments}
                     className="w-8 h-8 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--background-tertiary)] transition-colors"
                   >
-                    <X className="w-4 h-4" />
+                    <XMarkIcon className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -652,7 +682,7 @@ const StartalkCardContent: React.FC<{
                               title="Delete comment"
                               aria-label="Delete comment"
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
+                              <TrashIcon className="w-3.5 h-3.5" />
                             </button>
                           )}
                         </div>
@@ -770,7 +800,7 @@ const StartalkCardContent: React.FC<{
 
           <div className="flex items-center gap-2 shrink-0">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--background-tertiary)] border border-[var(--border-primary)] text-[10px] font-black">
-              <Smile className="w-3.5 h-3.5 text-purple-500" />
+              <SmileIcon className="w-3.5 h-3.5 text-purple-500" />
               <span className="text-[var(--text-primary)]">{totalReactions}</span>
             </div>
 
@@ -782,7 +812,7 @@ const StartalkCardContent: React.FC<{
                 title="Delete talk"
                 aria-label="Delete talk"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <TrashIcon className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
@@ -847,7 +877,7 @@ const StartalkCardContent: React.FC<{
                         {talk.currentUserReaction}
                       </span>
                     ) : (
-                      <Smile className="w-4 h-4" />
+                      <SmileIcon className="w-4 h-4" />
                     )}
                   </span>
                   <span className="whitespace-nowrap">
@@ -884,7 +914,7 @@ const StartalkCardContent: React.FC<{
                 className="inline-flex items-center justify-center gap-2 w-[72px] h-8 px-3 rounded-full border border-[var(--border-primary)] bg-[var(--background-tertiary)] text-[var(--text-muted)] hover:text-purple-600 hover:border-purple-500/50 transition-all active:scale-95 text-[10px] font-black uppercase shrink-0"
                 aria-label={`${displayedCommentCount} comments`}
               >
-                <MessageCircle className="w-4 h-4" />
+                <CommentIcon className="w-4 h-4" />
                 <span>{displayedCommentCount}</span>
               </button>
 
@@ -896,7 +926,7 @@ const StartalkCardContent: React.FC<{
                   title="Share Startalk"
                   aria-label="Share Startalk"
                 >
-                  <Share2 className="w-4 h-4" />
+                  <ShareIcon className="w-4 h-4" />
                 </button>
 
                 {isShareMenuOpen && (
@@ -907,7 +937,7 @@ const StartalkCardContent: React.FC<{
                         onClick={handleNativeShare}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--background-tertiary)] transition-colors"
                       >
-                        <Share2 className="w-4 h-4 text-purple-500" />
+                        <ShareIcon className="w-4 h-4 text-purple-500" />
                         <span>Share Startalk</span>
                       </button>
                       <button
@@ -915,7 +945,7 @@ const StartalkCardContent: React.FC<{
                         onClick={copyShareLink}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--background-tertiary)] transition-colors"
                       >
-                        <Copy className="w-4 h-4 text-purple-500" />
+                        <CopyIcon className="w-4 h-4 text-purple-500" />
                         <span>{shareMessage || 'Copy link'}</span>
                       </button>
                     </div>
@@ -951,7 +981,7 @@ const StartalkCardContent: React.FC<{
             >
               <div className="p-6 text-center">
                 <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mx-auto mb-4">
-                  <Trash2 className="w-6 h-6" />
+                  <TrashIcon className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
                   Delete comment?
