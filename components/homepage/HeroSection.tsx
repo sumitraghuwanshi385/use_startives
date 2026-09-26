@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Rocket,
 } from 'lucide-react';
-
 import { APP_NAME } from '../../constants';
 
 const GradientButton: React.FC<{
@@ -29,57 +28,26 @@ const GradientButton: React.FC<{
 }) => {
   const btnRef = useRef<HTMLElement | null>(null);
 
-  const handleMove = useCallback(
-    (e: React.MouseEvent) => {
-      const el = btnRef.current;
+  const handleMove = useCallback((e: React.MouseEvent) => {
+    const el = btnRef.current;
+    if (!el) return;
 
-      if (!el) return;
-
-      const rect = el.getBoundingClientRect();
-
-      el.style.setProperty(
-        '--x',
-        `${e.clientX - rect.left}px`
-      );
-
-      el.style.setProperty(
-        '--y',
-        `${e.clientY - rect.top}px`
-      );
-    },
-    []
-  );
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--x', `${e.clientX - rect.left}px`);
+    el.style.setProperty('--y', `${e.clientY - rect.top}px`);
+  }, []);
 
   const commonClasses = `
-    button-gradient
-    magnetic-btn
-    group
-    relative
-    inline-flex
-    items-center
-    justify-center
-    overflow-hidden
-    text-white
-    font-semibold
-    py-2.5
-    px-7
-    rounded-full
-    text-sm
-    transition-transform
-    duration-300
-    ease-out
-    hover:scale-[1.03]
-    active:scale-[0.98]
-    focus:outline-none
-    focus:ring-4
-    focus:ring-red-500/40
+    button-gradient magnetic-btn group relative inline-flex items-center justify-center
+    overflow-hidden text-white font-semibold py-2.5 px-7 rounded-full text-sm
+    transition-transform duration-300 ease-out hover:scale-[1.03] active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-red-500/40
     ${className}
   `;
 
   const content = (
     <span className="relative z-10 flex items-center gap-2">
       {children}
-
       {icon && (
         <span className="transition-transform duration-300 group-hover:translate-x-1">
           {icon}
@@ -133,308 +101,94 @@ const GradientButton: React.FC<{
 
 const HeroSection: React.FC = () => {
   return (
-    <section
-      className="
-        hero-section
-        relative
-        overflow-hidden
-        bg-white
-        dark:bg-black
-        pt-6
-        pb-12
-        sm:pt-8
-        sm:pb-16
-        text-center
-        px-4
-      "
-    >
+    <section className="hero-section relative overflow-hidden bg-white dark:bg-black pt-6 pb-12 sm:pt-8 sm:pb-16 text-center px-4">
       <div className="relative z-20 w-full">
-
-        {/* Onboarding pill – very tight bottom margin */}
-        <div
-          className="reveal-item is-visible"
-          style={{
-            transitionDelay: '0ms',
-          }}
-        >
-          <div
-            className="
-              inline-flex
-              items-center
-              gap-2
-              mb-1
-              sm:mb-1.5
-              px-4
-              py-1.5
-              rounded-full
-              border
-              border-neutral-200
-              dark:border-white/15
-              bg-white
-              dark:bg-black
-              text-xs
-              font-semibold
-              text-neutral-700
-              dark:text-neutral-300
-              font-poppins
-              shadow-sm
-            "
-          >
+        <div className="reveal-item is-visible" style={{ transitionDelay: '0ms' }}>
+          <div className="inline-flex items-center gap-2 mb-1 sm:mb-1.5 px-4 py-1.5 rounded-full border border-neutral-200 dark:border-white/15 bg-white dark:bg-black text-xs font-semibold text-neutral-700 dark:text-neutral-300 font-poppins shadow-sm">
             <Rocket className="w-3.5 h-3.5 text-red-500" />
-
             Now onboarding builders worldwide
           </div>
         </div>
 
-        {/* Images – mobile 0.935, desktop \~0.99 (+10% from previous) + extremely close to pill */}
         <div
-          className="
-            relative
-            w-full
-            flex
-            justify-center
-            items-center
-            mt-0
-            mb-0
-            overflow-visible
-            reveal-item
-            is-visible
-          "
-          style={{
-            transitionDelay: '60ms',
-          }}
+          className="relative w-full flex justify-center items-center mt-0 mb-0 overflow-visible reveal-item is-visible"
+          style={{ transitionDelay: '60ms' }}
         >
-          <div
-            className="
-              block
-              dark:hidden
-              w-full
-              max-w-[1200px]
-              overflow-visible
-            "
-          >
+          <div className="block dark:hidden w-full max-w-[1200px] overflow-visible">
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-42-59-688_ysjeyl.jpg"
               alt={`${APP_NAME} builders community`}
-              className="
-                block
-                w-full
-                h-auto
-                max-h-[306px]
-                sm:max-h-[315px]
-                md:max-h-[375px]
-                object-contain
-                object-center
-                select-none
-                origin-center
-                scale-[0.935]
-                sm:scale-[0.99]
-              "
+              className="block w-full h-auto max-h-[306px] sm:max-h-[315px] md:max-h-[375px] object-contain object-center select-none origin-center scale-[0.935] sm:scale-[0.99]"
             />
           </div>
 
-          <div
-            className="
-              hidden
-              dark:block
-              w-full
-              max-w-[1200px]
-              overflow-visible
-            "
-          >
+          <div className="hidden dark:block w-full max-w-[1200px] overflow-visible">
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1787246334/Picsart_26-08-20_22-48-26-542_ohsfkv.jpg"
               alt={`${APP_NAME} builders community`}
-              className="
-                block
-                w-full
-                h-auto
-                max-h-[306px]
-                sm:max-h-[315px]
-                md:max-h-[375px]
-                object-contain
-                object-center
-                select-none
-                origin-center
-                scale-[0.935]
-                sm:scale-[0.99]
-              "
+              className="block w-full h-auto max-h-[306px] sm:max-h-[315px] md:max-h-[375px] object-contain object-center select-none origin-center scale-[0.935] sm:scale-[0.99]"
             />
           </div>
         </div>
 
-        {/* Heading – very close to images */}
-        <div
-          className="reveal-item is-visible mt-0"
-          style={{
-            transitionDelay: '120ms',
-          }}
-        >
-          <h1
-            className="
-              text-[2.7rem]
-              md:text-7xl
-              font-extrabold
-              tracking-tighter
-              text-black
-              dark:text-white
-              font-poppins
-              leading-tight
-            "
-          >
+        <div className="reveal-item is-visible mt-0" style={{ transitionDelay: '120ms' }}>
+          <h1 className="text-[2.7rem] md:text-7xl font-extrabold tracking-tighter text-black dark:text-white font-poppins leading-tight">
             Where visionaries &
             <br />
-
             <span className="bg-gradient-to-r from-red-500 to-blue-500 gradient-text">
               builders connect
             </span>
           </h1>
 
-          {/* Paragraph text size reduced \~10% */}
-          <p
-            className="
-              mt-4
-              sm:mt-5
-              text-base
-              md:text-lg
-              text-neutral-600
-              dark:text-neutral-400
-              max-w-2xl
-              mx-auto
-              font-medium
-              font-poppins
-            "
-          >
-            {APP_NAME} is your launchpad
-            for turning visionary ideas into
-            reality. Connect with co-founders,
-            assemble your dream team, and build
-            the future, together.
+          <p className="mt-4 sm:mt-5 text-base md:text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-medium font-poppins">
+            {APP_NAME} is your launchpad for turning visionary ideas into reality.
+            Connect with co-founders, assemble your dream team, and build the
+            future, together.
           </p>
         </div>
 
-        {/* Button – reduced \~15% (py-2.5 px-7 text-sm) */}
         <div
-          className="
-            mt-8
-            flex
-            items-center
-            justify-center
-            gap-4
-            reveal-item
-            is-visible
-          "
-          style={{
-            transitionDelay: '200ms',
-          }}
+          className="mt-8 flex items-center justify-center gap-4 reveal-item is-visible"
+          style={{ transitionDelay: '200ms' }}
         >
-          <GradientButton
-            to="/signup"
-            icon={
-              <ArrowRight className="w-4 h-4" />
-            }
-          >
+          <GradientButton to="/signup" icon={<ArrowRight className="w-4 h-4" />}>
             Join the future
           </GradientButton>
         </div>
 
-        {/* Features row – no extra bottom padding */}
         <div
-          className="
-            mt-8
-            flex
-            items-center
-            justify-center
-            gap-x-6
-            gap-y-2
-            flex-wrap
-            text-sm
-            text-neutral-600
-            dark:text-neutral-400
-            reveal-item
-            is-visible
-          "
-          style={{
-            transitionDelay: '280ms',
-          }}
+          className="mt-8 flex items-center justify-center gap-x-6 gap-y-2 flex-wrap text-sm text-neutral-600 dark:text-neutral-400 reveal-item is-visible"
+          style={{ transitionDelay: '280ms' }}
         >
           <span className="flex items-center gap-1.5">
-            <div
-              className="
-                w-4
-                h-4
-                rounded-full
-                icon-bg-gradient
-                flex
-                items-center
-                justify-center
-              "
-            >
+            <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
               <Users className="w-2.5 h-2.5 text-white" />
             </div>
-
             Find co-founders
           </span>
 
-          <span
-            className="
-              hidden
-              sm:inline
-              text-neutral-400
-              dark:text-neutral-600
-            "
-          >
+          <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">
             •
           </span>
 
           <span className="flex items-center gap-1.5">
-            <div
-              className="
-                w-4
-                h-4
-                rounded-full
-                icon-bg-gradient
-                flex
-                items-center
-                justify-center
-              "
-            >
+            <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
               <Sparkles className="w-2.5 h-2.5 text-white" />
             </div>
-
             Validate ideas
           </span>
 
-          <span
-            className="
-              hidden
-              sm:inline
-              text-neutral-400
-              dark:text-neutral-600
-            "
-          >
+          <span className="hidden sm:inline text-neutral-400 dark:text-neutral-600">
             •
           </span>
 
           <span className="flex items-center gap-1.5">
-            <div
-              className="
-                w-4
-                h-4
-                rounded-full
-                icon-bg-gradient
-                flex
-                items-center
-                justify-center
-              "
-            >
+            <div className="w-4 h-4 rounded-full icon-bg-gradient flex items-center justify-center">
               <Box className="w-2.5 h-2.5 text-white" />
             </div>
-
             Assemble teams
           </span>
         </div>
-
       </div>
     </section>
   );
