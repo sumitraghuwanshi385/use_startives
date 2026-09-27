@@ -189,6 +189,8 @@ const Header: React.FC = () => {
     { name: 'Builder Stories', path: '/builders' },
     { name: 'Starverse', path: '/globe' },
   ];
+{ name: 'Fundverse', path: '/funding' },
+  ];
 
   const mobileMenuLinks = [
     { name: 'Dashboard', path: '/dashboard' },
