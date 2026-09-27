@@ -22,12 +22,10 @@ const FundverseSection: React.FC = () => {
     { icon: TrendingUp, label: 'Venture Capital', sub: 'Scale Ready' },
   ];
 
-  // Duplicate for seamless infinite scroll
   const slidingPills = [...pills, ...pills];
 
   return (
     <section className="relative w-full overflow-hidden bg-white dark:bg-black px-5 py-10 sm:px-8 lg:px-12 lg:py-14 transition-colors duration-300">
-      {/* SVG Gradient Definition for Icons */}
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
           <linearGradient id="fundverseIconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -37,15 +35,7 @@ const FundverseSection: React.FC = () => {
         </defs>
       </svg>
 
-      {/* Ambient red-blue background (+7% contrast boost) */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-br from-red-500/17 via-purple-500/15 to-blue-500/17 rounded-full blur-[120px]" />
-        <div className="absolute -top-20 right-0 w-80 h-80 bg-blue-500/15 rounded-full blur-[100px]" />
-        <div className="absolute -bottom-20 left-0 w-72 h-72 bg-red-500/15 rounded-full blur-[100px]" />
-      </div>
-
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Centered Content */}
         <div className="text-center max-w-3xl mx-auto mb-8">
           <h2 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-startives-brand tracking-tighter leading-[1.05] text-[var(--text-primary)]">
             Where ideas meet
@@ -55,10 +45,10 @@ const FundverseSection: React.FC = () => {
           </h2>
 
           <p className="mt-5 text-sm sm:text-base lg:text-lg leading-relaxed text-[var(--text-secondary)] font-medium font-poppins max-w-2xl mx-auto">
-            Discover grants, government schemes, accelerators, investors and funding opportunities built for founders at every stage.
+            Discover grants, government schemes, accelerators, investors and funding
+            opportunities built for founders at every stage.
           </p>
 
-          {/* Buttons right below description */}
           <div className="flex flex-wrap items-center justify-center gap-3 mt-7">
             <Link
               to="/funding"
@@ -77,16 +67,13 @@ const FundverseSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Center Image - Rectangle / Square with Dark Mode Switch & Shadow Removed */}
         <div className="flex justify-center mb-10">
           <div className="relative w-full max-w-2xl aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-[var(--component-background)] border border-[var(--border-primary)] shadow-none">
-            {/* Light Mode Image */}
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1790452191/file_00000000a4f081fa9fd542aeb3106314_tcfoyx.png"
               alt="Fundverse"
               className="w-full h-full object-cover dark:hidden"
             />
-            {/* Dark Mode Image */}
             <img
               src="https://res.cloudinary.com/dp7avkarg/image/upload/v1790452741/file_00000000ea2c81faa2514ae59d137960_catmsa.png"
               alt="Fundverse Dark"
@@ -95,7 +82,6 @@ const FundverseSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Horizontal Auto-Sliding Pills (15% reduced, iOS-style glassmorphism, no shadow, gradient icons) */}
         <div className="relative overflow-hidden">
           <div className="flex gap-3.5 animate-slide">
             {slidingPills.map((pill, index) => {
@@ -128,12 +114,8 @@ const FundverseSection: React.FC = () => {
 
       <style>{`
         @keyframes slide {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         .animate-slide {
           animation: slide 28s linear infinite;
