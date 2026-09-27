@@ -19,6 +19,8 @@ const Footer: React.FC = () => {
 { name: 'Startalks', path: '/startalks' },
     { name: 'Builder Stories', path: '/builders' },
   ];
+{ name: 'Fundverse', path: '/funding' },
+  ];
 
   const socialLinks = [
     {
